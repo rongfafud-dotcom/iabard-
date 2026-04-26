@@ -1,0 +1,18 @@
+{
+  "name": "Ипатия Бард — Поэт · Философ · Духовный Писатель",
+  "short_name": "Ия Бард",
+  "description": "Духовная поэзия о Боге, душе и любви. Стихи, книги, новинки.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e1220",
+  "theme_color": "#5c3d55",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "/background.jpg",
+      "sizes": "any",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

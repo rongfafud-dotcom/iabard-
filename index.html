@@ -18,6 +18,10 @@
   <meta name="twitter:title" content="Ипатия Бард | Поэт · Философ"/>
   <meta name="twitter:description" content="Духовная поэзия о Боге, душе и любви."/>
   <link rel="canonical" href="https://iabard.com"/>
+  <link rel="manifest" href="/manifest.json"/>
+  <meta name="theme-color" content="#5c3d55"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Great+Vibes&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet"/>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Person","name":"Ипатия Бард",
@@ -147,6 +151,11 @@
                       font-weight:600;letter-spacing:0.5px;text-align:center;line-height:1.35}
     .shop-sub{font-size:0.72rem;color:var(--mauve);letter-spacing:2px;text-transform:uppercase;opacity:0.7}
 
+    /* SKIP LINK */
+    .skip-link{position:absolute;top:-999px;left:0;padding:8px 16px;background:var(--plum);color:var(--cream);
+               font-size:0.8rem;letter-spacing:1px;text-decoration:none;z-index:9999;border-radius:0 0 4px 0}
+    .skip-link:focus{top:0}
+
     /* FOOTER */
     footer{background:#100a10;padding:22px 56px;text-align:center;font-size:0.68rem;
             letter-spacing:2px;color:rgba(253,246,238,0.22);border-top:1px solid rgba(201,169,110,0.1)}
@@ -185,17 +194,19 @@
 </head>
 <body>
 
+<a href="#main-content" class="skip-link">Перейти к содержимому</a>
+
 <!-- ═══ HERO ═══ -->
 <div class="card">
   <div class="card-inner">
     <h1 class="name">Ия Бард</h1>
     <p class="name-sub">Hypatia Bard<br>Ипа́тия Бард</p>
 
-    <div class="nav-tabs">
-      <button class="nav-tab active" onclick="switchTab('novosti',this)">Новинки</button>
-      <button class="nav-tab" onclick="switchTab('books',this)">Книги</button>
-      <button class="nav-tab" onclick="switchTab('author',this)">Об авторе</button>
-      <button class="nav-tab" onclick="switchTab('shop',this)">Магазин</button>
+    <div class="nav-tabs" role="tablist" aria-label="Разделы сайта">
+      <button class="nav-tab active" role="tab" aria-selected="true"  aria-controls="novosti" id="tab-novosti" onclick="switchTab('novosti',this)">Новинки</button>
+      <button class="nav-tab"        role="tab" aria-selected="false" aria-controls="books"   id="tab-books"   onclick="switchTab('books',this)">Книги</button>
+      <button class="nav-tab"        role="tab" aria-selected="false" aria-controls="author"  id="tab-author"  onclick="switchTab('author',this)">Об авторе</button>
+      <button class="nav-tab"        role="tab" aria-selected="false" aria-controls="shop"    id="tab-shop"    onclick="switchTab('shop',this)">Магазин</button>
     </div>
 
     <div class="gold-rule"></div>
@@ -219,10 +230,10 @@
 </div>
 
 <!-- ═══ SECTIONS ═══ -->
-<div class="sections-wrap">
+<div id="main-content" class="sections-wrap">
 
   <!-- НОВИНКИ -->
-  <div id="novosti" class="tab-panel active">
+  <div id="novosti" class="tab-panel active" role="tabpanel" aria-labelledby="tab-novosti">
     <div class="novinka-list">
       
       <div class="novinka-card">
@@ -232,7 +243,7 @@
           <iframe src="https://www.youtube.com/embed/uth2uzFhiz0?playsinline=1"
             title="Вера в любовь спасает мир! — Ипатия Бард" frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen></iframe>
+            allowfullscreen loading="lazy"></iframe>
         </div>
         <div class="novinka-poem">
           <div class="stanza">Вся жизнь — игра: играют в игры дети,<br>
@@ -284,7 +295,7 @@
           <iframe src="https://www.youtube.com/embed/so3OvauuEtc?playsinline=1"
             title="Мой путь — Ипатия Бард" frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen></iframe>
+            allowfullscreen loading="lazy"></iframe>
         </div>
         <div class="novinka-poem">
           <div class="stanza">Мне не по нраву путь слепого аскетизма...<br>
@@ -337,7 +348,7 @@
           <iframe src="https://www.youtube.com/embed/x_RGtTh8-_4?playsinline=1"
             title="Я всё испортила! — Ипатия Бард" frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen></iframe>
+            allowfullscreen loading="lazy"></iframe>
         </div>
         <div class="novinka-poem">
           <div class="stanza">Я всё испортила и, впрочем, как всегда,<br>
@@ -377,7 +388,7 @@
   </div>
 
   <!-- КНИГИ -->
-  <div id="books" class="tab-panel">
+  <div id="books" class="tab-panel" role="tabpanel" aria-labelledby="tab-books">
     <div class="books-grid">
       
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
@@ -537,7 +548,7 @@
   </div>
 
   <!-- ОБ АВТОРЕ -->
-  <div id="author" class="tab-panel">
+  <div id="author" class="tab-panel" role="tabpanel" aria-labelledby="tab-author">
     <div class="author-section">
       <div class="author-poem-card">
         <div class="author-poem">
@@ -571,7 +582,7 @@
   </div>
 
   <!-- МАГАЗИН -->
-  <div id="shop" class="tab-panel">
+  <div id="shop" class="tab-panel" role="tabpanel" aria-labelledby="tab-shop">
     <div class="shop-coming">
       <div class="shop-banner">Coming Soon</div>
       <div class="shop-grid">
@@ -593,6 +604,9 @@
         </div>
       </div>
       <p class="shop-sub">Магазин духовных товаров · Spiritual Science</p>
+      <p style="margin-top:20px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.92rem;color:var(--mauve);">
+        Хотите узнать первыми? Напишите нам: <a href="mailto:poet@iabard.com" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,169,110,0.4);">poet@iabard.com</a>
+      </p>
     </div>
   </div>
 
@@ -607,11 +621,25 @@
 <script>
 function switchTab(id, btn) {
   document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
-  document.querySelectorAll('.nav-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.nav-tab').forEach(function(t) {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+  });
   document.getElementById(id).classList.add('active');
   btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
   document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
 }
+
+document.querySelector('[role="tablist"]').addEventListener('keydown', function(e) {
+  var tabs = Array.from(this.querySelectorAll('[role="tab"]'));
+  var idx = tabs.indexOf(document.activeElement);
+  if (idx === -1) return;
+  if (e.key === 'ArrowRight') { tabs[(idx + 1) % tabs.length].focus(); e.preventDefault(); }
+  if (e.key === 'ArrowLeft')  { tabs[(idx - 1 + tabs.length) % tabs.length].focus(); e.preventDefault(); }
+  if (e.key === 'Home') { tabs[0].focus(); e.preventDefault(); }
+  if (e.key === 'End')  { tabs[tabs.length - 1].focus(); e.preventDefault(); }
+});
 </script>
 </body>
 </html>
