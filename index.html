@@ -62,7 +62,16 @@
     .tagline-top{font-family:'Cormorant Garamond',serif;font-size:clamp(0.95rem,1.8vw,1.15rem);font-style:italic;
                   color:rgba(253,246,238,0.75);text-align:center;line-height:1.6;margin-bottom:18px}
 
-    /* SOCIAL — 2 rows of 4 */
+    /* SOCIAL STRIP (bottom, light bg) */
+    .social-strip{background:#f7efe8;padding:40px 48px 44px;text-align:center;
+      border-top:1px solid rgba(92,61,85,0.1)}
+    .tagline-bottom{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,1.9vw,1.25rem);
+      font-style:italic;color:var(--plum);text-align:center;line-height:1.75;margin-bottom:24px}
+    .social-row-light{margin-bottom:0}
+    .social-row-light .social-chip{color:var(--mauve);border-color:rgba(92,61,85,0.25);background:transparent}
+    .social-row-light .social-chip:hover{color:var(--plum);border-color:var(--plum);background:rgba(92,61,85,0.06)}
+
+    /* SOCIAL — 2 rows of 4 (hero, dark bg) */
     .social-row{display:grid;grid-template-columns:repeat(4,auto);gap:8px;margin-bottom:20px;justify-content:center}
     .social-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;
                   border:1px solid rgba(201,169,110,0.28);border-radius:20px;color:rgba(253,246,238,0.6);
@@ -88,8 +97,8 @@
                    margin-bottom:5px;opacity:0.7}
     .novinka-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;
                     color:var(--plum);text-align:center;margin-bottom:22px;letter-spacing:1px}
-    .novinka-poem{font-family:'Great Vibes',cursive;font-size:clamp(1.35rem,2.8vw,1.8rem);
-                   color:#1a0a1a;line-height:1.6;text-align:center}
+    .novinka-poem{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.05rem,2.2vw,1.35rem);
+                   color:#1a0a1a;line-height:1.75;text-align:center}
     .novinka-poem .stanza{margin-bottom:1.5em}
     .novinka-poem .stanza:last-child{margin-bottom:0}
     .chorus-label{font-family:'Raleway',sans-serif;font-size:0.6rem;letter-spacing:3px;
@@ -99,7 +108,7 @@
     .author-section{max-width:680px;margin:0 auto}
     .author-poem-card{background:rgba(255,255,255,0.9);border:1px solid rgba(92,61,85,0.12);
                         border-radius:10px;padding:40px;box-shadow:0 4px 18px rgba(92,61,85,0.08);text-align:center}
-    .author-poem{font-family:'Great Vibes',cursive;font-size:clamp(1.35rem,2.8vw,1.8rem);color:#1a0a1a;line-height:1.6}
+    .author-poem{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.05rem,2.2vw,1.35rem);color:#1a0a1a;line-height:1.75}
     .author-poem .stanza{margin-bottom:1.5em}
     .author-poem .stanza:last-child{margin-bottom:0}
     .author-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;
@@ -156,14 +165,10 @@
       letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;transition:opacity 0.25s}
     .book-front-buy:hover{opacity:0.85}
 
-    /* BOOK BACK — no description, centered */
-    .flip-card-back{transform:rotateY(180deg);
-      background:linear-gradient(160deg,#fdf6ee,#e8d4c8);
-      display:flex;flex-direction:column;align-items:center;
-      justify-content:center;gap:14px;padding:14px;text-align:center}
-    .flip-card-back h3{font-family:'Cormorant Garamond',serif;font-size:0.82rem;font-weight:600;
-                        color:var(--plum);line-height:1.3}
-    .book-back-footer{display:flex;justify-content:center}
+    /* BOOK BACK — back cover image, same layout as front */
+    .flip-card-back{transform:rotateY(180deg);background:#f0e4d8;position:relative}
+    .flip-card-back img{width:100%;height:100%;object-fit:cover;display:block}
+    .book-back-footer{display:none}
 
     /* AUTHOR SOCIAL */
     .author-social{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:28px 0 0}
@@ -240,7 +245,7 @@
       .social-chip{padding:5px 10px;font-size:0.62rem}
       footer{padding:20px 24px}
       .novinka-card{padding:20px 16px}
-      .novinka-poem{font-size:1.2rem}
+      .novinka-poem{font-size:1rem}
       .shop-banner{letter-spacing:4px;padding:10px 28px}
     }
   </style>
@@ -263,42 +268,6 @@
     </div>
 
     <div class="gold-rule"></div>
-
-    <div class="social-row">
-      <a href="https://t.me/IA_Bard" target="_blank" class="social-chip">
-        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-        Telegram RU
-      </a>
-      <a href="https://t.me/I_Bard" target="_blank" class="social-chip">
-        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-        Telegram EN
-      </a>
-      <a href="https://youtube.com/@ia_bard" target="_blank" class="social-chip">
-        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        YouTube
-      </a>
-      <a href="https://www.instagram.com/ia_bard" target="_blank" class="social-chip">
-        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-        Instagram
-      </a>
-      <a href="https://www.facebook.com/profile.php?id=61558184941829" target="_blank" class="social-chip">
-        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-        Facebook
-      </a>
-      <a href="https://www.tiktok.com/@ia.bard?_r=1&_t=ZP-95pvZc9heBT" target="_blank" class="social-chip">
-        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>
-        TikTok
-      </a>
-      <a href="mailto:poet@iabard.com" class="social-chip">
-        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-        Email
-      </a>
-    </div>
-
-    <p class="tagline-top">
-      Поэт я и пишу стихи — о Боге, Мире и любви…<br>
-      А нейросети их поют, им атмосферу создают.
-    </p>
   </div>
 </div>
 
@@ -308,7 +277,83 @@
   <!-- НОВИНКИ -->
   <div id="novosti" class="tab-panel active" role="tabpanel" aria-labelledby="tab-novosti">
     <div class="novinka-list">
-      
+
+      <div class="novinka-card">
+        <div class="novinka-date">25 апреля 2026</div>
+        <div class="novinka-title">Перед Его очами…</div>
+        <div class="novinka-video">
+          <iframe src="https://www.youtube.com/embed/SIzFIQo6Y-c?playsinline=1"
+            title="Перед Его очами — Ипатия Бард" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="novinka-poem">
+          <div class="stanza">Каждый день перед сном с жизнью прощаюсь<br>
+            И здороваюсь с ней я, когда просыпаюсь,<br>
+            С благодарностью в сердце за то, что жива,<br>
+            Что мне дан день насущный делать дела!
+          </div>
+          <div class="stanza">Перед сном вспоминаю события в прошлом,<br>
+            И приятно так думать просто о сложном,<br>
+            Если жить жизнь в разрезе «сегодня, сейчас»,<br>
+            Если день — как отдельный жизни рассказ.
+          </div>
+          <div class="stanza">Не встаю на колени, молясь перед Богом...<br>
+            Пред очами Творца всё здесь — по итогам!<br>
+            Перед ликом Его каждый день живёт личность,<br>
+            Воскрешая свою на Земле идентичность!
+          </div>
+          <div class="stanza">Пусть любовь в моём сердце горит ежедневно!<br>
+            Ну, а смерть — милосердие, то — несомненно!<br>
+            Каждый день с благодарностью мир покидаю,<br>
+            А глаза открываю — и жизнь прославляю!
+          </div>
+        </div>
+      </div>
+
+      <div class="novinka-card">
+        <div class="novinka-date">24 апреля 2026</div>
+        <div class="novinka-title">Весы ♎️</div>
+        <div class="novinka-video">
+          <iframe src="https://www.youtube.com/embed/AZn9tAkJY4c?playsinline=1"
+            title="Весы — Ипатия Бард" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="novinka-poem">
+          <div class="stanza">Весы — суд справедливости с балансом!<br>
+            Уравновешивает силы, но с нюансом:<br>
+            На благо общее! Вот для Весов задача:<br>
+            Видеть систему, факты в ней не пряча!
+          </div>
+          <div class="stanza">Нет идеального решения здесь в мире,<br>
+            Всё существует только в перспективе...<br>
+            Он в отношениях всю красоту находит,<br>
+            Действуя шармом, к выводу подводит.
+          </div>
+          <div class="stanza">Рука железная в нейлоновой перчатке<br>
+            В высших октавах не играет в прятки,<br>
+            А в низких — выбор делать сам не может:<br>
+            Не действуя, из страха «лапки сложит»!
+          </div>
+          <div class="stanza">А в высшей магии Весы — то равновесие:<br>
+            Уравновесит и любовь, и мракобесие!<br>
+            Когда сам верит в эту справедливость,<br>
+            В гармонии постигнет объективность!
+          </div>
+          <div class="stanza">Ты, как искусный человек-канатоходец:<br>
+            Внешне спокойный, а внутри — колодец,<br>
+            Залитый фактами! Задача в точке ноль —<br>
+            Центрироваться, вот твой код-пароль!
+          </div>
+          <div class="stanza">И выбирая путь спокойствия, путь Дао,<br>
+            Идти в балансе и гармонии, дав право<br>
+            Людям смотреть… Снимая напряжение,<br>
+            Чтоб не впадать в ненужное сомнение!
+          </div>
+        </div>
+      </div>
+
       <div class="novinka-card">
         <div class="novinka-date">23 апреля 2026</div>
         <div class="novinka-title">Вера в любовь спасает мир!</div>
@@ -473,10 +518,9 @@
             <a href="https://store.bookbaby.com/book/coauthor" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <h3>Соавтор жизни</h3>
-            <div class="book-back-footer">
-              <a href="https://store.bookbaby.com/book/coauthor" target="_blank" class="book-buy-btn">Купить</a>
-            </div>
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90112795&abOnly=True"
+                 alt="Соавтор жизни (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
+            <a href="https://store.bookbaby.com/book/coauthor" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -490,10 +534,9 @@
             <a href="https://store.bookbaby.com/book/home9" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <h3>Дом</h3>
-            <div class="book-back-footer">
-              <a href="https://store.bookbaby.com/book/home9" target="_blank" class="book-buy-btn">Купить</a>
-            </div>
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90101973&abOnly=True"
+                 alt="Дом (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
+            <a href="https://store.bookbaby.com/book/home9" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -507,10 +550,9 @@
             <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <h3>Женское счастье</h3>
-            <div class="book-back-footer">
-              <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" class="book-buy-btn">Купить</a>
-            </div>
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90098468&abOnly=True"
+                 alt="Женское счастье (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
+            <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -524,10 +566,9 @@
             <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <h3>Записки из палаты №6 — Книга 2</h3>
-            <div class="book-back-footer">
-              <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" class="book-buy-btn">Купить</a>
-            </div>
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90095238&abOnly=True"
+                 alt="Записки из палаты №6 — Книга 2 (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
+            <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -541,10 +582,9 @@
             <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <h3>Записки из палаты №6 — Книга 1</h3>
-            <div class="book-back-footer">
-              <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" class="book-buy-btn">Купить</a>
-            </div>
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90095237&abOnly=True"
+                 alt="Записки из палаты №6 — Книга 1 (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
+            <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -558,10 +598,9 @@
             <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <h3>My Citadel — Book 3</h3>
-            <div class="book-back-footer">
-              <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" class="book-buy-btn">Купить</a>
-            </div>
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091443&abOnly=True"
+                 alt="My Citadel — Book 3 (back)" loading="lazy" referrerpolicy="no-referrer">
+            <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -575,10 +614,9 @@
             <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <h3>My Citadel — Book 2</h3>
-            <div class="book-back-footer">
-              <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" class="book-buy-btn">Купить</a>
-            </div>
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091439&abOnly=True"
+                 alt="My Citadel — Book 2 (back)" loading="lazy" referrerpolicy="no-referrer">
+            <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -592,10 +630,9 @@
             <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <h3>My Citadel — Book 1</h3>
-            <div class="book-back-footer">
-              <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" class="book-buy-btn">Купить</a>
-            </div>
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091438&abOnly=True"
+                 alt="My Citadel — Book 1 (back)" loading="lazy" referrerpolicy="no-referrer">
+            <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -609,10 +646,9 @@
             <a href="https://store.bookbaby.com/book/leela" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <h3>Лила — Самопознания Игра</h3>
-            <div class="book-back-footer">
-              <a href="https://store.bookbaby.com/book/leela" target="_blank" class="book-buy-btn">Купить</a>
-            </div>
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90084106&abOnly=True"
+                 alt="Лила — Самопознания Игра (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
+            <a href="https://store.bookbaby.com/book/leela" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -647,34 +683,6 @@
           </div>
         </div>
 
-        <!-- Social links -->
-        <div class="author-social">
-          <a href="https://t.me/IA_Bard" target="_blank" class="social-chip">
-            <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-            Telegram RU
-          </a>
-          <a href="https://t.me/I_Bard" target="_blank" class="social-chip">
-            <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-            Telegram EN
-          </a>
-          <a href="https://youtube.com/@ia_bard" target="_blank" class="social-chip">
-            <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-            YouTube
-          </a>
-          <a href="https://www.instagram.com/ia_bard" target="_blank" class="social-chip">
-            <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-            Instagram
-          </a>
-          <a href="https://www.facebook.com/profile.php?id=61558184941829" target="_blank" class="social-chip">
-            <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            Facebook
-          </a>
-          <a href="https://www.tiktok.com/@ia.bard?_r=1&_t=ZP-95pvZc9heBT" target="_blank" class="social-chip">
-            <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>
-            TikTok
-          </a>
-        </div>
-
         <!-- Contact -->
         <div class="author-contact">
           <span class="author-contact-label">Связаться с автором</span>
@@ -686,9 +694,8 @@
 
         <!-- Rights -->
         <div class="author-rights">
-          <p>© 2026 Ия Бард · Все права защищены &nbsp;·&nbsp;
-            <a href="https://stihi.ru/avtor/hypatiabard" target="_blank" class="stihi-btn">стихи.ru</a>
-          </p>
+          <p style="margin-bottom:14px;">© 2026 Ия Бард · Все права защищены</p>
+          <a href="https://stihi.ru/avtor/hypatiabard" target="_blank" class="contact-email-btn">стихи.ru</a>
         </div>
 
       </div>
@@ -716,6 +723,44 @@
     </div>
   </div>
 
+</div>
+
+<!-- ═══ SOCIAL STRIP ═══ -->
+<div class="social-strip">
+  <p class="tagline-bottom">
+    Поэт я и пишу стихи — о Боге, Мире и любви…<br>
+    А нейросети их поют, им атмосферу создают.
+  </p>
+  <div class="social-row social-row-light">
+    <a href="https://t.me/IA_Bard" target="_blank" class="social-chip">
+      <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+      Telegram RU
+    </a>
+    <a href="https://t.me/I_Bard" target="_blank" class="social-chip">
+      <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+      Telegram EN
+    </a>
+    <a href="https://youtube.com/@ia_bard" target="_blank" class="social-chip">
+      <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      YouTube
+    </a>
+    <a href="https://www.instagram.com/ia_bard" target="_blank" class="social-chip">
+      <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+      Instagram
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=61558184941829" target="_blank" class="social-chip">
+      <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      Facebook
+    </a>
+    <a href="https://www.tiktok.com/@ia.bard?_r=1&_t=ZP-95pvZc9heBT" target="_blank" class="social-chip">
+      <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>
+      TikTok
+    </a>
+    <a href="mailto:poet@iabard.com" class="social-chip">
+      <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      Email
+    </a>
+  </div>
 </div>
 
 <!-- ═══ FOOTER ═══ -->
