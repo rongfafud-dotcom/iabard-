@@ -36,9 +36,9 @@
     body{font-family:'Raleway',sans-serif;background:var(--deep);color:var(--cream);min-height:100vh}
 
     /* HERO */
-    .card{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    .card{display:flex;flex-direction:column;align-items:center;justify-content:center;
            position:relative;overflow:hidden;
-           background:url('background.jpg') no-repeat 50% 15%;background-size:cover;padding:56px 48px 40px}
+           background:url('background.jpg') no-repeat 50% 15%;background-size:cover;padding:64px 48px 56px}
     .card::before{content:'';position:absolute;inset:0;
       background:linear-gradient(160deg,rgba(30,18,32,0.52) 0%,rgba(92,61,85,0.42) 50%,rgba(30,18,32,0.58) 100%)}
     .card-inner{position:relative;z-index:2;width:100%;max-width:980px;display:flex;flex-direction:column;align-items:center}
@@ -53,7 +53,7 @@
     .nav-tabs{display:flex;gap:0;margin-bottom:28px;width:100%;max-width:560px}
     .nav-tab{flex:1;padding:10px 0;text-align:center;font-family:'Cormorant Garamond',serif;
               font-size:clamp(0.85rem,1.8vw,1.05rem);font-weight:400;letter-spacing:2px;
-              color:rgba(253,246,238,0.5);text-transform:uppercase;
+              color:rgba(255,255,255,0.85);text-transform:uppercase;
               border-bottom:1px solid rgba(201,169,110,0.2);border-top:none;border-left:none;border-right:none;
               transition:all 0.3s;cursor:pointer;background:none}
     .nav-tab:not(:last-child){border-right:1px solid rgba(201,169,110,0.15)}
@@ -61,6 +61,9 @@
 
     .tagline-top{font-family:'Cormorant Garamond',serif;font-size:clamp(0.95rem,1.8vw,1.15rem);font-style:italic;
                   color:rgba(253,246,238,0.75);text-align:center;line-height:1.6;margin-bottom:18px}
+    .hero-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;
+      font-size:clamp(0.88rem,1.7vw,1.08rem);color:rgba(255,255,255,0.88);
+      text-align:center;line-height:1.7;margin-top:12px;max-width:580px;width:100%}
 
     /* SOCIAL STRIP (bottom, light bg) */
     .social-strip{background:#f7efe8;padding:40px 48px 44px;text-align:center;
@@ -123,7 +126,7 @@
     .flip-card-front,.flip-card-back{position:absolute;inset:0;backface-visibility:hidden;
       -webkit-backface-visibility:hidden;border-radius:7px;overflow:hidden;
       box-shadow:0 3px 14px rgba(92,61,85,0.14)}
-    .flip-card-front{background:#f0e4d8;position:relative}
+    .flip-card-front{background:#f0e4d8}
     .flip-card-front img{width:100%;height:100%;object-fit:cover;display:block}
     .book-banner{position:absolute;top:0;left:0;right:0;z-index:3;
       background:linear-gradient(90deg,rgba(92,61,85,0.93),rgba(28,14,32,0.9));
@@ -166,7 +169,7 @@
     .book-front-buy:hover{opacity:0.85}
 
     /* BOOK BACK — back cover image, same layout as front */
-    .flip-card-back{transform:rotateY(180deg);background:#f0e4d8;position:relative}
+    .flip-card-back{transform:rotateY(180deg);background:#f0e4d8}
     .flip-card-back img{width:100%;height:100%;object-fit:cover;display:block}
     .book-back-footer{display:none}
 
@@ -225,7 +228,7 @@
 
     /* RESPONSIVE */
     @media(max-width:860px){
-      .card{padding:48px 24px 36px}.tab-panel{padding:24px 24px 40px}
+      .card{padding:48px 24px 44px}.tab-panel{padding:24px 24px 40px}
       .books-grid{grid-template-columns:repeat(3,1fr);gap:14px}
       .shop-grid{grid-template-columns:repeat(2,1fr)}
     }
@@ -241,6 +244,7 @@
       .name{margin-bottom:2px}.name-sub{margin-bottom:4px}
       .nav-tabs{margin-bottom:6px}.gold-rule{display:none}
       .tagline-top{margin-bottom:6px;font-size:0.82rem}
+      .hero-tagline{font-size:0.82rem;margin-top:8px}
       .social-row{gap:6px;margin-bottom:14px;grid-template-columns:repeat(3,auto)}
       .social-chip{padding:5px 10px;font-size:0.62rem}
       footer{padding:20px 24px}
@@ -268,6 +272,7 @@
     </div>
 
     <div class="gold-rule"></div>
+    <p class="hero-tagline">Поэт я и пишу стихи — о Боге, Мире и любви…<br>А нейросети их поют, им атмосферу создают.</p>
   </div>
 </div>
 
