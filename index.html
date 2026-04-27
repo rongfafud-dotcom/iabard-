@@ -190,10 +190,18 @@
       border-bottom:1px solid rgba(201,169,110,0.25);padding-bottom:1px;transition:color 0.2s}
     .hero-stihi-btn:hover{color:var(--gold)}
 
-    /* BOOK BACK — back cover image, same layout as front */
-    .flip-card-back{transform:rotateY(180deg);background:#f0e4d8}
-    .flip-card-back img{width:100%;height:100%;object-fit:cover;display:block}
-    .book-back-footer{display:none}
+    /* BOOK BACK — front image darkened + centred buy button */
+    .flip-card-back{transform:rotateY(180deg);background:#1e1220}
+    .flip-card-back img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(0.45) saturate(0.7)}
+    .flip-card-back::after{content:'';position:absolute;inset:0;z-index:2;
+      background:linear-gradient(160deg,rgba(18,6,24,0.55) 0%,rgba(92,61,85,0.45) 50%,rgba(18,6,24,0.65) 100%)}
+    .flip-card-back .book-front-buy{
+      z-index:4;bottom:auto;top:50%;transform:translateX(-50%) translateY(-50%);
+      padding:12px 22px;font-size:0.58rem;letter-spacing:3px;
+      background:rgba(201,169,110,0.95);color:#1e1220;
+      box-shadow:0 3px 16px rgba(0,0,0,0.55)}
+    .flip-card-back .book-front-buy:hover{
+      background:var(--gold);transform:translateX(-50%) translateY(-50%) scale(1.05)}
 
     /* AUTHOR SOCIAL */
     .author-social{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:28px 0 0}
@@ -201,17 +209,18 @@
       background:rgba(92,61,85,0.05)}
     .author-social .social-chip:hover{color:var(--plum);border-color:var(--plum);background:rgba(92,61,85,0.08)}
 
-    /* AUTHOR CONTACT + RIGHTS */
-    .author-contact{margin-top:28px;padding-top:24px;border-top:1px solid rgba(160,110,40,0.25);text-align:center}
-    .author-rights{margin-top:0;padding-top:24px;border-top:1px solid rgba(160,110,40,0.2);text-align:center}
-    .author-contact-label{font-family:'Cormorant Garamond',serif;font-size:0.75rem;
-      letter-spacing:3px;text-transform:uppercase;color:#6b4a1a;margin-bottom:16px;display:block}
+    /* AUTHOR FOOTER */
+    .author-footer{margin-top:28px;padding-top:24px;border-top:1px solid rgba(160,110,40,0.25)}
+    .author-footer-block{text-align:center;padding:20px 0;border-bottom:1px solid rgba(160,110,40,0.15)}
+    .author-footer-block:last-child{border-bottom:none;padding-bottom:4px}
+    .author-footer-label{font-family:'Cormorant Garamond',serif;font-size:0.75rem;
+      letter-spacing:3px;text-transform:uppercase;color:#6b4a1a;margin-bottom:14px;display:block}
     .contact-email-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 32px;
       background:#5c3d55;color:#fdf6ee;text-decoration:none;border-radius:24px;
       font-size:0.72rem;letter-spacing:2.5px;text-transform:uppercase;font-family:'Raleway',sans-serif;
       font-weight:500;box-shadow:0 3px 14px rgba(92,61,85,0.4);transition:all 0.25s}
     .contact-email-btn:hover{background:#3d2040;box-shadow:0 4px 18px rgba(92,61,85,0.55);transform:translateY(-1px)}
-    .author-rights-copy{font-size:0.6rem;letter-spacing:2px;color:rgba(80,50,10,0.5);margin-top:16px}
+    .author-rights-copy{font-size:0.6rem;letter-spacing:2px;color:rgba(80,50,10,0.5);margin-top:14px}
     .author-rights .stihi-btn{color:rgba(92,61,85,0.65);border-color:rgba(92,61,85,0.3)}
     .author-rights .stihi-btn:hover{border-color:var(--plum);color:var(--plum);background:rgba(92,61,85,0.07)}
 
@@ -320,12 +329,7 @@
         <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>
         TikTok
       </a>
-      <a href="mailto:poet@iabard.com" class="social-chip">
-        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-        Написать автору
-      </a>
     </div>
-    <p class="hero-rights">© 2026 Ия Бард · Все права защищены · <a href="https://stihi.ru/avtor/hypatiabard" target="_blank" class="hero-stihi-btn">стихи.ru</a></p>
   </div>
 </div>
 
@@ -575,7 +579,7 @@
             <a href="https://store.bookbaby.com/book/coauthor" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90112795&abOnly=True"
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90112795&abOnly=False"
                  alt="Соавтор жизни (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
             <a href="https://store.bookbaby.com/book/coauthor" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
@@ -590,7 +594,7 @@
             <a href="https://store.bookbaby.com/book/home9" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90101973&abOnly=True"
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90101973&abOnly=False"
                  alt="Дом (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
             <a href="https://store.bookbaby.com/book/home9" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
@@ -605,7 +609,7 @@
             <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90098468&abOnly=True"
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90098468&abOnly=False"
                  alt="Женское счастье (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
             <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
@@ -620,7 +624,7 @@
             <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90095238&abOnly=True"
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90095238&abOnly=False"
                  alt="Записки из палаты №6 — Книга 2 (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
             <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
@@ -635,7 +639,7 @@
             <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90095237&abOnly=True"
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90095237&abOnly=False"
                  alt="Записки из палаты №6 — Книга 1 (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
             <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
@@ -650,7 +654,7 @@
             <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091443&abOnly=True"
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091443&abOnly=False"
                  alt="My Citadel — Book 3 (back)" loading="lazy" referrerpolicy="no-referrer">
             <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
@@ -665,7 +669,7 @@
             <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091439&abOnly=True"
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091439&abOnly=False"
                  alt="My Citadel — Book 2 (back)" loading="lazy" referrerpolicy="no-referrer">
             <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
@@ -680,7 +684,7 @@
             <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091438&abOnly=True"
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091438&abOnly=False"
                  alt="My Citadel — Book 1 (back)" loading="lazy" referrerpolicy="no-referrer">
             <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
@@ -696,7 +700,7 @@
             <a href="https://store.bookbaby.com/book/leela" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90084106&abOnly=True"
+            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90084106&abOnly=False"
                  alt="Лила — Самопознания Игра (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
             <a href="https://store.bookbaby.com/book/leela" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
@@ -733,20 +737,20 @@
           </div>
         </div>
 
-        <!-- Contact -->
-        <div class="author-contact">
-          <span class="author-contact-label">Написать сообщение автору</span>
-          <a href="mailto:poet@iabard.com" class="contact-email-btn">
-            <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            Написать автору
-          </a>
-        </div>
-
-        <!-- Rights -->
-        <div class="author-rights">
-          <span class="author-contact-label">Все права защищены</span>
-          <a href="https://stihi.ru/avtor/hypatiabard" target="_blank" class="contact-email-btn">стихи.ru</a>
-          <p class="author-rights-copy">© 2026 Ия Бард · Ипатия Бард</p>
+        <!-- Contact + Rights -->
+        <div class="author-footer">
+          <div class="author-footer-block">
+            <span class="author-footer-label">Написать сообщение автору</span>
+            <a href="mailto:poet@iabard.com" class="contact-email-btn">
+              <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              Написать автору
+            </a>
+          </div>
+          <div class="author-footer-block">
+            <span class="author-footer-label">Все права защищены</span>
+            <a href="https://stihi.ru/avtor/hypatiabard" target="_blank" class="contact-email-btn">стихи.ru</a>
+            <p class="author-rights-copy">© 2026 Ия Бард · Ипатия Бард</p>
+          </div>
         </div>
 
       </div>
