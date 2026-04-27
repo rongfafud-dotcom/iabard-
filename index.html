@@ -137,6 +137,7 @@
     .flip-card-inner{position:relative;width:100%;padding-top:148%;
                       transform-style:preserve-3d;transition:transform 0.65s cubic-bezier(.4,0,.2,1)}
     .flip-card.flipped .flip-card-inner{transform:rotateY(180deg)}
+    .flip-card.flipped .flip-card-front{visibility:hidden}
     .flip-card-front,.flip-card-back{position:absolute;inset:0;backface-visibility:hidden;
       -webkit-backface-visibility:hidden;border-radius:7px;overflow:hidden;
       box-shadow:0 3px 14px rgba(92,61,85,0.14)}
@@ -570,7 +571,7 @@
             <a href="https://store.bookbaby.com/book/coauthor" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-coauthor.jpg" alt="Соавтор жизни (обратная сторона)" loading="lazy">
+            <img src="back-coauthor.jpg" onerror="this.style.display='none'" alt="Соавтор жизни (обратная сторона)" loading="lazy">
             <a href="https://store.bookbaby.com/book/coauthor" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
@@ -584,7 +585,7 @@
             <a href="https://store.bookbaby.com/book/home9" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-home.jpg" alt="Дом (обратная сторона)" loading="lazy">
+            <img src="back-home.jpg" onerror="this.style.display='none'" alt="Дом (обратная сторона)" loading="lazy">
             <a href="https://store.bookbaby.com/book/home9" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
@@ -598,7 +599,7 @@
             <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-womans.jpg" alt="Женское счастье (обратная сторона)" loading="lazy">
+            <img src="back-womans.jpg" onerror="this.style.display='none'" alt="Женское счастье (обратная сторона)" loading="lazy">
             <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
@@ -612,7 +613,7 @@
             <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-notes-2.jpg" alt="Записки из палаты №6 — Книга 2 (обратная сторона)" loading="lazy">
+            <img src="back-notes-2.jpg" onerror="this.style.display='none'" alt="Записки из палаты №6 — Книга 2 (обратная сторона)" loading="lazy">
             <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
@@ -626,7 +627,7 @@
             <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-notes-1.jpg" alt="Записки из палаты №6 — Книга 1 (обратная сторона)" loading="lazy">
+            <img src="back-notes-1.jpg" onerror="this.style.display='none'" alt="Записки из палаты №6 — Книга 1 (обратная сторона)" loading="lazy">
             <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
@@ -640,7 +641,7 @@
             <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-citadel-3.jpg" alt="My Citadel — Book 3 (back)" loading="lazy">
+            <img src="back-citadel-3.jpg" onerror="this.style.display='none'" alt="My Citadel — Book 3 (back)" loading="lazy">
             <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
@@ -654,7 +655,7 @@
             <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-citadel-2.jpg" alt="My Citadel — Book 2 (back)" loading="lazy">
+            <img src="back-citadel-2.jpg" onerror="this.style.display='none'" alt="My Citadel — Book 2 (back)" loading="lazy">
             <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
@@ -668,7 +669,7 @@
             <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-citadel-1.jpg" alt="My Citadel — Book 1 (back)" loading="lazy">
+            <img src="back-citadel-1.jpg" onerror="this.style.display='none'" alt="My Citadel — Book 1 (back)" loading="lazy">
             <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
@@ -683,7 +684,7 @@
             <a href="https://store.bookbaby.com/book/leela" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-leela.jpg" alt="Лила — Самопознания Игра (обратная сторона)" loading="lazy">
+            <img src="back-leela.jpg" onerror="this.style.display='none'" alt="Лила — Самопознания Игра (обратная сторона)" loading="lazy">
             <a href="https://store.bookbaby.com/book/leela" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
