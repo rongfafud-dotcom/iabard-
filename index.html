@@ -189,9 +189,15 @@
       transition:background 0.2s,transform 0.2s;box-shadow:0 2px 8px rgba(0,0,0,0.45)}
     .book-front-buy:hover{background:var(--gold);transform:scale(1.05)}
 
-    /* BOOK BACK — back cover image */
-    .flip-card-back{transform:rotateY(180deg);background:#1e1220}
-    .flip-card-back img{width:100%;height:100%;object-fit:cover;display:block}
+    /* BOOK BACK — poem text */
+    .flip-card-back{transform:rotateY(180deg);background:linear-gradient(160deg,#1a0d1e 0%,#2d1a2e 100%)}
+    .book-back-poem{position:absolute;inset:0;overflow-y:auto;padding:44px 14px 14px;
+      display:flex;flex-direction:column;align-items:center;scrollbar-width:none}
+    .book-back-poem::-webkit-scrollbar{display:none}
+    .book-back-title{font-family:'Great Vibes',cursive;font-size:1.4rem;color:var(--gold);
+      text-align:center;margin:0 0 10px;line-height:1.3;text-shadow:0 1px 6px rgba(201,169,110,0.4)}
+    .book-back-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.74rem;
+      color:var(--cream);line-height:1.65;text-align:center;margin:0;white-space:pre-line;opacity:0.9}
 
     /* AUTHOR SOCIAL */
     .author-social{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:28px 0 0}
@@ -571,7 +577,23 @@
             <a href="https://store.bookbaby.com/book/coauthor" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-coauthor.jpg" onerror="this.style.display='none'" alt="Соавтор жизни (обратная сторона)" loading="lazy">
+            <div class="book-back-poem">
+              <h3 class="book-back-title">Соавтор жизни</h3>
+              <p class="book-back-text">«Соавтор жизни» — книга про тебя.
+Если ты веришь в Бога и Творца
+И коль готов познать себя сполна,
+Стихи читай и слушай сам себя!
+
+Поэзия — лишь чувства! Слог, слова
+Перво-Творца звучат и для меня,
+И для людей, кто хочет жить любя,
+Готов кто осознать смысл Бытия!
+
+Стих нам откроет древние глаза,
+Ведь к истине летит сама душа!
+Лозунг один: живи жизнь из добра!
+А остальное — это чушь и ерунда!</p>
+            </div>
             <a href="https://store.bookbaby.com/book/coauthor" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
@@ -585,7 +607,28 @@
             <a href="https://store.bookbaby.com/book/home9" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-home.jpg" onerror="this.style.display='none'" alt="Дом (обратная сторона)" loading="lazy">
+            <div class="book-back-poem">
+              <h3 class="book-back-title">Дом</h3>
+              <p class="book-back-text">«Дом» – это книга о Боге-Творце
+И о планете о нашей – Земле.
+Книга о людях, сынах тех двоих…
+К жизни лайфхаки, и много таких…
+
+Строки поэзии тронут сердца!
+По Божьей воле и силе Творца
+«Дом» раскрывает секреты любви...
+Много посланий содержат стихи…
+
+Мантры, молитвы – себя поддержать…
+Как проживать, созидать, создавать,
+Как отыскать путь души, путь домой…
+Стих – он поможет! Всё в форме простой...
+
+«Дом» – это книга, посланья в стихах,
+И, если держишь «Дом»-книгу в руках,
+Значит, что время проснуться пришло:
+Жить, кайфовать и творить волшебство!</p>
+            </div>
             <a href="https://store.bookbaby.com/book/home9" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
@@ -599,7 +642,28 @@
             <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-womans.jpg" onerror="this.style.display='none'" alt="Женское счастье (обратная сторона)" loading="lazy">
+            <div class="book-back-poem">
+              <h3 class="book-back-title">Женское счастье</h3>
+              <p class="book-back-text">Где скрывается женское счастье
+И в каких обитает местах?..
+В этой книге есть к жизни лайфхаки...
+Всё написано кратко в стихах...
+
+Счастье — это «журавль» тот, что в небе
+Иль, быть может, «синица в руках»...
+В этой книге найдёшь откровение
+И подсказки от Высших в стихах!
+
+Где и как отношения строить,
+Всё, о чём мы горюем в сердцах...
+И как эти процессы ускорить —
+Эта книга раскроет в стихах!
+
+В этой книге — вся суть мироздания
+Та, что скрыта от нас «на верхах»...
+Всем приятного чувств проживания
+И не в прозе, а в рифме, в стихах…</p>
+            </div>
             <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
@@ -613,7 +677,28 @@
             <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-notes-2.jpg" onerror="this.style.display='none'" alt="Записки из палаты №6 — Книга 2 (обратная сторона)" loading="lazy">
+            <div class="book-back-poem">
+              <h3 class="book-back-title">Записки из палаты № 6</h3>
+              <p class="book-back-text">«Записки из палаты № 6» —
+Их в этой книге сможете прочесть...
+Духовная поэзия — она
+Безумной эзотерики полна!
+
+«Записки из палаты № 6»
+Здесь собраны, прошу это учесть!
+Вас увлекут, и в «кроличью нору»
+Нырнёте сквозь поэзию мою!
+
+«Записки из палаты № 6» —
+В них много пользы, если их прочесть:
+Законы мироздания — они
+Здесь собраны и спрятаны в стихи!
+
+«Записки из палаты № 6» —
+Скорее истина, и стоит ту учесть!
+В стихах своих пути вам укажу
+В Духовный Мир, о коем я пишу!</p>
+            </div>
             <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
@@ -627,7 +712,28 @@
             <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-notes-1.jpg" onerror="this.style.display='none'" alt="Записки из палаты №6 — Книга 1 (обратная сторона)" loading="lazy">
+            <div class="book-back-poem">
+              <h3 class="book-back-title">Записки из палаты № 6</h3>
+              <p class="book-back-text">«Записки из палаты № 6» —
+Их в этой книге сможете прочесть...
+Духовная поэзия — она
+Безумной эзотерики полна!
+
+«Записки из палаты № 6»
+Здесь собраны, прошу это учесть!
+Вас увлекут, и в «кроличью нору»
+Нырнёте сквозь поэзию мою!
+
+«Записки из палаты № 6» —
+В них много пользы, если их прочесть:
+Законы мироздания — они
+Здесь собраны и спрятаны в стихи!
+
+«Записки из палаты № 6» —
+Скорее истина, и стоит ту учесть!
+В стихах своих пути вам укажу
+В Духовный Мир, о коем я пишу!</p>
+            </div>
             <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
@@ -641,7 +747,29 @@
             <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-citadel-3.jpg" onerror="this.style.display='none'" alt="My Citadel — Book 3 (back)" loading="lazy">
+            <div class="book-back-poem">
+              <h3 class="book-back-title">My Citadel</h3>
+              <p class="book-back-text">«Моя цитадель» — это сборник поэзии
+Для тех, кто в духовный отправился путь.
+Писала его не сама, с Высшей Силой,
+О том как найти путь Души, жизни суть!
+
+Молитвы и песни здесь, притчи и сказки,
+Здесь про отношенья с людьми и с собой,
+Про нашу Божественность и про причины,
+Что нам проявиться мешают порой...
+
+О мире невидимом, что существует,
+Послания Ангелов, ПервоТворца
+О том, как исполнить свои все желанья
+И как же услышать, что хочет Душа!
+
+О мире чудес, о принцессах и принцах,
+Богах и Богинях и просто о нас!
+«Моя цитадель» — это сборник поэзии,
+И если готов познавать, —
+В добрый час!</p>
+            </div>
             <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
@@ -655,7 +783,29 @@
             <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-citadel-2.jpg" onerror="this.style.display='none'" alt="My Citadel — Book 2 (back)" loading="lazy">
+            <div class="book-back-poem">
+              <h3 class="book-back-title">My Citadel</h3>
+              <p class="book-back-text">«Моя цитадель» — это сборник поэзии
+Для тех, кто в духовный отправился путь.
+Писала его не сама, с Высшей Силой,
+О том как найти путь Души, жизни суть!
+
+Молитвы и песни здесь, притчи и сказки,
+Здесь про отношенья с людьми и с собой,
+Про нашу Божественность и про причины,
+Что нам проявиться мешают порой...
+
+О мире невидимом, что существует,
+Послания Ангелов, ПервоТворца
+О том, как исполнить свои все желанья
+И как же услышать, что хочет Душа!
+
+О мире чудес, о принцессах и принцах,
+Богах и Богинях и просто о нас!
+«Моя цитадель» — это сборник поэзии,
+И если готов познавать, —
+В добрый час!</p>
+            </div>
             <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
@@ -669,7 +819,29 @@
             <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-citadel-1.jpg" onerror="this.style.display='none'" alt="My Citadel — Book 1 (back)" loading="lazy">
+            <div class="book-back-poem">
+              <h3 class="book-back-title">My Citadel</h3>
+              <p class="book-back-text">«Моя цитадель» — это сборник поэзии
+Для тех, кто в духовный отправился путь.
+Писала его не сама, с Высшей Силой,
+О том как найти путь Души, жизни суть!
+
+Молитвы и песни здесь, притчи и сказки,
+Здесь про отношенья с людьми и с собой,
+Про нашу Божественность и про причины,
+Что нам проявиться мешают порой...
+
+О мире невидимом, что существует,
+Послания Ангелов, ПервоТворца
+О том, как исполнить свои все желанья
+И как же услышать, что хочет Душа!
+
+О мире чудес, о принцессах и принцах,
+Богах и Богинях и просто о нас!
+«Моя цитадель» — это сборник поэзии,
+И если готов познавать, —
+В добрый час!</p>
+            </div>
             <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
@@ -684,7 +856,33 @@
             <a href="https://store.bookbaby.com/book/leela" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="back-leela.jpg" onerror="this.style.display='none'" alt="Лила — Самопознания Игра (обратная сторона)" loading="lazy">
+            <div class="book-back-poem">
+              <h3 class="book-back-title">Лила</h3>
+              <p class="book-back-text">«Лила» — беседа с Высшим Я!
+Энергия и жизнь она!
+Мудрость Востока! Бытия!
+Суть Духа! Высших Сил слова!
+
+Познать, увидеть, осознать,
+Почувствовать, вдохнуть, принять,
+Пути увидеть и понять,
+Свой пазл в жизни созидать!
+
+Зовет тебя сейчас «Лила» —
+Самопознания игра!
+Намерение создавай
+И кость осознанно бросай!
+
+И наблюдай, смотри, ищи,
+Вопросы задавай, проси,
+В контакте с Высшим Я когда,
+Он отвечает без труда.
+
+Со всей серьезностью играй!
+Войдя в игру — не покидай!
+Ответственность потом твоя!
+«Лила» живая, не игра!</p>
+            </div>
             <a href="https://store.bookbaby.com/book/leela" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
