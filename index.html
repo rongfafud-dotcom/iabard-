@@ -179,34 +179,18 @@
     /* SOCIAL SVG ICONS */
     .social-icon{width:13px;height:13px;fill:currentColor;flex-shrink:0;display:inline-block;vertical-align:middle}
 
-    /* BOOK FRONT — buy button pill */
-    .book-front-buy{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);z-index:4;
-      display:inline-block;padding:7px 18px;white-space:nowrap;
-      background:rgba(201,169,110,0.92);border-radius:20px;
-      color:#1e1220;font-family:'Raleway',sans-serif;font-size:0.52rem;
-      letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;
-      transition:background 0.2s,transform 0.2s;box-shadow:0 2px 10px rgba(0,0,0,0.4)}
-    .book-front-buy:hover{background:var(--gold);transform:translateX(-50%) scale(1.04)}
+    /* BOOK — buy button, top-left corner, always visible on both sides */
+    .book-front-buy{position:absolute;top:8px;left:8px;z-index:4;
+      display:inline-block;padding:6px 14px;white-space:nowrap;
+      background:rgba(201,169,110,0.93);border-radius:16px;
+      color:#1e1220;font-family:'Raleway',sans-serif;font-size:0.48rem;
+      letter-spacing:2px;text-transform:uppercase;text-decoration:none;
+      transition:background 0.2s,transform 0.2s;box-shadow:0 2px 8px rgba(0,0,0,0.45)}
+    .book-front-buy:hover{background:var(--gold);transform:scale(1.05)}
 
-    /* HERO RIGHTS LINE */
-    .hero-rights{font-size:0.6rem;letter-spacing:2px;color:rgba(255,255,255,0.4);
-      margin-top:14px;text-align:center}
-    .hero-stihi-btn{color:rgba(201,169,110,0.6);text-decoration:none;
-      border-bottom:1px solid rgba(201,169,110,0.25);padding-bottom:1px;transition:color 0.2s}
-    .hero-stihi-btn:hover{color:var(--gold)}
-
-    /* BOOK BACK — front image darkened + centred buy button */
+    /* BOOK BACK — back cover image */
     .flip-card-back{transform:rotateY(180deg);background:#1e1220}
-    .flip-card-back img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(0.45) saturate(0.7)}
-    .flip-card-back::after{content:'';position:absolute;inset:0;z-index:2;
-      background:linear-gradient(160deg,rgba(18,6,24,0.55) 0%,rgba(92,61,85,0.45) 50%,rgba(18,6,24,0.65) 100%)}
-    .flip-card-back .book-front-buy{
-      z-index:4;bottom:auto;top:50%;transform:translateX(-50%) translateY(-50%);
-      padding:12px 22px;font-size:0.58rem;letter-spacing:3px;
-      background:rgba(201,169,110,0.95);color:#1e1220;
-      box-shadow:0 3px 16px rgba(0,0,0,0.55)}
-    .flip-card-back .book-front-buy:hover{
-      background:var(--gold);transform:translateX(-50%) translateY(-50%) scale(1.05)}
+    .flip-card-back img{width:100%;height:100%;object-fit:cover;display:block}
 
     /* AUTHOR SOCIAL */
     .author-social{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:28px 0 0}
