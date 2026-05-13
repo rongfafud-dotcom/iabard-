@@ -17,6 +17,7 @@
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:title" content="Ипатия Бард | Поэт · Философ"/>
   <meta name="twitter:description" content="Духовная поэзия о Боге, душе и любви."/>
+  <meta name="twitter:image" content="https://iabard.com/background.jpg"/>
   <link rel="canonical" href="https://iabard.com"/>
   <link rel="manifest" href="/manifest.json"/>
   <meta name="theme-color" content="#5c3d55"/>
@@ -36,9 +37,9 @@
     body{font-family:'Raleway',sans-serif;background:var(--deep);color:var(--cream);min-height:100vh}
 
     /* HERO */
-    .card{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    .card{min-height:65vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
            position:relative;overflow:hidden;
-           background:url('background.jpg') no-repeat 50% 15%;background-size:cover;padding:56px 48px 40px}
+           background:url('background.jpg') no-repeat 50% 28%;background-size:cover;padding:64px 48px 56px}
     .card::before{content:'';position:absolute;inset:0;
       background:linear-gradient(160deg,rgba(30,18,32,0.52) 0%,rgba(92,61,85,0.42) 50%,rgba(30,18,32,0.58) 100%)}
     .card-inner{position:relative;z-index:2;width:100%;max-width:980px;display:flex;flex-direction:column;align-items:center}
@@ -46,96 +47,116 @@
     .name{font-family:'Great Vibes',cursive;font-size:clamp(3.5rem,8vw,6rem);color:#fff;line-height:1;
            margin-bottom:6px;text-align:center;text-shadow:0 4px 24px rgba(201,169,110,0.4)}
     .name-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(0.65rem,1.4vw,0.82rem);letter-spacing:5px;
-               text-transform:uppercase;color:rgba(253,246,238,0.55);text-align:center;margin-bottom:14px;line-height:1.9}
+               text-transform:uppercase;color:rgba(253,246,238,0.80);text-align:center;margin-bottom:14px;line-height:1.9}
     .gold-rule{width:48px;height:1px;background:var(--gold);opacity:0.5;margin-bottom:20px}
 
     /* TABS */
-    .nav-tabs{display:flex;gap:0;margin-bottom:28px;width:100%;max-width:560px}
-    .nav-tab{flex:1;padding:10px 0;text-align:center;font-family:'Cormorant Garamond',serif;
+    .nav-tabs{display:flex;gap:0;margin-bottom:28px;width:100%;max-width:800px}
+    .nav-tab{flex:1;padding:14px 8px;text-align:center;font-family:'Cormorant Garamond',serif;
               font-size:clamp(0.85rem,1.8vw,1.05rem);font-weight:400;letter-spacing:2px;
-              color:rgba(253,246,238,0.5);text-transform:uppercase;
+              color:rgba(255,255,255,0.95);text-transform:uppercase;
               border-bottom:1px solid rgba(201,169,110,0.2);border-top:none;border-left:none;border-right:none;
               transition:all 0.3s;cursor:pointer;background:none}
     .nav-tab:not(:last-child){border-right:1px solid rgba(201,169,110,0.15)}
     .nav-tab:hover,.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
 
     .tagline-top{font-family:'Cormorant Garamond',serif;font-size:clamp(0.95rem,1.8vw,1.15rem);font-style:italic;
-                  color:rgba(253,246,238,0.75);text-align:center;line-height:1.6;margin-bottom:18px}
+                  color:rgba(253,246,238,0.95);text-align:center;line-height:1.6;margin-bottom:18px}
+    .hero-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;
+      font-size:clamp(0.88rem,1.7vw,1.08rem);color:rgba(255,255,255,0.9);
+      text-align:center;line-height:1.7;margin:0;max-width:580px;width:100%}
 
-    /* SOCIAL STRIP (bottom, light bg) */
-    .social-strip{background:#f7efe8;padding:40px 48px 44px;text-align:center;
-      border-top:1px solid rgba(92,61,85,0.1)}
-    .tagline-bottom{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,1.9vw,1.25rem);
-      font-style:italic;color:var(--plum);text-align:center;line-height:1.75;margin-bottom:24px}
-    .social-row-light{margin-bottom:0}
-    .social-row-light .social-chip{color:var(--mauve);border-color:rgba(92,61,85,0.25);background:transparent}
-    .social-row-light .social-chip:hover{color:var(--plum);border-color:var(--plum);background:rgba(92,61,85,0.06)}
 
-    /* SOCIAL — 2 rows of 4 (hero, dark bg) */
-    .social-row{display:grid;grid-template-columns:repeat(4,auto);gap:8px;margin-bottom:20px;justify-content:center}
-    .social-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;
-                  border:1px solid rgba(201,169,110,0.28);border-radius:20px;color:rgba(253,246,238,0.6);
-                  text-decoration:none;font-size:0.68rem;letter-spacing:1px;transition:all 0.25s;white-space:nowrap}
-    .social-chip:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,0.07)}
+    /* HERO BOTTOM — social + tagline pinned to bottom of photo */
+    .hero-bottom{position:absolute;bottom:0;left:0;right:0;z-index:2;
+      display:flex;flex-direction:column;align-items:center;gap:10px;
+      padding:48px 32px 24px;pointer-events:none;
+      background:linear-gradient(0deg,rgba(18,6,24,0.82) 0%,rgba(18,6,24,0) 100%)}
+    .hero-bottom a{pointer-events:auto}
+
+    /* SOCIAL */
+    .social-row{display:grid;grid-template-columns:repeat(3,auto);gap:8px;justify-content:center}
+    .social-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;
+                  border:1px solid rgba(201,169,110,0.55);border-radius:20px;color:rgba(253,246,238,0.92);
+                  text-decoration:none;font-size:0.7rem;letter-spacing:1px;transition:all 0.25s;white-space:nowrap}
+    .social-chip:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,0.12)}
 
     /* SECTIONS */
-    .sections-wrap{background:#f7efe8;border-top:1px solid rgba(92,61,85,0.1)}
-    .tab-panel{display:none;padding:40px 56px 52px;background:#f7efe8}
+    .sections-wrap{background:var(--deep);border-top:1px solid rgba(201,169,110,0.15)}
+    .tab-panel{display:none;padding:40px 56px 52px;background:var(--deep)}
     .tab-panel.active{display:block}
 
     /* VIDEO EMBED — 9:16 portrait */
     .novinka-video{position:relative;width:100%;max-width:300px;margin:0 auto 28px;
                     border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(92,61,85,0.22);
                     background:#000;aspect-ratio:9/16}
+    .novinka-video-wide{aspect-ratio:16/9;max-width:560px}
     .novinka-video iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+    .yt-facade{position:absolute;inset:0;cursor:pointer}
+    .yt-facade img{width:100%;height:100%;object-fit:cover;display:block;opacity:0.84;transition:opacity 0.2s}
+    .yt-facade:hover img{opacity:1}
+    .yt-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      background:rgba(180,0,0,0.9);border:none;border-radius:50%;width:52px;height:52px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.2rem;color:#fff;pointer-events:none;transition:background 0.2s,transform 0.2s}
+    .yt-facade:hover .yt-play{background:#cc0000;transform:translate(-50%,-50%) scale(1.1)}
 
     /* НОВИНКИ */
     .novinka-list{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:44px}
-    .novinka-card{background:rgba(255,255,255,0.9);border:1px solid rgba(92,61,85,0.12);
-                   border-radius:10px;padding:32px 36px 28px;box-shadow:0 4px 18px rgba(92,61,85,0.08)}
+    .novinka-card{background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.14);
+                   border-radius:10px;padding:32px 36px 28px;box-shadow:0 4px 24px rgba(0,0,0,0.35)}
     .novinka-date{font-size:0.63rem;letter-spacing:3px;text-transform:uppercase;color:var(--mauve);
-                   margin-bottom:5px;opacity:0.7}
+                   margin-bottom:5px}
     .novinka-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;
-                    color:var(--plum);text-align:center;margin-bottom:22px;letter-spacing:1px}
+                    color:var(--gold);text-align:center;margin-bottom:22px;letter-spacing:1px}
     .novinka-poem{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.05rem,2.2vw,1.35rem);
-                   color:#1a0a1a;line-height:1.75;text-align:center}
+                   color:var(--cream);line-height:1.75;text-align:center}
     .novinka-poem .stanza{margin-bottom:1.5em}
     .novinka-poem .stanza:last-child{margin-bottom:0}
     .chorus-label{font-family:'Raleway',sans-serif;font-size:0.6rem;letter-spacing:3px;
-                   text-transform:uppercase;color:var(--mauve);margin:0.5em 0 0.8em;opacity:0.75}
+                   text-transform:uppercase;color:var(--mauve);margin:0.5em 0 0.8em;opacity:0.9}
 
     /* ОБ АВТОРЕ */
     .author-section{max-width:680px;margin:0 auto}
-    .author-poem-card{background:rgba(255,255,255,0.9);border:1px solid rgba(92,61,85,0.12);
-                        border-radius:10px;padding:40px;box-shadow:0 4px 18px rgba(92,61,85,0.08);text-align:center}
-    .author-poem{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.05rem,2.2vw,1.35rem);color:#1a0a1a;line-height:1.75}
+    .author-poem-card{
+      background:linear-gradient(180deg,#d4b884 0%,#f2e0b0 8%,#ede4c2 50%,#f2e0b0 92%,#d4b884 100%);
+      border:1px solid rgba(160,110,40,0.35);border-radius:6px;padding:48px 44px 40px;
+      box-shadow:0 8px 40px rgba(0,0,0,0.55),inset 0 0 60px rgba(160,110,40,0.08);
+      text-align:center;position:relative}
+    .author-poem-card::before,.author-poem-card::after{
+      content:'';position:absolute;left:0;right:0;height:18px;
+      background:linear-gradient(180deg,#b8903a,#8a6420,#b8903a);border-radius:50%/8px}
+    .author-poem-card::before{top:-2px}
+    .author-poem-card::after{bottom:-2px}
+    .author-poem{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.05rem,2.2vw,1.35rem);color:#2a1505;line-height:1.75}
     .author-poem .stanza{margin-bottom:1.5em}
     .author-poem .stanza:last-child{margin-bottom:0}
     .author-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;
-                     color:var(--mauve);margin-top:24px;line-height:1.6}
+                     color:#6b4a1a;margin-top:24px;line-height:1.6}
 
-    /* КНИГИ — 4 columns */
-    .books-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1000px;margin:0 auto}
-    .flip-card{perspective:900px;cursor:pointer}
-    .flip-card-inner{position:relative;width:100%;padding-top:148%;
+    /* КНИГИ — single column */
+    .books-grid{display:flex;flex-direction:column;align-items:center;gap:20px;max-width:380px;width:100%;margin:0 auto}
+    .flip-card{perspective:900px;cursor:pointer;width:100%}
+    .flip-card-inner{position:relative;width:100%;padding-top:165%;
                       transform-style:preserve-3d;transition:transform 0.65s cubic-bezier(.4,0,.2,1)}
     .flip-card.flipped .flip-card-inner{transform:rotateY(180deg)}
+    .flip-card.flipped .flip-card-front{visibility:hidden}
     .flip-card-front,.flip-card-back{position:absolute;inset:0;backface-visibility:hidden;
       -webkit-backface-visibility:hidden;border-radius:7px;overflow:hidden;
       box-shadow:0 3px 14px rgba(92,61,85,0.14)}
-    .flip-card-front{background:#f0e4d8;position:relative}
+    .flip-card-front{background:#f0e4d8}
     .flip-card-front img{width:100%;height:100%;object-fit:cover;display:block}
-    .book-banner{position:absolute;top:0;left:0;right:0;z-index:3;
-      background:linear-gradient(90deg,rgba(92,61,85,0.93),rgba(28,14,32,0.9));
-      color:var(--gold);font-family:'Raleway',sans-serif;font-size:0.5rem;
-      font-weight:500;letter-spacing:3px;text-transform:uppercase;padding:5px 8px;text-align:center}
-    .flip-arrow{position:absolute;bottom:8px;right:10px;font-size:0.95rem;
-                 color:rgba(255,255,255,0.65);pointer-events:none}
-    .book-desc{display:none}
-    .book-buy-btn{display:inline-block;padding:6px 14px;background:var(--plum);color:var(--cream);
-                   text-decoration:none;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;
-                   border-radius:3px;transition:background 0.25s;font-family:'Raleway',sans-serif}
-    .book-buy-btn:hover{background:var(--deep)}
+    .book-banner-leela{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;
+      background:rgba(28,14,32,0.82);color:var(--gold);font-family:'Raleway',sans-serif;
+      font-size:0.48rem;font-weight:500;letter-spacing:3px;text-transform:uppercase;
+      padding:6px 12px;border:1px solid rgba(201,169,110,0.4);border-radius:3px;
+      white-space:nowrap;text-align:center;backdrop-filter:blur(2px)}
+    .flip-card-front::after{content:'↻';position:absolute;bottom:8px;right:10px;z-index:3;
+      font-size:1.3rem;color:rgba(255,255,255,0.75);pointer-events:none;
+      text-shadow:0 1px 6px rgba(0,0,0,0.7)}
+    .flip-card-back::after{content:'↩ назад';position:absolute;bottom:7px;right:10px;
+      font-size:0.5rem;letter-spacing:1.5px;text-transform:uppercase;
+      color:rgba(201,169,110,0.45);pointer-events:none;font-family:'Raleway',sans-serif}
 
     /* МАГАЗИН */
     .shop-coming{max-width:800px;margin:0 auto;text-align:center}
@@ -157,18 +178,24 @@
     /* SOCIAL SVG ICONS */
     .social-icon{width:13px;height:13px;fill:currentColor;flex-shrink:0;display:inline-block;vertical-align:middle}
 
-    /* BOOK FRONT — buy button overlay */
-    .book-front-buy{position:absolute;bottom:0;left:0;right:0;z-index:4;
-      display:block;text-align:center;padding:18px 8px 8px;
-      background:linear-gradient(0deg,rgba(28,14,32,0.92) 0%,rgba(28,14,32,0) 100%);
-      color:var(--gold);font-family:'Raleway',sans-serif;font-size:0.52rem;
-      letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;transition:opacity 0.25s}
-    .book-front-buy:hover{opacity:0.85}
+    /* BOOK — buy button, top-left corner, always visible on both sides */
+    .book-front-buy{position:absolute;top:8px;left:8px;z-index:4;
+      display:inline-block;padding:6px 14px;white-space:nowrap;
+      background:rgba(201,169,110,0.93);border-radius:16px;
+      color:#1e1220;font-family:'Raleway',sans-serif;font-size:0.48rem;
+      letter-spacing:2px;text-transform:uppercase;text-decoration:none;
+      transition:background 0.2s,transform 0.2s;box-shadow:0 2px 8px rgba(0,0,0,0.45)}
+    .book-front-buy:hover{background:var(--gold);transform:scale(1.05)}
 
-    /* BOOK BACK — back cover image, same layout as front */
-    .flip-card-back{transform:rotateY(180deg);background:#f0e4d8;position:relative}
-    .flip-card-back img{width:100%;height:100%;object-fit:cover;display:block}
-    .book-back-footer{display:none}
+    /* BOOK BACK — poem text */
+    .flip-card-back{transform:rotateY(180deg);background:linear-gradient(160deg,#1a0d1e 0%,#2d1a2e 100%)}
+    .book-back-poem{position:absolute;inset:0;overflow:hidden;padding:36px 14px 14px;
+      display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .book-back-title{font-family:'Great Vibes',cursive;font-size:1.2rem;color:var(--gold);
+      text-align:center;margin:0 0 8px;line-height:1.3;flex-shrink:0;
+      text-shadow:0 1px 6px rgba(201,169,110,0.4)}
+    .book-back-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.70rem;
+      color:var(--cream);line-height:1.6;text-align:center;margin:0;white-space:pre-line}
 
     /* AUTHOR SOCIAL */
     .author-social{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:28px 0 0}
@@ -176,17 +203,18 @@
       background:rgba(92,61,85,0.05)}
     .author-social .social-chip:hover{color:var(--plum);border-color:var(--plum);background:rgba(92,61,85,0.08)}
 
-    /* AUTHOR CONTACT + RIGHTS */
-    .author-contact{margin-top:28px;padding-top:24px;border-top:1px solid rgba(92,61,85,0.12);text-align:center}
-    .author-contact-label{font-family:'Cormorant Garamond',serif;font-size:0.78rem;
-      letter-spacing:3px;text-transform:uppercase;color:var(--mauve);margin-bottom:14px;display:block}
-    .contact-email-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 28px;
-      background:var(--plum);color:var(--cream);text-decoration:none;border-radius:24px;
-      font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;font-family:'Raleway',sans-serif;
-      transition:background 0.25s}
-    .contact-email-btn:hover{background:var(--deep)}
-    .author-rights{margin-top:24px;padding-top:20px;border-top:1px solid rgba(92,61,85,0.1);
-      font-size:0.65rem;letter-spacing:2px;color:rgba(61,43,61,0.45);text-align:center}
+    /* AUTHOR FOOTER */
+    .author-footer{margin-top:28px;padding-top:24px;border-top:1px solid rgba(160,110,40,0.25)}
+    .author-footer-block{text-align:center;padding:20px 0;border-bottom:1px solid rgba(160,110,40,0.15)}
+    .author-footer-block:last-child{border-bottom:none;padding-bottom:4px}
+    .author-footer-label{font-family:'Cormorant Garamond',serif;font-size:0.75rem;
+      letter-spacing:3px;text-transform:uppercase;color:#3d1f00;margin-bottom:14px;display:block}
+    .contact-email-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 32px;
+      background:#5c3d55;color:#fdf6ee;text-decoration:none;border-radius:24px;
+      font-size:0.72rem;letter-spacing:2.5px;text-transform:uppercase;font-family:'Raleway',sans-serif;
+      font-weight:500;box-shadow:0 3px 14px rgba(92,61,85,0.4);transition:all 0.25s}
+    .contact-email-btn:hover{background:#3d2040;box-shadow:0 4px 18px rgba(92,61,85,0.55);transform:translateY(-1px)}
+    .author-rights-copy{font-size:0.6rem;letter-spacing:2px;color:rgba(50,28,5,0.85);margin-top:14px}
     .author-rights .stihi-btn{color:rgba(92,61,85,0.65);border-color:rgba(92,61,85,0.3)}
     .author-rights .stihi-btn:hover{border-color:var(--plum);color:var(--plum);background:rgba(92,61,85,0.07)}
 
@@ -216,22 +244,20 @@
 
     /* FOOTER */
     footer{background:#100a10;padding:22px 56px;text-align:center;font-size:0.68rem;
-            letter-spacing:2px;color:rgba(253,246,238,0.22);border-top:1px solid rgba(201,169,110,0.1)}
-    footer span{color:rgba(201,169,110,0.45)}
-    .stihi-btn{display:inline-block;padding:3px 10px;border:1px solid rgba(201,169,110,0.35);
-                border-radius:12px;color:rgba(201,169,110,0.65);text-decoration:none;
+            letter-spacing:2px;color:rgba(253,246,238,0.65);border-top:1px solid rgba(201,169,110,0.1)}
+    footer span{color:rgba(201,169,110,0.9)}
+    .stihi-btn{display:inline-block;padding:3px 10px;border:1px solid rgba(201,169,110,0.6);
+                border-radius:12px;color:var(--gold);text-decoration:none;
                 font-size:0.65rem;letter-spacing:1px;transition:all 0.25s;vertical-align:middle}
     .stihi-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,0.07)}
 
     /* RESPONSIVE */
     @media(max-width:860px){
-      .card{padding:48px 24px 36px}.tab-panel{padding:24px 24px 40px}
-      .books-grid{grid-template-columns:repeat(3,1fr);gap:14px}
+      .card{padding:48px 24px 44px}.tab-panel{padding:24px 24px 40px}
       .shop-grid{grid-template-columns:repeat(2,1fr)}
     }
     @media(max-width:600px){
       .social-row{grid-template-columns:repeat(3,auto)}
-      .books-grid{grid-template-columns:repeat(2,1fr);gap:10px}
       .novinka-video{max-width:250px}
       .shop-grid{grid-template-columns:repeat(2,1fr)}
     }
@@ -241,6 +267,7 @@
       .name{margin-bottom:2px}.name-sub{margin-bottom:4px}
       .nav-tabs{margin-bottom:6px}.gold-rule{display:none}
       .tagline-top{margin-bottom:6px;font-size:0.82rem}
+      .hero-tagline{font-size:0.82rem;margin-top:8px}
       .social-row{gap:6px;margin-bottom:14px;grid-template-columns:repeat(3,auto)}
       .social-chip{padding:5px 10px;font-size:0.62rem}
       footer{padding:20px 24px}
@@ -261,13 +288,42 @@
     <p class="name-sub">Hypatia Bard / Ипа́тия Бард</p>
 
     <div class="nav-tabs" role="tablist" aria-label="Разделы сайта">
-      <button class="nav-tab active" role="tab" aria-selected="true"  aria-controls="novosti" id="tab-novosti" onclick="switchTab('novosti',this)">Новинки</button>
+      <button class="nav-tab active" role="tab" aria-selected="true"  aria-controls="novosti" id="tab-novosti" onclick="switchTab('novosti',this)">Зодиак</button>
       <button class="nav-tab"        role="tab" aria-selected="false" aria-controls="books"   id="tab-books"   onclick="switchTab('books',this)">Книги</button>
-      <button class="nav-tab"        role="tab" aria-selected="false" aria-controls="author"  id="tab-author"  onclick="switchTab('author',this)">Об авторе</button>
+      <button class="nav-tab"        role="tab" aria-selected="false" aria-controls="author"  id="tab-author"  onclick="switchTab('author',this)">Кто я?</button>
       <button class="nav-tab"        role="tab" aria-selected="false" aria-controls="shop"    id="tab-shop"    onclick="switchTab('shop',this)">Магазин</button>
     </div>
 
     <div class="gold-rule"></div>
+  </div>
+  <div class="hero-bottom">
+    <div class="social-row">
+      <a href="https://t.me/IA_Bard" target="_blank" rel="noopener noreferrer" class="social-chip">
+        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        Telegram RU
+      </a>
+      <a href="https://t.me/I_Bard" target="_blank" rel="noopener noreferrer" class="social-chip">
+        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        Telegram EN
+      </a>
+      <a href="https://youtube.com/@ia_bard" target="_blank" rel="noopener noreferrer" class="social-chip">
+        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        YouTube
+      </a>
+      <a href="https://www.instagram.com/ia_bard" target="_blank" rel="noopener noreferrer" class="social-chip">
+        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+        Instagram
+      </a>
+      <a href="https://www.facebook.com/profile.php?id=61558184941829" target="_blank" rel="noopener noreferrer" class="social-chip">
+        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Facebook
+      </a>
+      <a href="https://www.tiktok.com/@ia.bard?_r=1&_t=ZP-95pvZc9heBT" target="_blank" rel="noopener noreferrer" class="social-chip">
+        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>
+        TikTok
+      </a>
+    </div>
+    <p class="hero-tagline">Поэт я и пишу стихи — о Боге, Мире и любви…<br>А нейросети их поют, им атмосферу создают.</p>
   </div>
 </div>
 
@@ -279,229 +335,603 @@
     <div class="novinka-list">
 
       <div class="novinka-card">
-        <div class="novinka-date">25 апреля 2026</div>
-        <div class="novinka-title">Перед Его очами…</div>
+        <div class="novinka-title">Монада под зодиаком</div>
         <div class="novinka-video">
-          <iframe src="https://www.youtube.com/embed/SIzFIQo6Y-c?playsinline=1"
-            title="Перед Его очами — Ипатия Бард" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen loading="lazy"></iframe>
+          <div class="yt-facade" data-vid="YNUM-oX2CSY" onclick="ytPlay(this)">
+            <img src="https://img.youtube.com/vi/YNUM-oX2CSY/hqdefault.jpg" alt="Монада под зодиаком — Ипатия Бард" loading="lazy">
+            <button class="yt-play" aria-label="Смотреть видео">▶</button>
+          </div>
         </div>
         <div class="novinka-poem">
-          <div class="stanza">Каждый день перед сном с жизнью прощаюсь<br>
-            И здороваюсь с ней я, когда просыпаюсь,<br>
-            С благодарностью в сердце за то, что жива,<br>
-            Что мне дан день насущный делать дела!
+          <div class="stanza">Есть монада — это чистый свет души...<br>
+И чтобы опыт на Земле любой пройти,<br>
+Через призму он себя в мир опускает,<br>
+В зодиака знаке тон свой выбирает!
           </div>
-          <div class="stanza">Перед сном вспоминаю события в прошлом,<br>
-            И приятно так думать просто о сложном,<br>
-            Если жить жизнь в разрезе «сегодня, сейчас»,<br>
-            Если день — как отдельный жизни рассказ.
+          <div class="stanza">В солнце знак — основа и фундамент...<br>
+Наработанный из опытов орнамент<br>
+Создаёт портрет — так пишет личность,<br>
+Ограничивая света безграничность!
           </div>
-          <div class="stanza">Не встаю на колени, молясь перед Богом...<br>
-            Пред очами Творца всё здесь — по итогам!<br>
-            Перед ликом Его каждый день живёт личность,<br>
-            Воскрешая свою на Земле идентичность!
+          <div class="stanza">Асцендента знак — на жизнь задача!<br>
+Путь развития тот, где найдёт удача<br>
+Свет души. Но лишь где солнце яркое,<br>
+Там само присутствие есть жаркое!
           </div>
-          <div class="stanza">Пусть любовь в моём сердце горит ежедневно!<br>
-            Ну, а смерть — милосердие, то — несомненно!<br>
-            Каждый день с благодарностью мир покидаю,<br>
-            А глаза открываю — и жизнь прославляю!
+          <div class="stanza">Вот весь краткий курс по астрологии!<br>
+В рамках нашей с вами психологии<br>
+Могут звезды помогать октавы брать,<br>
+Если принципы воздействия понять!
+          </div>
+          <div class="stanza">В октавах низких жизнь автопилотом<br>
+Просто идёт, но больно апперкотом<br>
+Порой в нос бьёт — такая тут система,<br>
+В ней всё во благо! И одна проблема
+          </div>
+          <div class="stanza">Сменит другую, чтобы мы в процессе<br>
+Не зависали! Дело лишь в прогрессе<br>
+И в эволюции! А если жизнь осознана,<br>
+То и монада полностью воссоздана!
           </div>
         </div>
       </div>
 
       <div class="novinka-card">
-        <div class="novinka-date">24 апреля 2026</div>
+        <div class="novinka-title">Овен ♈️</div>
+        <div class="novinka-video">
+          <div class="yt-facade" data-vid="lBVaNRTrH-0" onclick="ytPlay(this)">
+            <img src="https://img.youtube.com/vi/lBVaNRTrH-0/hqdefault.jpg" alt="Овен ♈️ — Ипатия Бард" loading="lazy">
+            <button class="yt-play" aria-label="Смотреть видео">▶</button>
+          </div>
+        </div>
+        <div class="novinka-poem">
+          <div class="stanza">Овен — первый импульс мироздания,<br>
+Первопроходец, сам заряд сознания,<br>
+Что прорывается из ничего и создаёт<br>
+То, чего не было, и люд за ним пойдёт!
+          </div>
+          <div class="stanza">В низких октавах Овен, став бараном,<br>
+Берёт всё силой, служит сам тараном.<br>
+Он, как огонь, и на пути всё поджигает!<br>
+Увы, но сам от силы пламени сгорает!
+          </div>
+          <div class="stanza">Разжечь конфликт, проект да и идею,<br>
+Воспламенить всех дружно на затею —<br>
+Вот Овна сила: создавать из пустоты!<br>
+Всё воскрешает этот свет из темноты!
+          </div>
+          <div class="stanza">Ты видишь там, где все другие слепы,<br>
+Стоят в сторонке, нервно чешут репы,<br>
+Пока ты путь для них уже проложишь<br>
+И по нему идти ты всем предложишь!
+          </div>
+          <div class="stanza">В высших октавах лидером он будет,<br>
+Жертвенный Агнец, а себя пробудит!<br>
+Ради идеи он в лепёшку расшибётся!<br>
+«Да будет свет!» — по миру разнесётся.
+          </div>
+          <div class="stanza">Магия старта — дать пинок Вселенной,<br>
+Воля твоя — не стать овцой системной,<br>
+Всю силу физики сменяя намерением…<br>
+Чтоб осознать себя своим творением.
+          </div>
+        </div>
+      </div>
+
+      <div class="novinka-card">
+        <div class="novinka-title">Телец ♉️</div>
+        <div class="novinka-video">
+          <div class="yt-facade" data-vid="fzW1_4vdhBM" onclick="ytPlay(this)">
+            <img src="https://img.youtube.com/vi/fzW1_4vdhBM/hqdefault.jpg" alt="Телец ♉️ — Ипатия Бард" loading="lazy">
+            <button class="yt-play" aria-label="Смотреть видео">▶</button>
+          </div>
+        </div>
+        <div class="novinka-poem">
+          <div class="stanza">Телец — фундамент, якорь, заземленье,<br>
+Огненный Бык, и держит небо на плечах.<br>
+Здесь через тело проживает ощущенье...<br>
+Вкус удовольствия всегда есть на устах!
+          </div>
+          <div class="stanza">В низких октавах накопительство... И это —<br>
+Попытка силой форму как-то удержать...<br>
+Сильное эго: рвёт и мечет, коль задето —<br>
+Бык нападает, он не склонен отступать!
+          </div>
+          <div class="stanza">Тельцы упрямством стены прошибают,<br>
+Комфорт — как клетка! Бьёт огонь внутри!<br>
+В высших октавах грязь переплавляют<br>
+В форму ресурса, уплотняя свет искры!
+          </div>
+          <div class="stanza">Прожектор духа, пробуждая око Шивы,<br>
+Куёт материю из пустоты, будто вулкан...<br>
+И среди хаоса сам видит перспективы,<br>
+И в его поле быть спокойно станет нам!
+          </div>
+          <div class="stanza">«Свет уплотнённый создаёт все формы!» —<br>
+Услышит мир от пробуждённого Быка...<br>
+Грааль священный и сосуд для нормы —<br>
+Вот проявленье высшей магии Тельца!
+          </div>
+          <div class="stanza">Целитель тех, кого от формы отрывает<br>
+Полёт в астрал, но ты — творец земной,<br>
+Кто мир ресурсами вокруг уже питает!<br>
+Познай себя внутри себя и будь собой!
+          </div>
+        </div>
+      </div>
+
+      <div class="novinka-card">
+        <div class="novinka-title">Близнецы ♊️</div>
+        <div class="novinka-video">
+          <div class="yt-facade" data-vid="bgYM8NUeMqk" onclick="ytPlay(this)">
+            <img src="https://img.youtube.com/vi/bgYM8NUeMqk/hqdefault.jpg" alt="Близнецы ♊️ — Ипатия Бард" loading="lazy">
+            <button class="yt-play" aria-label="Смотреть видео">▶</button>
+          </div>
+        </div>
+        <div class="novinka-poem">
+          <div class="stanza">Близнец — сам алхимик сознания, маг,<br>
+Вселенский Wi-Fi и связующий знак,<br>
+Врата мира Божьего с миром земным!<br>
+То, что осознал, раздаёт он другим!
+          </div>
+          <div class="stanza">На низких октавах — сплетник, торгаш...<br>
+Хайп интересен, и драйв, и форсаж!<br>
+На высших — он тот, кто может связать<br>
+Весь мир воедино и словом назвать!
+          </div>
+          <div class="stanza">Два брата — внутри! Если ум замолчит,<br>
+Близнец-брат небесный заговорит:<br>
+Сам смысл из недр Вселенной возьмёт<br>
+И словом земным этот дух наречёт!
+          </div>
+          <div class="stanza">Минус и плюс — создают напряжение.<br>
+Близнец поглощает сопротивление...<br>
+О братьях враждующих — не небылица,<br>
+Но братья способны те помириться!
+          </div>
+          <div class="stanza">А слово — извечный богов инструмент!<br>
+Давайте жить дружно — то аргумент,<br>
+Которым дуальность с мира снимаешь!<br>
+Ты логику с чувствами объединяешь!
+          </div>
+          <div class="stanza">Близнец — ретранслятор энергии слов,<br>
+Волшебная нить и связь всех миров!<br>
+«Расту, познаю, вот тогда жизнь сияет» —<br>
+То мантра с которой дух расцветает!
+          </div>
+        </div>
+      </div>
+
+      <div class="novinka-card">
+        <div class="novinka-title">Рак ♋️</div>
+        <div class="novinka-video">
+          <div class="yt-facade" data-vid="OZHEikPaCwc" onclick="ytPlay(this)">
+            <img src="https://img.youtube.com/vi/OZHEikPaCwc/hqdefault.jpg" alt="Рак ♋️ — Ипатия Бард" loading="lazy">
+            <button class="yt-play" aria-label="Смотреть видео">▶</button>
+          </div>
+        </div>
+        <div class="novinka-poem">
+          <div class="stanza">Рак — словно утроба Вселенной, и кровь,<br>
+Эмоции, чувства «бьют в глаз, а не в бровь!»<br>
+Он — тот, кто присутствием дом создаёт,<br>
+Свет истины людям он в жизнь принесёт!
+          </div>
+          <div class="stanza">Как зеркало мира, Рак чувствует боль...<br>
+Забота о близких даст мнимый контроль...<br>
+Его Рак-дурак самым важным считает —<br>
+«Клешнёй» в страхе вцепится и не пускает!
+          </div>
+          <div class="stanza">И память ему служит в жизни ключом —<br>
+Ведь может поддержкой быть и плечом<br>
+Для близких, когда цитадель возведёт<br>
+Из смыслов и чувств, в коих сам и живёт!
+          </div>
+          <div class="stanza">Рак сам наделён очень тонкой душой...<br>
+На низких октавах, став «чёрной вдовой»,<br>
+Энергию близких он лишь потребляет...<br>
+На высших — от кармы весь род очищает!
+          </div>
+          <div class="stanza">Для чувств и эмоций не будет границ!<br>
+Сам шёпот толпы слышит без небылиц!<br>
+Он чувствует телом, где правда и ложь —<br>
+Вокруг пальца Рака ведь не проведёшь!
+          </div>
+          <div class="stanza">Ты — маг атмосферы, защитник систем,<br>
+Создатель эгрегоров внешних из схем!<br>
+Но эго — как панцирь с ранимой душой!<br>
+Проснись и свети — ты рождённый Луной!
+          </div>
+        </div>
+      </div>
+
+      <div class="novinka-card">
+        <div class="novinka-title">Лев ♌️</div>
+        <div class="novinka-video">
+          <div class="yt-facade" data-vid="6QprObjOsBE" onclick="ytPlay(this)">
+            <img src="https://img.youtube.com/vi/6QprObjOsBE/hqdefault.jpg" alt="Лев ♌️ — Ипатия Бард" loading="lazy">
+            <button class="yt-play" aria-label="Смотреть видео">▶</button>
+          </div>
+        </div>
+        <div class="novinka-poem">
+          <div class="stanza">Лев, как источник света, — он как солнце!<br>
+Люди идут на яркий свет в его оконце!<br>
+Сам свет звезды — это физическая сила,<br>
+Неиссякаемая, коли дар уже открыла!
+          </div>
+          <div class="stanza">Харизма Льва — она не требует усилий!<br>
+Сам создаёт свои миры из изобилий<br>
+Энергий творческих — их он и излучает,<br>
+Если в гордыню этот Лев не попадает!
+          </div>
+          <div class="stanza">В низких октавах эго — самолюбование:<br>
+Быть лучше всех — это его обоснование,<br>
+Чтобы людей, мир «под себя прогнуть»!<br>
+Огню не жалко его жертву вот ничуть!
+          </div>
+          <div class="stanza">А в высшей магии — он центр и светило!<br>
+Внешний успех — как личности мерило!<br>
+Внутренний мир — сияние: я здесь есть,<br>
+А мной жить-быть — уже большая честь!
+          </div>
+          <div class="stanza">Я — личность, лидер, человек, и я — от Бога!<br>
+«Я Есмь! И то, и то Есмь я!» — вот для итога<br>
+Мантра твоя, если захочешь перемен...<br>
+Лев от природы, несомненно, суверен!
+          </div>
+          <div class="stanza">Ты можешь убеждать люд не словами,<br>
+А действиями, и прославиться делами!<br>
+Твоя любовь — защитный купол, это — свет!<br>
+И с ним тепло и хорошо — сомнений нет!
+          </div>
+        </div>
+      </div>
+
+      <div class="novinka-card">
+        <div class="novinka-title">Дева ♍️</div>
+        <div class="novinka-video">
+          <div class="yt-facade" data-vid="4TkvdXTEKWs" onclick="ytPlay(this)">
+            <img src="https://img.youtube.com/vi/4TkvdXTEKWs/hqdefault.jpg" alt="Дева ♍️ — Ипатия Бард" loading="lazy">
+            <button class="yt-play" aria-label="Смотреть видео">▶</button>
+          </div>
+        </div>
+        <div class="novinka-poem">
+          <div class="stanza">Дева видит насквозь реальность и мир!<br>
+Как технолог Вселенной, как тот ювелир,<br>
+Кто способен системы внутри починить,<br>
+На куски разобрать — всё потом исцелить!
+          </div>
+          <div class="stanza">Где бы ни был и с кем, тихо, как мастер,<br>
+Превращает в порядок даже дизастер!<br>
+Он устройство логически всё понимает,<br>
+Дух в материю Дева сквозь тело рожает!
+          </div>
+          <div class="stanza">Но на низких октавах он всё критикует,<br>
+К идеалу стремится и сам всё бракует,<br>
+Став дотошным, увы, перфекционистом…<br>
+Что ж, задача твоя — это быть реалистом!
+          </div>
+          <div class="stanza">Вот где высшая магия Дев по природе!<br>
+«Плодородная мать» — окрестят в народе<br>
+Ту энергию, что ты телесно впускаешь!<br>
+И, что было поломано, ты исправляешь!
+          </div>
+          <div class="stanza">В ритуал превращаешь любую рутину,<br>
+Видишь целостной и логичной картину!<br>
+Нам из хаоса, тьмы, грязи, черновиков<br>
+Задаёшь в мир основу реальных основ!
+          </div>
+          <div class="stanza">«Вижу мир чётко, ясно! Я — Бог и материя!» —<br>
+Это мантра твоя! Ни одна бухгалтерия<br>
+Не подводит балансы, не зная деталей!<br>
+А ты — фильтр для наших данных реалий!
+          </div>
+        </div>
+      </div>
+
+      <div class="novinka-card">
         <div class="novinka-title">Весы ♎️</div>
         <div class="novinka-video">
-          <iframe src="https://www.youtube.com/embed/AZn9tAkJY4c?playsinline=1"
-            title="Весы — Ипатия Бард" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen loading="lazy"></iframe>
+          <div class="yt-facade" data-vid="AZn9tAkJY4c" onclick="ytPlay(this)">
+            <img src="https://img.youtube.com/vi/AZn9tAkJY4c/hqdefault.jpg" alt="Весы ♎️ — Ипатия Бард" loading="lazy">
+            <button class="yt-play" aria-label="Смотреть видео">▶</button>
+          </div>
         </div>
         <div class="novinka-poem">
           <div class="stanza">Весы — суд справедливости с балансом!<br>
-            Уравновешивает силы, но с нюансом:<br>
-            На благо общее! Вот для Весов задача:<br>
-            Видеть систему, факты в ней не пряча!
+Уравновешивает силы, но с нюансом:<br>
+На благо общее! Вот для Весов задача:<br>
+Видеть систему, факты в ней не пряча!
           </div>
           <div class="stanza">Нет идеального решения здесь в мире,<br>
-            Всё существует только в перспективе...<br>
-            Он в отношениях всю красоту находит,<br>
-            Действуя шармом, к выводу подводит.
+Всё существует только в перспективе...<br>
+Он в отношениях всю красоту находит,<br>
+Действуя шармом, к выводу подводит.
           </div>
-          <div class="stanza">Рука железная в нейлоновой перчатке<br>
-            В высших октавах не играет в прятки,<br>
-            А в низких — выбор делать сам не может:<br>
-            Не действуя, из страха «лапки сложит»!
+          <div class="stanza">Рука железная в капроновой перчатке<br>
+В высших октавах не играет в прятки,<br>
+А в низких — выбор делать сам не может:<br>
+Не действуя, из страха «лапки сложит»!
           </div>
           <div class="stanza">А в высшей магии Весы — то равновесие:<br>
-            Уравновесит и любовь, и мракобесие!<br>
-            Когда сам верит в эту справедливость,<br>
-            В гармонии постигнет объективность!
+Уравновесит и любовь, и мракобесие!<br>
+Когда сам верит в эту справедливость,<br>
+В гармонии постигнет объективность!
           </div>
           <div class="stanza">Ты, как искусный человек-канатоходец:<br>
-            Внешне спокойный, а внутри — колодец,<br>
-            Залитый фактами! Задача в точке ноль —<br>
-            Центрироваться, вот твой код-пароль!
+Внешне спокойный, а внутри — колодец,<br>
+Залитый фактами! Задача в точке ноль —<br>
+Центрироваться, вот твой код-пароль!
           </div>
           <div class="stanza">И выбирая путь спокойствия, путь Дао,<br>
-            Идти в балансе и гармонии, дав право<br>
-            Людям смотреть… Снимая напряжение,<br>
-            Чтоб не впадать в ненужное сомнение!
+Идти в балансе и гармонии, дав право<br>
+Людям смотреть… Снимая напряжение,<br>
+Чтоб не впадать в ненужное сомнение!
           </div>
         </div>
       </div>
 
       <div class="novinka-card">
-        <div class="novinka-date">23 апреля 2026</div>
-        <div class="novinka-title">Вера в любовь спасает мир!</div>
+        <div class="novinka-title">Скорпион ♏️</div>
         <div class="novinka-video">
-          <iframe src="https://www.youtube.com/embed/uth2uzFhiz0?playsinline=1"
-            title="Вера в любовь спасает мир! — Ипатия Бард" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen loading="lazy"></iframe>
+          <div class="yt-facade" data-vid="M2hAeFy8eCg" onclick="ytPlay(this)">
+            <img src="https://img.youtube.com/vi/M2hAeFy8eCg/hqdefault.jpg" alt="Скорпион ♏️ — Ипатия Бард" loading="lazy">
+            <button class="yt-play" aria-label="Смотреть видео">▶</button>
+          </div>
         </div>
         <div class="novinka-poem">
-          <div class="stanza">Вся жизнь — игра: играют в игры дети,<br>
-            Живущие на нашем белом свете!<br>
-            Все мы за все последствия в ответе,<br>
-            Творенья Бога на Земле-планете!
+          <div class="stanza">Скорпион — он кризис-менеджер для Бога,<br>
+Маг трансформации! И не судите строго,<br>
+Ведь видит мир насквозь и мысли знает<br>
+Всех тех людей, кто в его поле попадает!
           </div>
-          <div class="stanza">Кто проживает в США и в Аргентине,<br>
-            В Израиле, на Кипре, в Палестине,<br>
-            Из Белоруссии, из Украины и России,<br>
-            Не ждите же пришествия Мессии!
+          <div class="stanza">Ложь чует Скорпион, тех жалит в сердце,<br>
+В ком есть обида, злость! Лихое дельце —<br>
+Брать яды, превращая боль в лекарство!<br>
+Не терпит сам интриги — в них лукавство!
           </div>
-          <div class="stanza">Пусть в мире мир наступит — вот идея<br>
-            Антиутопии… Так рушится Помпея!<br>
-            «Так что мы в мире можем поменять?» —<br>
-            Позвольте же вопрос Ему задать.
+          <div class="stanza">В низких октавах он кусает — то из страха…<br>
+Носит обиду, словно шапку Мономаха!<br>
+В высших — как феникс: личностно сгорая,<br>
+Он побеждает гидру, к свету поднимая!
           </div>
-          <div class="stanza">«Скажи мне, Боже, где моё спасение?»<br>
-            Бог мне ответил: «Ветра дуновение<br>
-            Почувствуй на лице вот так сейчас...<br>
-            Дыши свободно — разве не экстаз?
+          <div class="stanza">Гидра здесь славится своими головами...<br>
+Рубить — нет смысла, ведь растут те сами...<br>
+Но если к свету солнца демона поднять,<br>
+Он испарится — в жизни будет благодать!
           </div>
-          <div class="stanza">Кто изменить решил моё создание,<br>
-            Тот понимает, что я — где внимание?<br>
-            А если да, его куда сам направляет?<br>
-            Что я — любовь, он, точно, понимает?
+          <div class="stanza">Мир высветит своим внутри рентгеном,<br>
+Став магом трансформаций! И обменом<br>
+Энергий будет даже в сексе заниматься<br>
+Да кундалини в теле не сопротивляться!
           </div>
-          <div class="stanza">Я — кто твой Бог, и ты есть часть меня!<br>
-            Чем больше света, тем и ближе я!<br>
-            Познай меня в других, душой любя!<br>
-            Вера в любовь спасает мир пока!
-          </div>
-          <div class="stanza">Я не нуждаюсь в вашем мне совете...<br>
-            Я помощь шлю, а вы плетёте сети<br>
-            Интриг, конфликтов... В том, увы, беда!<br>
-            Я верю в вас! Поверьте же в меня!
-          </div>
-          <div class="stanza">Где бы вы ни были, несите моё слово —<br>
-            Поймите то, что вам давно не ново:<br>
-            Вначале было слово… Мысль, в итоге,<br>
-            Рожденная в уме, пребудет в Боге!»
+          <div class="stanza">А, свет несущий, тьму сожжёт, испепеляя<br>
+Присутствием! Лишь бой не прекращая,<br>
+Ты побеждаешь скорпионскую природу!<br>
+«Нет страха смерти!» — мантра за свободу!
           </div>
         </div>
       </div>
+
       <div class="novinka-card">
-        <div class="novinka-date">22 апреля 2026</div>
-        <div class="novinka-title">Мой путь</div>
+        <div class="novinka-title">Стрелец ♐️</div>
         <div class="novinka-video">
-          <iframe src="https://www.youtube.com/embed/so3OvauuEtc?playsinline=1"
-            title="Мой путь — Ипатия Бард" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen loading="lazy"></iframe>
+          <div class="yt-facade" data-vid="RtyM0OFW-Y4" onclick="ytPlay(this)">
+            <img src="https://img.youtube.com/vi/RtyM0OFW-Y4/hqdefault.jpg" alt="Стрелец ♐️ — Ипатия Бард" loading="lazy">
+            <button class="yt-play" aria-label="Смотреть видео">▶</button>
+          </div>
         </div>
         <div class="novinka-poem">
-          <div class="stanza">Мне не по нраву путь слепого аскетизма...<br>
-            Мой Мир — блаженства, «я есмь» гедонизма!<br>
-            Без жёстких норм, без правил стоицизма,<br>
-            Скорее, в рамках тут живу из фатализма!
+          <div class="stanza">Стрелец — искатель смысла жизни сам!<br>
+Его стрела летит наверх и к небесам,<br>
+За горизонт, к новым вершинам и ещё...<br>
+Не остановится Стрелец ну ни за что!
           </div>
-          <div class="stanza">Есть в моих мыслях тьма из пессимизма,<br>
-            Но рядом тот, кто полон вечно оптимизма!<br>
-            А моя преданность — то путь патриотизма,<br>
-            Но зверь внутри — потомок дарвинизма!
+          <div class="stanza">Из интереса жизнь вокруг он познаёт,<br>
+Новые смыслы всему в мире задаёт!<br>
+Кентавром тут представлен этот знак!<br>
+Инстинкты зверя — страсть и головняк!
           </div>
-          <div class="stanza">Тщеславие — грех, но есть внутри харизма!<br>
-            В мире единство — то система глобализма!<br>
-            Устал мой мозг от страхов, скептицизма...<br>
-            Весь мир люблю я из простого эгоизма!
+          <div class="stanza">В низких октавах он — гуляка, весельчак,<br>
+В спорах — ловкач, да в знаниях мастак!<br>
+А в высших — рану он почувствует свою,<br>
+Тогда пойдёт за горизонты, в глубину!
           </div>
-          <div class="stanza">За мной мой род, моя земля, моя Отчизна!<br>
-            Но матрица так своенравна и капризна!<br>
-            Порядок в хаосе — здесь форма реализма...<br>
-            Путь отвергает суть любого фанатизма!
+          <div class="stanza">Взгляд оптимиста — топливо Стрельцов!<br>
+Сорваться в путь он тут-как-тут готов!<br>
+Найдёт свободу, расширяя кругозоры!<br>
+Учитель не вступает с Миром в споры!
           </div>
-          <p class="chorus-label">Припев:</p>
-          <div class="stanza">Не сотворю себе кумира!<br>
-            Пусть моя жизнь была — сатира...<br>
-            Миру желаю только мира<br>
-            И помню принцип Мойдодыра!
+          <div class="stanza">Один дан выстрел в жизни — вот и цель<br>
+Тут у стрельца одна: не сесть на мель,<br>
+Но пригвоздить коня стрелой к земле,<br>
+Чтоб свет Творца сиял везде во тьме!
           </div>
-          <div class="stanza">Себя до чистоты отмыла<br>
-            Душистым мылом и открыла<br>
-            Любовь: себя я полюбила —<br>
-            И мир вокруг свой изменила!
-          </div>
-          <div class="stanza">Зверя внутри я укротила!<br>
-            Да карму вдребезги разбила!<br>
-            Устройство я перекроила!<br>
-            Женскую суть всем обнажила!
-          </div>
-          <div class="stanza">Я молчалива, как могила...<br>
-            Рифмой творю, но слово — сила!<br>
-            Когда я прошлое простила —<br>
-            То Бога в жизнь свою впустила!
+          <div class="stanza">Твой дом есть путь! Его ты продолжай!<br>
+Вся в жизни боль — то сила, сам познай<br>
+Её в себе! А смысл жизни как найдёшь,<br>
+То, масштабируя, по кайфу заживёшь!
           </div>
         </div>
       </div>
+
       <div class="novinka-card">
-        <div class="novinka-date">21 апреля 2026</div>
-        <div class="novinka-title">Я всё испортила!</div>
+        <div class="novinka-title">Козерог ♑️</div>
         <div class="novinka-video">
-          <iframe src="https://www.youtube.com/embed/x_RGtTh8-_4?playsinline=1"
-            title="Я всё испортила! — Ипатия Бард" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen loading="lazy"></iframe>
+          <div class="yt-facade" data-vid="BKshnI_lvxs" onclick="ytPlay(this)">
+            <img src="https://img.youtube.com/vi/BKshnI_lvxs/hqdefault.jpg" alt="Козерог ♑️ — Ипатия Бард" loading="lazy">
+            <button class="yt-play" aria-label="Смотреть видео">▶</button>
+          </div>
         </div>
         <div class="novinka-poem">
-          <div class="stanza">Я всё испортила и, впрочем, как всегда,<br>
-            Я виновата в том, что я — здесь просто я!<br>
-            Нет оправданий мне, но нет пути назад:<br>
-            Моя история и жизни опыт — личный ад!
+          <div class="stanza">Козерог строит реальность, словно Бог!<br>
+Сам трудится, не покладая рук! И шок<br>
+Он вызывает вечной стойкостью своей,<br>
+А сам живёт не для себя, а для людей!
           </div>
-          <div class="stanza">«Ты всё испортила!» — лишь слышу про себя.<br>
-            Да, я такая, сам мой Бог простит меня!<br>
-            Здесь я — кто есть, и опыт свой переживая,<br>
-            Путь продолжаю смысл веры постигая.
+          <div class="stanza">Он продолжает шаг за шагом этот путь<br>
+Не для того, чтобы дойти и отдохнуть,<br>
+А для того, чтобы другим путь показать,<br>
+И всех сумеет по дороге поддержать!
           </div>
-          <div class="stanza">«Мы всё испортили!» — я слышу повсеместно<br>
-            Да, мы такие, ведь нам даже интересно,<br>
-            Что будет дальше, а бои не прекращаем<br>
-            И часто сами даже скверно поступаем!
+          <div class="stanza">Во внешнем мире он же человек-скала:<br>
+Тут не подвинуть его с места никогда!<br>
+С жёстким давлением сжимая углерод,<br>
+В мир самородки да алмазы достаёт!
           </div>
-          <div class="stanza">Мы — кто всё портим, сами люди-человеки!<br>
-            Такие разные, а по природе дровосеки!<br>
-            Увидев порчу, можем мы себя исправить!<br>
-            На этом — всё, и больше нечего добавить!
+          <div class="stanza">В низких октавах — это просто карьерист,<br>
+Тиран, нарцисс или начальник-эгоист!<br>
+В высших — в любви взойдёт на пик горы,<br>
+Создаст системы и прекрасные миры!
           </div>
-          <p class="chorus-label">Припев:</p>
-          <div class="stanza">Мне не стать никогда идеальной!<br>
-            Я хочу быть обычной, нормальной!<br>
-            Жить спокойно, другим не мешая!<br>
-            Жизнь, мечты и свой мир сочиняя!
+          <div class="stanza">Когда цель ставит, то Вселенная в ответ<br>
+Скажет лишь «да, конечно, спору нет»!<br>
+Внутренний стержень, сила воли, власть<br>
+Помогут в рай при жизненный попасть!
           </div>
-          <div class="stanza">Пусть я стану угрюмо-печальной,<br>
-            Но не буду фигурой скандальной!<br>
-            Мне в единстве одной интересно,<br>
-            А когда глупцы рядом — жить тесно!
+          <div class="stanza">Само блаженство тебя в рай не увлечёт,<br>
+Ничто от цели здесь тебя не отвлечёт!<br>
+Удержишь форму — за рывком ещё рывок,<br>
+Сам подчиняешь себе время, Козерог!
           </div>
         </div>
       </div>
+
+      <div class="novinka-card">
+        <div class="novinka-title">Водолей ♒️</div>
+        <div class="novinka-video">
+          <div class="yt-facade" data-vid="R8QI389l3zo" onclick="ytPlay(this)">
+            <img src="https://img.youtube.com/vi/R8QI389l3zo/hqdefault.jpg" alt="Водолей ♒️ — Ипатия Бард" loading="lazy">
+            <button class="yt-play" aria-label="Смотреть видео">▶</button>
+          </div>
+        </div>
+        <div class="novinka-poem">
+          <div class="stanza">Водолей — он вестник неба для людей!<br>
+Сам — трансформатор смыслов и идей!<br>
+Возможность, как никто тут замечает,<br>
+Берёт энергию и её миру возвращает!
+          </div>
+          <div class="stanza">Нет предрассудков и, конечно, еретик<br>
+На перемены вдохновляет — Ведь язык<br>
+Вестника Бога и пророка мир меняет,<br>
+А Водолей напиток жизни разливает!
+          </div>
+          <div class="stanza">В низких октавах — просто фрик, чудак,<br>
+Людей не любит, в голове его бардак!<br>
+В высших — всех любит он, объединяет!<br>
+Силу единства миру волей объясняет!
+          </div>
+          <div class="stanza">Задача — помнить, кто есть тот «кувшин»,<br>
+Через который льётся сила из глубин!<br>
+Да, в нашем мире, увы, разное бывает...<br>
+А Водолей — он о свободе сам мечтает!
+          </div>
+          <div class="stanza">Ты — повелитель в интернете, Бог сетей,<br>
+Служитель истины! Великий Водолей —<br>
+Кто напряженье высших сил сжимает<br>
+И человечеству, как прану, отправляет!
+          </div>
+          <div class="stanza">Один — не воин в поле, и никто — не враг!<br>
+Людей других объединяет этот знак!<br>
+Ты знаешь то, что мир ещё не знает!<br>
+Внутри источник у тебя не иссякает!
+          </div>
+        </div>
+      </div>
+
+      <div class="novinka-card">
+        <div class="novinka-title">Рыбы ♓️</div>
+        <div class="novinka-video">
+          <div class="yt-facade" data-vid="HMjbRgOdyuE" onclick="ytPlay(this)">
+            <img src="https://img.youtube.com/vi/HMjbRgOdyuE/hqdefault.jpg" alt="Рыбы ♓️ — Ипатия Бард" loading="lazy">
+            <button class="yt-play" aria-label="Смотреть видео">▶</button>
+          </div>
+        </div>
+        <div class="novinka-poem">
+          <div class="stanza">Рыбы — те, кто замыкают круг создания!<br>
+Милосердие — оно не терпит наказания!<br>
+Не существует в мире рамок и границ —<br>
+Их создают нам Рыбы в виде небылиц!
+          </div>
+          <div class="stanza">Плавает Рыба меж мирами, но совсем<br>
+Не понимает смысла, что есть и зачем<br>
+Нужны страдания — вот это та проблема,<br>
+Что не даёт покоя Рыбе, в том — дилемма!
+          </div>
+          <div class="stanza">Рыба эмпатию ко всем ведь проявляет!<br>
+Очистить карму тем, конечно, помогает,<br>
+Кто в его поле — ведь вода и камни точит,<br>
+И рану вымоет, коль где-то кровоточит!
+          </div>
+          <div class="stanza">В низких октавах — он теряется в других,<br>
+Сам получает слив эмоций от всех них!<br>
+А в высших — будет он связующим звеном,<br>
+Между мирами прочным став мостом!
+          </div>
+          <div class="stanza">Ты — кто грехи по праву рода искупает,<br>
+Кто все границы Мироздания стирает!<br>
+Твой навигатор — интуиция, лишь следуй<br>
+За нею в жизни и глубины ты исследуй!
+          </div>
+          <div class="stanza">Очистишь карму и настанет перемена!<br>
+Ведь тело чувствует, какая мира схема<br>
+Сломалась, и, как данность, ту возьмёшь,<br>
+Сам исцелишь её и дальше поплывёшь!
+          </div>
+        </div>
+      </div>
+
+      <div class="novinka-card">
+        <div class="novinka-title">Монада в цикле</div>
+        <div class="novinka-video">
+          <div class="yt-facade" data-vid="vt2uFOehj7g" onclick="ytPlay(this)">
+            <img src="https://img.youtube.com/vi/vt2uFOehj7g/hqdefault.jpg" alt="Монада в цикле — Ипатия Бард" loading="lazy">
+            <button class="yt-play" aria-label="Смотреть видео">▶</button>
+          </div>
+        </div>
+        <div class="novinka-poem">
+          <div class="stanza">Двенадцать знаков в зодиаке, и Монада<br>
+Всё проживает — вот о чём была баллада,<br>
+Чтоб эволюцию само сознание прошло,<br>
+Домой вернулось, провернув тут колесо!
+          </div>
+          <div class="stanza">И каждый знак — то не отдельная тирада...<br>
+Единый цикл здесь начинается с заряда,<br>
+Заканчиваясь, переходит в растворение —<br>
+С единым целым будет там соединение!
+          </div>
+          <div class="stanza">Есть у Монады цель одна: прийти домой!<br>
+А наблюденье — лёгкий способ и простой!<br>
+Помни одно: что ничего тут не случайно —<br>
+Ты написал себе сценарий изначально!
+          </div>
+          <div class="stanza">Чтоб научиться в теле жить и процветать,<br>
+Познай себя — так перестань переживать!<br>
+Мы в школе жизни те экзамены сдаём,<br>
+Что нам по силе! Лишь тогда уже уйдём,
+          </div>
+          <div class="stanza">Когда всё выучим и тут «закончим школу»!<br>
+И знак, что в Солнце, взяв лишь за основу,<br>
+Стань наблюдателем, и этот первый шаг<br>
+Откроет новый горизонт для вечных благ!
+          </div>
+          <div class="stanza">Мир идеален! Просто помни проявления<br>
+Свои, а трудности — то мира приглашения<br>
+Себя увидеть, осознать да смысл понять —<br>
+Так идеальный опыт в жизни создавать!
+          </div>
+        </div>
+      </div>
+
+      <div class="novinka-card">
+        <div class="novinka-title">Зодиак — Полная версия 🎬</div>
+        <div class="novinka-video novinka-video-wide">
+          <div class="yt-facade" data-vid="8cZ-G4rRvRI" onclick="ytPlay(this)">
+            <img src="https://img.youtube.com/vi/8cZ-G4rRvRI/hqdefault.jpg" alt="Зодиак — полная версия — Ипатия Бард" loading="lazy">
+            <button class="yt-play" aria-label="Смотреть видео">▶</button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -512,15 +942,29 @@
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
-            <span class="book-banner">BookOnly</span>
             <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90112795&abOnly=False"
                  alt="Соавтор жизни" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/coauthor" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <a href="https://store.bookbaby.com/book/coauthor" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90112795&abOnly=True"
-                 alt="Соавтор жизни (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/coauthor" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <div class="book-back-poem">
+              <h3 class="book-back-title">Соавтор жизни</h3>
+              <p class="book-back-text">«Соавтор жизни» — книга про тебя.
+Если ты веришь в Бога и Творца
+И коль готов познать себя сполна,
+Стихи читай и слушай сам себя!
+
+Поэзия — лишь чувства! Слог, слова
+Перво-Творца звучат и для меня,
+И для людей, кто хочет жить любя,
+Готов кто осознать смысл Бытия!
+
+Стих нам откроет древние глаза,
+Ведь к истине летит сама душа!
+Лозунг один: живи жизнь из добра!
+А остальное — это чушь и ерунда!</p>
+            </div>
+            <a href="https://store.bookbaby.com/book/coauthor" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -528,15 +972,34 @@
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
-            <span class="book-banner">BookOnly</span>
             <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90101973&abOnly=False"
                  alt="Дом" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/home9" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <a href="https://store.bookbaby.com/book/home9" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90101973&abOnly=True"
-                 alt="Дом (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/home9" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <div class="book-back-poem">
+              <h3 class="book-back-title">Дом</h3>
+              <p class="book-back-text">«Дом» – это книга о Боге-Творце
+И о планете о нашей – Земле.
+Книга о людях, сынах тех двоих…
+К жизни лайфхаки, и много таких…
+
+Строки поэзии тронут сердца!
+По Божьей воле и силе Творца
+«Дом» раскрывает секреты любви...
+Много посланий содержат стихи…
+
+Мантры, молитвы – себя поддержать…
+Как проживать, созидать, создавать,
+Как отыскать путь души, путь домой…
+Стих – он поможет! Всё в форме простой...
+
+«Дом» – это книга, посланья в стихах,
+И, если держишь «Дом»-книгу в руках,
+Значит, что время проснуться пришло:
+Жить, кайфовать и творить волшебство!</p>
+            </div>
+            <a href="https://store.bookbaby.com/book/home9" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -544,15 +1007,34 @@
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
-            <span class="book-banner">BookOnly</span>
             <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90098468&abOnly=False"
                  alt="Женское счастье" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90098468&abOnly=True"
-                 alt="Женское счастье (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <div class="book-back-poem">
+              <h3 class="book-back-title">Женское счастье</h3>
+              <p class="book-back-text">Где скрывается женское счастье
+И в каких обитает местах?..
+В этой книге есть к жизни лайфхаки...
+Всё написано кратко в стихах...
+
+Счастье — это «журавль» тот, что в небе
+Иль, быть может, «синица в руках»...
+В этой книге найдёшь откровение
+И подсказки от Высших в стихах!
+
+Где и как отношения строить,
+Всё, о чём мы горюем в сердцах...
+И как эти процессы ускорить —
+Эта книга раскроет в стихах!
+
+В этой книге — вся суть мироздания
+Та, что скрыта от нас «на верхах»...
+Всем приятного чувств проживания
+И не в прозе, а в рифме, в стихах…</p>
+            </div>
+            <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -560,15 +1042,34 @@
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
-            <span class="book-banner">BookOnly</span>
             <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90095238&abOnly=False"
                  alt="Записки из палаты №6 — Книга 2" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90095238&abOnly=True"
-                 alt="Записки из палаты №6 — Книга 2 (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <div class="book-back-poem">
+              <h3 class="book-back-title">Записки из палаты № 6</h3>
+              <p class="book-back-text">«Записки из палаты № 6» —
+Их в этой книге сможете прочесть...
+Духовная поэзия — она
+Безумной эзотерики полна!
+
+«Записки из палаты № 6»
+Здесь собраны, прошу это учесть!
+Вас увлекут, и в «кроличью нору»
+Нырнёте сквозь поэзию мою!
+
+«Записки из палаты № 6» —
+В них много пользы, если их прочесть:
+Законы мироздания — они
+Здесь собраны и спрятаны в стихи!
+
+«Записки из палаты № 6» —
+Скорее истина, и стоит ту учесть!
+В стихах своих пути вам укажу
+В Духовный Мир, о коем я пишу!</p>
+            </div>
+            <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -576,15 +1077,34 @@
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
-            <span class="book-banner">BookOnly</span>
             <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90095237&abOnly=False"
                  alt="Записки из палаты №6 — Книга 1" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90095237&abOnly=True"
-                 alt="Записки из палаты №6 — Книга 1 (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <div class="book-back-poem">
+              <h3 class="book-back-title">Записки из палаты № 6</h3>
+              <p class="book-back-text">«Записки из палаты № 6» —
+Их в этой книге сможете прочесть...
+Духовная поэзия — она
+Безумной эзотерики полна!
+
+«Записки из палаты № 6»
+Здесь собраны, прошу это учесть!
+Вас увлекут, и в «кроличью нору»
+Нырнёте сквозь поэзию мою!
+
+«Записки из палаты № 6» —
+В них много пользы, если их прочесть:
+Законы мироздания — они
+Здесь собраны и спрятаны в стихи!
+
+«Записки из палаты № 6» —
+Скорее истина, и стоит ту учесть!
+В стихах своих пути вам укажу
+В Духовный Мир, о коем я пишу!</p>
+            </div>
+            <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -592,15 +1112,35 @@
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
-            <span class="book-banner">BookOnly</span>
             <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091443&abOnly=False"
                  alt="My Citadel — Book 3" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091443&abOnly=True"
-                 alt="My Citadel — Book 3 (back)" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <div class="book-back-poem">
+              <h3 class="book-back-title">My Citadel</h3>
+              <p class="book-back-text">«Моя цитадель» — это сборник поэзии
+Для тех, кто в духовный отправился путь.
+Писала его не сама, с Высшей Силой,
+О том как найти путь Души, жизни суть!
+
+Молитвы и песни здесь, притчи и сказки,
+Здесь про отношенья с людьми и с собой,
+Про нашу Божественность и про причины,
+Что нам проявиться мешают порой...
+
+О мире невидимом, что существует,
+Послания Ангелов, ПервоТворца
+О том, как исполнить свои все желанья
+И как же услышать, что хочет Душа!
+
+О мире чудес, о принцессах и принцах,
+Богах и Богинях и просто о нас!
+«Моя цитадель» — это сборник поэзии,
+И если готов познавать, —
+В добрый час!</p>
+            </div>
+            <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -608,15 +1148,35 @@
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
-            <span class="book-banner">BookOnly</span>
             <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091439&abOnly=False"
                  alt="My Citadel — Book 2" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091439&abOnly=True"
-                 alt="My Citadel — Book 2 (back)" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <div class="book-back-poem">
+              <h3 class="book-back-title">My Citadel</h3>
+              <p class="book-back-text">«Моя цитадель» — это сборник поэзии
+Для тех, кто в духовный отправился путь.
+Писала его не сама, с Высшей Силой,
+О том как найти путь Души, жизни суть!
+
+Молитвы и песни здесь, притчи и сказки,
+Здесь про отношенья с людьми и с собой,
+Про нашу Божественность и про причины,
+Что нам проявиться мешают порой...
+
+О мире невидимом, что существует,
+Послания Ангелов, ПервоТворца
+О том, как исполнить свои все желанья
+И как же услышать, что хочет Душа!
+
+О мире чудес, о принцессах и принцах,
+Богах и Богинях и просто о нас!
+«Моя цитадель» — это сборник поэзии,
+И если готов познавать, —
+В добрый час!</p>
+            </div>
+            <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -624,15 +1184,35 @@
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
-            <span class="book-banner">BookOnly</span>
             <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091438&abOnly=False"
                  alt="My Citadel — Book 1" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091438&abOnly=True"
-                 alt="My Citadel — Book 1 (back)" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <div class="book-back-poem">
+              <h3 class="book-back-title">My Citadel</h3>
+              <p class="book-back-text">«Моя цитадель» — это сборник поэзии
+Для тех, кто в духовный отправился путь.
+Писала его не сама, с Высшей Силой,
+О том как найти путь Души, жизни суть!
+
+Молитвы и песни здесь, притчи и сказки,
+Здесь про отношенья с людьми и с собой,
+Про нашу Божественность и про причины,
+Что нам проявиться мешают порой...
+
+О мире невидимом, что существует,
+Послания Ангелов, ПервоТворца
+О том, как исполнить свои все желанья
+И как же услышать, что хочет Душа!
+
+О мире чудес, о принцессах и принцах,
+Богах и Богинях и просто о нас!
+«Моя цитадель» — это сборник поэзии,
+И если готов познавать, —
+В добрый час!</p>
+            </div>
+            <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -640,15 +1220,40 @@
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
-            <span class="book-banner">BookOnly</span>
+            <span class="book-banner-leela">Только книга</span>
             <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90084106&abOnly=False"
                  alt="Лила — Самопознания Игра" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/leela" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <a href="https://store.bookbaby.com/book/leela" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
           <div class="flip-card-back">
-            <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90084106&abOnly=True"
-                 alt="Лила — Самопознания Игра (обратная сторона)" loading="lazy" referrerpolicy="no-referrer">
-            <a href="https://store.bookbaby.com/book/leela" target="_blank" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
+            <div class="book-back-poem">
+              <h3 class="book-back-title">Лила</h3>
+              <p class="book-back-text">«Лила» — беседа с Высшим Я!
+Энергия и жизнь она!
+Мудрость Востока! Бытия!
+Суть Духа! Высших Сил слова!
+
+Познать, увидеть, осознать,
+Почувствовать, вдохнуть, принять,
+Пути увидеть и понять,
+Свой пазл в жизни созидать!
+
+Зовет тебя сейчас «Лила» —
+Самопознания игра!
+Намерение создавай
+И кость осознанно бросай!
+
+И наблюдай, смотри, ищи,
+Вопросы задавай, проси,
+В контакте с Высшим Я когда,
+Он отвечает без труда.
+
+Со всей серьезностью играй!
+Войдя в игру — не покидай!
+Ответственность потом твоя!
+«Лила» живая, не игра!</p>
+            </div>
+            <a href="https://store.bookbaby.com/book/leela" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить</a>
           </div>
         </div>
       </div>
@@ -683,19 +1288,20 @@
           </div>
         </div>
 
-        <!-- Contact -->
-        <div class="author-contact">
-          <span class="author-contact-label">Связаться с автором</span>
-          <a href="mailto:poet@iabard.com" class="contact-email-btn">
-            <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            Email
-          </a>
-        </div>
-
-        <!-- Rights -->
-        <div class="author-rights">
-          <p style="margin-bottom:14px;">© 2026 Ия Бард · Все права защищены</p>
-          <a href="https://stihi.ru/avtor/hypatiabard" target="_blank" class="contact-email-btn">стихи.ru</a>
+        <!-- Contact + Rights -->
+        <div class="author-footer">
+          <div class="author-footer-block">
+            <span class="author-footer-label">Написать сообщение автору</span>
+            <a href="mailto:poet@iabard.com" class="contact-email-btn">
+              <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              Написать автору
+            </a>
+          </div>
+          <div class="author-footer-block">
+            <span class="author-footer-label">Все права защищены</span>
+            <a href="https://stihi.ru/avtor/hypatiabard" target="_blank" rel="noopener noreferrer" class="contact-email-btn">стихи.ru</a>
+            <p class="author-rights-copy">© 2026 Ия Бард · Ипатия Бард</p>
+          </div>
         </div>
 
       </div>
@@ -725,51 +1331,23 @@
 
 </div>
 
-<!-- ═══ SOCIAL STRIP ═══ -->
-<div class="social-strip">
-  <p class="tagline-bottom">
-    Поэт я и пишу стихи — о Боге, Мире и любви…<br>
-    А нейросети их поют, им атмосферу создают.
-  </p>
-  <div class="social-row social-row-light">
-    <a href="https://t.me/IA_Bard" target="_blank" class="social-chip">
-      <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-      Telegram RU
-    </a>
-    <a href="https://t.me/I_Bard" target="_blank" class="social-chip">
-      <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-      Telegram EN
-    </a>
-    <a href="https://youtube.com/@ia_bard" target="_blank" class="social-chip">
-      <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-      YouTube
-    </a>
-    <a href="https://www.instagram.com/ia_bard" target="_blank" class="social-chip">
-      <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-      Instagram
-    </a>
-    <a href="https://www.facebook.com/profile.php?id=61558184941829" target="_blank" class="social-chip">
-      <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-      Facebook
-    </a>
-    <a href="https://www.tiktok.com/@ia.bard?_r=1&_t=ZP-95pvZc9heBT" target="_blank" class="social-chip">
-      <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>
-      TikTok
-    </a>
-    <a href="mailto:poet@iabard.com" class="social-chip">
-      <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-      Email
-    </a>
-  </div>
-</div>
-
 <!-- ═══ FOOTER ═══ -->
 <footer>
   <p>© 2026 <span>Ия Бард · Ипатия Бард · Hypatia Bard</span><br>
-  Все права защищены авторским правом на&nbsp;<a href="https://stihi.ru/avtor/hypatiabard" target="_blank" class="stihi-btn">стихи.ru</a></p>
+  Все права защищены авторским правом на&nbsp;<a href="https://stihi.ru/avtor/hypatiabard" target="_blank" rel="noopener noreferrer" class="stihi-btn">стихи.ru</a></p>
 </footer>
 
 <script>
+function ytPlay(el) {
+  var vid = el.dataset.vid;
+  var iframe = document.createElement('iframe');
+  iframe.src = 'https://www.youtube.com/embed/' + vid + '?autoplay=1&playsinline=1';
+  iframe.title = el.querySelector('img').alt;
+  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+  iframe.allowFullscreen = true;
+  el.parentNode.replaceChild(iframe, el);
+}
+
 function switchTab(id, btn) {
   document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
   document.querySelectorAll('.nav-tab').forEach(function(t) {
