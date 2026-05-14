@@ -294,8 +294,8 @@
     <p class="name-sub">Hypatia Bard / Ипа́тия Бард</p>
 
     <div class="nav-tabs" role="tablist" aria-label="Разделы сайта">
-      <button class="nav-tab active" role="tab" aria-selected="true"  aria-controls="novosti" id="tab-novosti" onclick="switchTab('novosti',this)">Зодиак</button>
-      <button class="nav-tab"        role="tab" aria-selected="false" aria-controls="books"   id="tab-books"   onclick="switchTab('books',this)">Книги</button>
+      <button class="nav-tab active" role="tab" aria-selected="true"  aria-controls="books"   id="tab-books"   onclick="switchTab('books',this)">Книги</button>
+      <button class="nav-tab"        role="tab" aria-selected="false" aria-controls="novosti" id="tab-novosti" onclick="switchTab('novosti',this)">Зодиак</button>
       <button class="nav-tab"        role="tab" aria-selected="false" aria-controls="author"  id="tab-author"  onclick="switchTab('author',this)">Кто я?</button>
       <button class="nav-tab"        role="tab" aria-selected="false" aria-controls="shop"    id="tab-shop"    onclick="switchTab('shop',this)">Магазин</button>
     </div>
@@ -337,7 +337,7 @@
 <div id="main-content" class="sections-wrap">
 
   <!-- НОВИНКИ -->
-  <div id="novosti" class="tab-panel active" role="tabpanel" aria-labelledby="tab-novosti">
+  <div id="novosti" class="tab-panel" role="tabpanel" aria-labelledby="tab-novosti">
     <div class="novinka-list">
 
       <div class="novinka-card">
@@ -942,7 +942,7 @@
   </div>
 
   <!-- КНИГИ -->
-  <div id="books" class="tab-panel" role="tabpanel" aria-labelledby="tab-books">
+  <div id="books" class="tab-panel active" role="tabpanel" aria-labelledby="tab-books">
     <div class="books-grid">
 
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
@@ -1297,14 +1297,12 @@
         <!-- Contact + Rights -->
         <div class="author-footer">
           <div class="author-footer-block">
-            <span class="author-footer-label">Написать сообщение автору</span>
             <a href="mailto:poet@iabard.com" class="contact-email-btn">
               <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
               Написать автору
             </a>
           </div>
           <div class="author-footer-block">
-            <span class="author-footer-label">Все права защищены</span>
             <a href="https://stihi.ru/avtor/hypatiabard" target="_blank" rel="noopener noreferrer" class="contact-email-btn">стихи.ru</a>
             <p class="author-rights-copy">© 2026 Ия Бард · Ипатия Бард</p>
           </div>
@@ -1328,8 +1326,7 @@
           <div class="shop-coming-soon-text">Coming Soon</div>
         </div>
       </div>
-      <p class="shop-sub" style="margin-top:24px;">Магазин духовных товаров · Spiritual Science</p>
-      <p style="margin-top:16px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.92rem;color:var(--mauve);">
+<p style="margin-top:16px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.92rem;color:var(--mauve);">
         Хотите узнать первыми? Напишите нам: <a href="mailto:poet@iabard.com" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,169,110,0.4);">poet@iabard.com</a>
       </p>
     </div>
@@ -1340,7 +1337,7 @@
 <!-- ═══ FOOTER ═══ -->
 <footer>
   <p>© 2026 <span>Ия Бард · Ипатия Бард · Hypatia Bard</span><br>
-  Все права защищены авторским правом на&nbsp;<a href="https://stihi.ru/avtor/hypatiabard" target="_blank" rel="noopener noreferrer" class="stihi-btn">стихи.ru</a></p>
+  Все права защищены авторским правом</p>
 </footer>
 
 <script>
@@ -1363,8 +1360,9 @@ function switchTab(id, btn) {
   document.getElementById(id).classList.add('active');
   btn.classList.add('active');
   btn.setAttribute('aria-selected', 'true');
-  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  document.querySelector('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+window.addEventListener('load', function(){ window.scrollTo(0,0); });
 
 document.querySelector('[role="tablist"]').addEventListener('keydown', function(e) {
   var tabs = Array.from(this.querySelectorAll('[role="tab"]'));
