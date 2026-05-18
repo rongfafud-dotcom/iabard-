@@ -1,0 +1,141 @@
+name: YouTube Auto-Sync
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'   # every 4 hours
+  workflow_dispatch:          # manual trigger from GitHub UI
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync YouTube videos
+        env:
+          YT_HANDLE: ia_bard
+        run: |
+          python3 - <<'PYEOF'
+          import re, urllib.request, xml.etree.ElementTree as ET
+
+          HANDLE = "ia_bard"
+          HTML_FILE = "index.html"
+          START_MARKER = "<!-- YT-NOVINKA-START -->"
+          END_MARKER   = "<!-- YT-NOVINKA-END -->"
+
+          # Step 1: resolve handle → channel ID via YouTube page
+          req = urllib.request.Request(
+              f"https://www.youtube.com/@{HANDLE}",
+              headers={"User-Agent": "Mozilla/5.0"}
+          )
+          page = urllib.request.urlopen(req, timeout=15).read().decode("utf-8", errors="ignore")
+          m = re.search(r'"channelId"\s*:\s*"(UC[^"]+)"', page)
+          if not m:
+              m = re.search(r'channel/(UC[^"?/]+)', page)
+          if not m:
+              print("ERROR: could not find channel ID"); exit(1)
+          channel_id = m.group(1)
+          print(f"Channel ID: {channel_id}")
+
+          # Step 2: fetch RSS feed
+          rss_url = f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}"
+          rss_data = urllib.request.urlopen(rss_url, timeout=15).read()
+          ns = {
+              'atom': 'http://www.w3.org/2005/Atom',
+              'yt':   'http://www.youtube.com/xml/schemas/2015',
+              'media':'http://search.yahoo.com/mrss/'
+          }
+          root = ET.fromstring(rss_data)
+          entries = root.findall('atom:entry', ns)
+
+          # Step 3: read current HTML
+          with open(HTML_FILE, encoding="utf-8") as f:
+              html = f.read()
+
+          # Step 4: find existing video IDs in Новинки section
+          block_m = re.search(
+              re.escape(START_MARKER) + r'(.*?)' + re.escape(END_MARKER),
+              html, re.DOTALL
+          )
+          block = block_m.group(1) if block_m else ""
+          existing = set(re.findall(r'data-vid="([^"]+)"', block))
+
+          # Step 5: build new cards for unseen videos
+          new_cards = []
+          for entry in entries:
+              vid_id_el = entry.find('yt:videoId', ns)
+              title_el  = entry.find('atom:title', ns)
+              if vid_id_el is None or title_el is None:
+                  continue
+              vid   = vid_id_el.text.strip()
+              title = title_el.text.strip()
+              if vid in existing:
+                  continue
+              card = f'''      <div class="novinka-card">
+                <div class="novinka-title">{title}</div>
+                <div class="novinka-video">
+                  <div class="yt-facade" data-vid="{vid}" onclick="ytPlay(this)">
+                    <img src="https://img.youtube.com/vi/{vid}/hqdefault.jpg" alt="{title} — Ипатия Бард" loading="lazy">
+                    <button class="yt-play" aria-label="Смотреть видео">&#9654;</button>
+                  </div>
+                </div>
+              </div>'''
+              new_cards.append(card)
+              existing.add(vid)
+
+          if not new_cards:
+              print("No new videos found."); exit(0)
+
+          print(f"Adding {len(new_cards)} new video(s).")
+
+          # Step 6: rebuild Новинки block — new cards on top, old block below
+          # Strip the placeholder "здесь появятся" card if present
+          clean_block = re.sub(
+              r'\s*<div class="novinka-card">.*?Здесь появятся новые видео.*?</div>\s*',
+              '\n', block, flags=re.DOTALL
+          )
+          new_block = (
+              "\n  " + START_MARKER + "\n"
+              "  <div id=\"novinka\" class=\"tab-panel\" role=\"tabpanel\" aria-labelledby=\"tab-novinka\">\n"
+              "    <div class=\"novinka-list\">\n"
+              + "\n".join(new_cards) + "\n"
+              + clean_block.strip().replace(
+                  '<div id="novinka" class="tab-panel" role="tabpanel" aria-labelledby="tab-novinka">\n    <div class="novinka-list">',
+                  ''
+              ).rstrip().rstrip('</div>').rstrip().rstrip('</div>').strip()
+              + "\n    </div>\n  </div>\n  " + END_MARKER + "\n"
+          )
+
+          # Simpler rebuild: prepend new cards to existing card list
+          existing_cards = re.findall(r'<div class="novinka-card">.*?</div>\s*</div>', clean_block, re.DOTALL)
+          all_cards = new_cards + existing_cards
+
+          new_section = (
+              "\n  " + START_MARKER + "\n"
+              "  <div id=\"novinka\" class=\"tab-panel\" role=\"tabpanel\" aria-labelledby=\"tab-novinka\">\n"
+              "    <div class=\"novinka-list\">\n"
+              + "\n".join(all_cards) + "\n"
+              + "    </div>\n  </div>\n  " + END_MARKER + "\n"
+          )
+
+          html_new = html[:block_m.start()] + new_section + html[block_m.end():]
+
+          with open(HTML_FILE, "w", encoding="utf-8") as f:
+              f.write(html_new)
+          print("Done.")
+          PYEOF
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name  "youtube-sync[bot]"
+          git config user.email "youtube-sync@iabard.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+          else
+            git commit -m "Auto-sync: new YouTube videos from @ia_bard"
+            git push
+          fi
