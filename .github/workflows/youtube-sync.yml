@@ -1,9 +1,9 @@
-name: YouTube Auto-Sync
+name: YouTube Shorts Auto-Sync
 
 on:
   schedule:
-    - cron: '0 */4 * * *'   # every 4 hours
-  workflow_dispatch:          # manual trigger from GitHub UI
+    - cron: '0 6 * * *'    # once daily at 6:00 UTC
+  workflow_dispatch:         # manual trigger from GitHub UI
 
 jobs:
   sync:
@@ -14,118 +14,103 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Sync YouTube videos
-        env:
-          YT_HANDLE: ia_bard
+      - name: Sync latest 10 Shorts
         run: |
           python3 - <<'PYEOF'
-          import re, urllib.request, xml.etree.ElementTree as ET
+          import re, urllib.request
 
-          HANDLE = "ia_bard"
+          HANDLE   = "ia_bard"
           HTML_FILE = "index.html"
           START_MARKER = "<!-- YT-NOVINKA-START -->"
           END_MARKER   = "<!-- YT-NOVINKA-END -->"
+          MAX_VIDEOS   = 10
 
-          # Step 1: resolve handle → channel ID via YouTube page
-          req = urllib.request.Request(
-              f"https://www.youtube.com/@{HANDLE}",
-              headers={"User-Agent": "Mozilla/5.0"}
-          )
-          page = urllib.request.urlopen(req, timeout=15).read().decode("utf-8", errors="ignore")
-          m = re.search(r'"channelId"\s*:\s*"(UC[^"]+)"', page)
-          if not m:
-              m = re.search(r'channel/(UC[^"?/]+)', page)
-          if not m:
-              print("ERROR: could not find channel ID"); exit(1)
-          channel_id = m.group(1)
-          print(f"Channel ID: {channel_id}")
+          def fetch(url):
+              req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+              return urllib.request.urlopen(req, timeout=20).read().decode("utf-8", errors="ignore")
 
-          # Step 2: fetch RSS feed
-          rss_url = f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}"
-          rss_data = urllib.request.urlopen(rss_url, timeout=15).read()
-          ns = {
-              'atom': 'http://www.w3.org/2005/Atom',
-              'yt':   'http://www.youtube.com/xml/schemas/2015',
-              'media':'http://search.yahoo.com/mrss/'
-          }
-          root = ET.fromstring(rss_data)
-          entries = root.findall('atom:entry', ns)
+          # Step 1: get latest Shorts video IDs from the Shorts tab page
+          page = fetch(f"https://www.youtube.com/@{HANDLE}/shorts")
+          # Extract all videoId occurrences (Shorts page embeds them in initial data JSON)
+          all_ids = re.findall(r'"videoId"\s*:\s*"([A-Za-z0-9_-]{11})"', page)
+          # Deduplicate while preserving order
+          seen = set()
+          unique_ids = []
+          for vid in all_ids:
+              if vid not in seen:
+                  seen.add(vid)
+                  unique_ids.append(vid)
+          short_ids = unique_ids[:MAX_VIDEOS]
 
-          # Step 3: read current HTML
+          if not short_ids:
+              print("No Shorts found — YouTube may have blocked the request. Skipping.")
+              exit(0)
+
+          print(f"Found {len(short_ids)} Shorts: {short_ids}")
+
+          # Step 2: fetch titles from YouTube oEmbed for each video
+          def get_title(vid):
+              try:
+                  data = fetch(f"https://www.youtube.com/oembed?url=https://youtu.be/{vid}&format=json")
+                  m = re.search(r'"title"\s*:\s*"([^"]+)"', data)
+                  return m.group(1) if m else vid
+              except Exception:
+                  return vid
+
+          # Step 3: build new cards
+          cards = []
+          for vid in short_ids:
+              title = get_title(vid)
+              card = (
+                  f'      <div class="novinka-card">\n'
+                  f'        <div class="novinka-title">{title}</div>\n'
+                  f'        <div class="novinka-video">\n'
+                  f'          <div class="yt-facade" data-vid="{vid}" onclick="ytPlay(this)">\n'
+                  f'            <img src="https://img.youtube.com/vi/{vid}/hqdefault.jpg"'
+                  f' alt="{title} — Ипатия Бард" loading="lazy">\n'
+                  f'            <button class="yt-play" aria-label="Смотреть видео">&#9654;</button>\n'
+                  f'          </div>\n'
+                  f'        </div>\n'
+                  f'      </div>'
+              )
+              cards.append(card)
+
+          # Step 4: rebuild Новинки block
           with open(HTML_FILE, encoding="utf-8") as f:
               html = f.read()
 
-          # Step 4: find existing video IDs in Новинки section
           block_m = re.search(
               re.escape(START_MARKER) + r'(.*?)' + re.escape(END_MARKER),
               html, re.DOTALL
           )
-          block = block_m.group(1) if block_m else ""
-          existing = set(re.findall(r'data-vid="([^"]+)"', block))
-
-          # Step 5: build new cards for unseen videos
-          new_cards = []
-          for entry in entries:
-              vid_id_el = entry.find('yt:videoId', ns)
-              title_el  = entry.find('atom:title', ns)
-              if vid_id_el is None or title_el is None:
-                  continue
-              vid   = vid_id_el.text.strip()
-              title = title_el.text.strip()
-              if vid in existing:
-                  continue
-              card = f'''      <div class="novinka-card">
-                <div class="novinka-title">{title}</div>
-                <div class="novinka-video">
-                  <div class="yt-facade" data-vid="{vid}" onclick="ytPlay(this)">
-                    <img src="https://img.youtube.com/vi/{vid}/hqdefault.jpg" alt="{title} — Ипатия Бард" loading="lazy">
-                    <button class="yt-play" aria-label="Смотреть видео">&#9654;</button>
-                  </div>
-                </div>
-              </div>'''
-              new_cards.append(card)
-              existing.add(vid)
-
-          if not new_cards:
-              print("No new videos found."); exit(0)
-
-          print(f"Adding {len(new_cards)} new video(s).")
-
-          # Step 6: rebuild Новинки block — new cards on top, old block below
-          # Strip the placeholder "здесь появятся" card if present
-          clean_block = re.sub(
-              r'\s*<div class="novinka-card">.*?Здесь появятся новые видео.*?</div>\s*',
-              '\n', block, flags=re.DOTALL
-          )
-          new_block = (
-              "\n  " + START_MARKER + "\n"
-              "  <div id=\"novinka\" class=\"tab-panel\" role=\"tabpanel\" aria-labelledby=\"tab-novinka\">\n"
-              "    <div class=\"novinka-list\">\n"
-              + "\n".join(new_cards) + "\n"
-              + clean_block.strip().replace(
-                  '<div id="novinka" class="tab-panel" role="tabpanel" aria-labelledby="tab-novinka">\n    <div class="novinka-list">',
-                  ''
-              ).rstrip().rstrip('</div>').rstrip().rstrip('</div>').strip()
-              + "\n    </div>\n  </div>\n  " + END_MARKER + "\n"
-          )
-
-          # Simpler rebuild: prepend new cards to existing card list
-          existing_cards = re.findall(r'<div class="novinka-card">.*?</div>\s*</div>', clean_block, re.DOTALL)
-          all_cards = new_cards + existing_cards
+          if not block_m:
+              print("ERROR: markers not found in HTML"); exit(1)
 
           new_section = (
               "\n  " + START_MARKER + "\n"
               "  <div id=\"novinka\" class=\"tab-panel\" role=\"tabpanel\" aria-labelledby=\"tab-novinka\">\n"
               "    <div class=\"novinka-list\">\n"
-              + "\n".join(all_cards) + "\n"
-              + "    </div>\n  </div>\n  " + END_MARKER + "\n"
+              + "\n".join(cards) + "\n"
+              + "    </div>\n"
+              "    <div style=\"display:flex;gap:12px;justify-content:center;margin-top:32px;flex-wrap:wrap;\">\n"
+              "      <a href=\"https://youtube.com/@ia_bard/shorts\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"social-chip\">\n"
+              "        <svg class=\"social-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z\"/></svg>\n"
+              "        Все Shorts на YouTube\n"
+              "      </a>\n"
+              "      <a href=\"https://t.me/IA_Bard\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"social-chip\">\n"
+              "        <svg class=\"social-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z\"/></svg>\n"
+              "        Рукопись\n"
+              "      </a>\n"
+              "    </div>\n"
+              "  </div>\n"
+              "  " + END_MARKER + "\n"
           )
 
           html_new = html[:block_m.start()] + new_section + html[block_m.end():]
 
           with open(HTML_FILE, "w", encoding="utf-8") as f:
               f.write(html_new)
-          print("Done.")
+          print(f"Done — wrote {len(cards)} Shorts cards.")
           PYEOF
 
       - name: Commit and push if changed
@@ -134,8 +119,8 @@ jobs:
           git config user.email "youtube-sync@iabard.com"
           git add index.html
           if git diff --cached --quiet; then
-            echo "Nothing to commit."
+            echo "No changes."
           else
-            git commit -m "Auto-sync: new YouTube videos from @ia_bard"
+            git commit -m "Auto-sync: latest 10 Shorts from @ia_bard"
             git push
           fi
