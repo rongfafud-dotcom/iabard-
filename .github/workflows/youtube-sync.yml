@@ -102,11 +102,17 @@ jobs:
           print(f"Done — wrote {len(cards)} Shorts cards.")
           PYEOF
 
+      - name: Update sitemap lastmod
+        run: |
+          TODAY=$(date -u +%Y-%m-%d)
+          sed -i "s|<lastmod>.*</lastmod>|<lastmod>${TODAY}</lastmod>|" sitemap.xml
+          echo "Sitemap lastmod → ${TODAY}"
+
       - name: Commit and push if changed
         run: |
           git config user.name  "youtube-sync[bot]"
           git config user.email "youtube-sync@iabard.com"
-          git add index.html
+          git add index.html sitemap.xml
           if git diff --cached --quiet; then
             echo "No changes."
           else
