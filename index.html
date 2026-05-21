@@ -104,8 +104,10 @@
 
     .card-bottom{position:relative;z-index:2;width:100%;max-width:980px;
       display:flex;flex-direction:column;align-items:center;gap:16px}
-    .tagline-row{display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;max-width:980px}
+    .tagline-row{display:flex;flex-direction:column;align-items:center;gap:0;width:100%;max-width:980px}
     .hero-phrase{margin:0}
+    /* on mobile: push button to end so both phrases stay together above it */
+    .tagline-row .social-chip-hero{order:10;margin-top:16px}
     .hero-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 
     /* SOCIAL */
@@ -310,7 +312,9 @@
       .tagline-row .hero-tagline{flex:1;white-space:normal;max-width:none;font-size:clamp(0.9rem,1.55vw,1.22rem)}
       .tagline-row .hero-tagline:first-child{text-align:right}
       .tagline-row .hero-tagline:last-child{text-align:left}
-      .tagline-row .social-chip-hero{flex-shrink:0}
+      .tagline-row .social-chip-hero{order:0;margin-top:0;flex-shrink:0}
+      /* Новинки / Зодиак: two-column grid */
+      .novinka-list{display:grid;grid-template-columns:1fr 1fr;max-width:1040px;gap:28px 36px;align-items:start}
 
       /* Desktop: show front + back covers side by side, no flip needed */
       .books-grid{max-width:760px;gap:28px}
