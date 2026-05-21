@@ -30,6 +30,7 @@
   <link rel="canonical" href="https://iabard.com"/>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
   <link rel="manifest" href="/manifest.json"/>
+  <link rel="preload" as="image" href="background.webp" type="image/webp">
   <meta name="theme-color" content="#5c3d55"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -521,6 +522,40 @@
       .novinka-card{padding:20px 16px}
       .novinka-poem{font-size:1rem}
     }
+
+    /* SCROLL ANIMATIONS */
+    .fade-up{opacity:0;transform:translateY(28px);transition:opacity 0.6s ease,transform 0.6s ease}
+    .fade-up.visible{opacity:1;transform:translateY(0)}
+
+    /* BACK TO TOP */
+    #back-to-top{position:fixed;bottom:24px;right:20px;width:44px;height:44px;border-radius:50%;
+      background:rgba(92,61,85,0.88);border:1px solid rgba(201,169,110,0.45);
+      color:var(--gold);cursor:pointer;display:flex;align-items:center;justify-content:center;
+      z-index:200;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none;
+      box-shadow:0 4px 16px rgba(0,0,0,0.4)}
+    #back-to-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+    #back-to-top:hover{background:var(--plum);border-color:var(--gold);box-shadow:0 6px 20px rgba(0,0,0,0.5)}
+    #back-to-top svg{width:18px;height:18px;fill:currentColor}
+
+    /* CONTACT FORM */
+    .contact-form-wrap{margin:32px 0 8px;padding:28px 24px;background:rgba(92,61,85,0.10);
+      border:1px solid rgba(201,169,110,0.18);border-radius:16px}
+    .contact-form-title{font-family:'Cormorant Garamond',serif;font-size:1rem;letter-spacing:3px;
+      text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:20px}
+    .contact-form{display:flex;flex-direction:column;gap:12px}
+    .contact-input,.contact-textarea{width:100%;padding:10px 16px;
+      background:rgba(30,18,32,0.65);border:1px solid rgba(201,169,110,0.22);border-radius:10px;
+      color:var(--cream);font-family:'Raleway',sans-serif;font-size:0.78rem;
+      letter-spacing:0.5px;outline:none;transition:border-color 0.2s;resize:none}
+    .contact-input:focus,.contact-textarea:focus{border-color:rgba(201,169,110,0.55)}
+    .contact-input::placeholder,.contact-textarea::placeholder{color:rgba(253,246,238,0.32)}
+    .contact-submit{align-self:center;padding:10px 40px;background:var(--plum);
+      color:var(--cream);border:none;border-radius:20px;font-family:'Raleway',sans-serif;
+      font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.2s}
+    .contact-submit:hover{background:#3d2040;transform:translateY(-1px)}
+    .contact-sent{text-align:center;font-family:'Cormorant Garamond',serif;
+      font-size:0.9rem;color:var(--gold);letter-spacing:1px;padding:16px 0}
+    .contact-honeypot{display:none}
   </style>
 </head>
 <body>
@@ -1879,6 +1914,19 @@
           </div>
         </div>
 
+        <!-- Contact Form -->
+        <div class="contact-form-wrap">
+          <p class="contact-form-title">Написать автору</p>
+          <form name="contact" method="POST" data-netlify="true" class="contact-form" onsubmit="handleContact(event,this)">
+            <input type="hidden" name="form-name" value="contact">
+            <p class="contact-honeypot"><label>Не заполняй: <input name="bot-field"></label></p>
+            <input type="text" name="name" placeholder="Ваше имя" required class="contact-input">
+            <input type="email" name="email" placeholder="Email (необязательно)" class="contact-input">
+            <textarea name="message" placeholder="Ваше сообщение…" required rows="4" class="contact-textarea"></textarea>
+            <button type="submit" class="contact-submit">Отправить</button>
+          </form>
+        </div>
+
         <!-- Contact + Rights -->
         <div class="author-footer">
           <div class="author-footer-block">
@@ -1942,6 +1990,10 @@
   <p>© 2026 <span>Ия Бард · Ипатия Бард · Hypatia Bard</span><br>
   Все права защищены авторским правом</p>
 </footer>
+
+<button id="back-to-top" aria-label="Наверх" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg>
+</button>
 
 <script>
 function ytPlay(el) {
@@ -2048,6 +2100,37 @@ document.querySelector('[role="tablist"]').addEventListener('keydown', function(
   if (e.key === 'Home') { tabs[0].focus(); e.preventDefault(); }
   if (e.key === 'End')  { tabs[tabs.length - 1].focus(); e.preventDefault(); }
 });
+
+// Back to top
+var btt = document.getElementById('back-to-top');
+window.addEventListener('scroll', function() {
+  btt.classList.toggle('visible', window.scrollY > 400);
+}, {passive: true});
+
+// Scroll fade-in animations
+var fadeObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) { e.target.classList.add('visible'); fadeObserver.unobserve(e.target); }
+  });
+}, {threshold: 0.08, rootMargin: '0px 0px -30px 0px'});
+document.querySelectorAll('.flip-card, .zodiac-card, .novinka-card').forEach(function(el) {
+  el.classList.add('fade-up');
+  fadeObserver.observe(el);
+});
+
+// Contact form submit
+function handleContact(e, form) {
+  e.preventDefault();
+  var data = new FormData(form);
+  fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: new URLSearchParams(data).toString()})
+  .then(function() {
+    form.parentElement.innerHTML = '<p class="contact-sent">Спасибо! Сообщение отправлено ✦</p>';
+  })
+  .catch(function() {
+    form.parentElement.innerHTML = '<p class="contact-sent">Ошибка — напишите на poet@iabard.com</p>';
+  });
+}
 </script>
 </body>
 </html>
