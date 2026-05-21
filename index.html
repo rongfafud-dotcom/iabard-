@@ -69,12 +69,12 @@
     body{font-family:'Raleway',sans-serif;background:var(--deep);color:var(--cream);min-height:100vh}
 
     /* HERO */
-    .card{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+    .card{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
            position:relative;overflow:hidden;
-           background:url('background.jpg') no-repeat 50% 20%;background-size:cover;padding:64px 48px 60px}
+           background:url('background.jpg') no-repeat 50% 20%;background-size:cover;padding:0 48px 52px}
     .card::before{content:'';position:absolute;inset:0;
-      background:linear-gradient(180deg,rgba(18,6,24,0.60) 0%,rgba(18,6,24,0.25) 45%,rgba(18,6,24,0.70) 100%)}
-    .card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:200px;
+      background:linear-gradient(180deg,rgba(18,6,24,0.20) 0%,rgba(18,6,24,0.15) 40%,rgba(18,6,24,0.80) 100%)}
+    .card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:220px;
       background:linear-gradient(0deg,#1e1220 0%,transparent 100%);z-index:1;pointer-events:none}
     .card-inner{position:relative;z-index:2;width:100%;max-width:980px;display:flex;flex-direction:column;align-items:center}
 
@@ -293,14 +293,14 @@
 
     /* RESPONSIVE */
     @media(max-width:860px){
-      .card{padding:48px 24px 44px}.tab-panel{padding:24px 24px 40px}
+      .card{padding:0 24px 44px}.tab-panel{padding:24px 24px 40px}
     }
     @media(max-width:600px){
       .social-row{grid-template-columns:repeat(3,auto)}
       .novinka-video{max-width:250px}
     }
     @media(max-width:520px){
-      .card{padding:36px 16px 0;justify-content:flex-start;min-height:85vh;background-position:50% 55%}
+      .card{padding:0 16px 36px;min-height:100svh;background-position:50% 18%}
       .tab-panel{padding:20px 16px 32px}
       .name{margin-bottom:2px}.name-sub{margin-bottom:4px}
       .nav-tabs{margin-bottom:6px}.gold-rule{display:none}
