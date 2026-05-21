@@ -309,12 +309,15 @@
     @media(min-width:861px){
       /* Hero tagline: flanking the Рукопись button */
       .tagline-row{flex-direction:row;justify-content:center;align-items:center;gap:32px}
-      .tagline-row .hero-tagline{flex:1;white-space:normal;max-width:none;font-size:clamp(0.9rem,1.55vw,1.22rem)}
+      .tagline-row .hero-tagline{flex:1;white-space:normal;max-width:none;font-size:clamp(0.78rem,1.1vw,0.94rem)}
       .tagline-row .hero-tagline:first-child{text-align:right}
       .tagline-row .hero-tagline:last-child{text-align:left}
       .tagline-row .social-chip-hero{order:0;margin-top:0;flex-shrink:0}
       /* Новинки / Зодиак: two-column grid */
       .novinka-list{display:grid;grid-template-columns:1fr 1fr;max-width:1040px;gap:28px 36px;align-items:start}
+      /* Full-width card (e.g. Зодиак полная версия) spans both columns */
+      .novinka-card-full{grid-column:1 / -1}
+      .novinka-card-full .novinka-video-wide{max-width:600px;margin:0 auto}
 
       /* Desktop: show front + back covers side by side, no flip needed */
       .books-grid{max-width:760px;gap:28px}
@@ -985,7 +988,7 @@
         </div>
       </div>
 
-      <div class="novinka-card">
+      <div class="novinka-card novinka-card-full">
         <div class="novinka-title">Зодиак — Полная версия 🎬</div>
         <div class="novinka-video novinka-video-wide">
           <div class="yt-facade" data-vid="8cZ-G4rRvRI" onclick="ytPlay(this)">
