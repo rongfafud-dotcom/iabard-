@@ -2049,7 +2049,7 @@ function switchTab(id, btn) {
   document.getElementById(id).classList.add('active');
   btn.classList.add('active');
   btn.setAttribute('aria-selected', 'true');
-  document.querySelector('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 window.addEventListener('load', function(){ window.scrollTo(0,0); });
 
