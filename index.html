@@ -168,23 +168,6 @@
     .flip-card-front::after{content:none}
     .flip-card-back::after{content:none}
 
-    /* МАГАЗИН */
-    .shop-coming{max-width:800px;margin:0 auto;text-align:center}
-    .shop-banner{display:inline-block;padding:12px 56px;margin-bottom:36px;
-      background:linear-gradient(90deg,var(--plum),#8a5a7a,var(--plum));
-      color:var(--gold);font-family:'Cormorant Garamond',serif;
-      font-size:clamp(1.5rem,3vw,2.2rem);font-weight:600;letter-spacing:8px;
-      text-transform:uppercase;border-radius:4px;box-shadow:0 4px 22px rgba(92,61,85,0.25)}
-    .shop-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
-                max-width:700px;margin:0 auto 28px}
-    .shop-item{background:rgba(255,255,255,0.75);border-radius:14px;padding:24px 12px 20px;
-                border:1px solid rgba(92,61,85,0.12);box-shadow:0 3px 12px rgba(92,61,85,0.07);
-                display:flex;flex-direction:column;align-items:center;gap:10px}
-    .shop-item-icon{font-size:2.6rem;line-height:1}
-    .shop-item-label{font-family:'Cormorant Garamond',serif;font-size:0.82rem;color:var(--plum);
-                      font-weight:600;letter-spacing:0.5px;text-align:center;line-height:1.35}
-    .shop-sub{font-size:0.72rem;color:var(--mauve);letter-spacing:2px;text-transform:uppercase;opacity:0.7}
-
     /* SOCIAL SVG ICONS */
     .social-icon{width:13px;height:13px;fill:currentColor;flex-shrink:0;display:inline-block;vertical-align:middle}
 
@@ -245,21 +228,6 @@
     .author-rights .stihi-btn{color:rgba(92,61,85,0.65);border-color:rgba(92,61,85,0.3)}
     .author-rights .stihi-btn:hover{border-color:var(--plum);color:var(--plum);background:rgba(92,61,85,0.07)}
 
-    /* SHOP COLLAGE */
-    .shop-collage-card{position:relative;max-width:500px;margin:0 auto;border-radius:18px;
-      overflow:hidden;aspect-ratio:4/3;
-      background:linear-gradient(135deg,#2a1a2e 0%,#4a2a44 50%,#1e1220 100%);
-      box-shadow:0 8px 40px rgba(92,61,85,0.35)}
-    .shop-collage-icons{position:absolute;inset:0;display:grid;
-      grid-template-columns:1fr 1fr;align-items:center;justify-items:center;
-      padding:24px;gap:8px;opacity:0.28}
-    .shop-collage-icons span{font-size:clamp(2.5rem,6vw,4rem);line-height:1;filter:blur(0.5px)}
-    .shop-collage-overlay{position:absolute;inset:0;display:flex;align-items:center;
-      justify-content:center;background:rgba(18,8,22,0.38)}
-    .shop-coming-soon-text{font-family:'Cormorant Garamond',serif;
-      font-size:clamp(1.8rem,5vw,3rem);font-weight:600;letter-spacing:10px;
-      text-transform:uppercase;color:var(--gold);text-align:center;
-      text-shadow:0 4px 20px rgba(201,169,110,0.5)}
 
 
     /* SUPPRESS 3RD-PARTY BOTTOM-RIGHT POPUPS */
@@ -282,12 +250,10 @@
     /* RESPONSIVE */
     @media(max-width:860px){
       .card{padding:48px 24px 44px}.tab-panel{padding:24px 24px 40px}
-      .shop-grid{grid-template-columns:repeat(2,1fr)}
     }
     @media(max-width:600px){
       .social-row{grid-template-columns:repeat(3,auto)}
       .novinka-video{max-width:250px}
-      .shop-grid{grid-template-columns:repeat(2,1fr)}
     }
     @media(max-width:520px){
       .card{padding:36px 16px 16px;justify-content:flex-start}
@@ -301,7 +267,6 @@
       footer{padding:20px 24px}
       .novinka-card{padding:20px 16px}
       .novinka-poem{font-size:1rem}
-      .shop-banner{letter-spacing:4px;padding:10px 28px}
     }
   </style>
 </head>
