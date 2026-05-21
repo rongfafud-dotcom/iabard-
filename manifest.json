@@ -9,10 +9,10 @@
   "lang": "ru",
   "icons": [
     {
-      "src": "/background.jpg",
+      "src": "/favicon.svg",
       "sizes": "any",
-      "type": "image/jpeg",
-      "purpose": "any"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ]
 }
