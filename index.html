@@ -291,6 +291,31 @@
     .stihi-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,0.07)}
 
     /* RESPONSIVE */
+    @media(min-width:861px){
+      /* Desktop: show front + back covers side by side, no flip needed */
+      .books-grid{max-width:760px;gap:28px}
+      .flip-card{cursor:default;border-radius:7px;box-shadow:0 4px 20px rgba(92,61,85,0.18)}
+      .flip-card-inner{
+        padding-top:0 !important;height:560px;
+        display:grid !important;grid-template-columns:1fr 1fr !important;
+        transform:none !important;transition:none !important;transform-style:flat !important
+      }
+      .flip-card-front,.flip-card-back{
+        position:relative !important;inset:auto !important;
+        width:auto !important;height:100% !important;
+        transform:none !important;
+        backface-visibility:visible !important;-webkit-backface-visibility:visible !important;
+        visibility:visible !important;box-shadow:none !important
+      }
+      .flip-card.flipped .flip-card-front{visibility:visible !important}
+      .flip-card-front{border-radius:7px 0 0 7px !important}
+      .flip-card-back{border-radius:0 7px 7px 0 !important}
+      /* Hide toggle button — both sides already visible */
+      .book-read-btn{display:none !important}
+      /* Hide duplicate buy button on back side */
+      .flip-card-back .book-card-btns{display:none !important}
+      .flip-card-back .book-back-poem{padding-bottom:16px !important}
+    }
     @media(max-width:860px){
       .card{padding:40px 24px 44px}.tab-panel{padding:24px 24px 40px}
     }
