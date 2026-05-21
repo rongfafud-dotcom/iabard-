@@ -261,15 +261,6 @@
       text-transform:uppercase;color:var(--gold);text-align:center;
       text-shadow:0 4px 20px rgba(201,169,110,0.5)}
 
-    /* НОВИНКИ — show-more */
-    .novinka-hidden{display:none}
-    .load-more-btn{display:block;margin:32px auto 0;padding:12px 40px;
-      background:none;border:1px solid rgba(201,169,110,0.55);border-radius:24px;
-      color:var(--gold);font-family:'Raleway',sans-serif;font-size:0.72rem;
-      letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;
-      transition:all 0.25s}
-    .load-more-btn:hover{background:rgba(201,169,110,0.1);border-color:var(--gold)}
-    .load-more-btn:disabled{display:none}
 
     /* SUPPRESS 3RD-PARTY BOTTOM-RIGHT POPUPS */
     [id*="bookbaby"],[class*="bookbaby"],[id*="bb-cta"],[class*="bb-cta"]{display:none!important}
@@ -1584,32 +1575,7 @@ function switchTab(id, btn) {
   btn.setAttribute('aria-selected', 'true');
   document.querySelector('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-window.addEventListener('load', function(){ window.scrollTo(0,0); initNovinka(); });
-
-function initNovinka() {
-  var list = document.querySelector('#novinka .novinka-list');
-  if (!list) return;
-  var cards = Array.from(list.querySelectorAll('.novinka-card'));
-  if (cards.length <= 3) return;
-  cards.forEach(function(c, i) { if (i >= 3) c.classList.add('novinka-hidden'); });
-  var shown = 3;
-  var btn = document.createElement('button');
-  btn.className = 'load-more-btn';
-  updateBtn();
-  btn.addEventListener('click', function() {
-    var hidden = list.querySelectorAll('.novinka-card.novinka-hidden');
-    var toShow = Array.from(hidden).slice(0, 3);
-    toShow.forEach(function(c) { c.classList.remove('novinka-hidden'); });
-    shown += toShow.length;
-    if (list.querySelectorAll('.novinka-card.novinka-hidden').length === 0) btn.disabled = true;
-    else updateBtn();
-  });
-  function updateBtn() {
-    var left = list.querySelectorAll('.novinka-card.novinka-hidden').length;
-    btn.textContent = 'Показать ещё ' + Math.min(3, left);
-  }
-  list.appendChild(btn);
-}
+window.addEventListener('load', function(){ window.scrollTo(0,0); });
 
 document.querySelector('[role="tablist"]').addEventListener('keydown', function(e) {
   var tabs = Array.from(this.querySelectorAll('[role="tab"]'));
