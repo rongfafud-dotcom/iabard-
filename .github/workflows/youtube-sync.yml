@@ -2,7 +2,7 @@ name: YouTube Shorts Auto-Sync
 
 on:
   schedule:
-    - cron: '0 15 * * *'   # daily at 18:00 Moscow time (UTC+3)
+    - cron: '0 22 * * *'   # daily at 18:00 Miami time (EDT, UTC-4)
   workflow_dispatch:         # manual trigger from GitHub UI
 
 jobs:
