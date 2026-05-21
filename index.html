@@ -220,13 +220,28 @@
     /* Book front — bottom button bar */
     .book-card-btns{position:absolute;bottom:0;left:0;right:0;z-index:4;
       display:flex;gap:6px;padding:0 10px 10px}
-    .book-front-buy{flex:2;display:inline-flex;align-items:center;justify-content:center;
+    .book-buy-wrap{flex:2;display:flex;border-radius:14px;overflow:hidden;
+      box-shadow:0 2px 8px rgba(0,0,0,0.4);position:relative}
+    .book-front-buy{flex:1;display:inline-flex;align-items:center;justify-content:center;
       padding:9px 4px;white-space:nowrap;text-align:center;
-      background:rgba(201,169,110,0.93);border-radius:14px;
+      background:rgba(201,169,110,0.93);border-radius:0;
       color:#1e1220;font-family:'Raleway',sans-serif;font-size:0.68rem;
       letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;
-      transition:background 0.2s;box-shadow:0 2px 8px rgba(0,0,0,0.4)}
+      transition:background 0.2s}
     .book-front-buy:hover{background:var(--gold)}
+    .book-stores-toggle{width:26px;flex-shrink:0;padding:0;cursor:pointer;
+      background:rgba(172,128,45,0.93);border:none;border-left:1px solid rgba(0,0,0,0.15);
+      color:#1e1220;font-size:0.75rem;display:flex;align-items:center;justify-content:center;
+      transition:background 0.2s}
+    .book-stores-toggle:hover{background:var(--gold)}
+    .book-stores-menu{position:absolute;bottom:calc(100% + 6px);left:0;right:0;z-index:20;
+      background:#1e1220;border:1px solid rgba(201,169,110,0.28);border-radius:10px;
+      overflow:hidden;box-shadow:0 -4px 24px rgba(0,0,0,0.65)}
+    .book-stores-menu a{display:block;padding:9px 14px;color:rgba(253,246,238,0.80);
+      text-decoration:none;font-family:'Raleway',sans-serif;font-size:0.60rem;
+      letter-spacing:1px;text-transform:uppercase;transition:background 0.15s;white-space:nowrap}
+    .book-stores-menu a+a{border-top:1px solid rgba(201,169,110,0.08)}
+    .book-stores-menu a:hover{background:rgba(201,169,110,0.10);color:var(--gold)}
     .book-read-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;
       padding:9px 4px;white-space:nowrap;background:rgba(18,6,24,0.75);
       border:1px solid rgba(201,169,110,0.55);border-radius:14px;
@@ -1044,7 +1059,10 @@
               Скачать PDF
             </a>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Ипатия Бард Соавтор жизни">
               <a href="https://store.bookbaby.com/book/coauthor" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $44</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Описание</button>
             </div>
           </div>
@@ -1067,7 +1085,10 @@
 А остальное — это чушь и ерунда!</p>
             </div>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Ипатия Бард Соавтор жизни">
               <a href="https://store.bookbaby.com/book/coauthor" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $44</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Обложка</button>
             </div>
           </div>
@@ -1084,7 +1105,10 @@
               Скачать PDF
             </a>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Ипатия Бард Дом стихи">
               <a href="https://store.bookbaby.com/book/home9" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $44</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Описание</button>
             </div>
           </div>
@@ -1112,7 +1136,10 @@
 Жить, кайфовать и творить волшебство!</p>
             </div>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Ипатия Бард Дом стихи">
               <a href="https://store.bookbaby.com/book/home9" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $44</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Обложка</button>
             </div>
           </div>
@@ -1129,7 +1156,10 @@
               Скачать PDF
             </a>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Ипатия Бард Женское счастье">
               <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $44</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Описание</button>
             </div>
           </div>
@@ -1157,7 +1187,10 @@
 И не в прозе, а в рифме, в стихах…</p>
             </div>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Ипатия Бард Женское счастье">
               <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $44</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Обложка</button>
             </div>
           </div>
@@ -1174,7 +1207,10 @@
               Скачать PDF
             </a>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Ипатия Бард Записки из палаты 6 книга 2">
               <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Описание</button>
             </div>
           </div>
@@ -1202,7 +1238,10 @@
 В Духовный Мир, о коем я пишу!</p>
             </div>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Ипатия Бард Записки из палаты 6 книга 2">
               <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Обложка</button>
             </div>
           </div>
@@ -1219,7 +1258,10 @@
               Скачать PDF
             </a>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Ипатия Бард Записки из палаты 6 книга 1">
               <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Описание</button>
             </div>
           </div>
@@ -1247,7 +1289,10 @@
 В Духовный Мир, о коем я пишу!</p>
             </div>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Ипатия Бард Записки из палаты 6 книга 1">
               <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Обложка</button>
             </div>
           </div>
@@ -1264,7 +1309,10 @@
               Скачать PDF
             </a>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Hypatia Bard My Citadel Book 3">
               <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Описание</button>
             </div>
           </div>
@@ -1293,7 +1341,10 @@
 В добрый час!</p>
             </div>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Hypatia Bard My Citadel Book 3">
               <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Обложка</button>
             </div>
           </div>
@@ -1310,7 +1361,10 @@
               Скачать PDF
             </a>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Hypatia Bard My Citadel Book 2">
               <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Описание</button>
             </div>
           </div>
@@ -1339,7 +1393,10 @@
 В добрый час!</p>
             </div>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Hypatia Bard My Citadel Book 2">
               <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Обложка</button>
             </div>
           </div>
@@ -1356,7 +1413,10 @@
               Скачать PDF
             </a>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Hypatia Bard My Citadel Book 1">
               <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Описание</button>
             </div>
           </div>
@@ -1385,7 +1445,10 @@
 В добрый час!</p>
             </div>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Hypatia Bard My Citadel Book 1">
               <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Обложка</button>
             </div>
           </div>
@@ -1403,7 +1466,10 @@
               Скачать PDF
             </a>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Ипатия Бард Лила Самопознания">
               <a href="https://store.bookbaby.com/book/leela" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $22</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Описание</button>
             </div>
           </div>
@@ -1436,7 +1502,10 @@
 «Лила» живая, не игра!</p>
             </div>
             <div class="book-card-btns">
+              <div class="book-buy-wrap" data-q="Ипатия Бард Лила Самопознания">
               <a href="https://store.bookbaby.com/book/leela" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $22</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Другие магазины">▾</button>
+            </div>
               <button class="book-read-btn">Обложка</button>
             </div>
           </div>
@@ -1769,6 +1838,37 @@ function ytPlay(el) {
   iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
   iframe.allowFullscreen = true;
   el.parentNode.replaceChild(iframe, el);
+}
+
+function bookStores(btn) {
+  var wrap = btn.closest('.book-buy-wrap');
+  var existing = wrap.querySelector('.book-stores-menu');
+  if (existing) { existing.remove(); return; }
+  // Close any other open menus
+  document.querySelectorAll('.book-stores-menu').forEach(function(m){ m.remove(); });
+  var q = encodeURIComponent(wrap.dataset.q || '');
+  var stores = [
+    ['Amazon',           'https://www.amazon.com/s?k=' + q],
+    ['Apple Books',      'https://books.apple.com/search?term=' + q],
+    ['Google Play',      'https://play.google.com/store/search?q=' + q + '&c=books'],
+    ['Barnes & Noble',   'https://www.barnesandnoble.com/s/' + q],
+    ['Kobo',             'https://www.kobo.com/search?query=' + q],
+    ['Литрес',           'https://www.litres.ru/search/?q=' + q],
+  ];
+  var menu = document.createElement('div');
+  menu.className = 'book-stores-menu';
+  stores.forEach(function(s) {
+    var a = document.createElement('a');
+    a.href = s[1]; a.target = '_blank'; a.rel = 'noopener noreferrer';
+    a.textContent = s[0];
+    menu.appendChild(a);
+  });
+  wrap.appendChild(menu);
+  setTimeout(function() {
+    document.addEventListener('click', function h(e) {
+      if (!wrap.contains(e.target)) { menu.remove(); document.removeEventListener('click', h); }
+    });
+  }, 0);
 }
 
 function switchTab(id, btn) {
