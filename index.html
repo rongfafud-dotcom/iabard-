@@ -69,9 +69,9 @@
     body{font-family:'Raleway',sans-serif;background:var(--deep);color:var(--cream);min-height:100vh}
 
     /* HERO */
-    .card{min-height:65vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    .card{min-height:65vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
            position:relative;overflow:hidden;
-           background:url('background.jpg') no-repeat 50% 28%;background-size:cover;padding:64px 48px 56px}
+           background:url('background.jpg') no-repeat 50% 28%;background-size:cover;padding:64px 48px 0}
     .card::before{content:'';position:absolute;inset:0;
       background:linear-gradient(160deg,rgba(30,18,32,0.52) 0%,rgba(92,61,85,0.42) 50%,rgba(30,18,32,0.58) 100%)}
     .card-inner{position:relative;z-index:2;width:100%;max-width:980px;display:flex;flex-direction:column;align-items:center}
@@ -100,9 +100,9 @@
       text-shadow:0 2px 18px rgba(201,169,110,0.5)}
 
     /* HERO BOTTOM — social buttons pinned to bottom of photo */
-    .hero-bottom{position:absolute;bottom:0;left:0;right:0;z-index:2;
+    .hero-bottom{position:relative;z-index:2;width:100%;
       display:flex;flex-direction:column;align-items:center;gap:8px;
-      padding:24px 32px 20px;pointer-events:none;
+      padding:24px 32px 40px;pointer-events:none;
       background:linear-gradient(0deg,rgba(18,6,24,0.88) 0%,rgba(18,6,24,0) 100%)}
     .hero-bottom a,.hero-bottom button{pointer-events:auto}
     .hero-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
