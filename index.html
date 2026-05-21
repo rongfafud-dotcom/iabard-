@@ -485,6 +485,7 @@
       .flip-card-inner{
         padding-top:0 !important;height:560px;
         display:grid !important;grid-template-columns:1fr 1fr !important;
+        gap:12px !important;
         transform:none !important;transition:none !important;transform-style:flat !important
       }
       .flip-card-front,.flip-card-back{
@@ -492,11 +493,11 @@
         width:auto !important;height:100% !important;
         transform:none !important;
         backface-visibility:visible !important;-webkit-backface-visibility:visible !important;
-        visibility:visible !important;box-shadow:none !important
+        visibility:visible !important;box-shadow:0 2px 12px rgba(0,0,0,0.25) !important
       }
       .flip-card.flipped .flip-card-front{visibility:visible !important}
-      .flip-card-front{border-radius:7px 0 0 7px !important}
-      .flip-card-back{border-radius:0 7px 7px 0 !important}
+      .flip-card-front{border-radius:7px !important}
+      .flip-card-back{border-radius:7px !important}
       /* Hide toggle button — both sides already visible */
       .book-read-btn{display:none !important}
       /* Hide duplicate buy button on back side */
