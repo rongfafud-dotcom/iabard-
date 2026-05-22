@@ -2019,9 +2019,9 @@ function bookStores(btn) {
   var stores = [
     ['Amazon',           'https://www.amazon.com/s?k=' + q + '&i=stripbooks'],
     ['Bookshop.org',     'https://bookshop.org/search?keywords=' + q],
-    ['Books-A-Million',  'https://www.booksamillion.com/search?q=' + q],
+    ['Books-A-Million',  'https://www.booksamillion.com/search?qisbn=' + q],
     ["Powell's Books",   'https://www.powells.com/searchresults?keyword=' + q],
-    ['Indigo (Canada)',  'https://www.indigo.ca/en-ca/search?q=' + q],
+    ['Indigo (Canada)',  'https://www.chapters.indigo.ca/en-ca/books/search/?sc=' + q + '&sf=isbn'],
   ];
   var menu = document.createElement('div');
   menu.className = 'book-stores-menu';
