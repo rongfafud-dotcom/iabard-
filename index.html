@@ -2017,14 +2017,11 @@ function bookStores(btn) {
   document.querySelectorAll('.book-stores-menu').forEach(function(m){ m.remove(); });
   var q = encodeURIComponent(wrap.dataset.q || '');
   var stores = [
-    ['Amazon',           'https://www.amazon.com/s?k=' + q + '&i=stripbooks'],
-    ['Apple Books',      'https://books.apple.com/search?term=' + q],
-    ['Google Play',      'https://play.google.com/store/search?q=' + q + '&c=books'],
     ['Barnes & Noble',   'https://www.barnesandnoble.com/s/' + q],
-    ['Kobo',             'https://www.kobo.com/search?query=' + q],
     ['Bookshop.org',     'https://bookshop.org/search?keywords=' + q],
     ['Books-A-Million',  'https://www.booksamillion.com/search?query=' + q],
     ["Powell's Books",   'https://www.powells.com/searchresults?keyword=' + q],
+    ['Hugendubel',       'https://www.hugendubel.de/de/search?q=' + q],
   ];
   var menu = document.createElement('div');
   menu.className = 'book-stores-menu';
