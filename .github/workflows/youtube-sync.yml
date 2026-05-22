@@ -2,7 +2,8 @@ name: YouTube Shorts Auto-Sync
 
 on:
   schedule:
-    - cron: '0 22 * * *'   # daily at 18:00 Miami time (EDT, UTC-4)
+    - cron: '0 22 * * *'   # 18:00 Miami (EDT, UTC-4)
+    - cron: '0 2  * * *'   # 22:00 Miami — catches videos posted in the evening
   workflow_dispatch:         # manual trigger from GitHub UI
 
 jobs:
@@ -14,44 +15,86 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Sync latest 10 Shorts
+      - name: Sync latest Shorts
         run: |
           python3 - <<'PYEOF'
-          import re, urllib.request
+          import re, urllib.request, xml.etree.ElementTree as ET
 
-          HANDLE   = "ia_bard"
-          HTML_FILE = "index.html"
+          HANDLE       = "ia_bard"
+          HTML_FILE    = "index.html"
           START_MARKER = "<!-- YT-NOVINKA-START -->"
           END_MARKER   = "<!-- YT-NOVINKA-END -->"
           MAX_VIDEOS   = 20
 
+          HEADERS = {
+              "User-Agent": (
+                  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                  "AppleWebKit/537.36 (KHTML, like Gecko) "
+                  "Chrome/124.0.0.0 Safari/537.36"
+              ),
+              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+              "Accept-Language": "en-US,en;q=0.9,ru;q=0.8",
+          }
+
           def fetch(url):
-              req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+              req = urllib.request.Request(url, headers=HEADERS)
               return urllib.request.urlopen(req, timeout=20).read().decode("utf-8", errors="ignore")
 
-          # Step 1: get latest Shorts video IDs from the Shorts tab page
-          page = fetch(f"https://www.youtube.com/@{HANDLE}/shorts")
-          # Extract all videoId occurrences (Shorts page embeds them in initial data JSON)
-          all_ids = re.findall(r'"videoId"\s*:\s*"([A-Za-z0-9_-]{11})"', page)
-          # Deduplicate while preserving order
-          seen = set()
-          unique_ids = []
-          for vid in all_ids:
-              if vid not in seen:
-                  seen.add(vid)
-                  unique_ids.append(vid)
-          short_ids = unique_ids[:MAX_VIDEOS]
+          def dedupe(ids):
+              seen, out = set(), []
+              for v in ids:
+                  if v not in seen:
+                      seen.add(v); out.append(v)
+              return out
+
+          # --- Method 1: scrape /shorts tab ---
+          short_ids = []
+          try:
+              page = fetch(f"https://www.youtube.com/@{HANDLE}/shorts")
+              raw = re.findall(r'"videoId"\s*:\s*"([A-Za-z0-9_-]{11})"', page)
+              short_ids = dedupe(raw)[:MAX_VIDEOS]
+              print(f"Shorts tab: found {len(short_ids)} IDs")
+          except Exception as exc:
+              print(f"Shorts tab failed: {exc}")
+
+          # --- Method 2: RSS feed fallback ---
+          if not short_ids:
+              print("Trying RSS fallback...")
+              try:
+                  page = fetch(f"https://www.youtube.com/@{HANDLE}")
+                  m = re.search(r'"channelId"\s*:\s*"(UC[A-Za-z0-9_-]{22})"', page)
+                  if not m:
+                      m = re.search(r'"browseId"\s*:\s*"(UC[A-Za-z0-9_-]{22})"', page)
+                  if m:
+                      cid = m.group(1)
+                      print(f"Channel ID: {cid}")
+                      rss = fetch(f"https://www.youtube.com/feeds/videos.xml?channel_id={cid}")
+                      ns = {
+                          "yt":   "http://www.youtube.com/xml/schemas/2015",
+                          "atom": "http://www.w3.org/2005/Atom",
+                      }
+                      root = ET.fromstring(rss)
+                      for e in root.findall("atom:entry", ns):
+                          vid_el = e.find("yt:videoId", ns)
+                          if vid_el is not None:
+                              short_ids.append(vid_el.text)
+                      short_ids = dedupe(short_ids)[:MAX_VIDEOS]
+                      print(f"RSS fallback: found {len(short_ids)} IDs")
+                  else:
+                      print("Channel ID not found in page.")
+              except Exception as exc:
+                  print(f"RSS fallback failed: {exc}")
 
           if not short_ids:
-              print("No Shorts found — YouTube may have blocked the request. Skipping.")
+              print("No videos found from any source. Skipping.")
               exit(0)
 
-          print(f"Found {len(short_ids)} Shorts: {short_ids}")
+          print(f"Using {len(short_ids)} video IDs: {short_ids}")
 
-          # Step 2: build new cards (no title shown above videos)
+          # Build video cards
           cards = []
           for vid in short_ids:
-              card = (
+              cards.append(
                   f'      <div class="novinka-card">\n'
                   f'        <div class="novinka-video">\n'
                   f'          <div class="yt-facade" data-vid="{vid}" onclick="ytPlay(this)">\n'
@@ -62,9 +105,7 @@ jobs:
                   f'        </div>\n'
                   f'      </div>'
               )
-              cards.append(card)
 
-          # Step 4: rebuild Новинки block
           with open(HTML_FILE, encoding="utf-8") as f:
               html = f.read()
 
@@ -99,7 +140,7 @@ jobs:
 
           with open(HTML_FILE, "w", encoding="utf-8") as f:
               f.write(html_new)
-          print(f"Done — wrote {len(cards)} Shorts cards.")
+          print(f"Done — wrote {len(cards)} video cards.")
           PYEOF
 
       - name: Update sitemap lastmod
@@ -116,6 +157,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes."
           else
-            git commit -m "Auto-sync: latest 20 Shorts from @ia_bard"
+            git commit -m "Auto-sync: latest Shorts from @ia_bard"
             git push
           fi
