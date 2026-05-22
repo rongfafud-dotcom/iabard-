@@ -1921,9 +1921,8 @@
         <!-- Contact Form -->
         <div class="contact-form-wrap">
           <p class="contact-form-title">Написать автору</p>
-          <form name="contact" method="POST" data-netlify="true" class="contact-form" onsubmit="handleContact(event,this)">
-            <input type="hidden" name="form-name" value="contact">
-            <p class="contact-honeypot"><label>Не заполняй: <input name="bot-field"></label></p>
+          <form name="contact" method="POST" class="contact-form" onsubmit="handleContact(event,this)">
+            <input type="hidden" name="_gotcha" style="display:none">
             <input type="text" name="name" placeholder="Ваше имя" required class="contact-input">
             <input type="email" name="email" placeholder="Email (необязательно)" class="contact-input">
             <textarea name="message" placeholder="Ваше сообщение…" required rows="4" class="contact-textarea"></textarea>
@@ -2126,10 +2125,17 @@ document.querySelectorAll('.flip-card, .zodiac-card, .novinka-card').forEach(fun
 function handleContact(e, form) {
   e.preventDefault();
   var data = new FormData(form);
-  fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: new URLSearchParams(data).toString()})
-  .then(function() {
-    form.parentElement.innerHTML = '<p class="contact-sent">Спасибо! Сообщение отправлено ✦</p>';
+  fetch('https://formspree.io/f/mlgvnvdv', {
+    method: 'POST',
+    body: data,
+    headers: {'Accept': 'application/json'}
+  })
+  .then(function(r) {
+    if (r.ok) {
+      form.parentElement.innerHTML = '<p class="contact-sent">Спасибо! Сообщение отправлено ✦</p>';
+    } else {
+      form.parentElement.innerHTML = '<p class="contact-sent">Ошибка — напишите на poet@iabard.com</p>';
+    }
   })
   .catch(function() {
     form.parentElement.innerHTML = '<p class="contact-sent">Ошибка — напишите на poet@iabard.com</p>';
