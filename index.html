@@ -344,12 +344,14 @@
       letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;
       transition:background 0.2s}
     .book-front-buy:hover{background:var(--gold)}
-    .book-stores-toggle{width:auto;min-width:40px;flex-shrink:0;padding:0 7px;cursor:pointer;
-      background:rgba(172,128,45,0.93);border:none;border-left:1px solid rgba(0,0,0,0.15);
+    .book-stores-toggle{width:auto;min-width:44px;flex-shrink:0;padding:0 10px;cursor:pointer;
+      background:transparent;border:none;border-left:1px solid rgba(201,169,110,0.35);
       border-radius:0 14px 14px 0;
-      color:#1e1220;display:flex;align-items:center;justify-content:center;
-      transition:background 0.2s}
-    .book-stores-toggle:hover{background:var(--gold)}
+      color:var(--gold);font-family:'Raleway',sans-serif;font-size:0.58rem;font-weight:700;
+      letter-spacing:1.2px;text-transform:uppercase;
+      display:flex;align-items:center;justify-content:center;
+      transition:background 0.2s,color 0.2s}
+    .book-stores-toggle:hover{background:rgba(201,169,110,0.12);color:#c9a96e}
     .book-stores-menu{position:absolute;bottom:calc(100% + 6px);left:0;right:0;z-index:20;
       background:#1e1220;border:1px solid rgba(201,169,110,0.28);border-radius:10px;
       overflow:hidden;box-shadow:0 -4px 24px rgba(0,0,0,0.65)}
@@ -1211,8 +1213,8 @@
             </a>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798317818425">
-              <a href="https://store.bookbaby.com/book/coauthor" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $44</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/coauthor" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $44</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Описание</button>
             </div>
@@ -1237,8 +1239,8 @@
             </div>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798317818425">
-              <a href="https://store.bookbaby.com/book/coauthor" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $44</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/coauthor" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $44</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Обложка</button>
             </div>
@@ -1257,8 +1259,8 @@
             </a>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350999358">
-              <a href="https://store.bookbaby.com/book/home9" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $44</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/home9" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $44</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Описание</button>
             </div>
@@ -1288,8 +1290,8 @@
             </div>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350999358">
-              <a href="https://store.bookbaby.com/book/home9" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $44</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/home9" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $44</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Обложка</button>
             </div>
@@ -1308,8 +1310,8 @@
             </a>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350990201">
-              <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $44</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $44</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Описание</button>
             </div>
@@ -1339,8 +1341,8 @@
             </div>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350990201">
-              <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $44</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $44</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Обложка</button>
             </div>
@@ -1359,8 +1361,8 @@
             </a>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350983050">
-              <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $33</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Описание</button>
             </div>
@@ -1390,8 +1392,8 @@
             </div>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350983050">
-              <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $33</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Обложка</button>
             </div>
@@ -1410,8 +1412,8 @@
             </a>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350983043">
-              <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $33</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Описание</button>
             </div>
@@ -1441,8 +1443,8 @@
             </div>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350983043">
-              <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $33</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Обложка</button>
             </div>
@@ -1461,8 +1463,8 @@
             </a>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350968859">
-              <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $33</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Описание</button>
             </div>
@@ -1493,8 +1495,8 @@
             </div>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350968859">
-              <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $33</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Обложка</button>
             </div>
@@ -1513,8 +1515,8 @@
             </a>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350968828">
-              <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $33</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Описание</button>
             </div>
@@ -1545,8 +1547,8 @@
             </div>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350968828">
-              <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $33</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Обложка</button>
             </div>
@@ -1565,8 +1567,8 @@
             </a>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350968811">
-              <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $33</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Описание</button>
             </div>
@@ -1597,8 +1599,8 @@
             </div>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350968811">
-              <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $33</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $33</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Обложка</button>
             </div>
@@ -1618,8 +1620,8 @@
             </a>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350936568">
-              <a href="https://store.bookbaby.com/book/leela" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $22</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/leela" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $22</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Описание</button>
             </div>
@@ -1654,8 +1656,8 @@
             </div>
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350936568">
-              <a href="https://store.bookbaby.com/book/leela" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><svg width="22" height="13" viewBox="0 0 22 13" style="vertical-align:middle;margin-right:5px" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="3" width="2.8" height="9" rx="0.4" fill="#6ec0e8"/><rect x="4.2" y="1.5" width="2.8" height="10.5" rx="0.4" fill="#f0a830"/><rect x="8.4" y="0" width="3.2" height="12" rx="0.4" fill="#8dc040"/><text x="13.5" y="12" font-family="Arial,sans-serif" font-size="13" font-weight="900" fill="#1a1a1a">B</text></svg>Купить · $22</a>
-              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="36" height="16" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="1" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1e1220">amazon</text><path d="M1 17 Q22 21 43 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 15 L43 17 L40 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <a href="https://store.bookbaby.com/book/leela" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()">Купить · $22</a>
+              <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon">amazon ↗</button>
             </div>
               <button class="book-read-btn">Обложка</button>
             </div>
