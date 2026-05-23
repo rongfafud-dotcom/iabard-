@@ -1,0 +1,87 @@
+import subprocess, re, sys
+
+HANDLE       = "ia_bard"
+HTML_FILE    = "index.html"
+START_MARKER = "<!-- YT-NOVINKA-START -->"
+END_MARKER   = "<!-- YT-NOVINKA-END -->"
+MAX_VIDEOS   = 20
+
+print("Fetching Shorts via yt-dlp...")
+result = subprocess.run(
+    [
+        "yt-dlp",
+        "--flat-playlist",
+        "--print", "id",
+        "--playlist-items", f"1:{MAX_VIDEOS}",
+        "--no-warnings",
+        f"https://www.youtube.com/@{HANDLE}/shorts",
+    ],
+    capture_output=True, text=True, timeout=120
+)
+
+video_ids = [
+    line.strip()
+    for line in result.stdout.strip().split("\n")
+    if re.match(r"^[A-Za-z0-9_-]{11}$", line.strip())
+]
+
+if result.stderr:
+    print("yt-dlp stderr:", result.stderr[:400])
+
+if not video_ids:
+    print("No videos found. Skipping.")
+    sys.exit(0)
+
+print(f"Found {len(video_ids)} Shorts: {video_ids}")
+
+cards = []
+for vid in video_ids:
+    cards.append(
+        f'      <div class="novinka-card">\n'
+        f'        <div class="novinka-video">\n'
+        f'          <div class="yt-facade" data-vid="{vid}" onclick="ytPlay(this)">\n'
+        f'            <img src="https://img.youtube.com/vi/{vid}/hqdefault.jpg"'
+        f' alt="Ипатия Бард" loading="lazy">\n'
+        f'            <button class="yt-play" aria-label="Смотреть видео">&#9654;</button>\n'
+        f'          </div>\n'
+        f'        </div>\n'
+        f'      </div>'
+    )
+
+with open(HTML_FILE, encoding="utf-8") as f:
+    html = f.read()
+
+block_m = re.search(
+    re.escape(START_MARKER) + r"(.*?)" + re.escape(END_MARKER),
+    html, re.DOTALL
+)
+if not block_m:
+    print("ERROR: markers not found in HTML")
+    sys.exit(1)
+
+new_section = (
+    "\n  " + START_MARKER + "\n"
+    "  <div id=\"novinka\" class=\"tab-panel\" role=\"tabpanel\" aria-labelledby=\"tab-novinka\">\n"
+    "    <div class=\"novinka-list\">\n"
+    + "\n".join(cards) + "\n"
+    + "    </div>\n"
+    "    <div style=\"display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:40px;\">\n"
+    "      <a href=\"https://youtube.com/@ia_bard/shorts\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"novinka-cta novinka-cta-yt\">\n"
+    "        <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z\"/></svg>\n"
+    "        Все видео на YouTube\n"
+    "      </a>\n"
+    "      <a href=\"https://t.me/IA_Bard\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"novinka-cta novinka-cta-tg\">\n"
+    "        <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z\"/></svg>\n"
+    "        Рукопись\n"
+    "      </a>\n"
+    "    </div>\n"
+    "  </div>\n"
+    "  " + END_MARKER + "\n"
+)
+
+html_new = html[:block_m.start()] + new_section + html[block_m.end():]
+
+with open(HTML_FILE, "w", encoding="utf-8") as f:
+    f.write(html_new)
+
+print(f"Done - wrote {len(cards)} Shorts cards.")
