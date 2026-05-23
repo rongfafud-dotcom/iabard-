@@ -7,6 +7,7 @@ VIDEO_POEMS_FILE = "video_poems.json"
 START_MARKER    = "<!-- YT-NOVINKA-START -->"
 END_MARKER      = "<!-- YT-NOVINKA-END -->"
 MAX_VIDEOS      = 20
+BATCH_SIZE      = 5
 POEM_SEP        = "==="
 
 # ── 1. Fetch Shorts ──────────────────────────────────────────────────────────
@@ -85,10 +86,11 @@ def poem_to_html(text):
 
 # ── 6. Build HTML cards ───────────────────────────────────────────────────────
 cards = []
-for vid in video_ids:
+for i, vid in enumerate(video_ids):
     poem_html = poem_to_html(video_poems.get(vid, ""))
+    hidden = ' novinka-hidden' if i >= BATCH_SIZE else ''
     cards.append(
-        f'      <div class="novinka-card">\n'
+        f'      <div class="novinka-card{hidden}">\n'
         f'        <div class="novinka-video">\n'
         f'          <div class="yt-facade" data-vid="{vid}" onclick="ytPlay(this)">\n'
         f'            <img src="https://img.youtube.com/vi/{vid}/hqdefault.jpg"'
@@ -118,7 +120,8 @@ new_section = (
     "    <div class=\"novinka-list\">\n"
     + "\n".join(cards) + "\n"
     + "    </div>\n"
-    "    <div style=\"display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:40px;\">\n"
+    "    <button id=\"novinka-load-btn\" class=\"novinka-load-btn\" onclick=\"loadMoreNovinka()\">Ещё 5 видео</button>\n"
+    "    <div id=\"novinka-cta\" style=\"display:none;flex-direction:column;align-items:center;gap:12px;margin-top:40px;\">\n"
     "      <a href=\"https://youtube.com/@ia_bard/shorts\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"novinka-cta novinka-cta-yt\">\n"
     "        <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z\"/></svg>\n"
     "        Все видео на YouTube\n"
