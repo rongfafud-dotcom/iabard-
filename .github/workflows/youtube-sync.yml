@@ -2,7 +2,7 @@ name: YouTube Shorts Auto-Sync
 
 on:
   schedule:
-    - cron: '0 13 * * *'  # 09:00 Miami (EDT, UTC-4)
+    - cron: '0 14 * * *'  # 10:00 Miami (EDT, UTC-4)
     - cron: '0 18 * * *'  # 14:00 Miami (EDT, UTC-4)
     - cron: '0 2  * * *'  # 22:00 Miami (EDT, UTC-4)
   workflow_dispatch:
