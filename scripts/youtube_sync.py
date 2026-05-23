@@ -75,22 +75,26 @@ if new_videos:
 # ── 5. Convert poem text → HTML ──────────────────────────────────────────────
 def poem_to_html(text):
     if not text or not text.strip():
-        return ""
+        return "", ""
     stanzas = [s.strip() for s in text.strip().split("\n\n") if s.strip()]
+    title = stanzas[0] if stanzas else ""
+    body = stanzas[1:] if len(stanzas) > 1 else []
     html_parts = []
-    for stanza in stanzas:
+    for stanza in body:
         lines = stanza.split("\n")
         inner = "<br>\n".join(line.rstrip() for line in lines)
         html_parts.append(f'        <div class="stanza">{inner}\n        </div>')
-    return '\n        <div class="novinka-poem">\n' + "\n".join(html_parts) + '\n        </div>'
+    poem_html = ('\n        <div class="novinka-poem">\n' + "\n".join(html_parts) + '\n        </div>') if html_parts else ""
+    return title, poem_html
 
 # ── 6. Build HTML cards ───────────────────────────────────────────────────────
 cards = []
 for i, vid in enumerate(video_ids):
-    poem_html = poem_to_html(video_poems.get(vid, ""))
+    title, poem_html = poem_to_html(video_poems.get(vid, ""))
     hidden = ' novinka-hidden' if i >= BATCH_SIZE else ''
+    title_html = f'\n        <div class="novinka-title">{title}</div>' if title else ''
     cards.append(
-        f'      <div class="novinka-card{hidden}">\n'
+        f'      <div class="novinka-card{hidden}">{title_html}\n'
         f'        <div class="novinka-video">\n'
         f'          <div class="yt-facade" data-vid="{vid}" onclick="ytPlay(this)">\n'
         f'            <img src="https://img.youtube.com/vi/{vid}/hqdefault.jpg"'
