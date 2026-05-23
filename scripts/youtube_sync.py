@@ -1,11 +1,15 @@
-import subprocess, re, sys
+import subprocess, re, sys, json, os
 
-HANDLE       = "ia_bard"
-HTML_FILE    = "index.html"
-START_MARKER = "<!-- YT-NOVINKA-START -->"
-END_MARKER   = "<!-- YT-NOVINKA-END -->"
-MAX_VIDEOS   = 20
+HANDLE          = "ia_bard"
+HTML_FILE       = "index.html"
+POEMS_FILE      = "poem_queue.txt"
+VIDEO_POEMS_FILE = "video_poems.json"
+START_MARKER    = "<!-- YT-NOVINKA-START -->"
+END_MARKER      = "<!-- YT-NOVINKA-END -->"
+MAX_VIDEOS      = 20
+POEM_SEP        = "==="
 
+# ── 1. Fetch Shorts ──────────────────────────────────────────────────────────
 print("Fetching Shorts via yt-dlp...")
 result = subprocess.run(
     [
@@ -34,20 +38,64 @@ if not video_ids:
 
 print(f"Found {len(video_ids)} Shorts: {video_ids}")
 
+# ── 2. Load persistent poem assignments ──────────────────────────────────────
+video_poems = {}
+if os.path.exists(VIDEO_POEMS_FILE):
+    with open(VIDEO_POEMS_FILE, encoding="utf-8") as f:
+        video_poems = json.load(f)
+
+# ── 3. Load poem queue ───────────────────────────────────────────────────────
+poem_queue = []
+if os.path.exists(POEMS_FILE):
+    with open(POEMS_FILE, encoding="utf-8") as f:
+        raw = f.read().strip()
+    if raw:
+        poem_queue = [p.strip() for p in raw.split(POEM_SEP) if p.strip()]
+
+# ── 4. Assign poems to new videos ────────────────────────────────────────────
+new_videos = [vid for vid in video_ids if vid not in video_poems]
+if new_videos:
+    print(f"New videos: {new_videos}, poems available: {len(poem_queue)}")
+    for vid in new_videos:
+        video_poems[vid] = poem_queue.pop(0) if poem_queue else ""
+
+    with open(VIDEO_POEMS_FILE, "w", encoding="utf-8") as f:
+        json.dump(video_poems, f, ensure_ascii=False, indent=2)
+
+    remaining = ("\n" + POEM_SEP + "\n").join(poem_queue)
+    with open(POEMS_FILE, "w", encoding="utf-8") as f:
+        f.write(remaining)
+
+# ── 5. Convert poem text → HTML ──────────────────────────────────────────────
+def poem_to_html(text):
+    if not text or not text.strip():
+        return ""
+    stanzas = [s.strip() for s in text.strip().split("\n\n") if s.strip()]
+    html_parts = []
+    for stanza in stanzas:
+        lines = stanza.split("\n")
+        inner = "<br>\n".join(line.rstrip() for line in lines)
+        html_parts.append(f'        <div class="stanza">{inner}\n        </div>')
+    return '\n        <div class="novinka-poem">\n' + "\n".join(html_parts) + '\n        </div>'
+
+# ── 6. Build HTML cards ───────────────────────────────────────────────────────
 cards = []
 for vid in video_ids:
+    poem_html = poem_to_html(video_poems.get(vid, ""))
     cards.append(
         f'      <div class="novinka-card">\n'
         f'        <div class="novinka-video">\n'
         f'          <div class="yt-facade" data-vid="{vid}" onclick="ytPlay(this)">\n'
         f'            <img src="https://img.youtube.com/vi/{vid}/hqdefault.jpg"'
-        f' alt="Ипатия Бард" loading="lazy">\n'
+        f' alt="Ипатия Бард">\n'
         f'            <button class="yt-play" aria-label="Смотреть видео">&#9654;</button>\n'
         f'          </div>\n'
-        f'        </div>\n'
+        f'        </div>'
+        + poem_html + '\n'
         f'      </div>'
     )
 
+# ── 7. Update index.html ──────────────────────────────────────────────────────
 with open(HTML_FILE, encoding="utf-8") as f:
     html = f.read()
 
@@ -84,4 +132,4 @@ html_new = html[:block_m.start()] + new_section + html[block_m.end():]
 with open(HTML_FILE, "w", encoding="utf-8") as f:
     f.write(html_new)
 
-print(f"Done - wrote {len(cards)} Shorts cards.")
+print(f"Done - wrote {len(cards)} cards, {len(new_videos)} new, {len(poem_queue)} poems remaining in queue.")

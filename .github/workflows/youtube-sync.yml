@@ -34,7 +34,7 @@ jobs:
           REPO="https://x-access-token:${GITHUB_TOKEN}@github.com/rongfafud-dotcom/iabard-.git"
           git config user.name  "youtube-sync[bot]"
           git config user.email "youtube-sync@iabard.com"
-          git add index.html sitemap.xml
+          git add index.html sitemap.xml poem_queue.txt video_poems.json
           if git diff --cached --quiet; then
             echo "No changes."
           else
