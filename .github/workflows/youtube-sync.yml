@@ -15,10 +15,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install yt-dlp
+        run: pip install -q yt-dlp
+
       - name: Sync latest Shorts
         run: |
           python3 - <<'PYEOF'
-          import re, urllib.request, xml.etree.ElementTree as ET
+          import subprocess, re
 
           HANDLE       = "ia_bard"
           HTML_FILE    = "index.html"
@@ -26,74 +29,38 @@ jobs:
           END_MARKER   = "<!-- YT-NOVINKA-END -->"
           MAX_VIDEOS   = 20
 
-          HEADERS = {
-              "User-Agent": (
-                  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                  "AppleWebKit/537.36 (KHTML, like Gecko) "
-                  "Chrome/124.0.0.0 Safari/537.36"
-              ),
-              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-              "Accept-Language": "en-US,en;q=0.9,ru;q=0.8",
-          }
+          # Use yt-dlp to list Shorts — works from server IPs unlike plain HTTP
+          print("Fetching Shorts via yt-dlp...")
+          result = subprocess.run(
+              [
+                  "yt-dlp",
+                  "--flat-playlist",
+                  "--print", "id",
+                  "--playlist-items", f"1:{MAX_VIDEOS}",
+                  "--no-warnings",
+                  f"https://www.youtube.com/@{HANDLE}/shorts",
+              ],
+              capture_output=True, text=True, timeout=120
+          )
 
-          def fetch(url):
-              req = urllib.request.Request(url, headers=HEADERS)
-              return urllib.request.urlopen(req, timeout=20).read().decode("utf-8", errors="ignore")
+          video_ids = [
+              line.strip()
+              for line in result.stdout.strip().split("\n")
+              if re.match(r'^[A-Za-z0-9_-]{11}$', line.strip())
+          ]
 
-          def dedupe(ids):
-              seen, out = set(), []
-              for v in ids:
-                  if v not in seen:
-                      seen.add(v); out.append(v)
-              return out
+          if result.stderr:
+              print("yt-dlp stderr:", result.stderr[:400])
 
-          # --- Method 1: scrape /shorts tab ---
-          short_ids = []
-          try:
-              page = fetch(f"https://www.youtube.com/@{HANDLE}/shorts")
-              raw = re.findall(r'"videoId"\s*:\s*"([A-Za-z0-9_-]{11})"', page)
-              short_ids = dedupe(raw)[:MAX_VIDEOS]
-              print(f"Shorts tab: found {len(short_ids)} IDs")
-          except Exception as exc:
-              print(f"Shorts tab failed: {exc}")
-
-          # --- Method 2: RSS feed fallback ---
-          if not short_ids:
-              print("Trying RSS fallback...")
-              try:
-                  page = fetch(f"https://www.youtube.com/@{HANDLE}")
-                  m = re.search(r'"channelId"\s*:\s*"(UC[A-Za-z0-9_-]{22})"', page)
-                  if not m:
-                      m = re.search(r'"browseId"\s*:\s*"(UC[A-Za-z0-9_-]{22})"', page)
-                  if m:
-                      cid = m.group(1)
-                      print(f"Channel ID: {cid}")
-                      rss = fetch(f"https://www.youtube.com/feeds/videos.xml?channel_id={cid}")
-                      ns = {
-                          "yt":   "http://www.youtube.com/xml/schemas/2015",
-                          "atom": "http://www.w3.org/2005/Atom",
-                      }
-                      root = ET.fromstring(rss)
-                      for e in root.findall("atom:entry", ns):
-                          vid_el = e.find("yt:videoId", ns)
-                          if vid_el is not None:
-                              short_ids.append(vid_el.text)
-                      short_ids = dedupe(short_ids)[:MAX_VIDEOS]
-                      print(f"RSS fallback: found {len(short_ids)} IDs")
-                  else:
-                      print("Channel ID not found in page.")
-              except Exception as exc:
-                  print(f"RSS fallback failed: {exc}")
-
-          if not short_ids:
-              print("No videos found from any source. Skipping.")
+          if not video_ids:
+              print("No videos found. Skipping.")
               exit(0)
 
-          print(f"Using {len(short_ids)} video IDs: {short_ids}")
+          print(f"Found {len(video_ids)} Shorts: {video_ids}")
 
           # Build video cards
           cards = []
-          for vid in short_ids:
+          for vid in video_ids:
               cards.append(
                   f'      <div class="novinka-card">\n'
                   f'        <div class="novinka-video">\n'
@@ -140,14 +107,13 @@ jobs:
 
           with open(HTML_FILE, "w", encoding="utf-8") as f:
               f.write(html_new)
-          print(f"Done — wrote {len(cards)} video cards.")
+          print(f"Done — wrote {len(cards)} Shorts cards.")
           PYEOF
 
       - name: Update sitemap lastmod
         run: |
           TODAY=$(date -u +%Y-%m-%d)
           sed -i "s|<lastmod>.*</lastmod>|<lastmod>${TODAY}</lastmod>|" sitemap.xml
-          echo "Sitemap lastmod → ${TODAY}"
 
       - name: Commit and push if changed
         run: |
