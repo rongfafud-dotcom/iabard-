@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pages: write
 
     steps:
       - uses: actions/checkout@v4
@@ -39,4 +40,10 @@ jobs:
           else
             git commit -m "Auto-sync: latest Shorts from @ia_bard"
             git push "https://x-access-token:${GITHUB_TOKEN}@github.com/rongfafud-dotcom/iabard-.git" HEAD:main
+            echo "Triggering GitHub Pages rebuild..."
+            curl -s -o /dev/null -w "Pages API status: %{http_code}\n" \
+              -X POST \
+              -H "Authorization: token ${GITHUB_TOKEN}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/rongfafud-dotcom/iabard-/pages/builds" || true
           fi
