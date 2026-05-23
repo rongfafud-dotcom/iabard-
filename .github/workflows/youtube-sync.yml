@@ -32,6 +32,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          REPO="https://x-access-token:${GITHUB_TOKEN}@github.com/rongfafud-dotcom/iabard-.git"
           git config user.name  "youtube-sync[bot]"
           git config user.email "youtube-sync@iabard.com"
           git add index.html sitemap.xml
@@ -39,11 +40,13 @@ jobs:
             echo "No changes."
           else
             git commit -m "Auto-sync: latest Shorts from @ia_bard"
-            git push "https://x-access-token:${GITHUB_TOKEN}@github.com/rongfafud-dotcom/iabard-.git" HEAD:main
-            echo "Triggering GitHub Pages rebuild..."
-            curl -s -o /dev/null -w "Pages API status: %{http_code}\n" \
+            git pull --rebase "$REPO" main
+            git push "$REPO" HEAD:main
+            echo "Dispatching pages deployment..."
+            curl -s -o /dev/null -w "Dispatch status: %{http_code}\n" \
               -X POST \
               -H "Authorization: token ${GITHUB_TOKEN}" \
               -H "Accept: application/vnd.github.v3+json" \
-              "https://api.github.com/repos/rongfafud-dotcom/iabard-/pages/builds" || true
+              "https://api.github.com/repos/rongfafud-dotcom/iabard-/actions/workflows/pages.yml/dispatches" \
+              -d '{"ref":"main"}' || true
           fi
