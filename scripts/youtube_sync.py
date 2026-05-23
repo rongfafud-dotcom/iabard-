@@ -50,7 +50,12 @@ if os.path.exists(POEMS_FILE):
     with open(POEMS_FILE, encoding="utf-8") as f:
         raw = f.read().strip()
     if raw:
-        poem_queue = [p.strip() for p in raw.split(POEM_SEP) if p.strip()]
+        pieces = []
+        for p in raw.split(POEM_SEP):
+            cleaned = "\n".join(l for l in p.split("\n") if not l.strip().startswith("#")).strip()
+            if cleaned:
+                pieces.append(cleaned)
+        poem_queue = pieces
 
 # ── 4. Assign poems to new videos ────────────────────────────────────────────
 new_videos = [vid for vid in video_ids if vid not in video_poems]
