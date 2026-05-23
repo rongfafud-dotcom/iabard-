@@ -2023,6 +2023,7 @@ function switchTab(id, btn) {
     t.setAttribute('aria-selected', 'false');
   });
   document.getElementById(id).classList.add('active');
+  document.getElementById(id).querySelectorAll('img[loading="lazy"]').forEach(function(i){i.loading='eager';});
   btn.classList.add('active');
   btn.setAttribute('aria-selected', 'true');
   document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
