@@ -603,8 +603,16 @@
     .carousel{position:relative;margin:0 auto 36px;max-width:420px;width:100%;padding:0 48px;box-sizing:border-box}
     .carousel-track-wrap{overflow:hidden;border-radius:12px;box-shadow:0 4px 22px rgba(0,0,0,0.45);touch-action:pan-y}
     .carousel-track{display:flex;transition:transform 0.4s cubic-bezier(.4,0,.2,1)}
-    .carousel-slide{flex-shrink:0;width:100%}
-    .carousel-slide img{width:100%;height:auto;display:block;border-radius:12px}
+    .carousel-slide{flex-shrink:0;width:100%;position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:12px}
+    .carousel-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center bottom;display:block;border-radius:12px}
+    .carousel-text{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;
+      padding:28px 32px;text-align:center;
+      background:linear-gradient(to bottom,rgba(255,245,228,0.88) 0%,rgba(255,245,228,0.72) 65%,rgba(255,245,228,0) 100%);
+      font-family:'Cormorant Garamond',serif;font-style:italic;
+      color:#2a1505;line-height:1.75}
+    .carousel-text .slide-title{font-size:clamp(1.4rem,3vw,2rem);font-weight:600;margin-bottom:0}
+    .carousel-text .stanza{font-size:clamp(0.9rem,1.6vw,1.1rem);margin-bottom:1.1em}
+    .carousel-text .stanza:last-child{margin-bottom:0}
     .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);
       background:rgba(201,169,110,0.18);border:1.5px solid rgba(201,169,110,0.55);
       color:var(--gold);font-size:2rem;line-height:1;
@@ -2714,11 +2722,40 @@ Conscientia — «сознанье» на латыни.<br>
         <button class="carousel-btn carousel-prev" onclick="carouselMove(-1)" aria-label="Предыдущий слайд">&#8249;</button>
         <div class="carousel-track-wrap">
           <div class="carousel-track" id="carousel-track">
-            <div class="carousel-slide"><img src="images/carousel-1.jpg" alt="В чём секрет отношений? — 1"></div>
-            <div class="carousel-slide"><img src="images/carousel-2.jpg" alt="В чём секрет отношений? — 2"></div>
-            <div class="carousel-slide"><img src="images/carousel-3.jpg" alt="В чём секрет отношений? — 3"></div>
-            <div class="carousel-slide"><img src="images/carousel-4.jpg" alt="В чём секрет отношений? — 4"></div>
-            <div class="carousel-slide"><img src="images/carousel-5.jpg" alt="В чём секрет отношений? — 5"></div>
+            <div class="carousel-slide">
+              <img src="images/carousel-1.jpg" alt="В чём секрет отношений?">
+              <div class="carousel-text">
+                <div class="slide-title">В чём секрет<br>отношений?</div>
+              </div>
+            </div>
+            <div class="carousel-slide">
+              <img src="images/carousel-2.jpg" alt="В чём секрет отношений? — 1">
+              <div class="carousel-text">
+                <div class="stanza">Интересный вопрос на днях поступил:<br>«В чём секрет отношений?» — он не удивил.<br>В миг ответ честный я им дала<br>И решила, что стих написать я должна!</div>
+                <div class="stanza">В чём секрет отношений между двумя?<br>Чтобы не потерять в отношеньях себя,<br>Нужно жить с собой честно и говорить<br>Обо всём с тем, кого ты выбрал любить!</div>
+              </div>
+            </div>
+            <div class="carousel-slide">
+              <img src="images/carousel-3.jpg" alt="В чём секрет отношений? — 2">
+              <div class="carousel-text">
+                <div class="stanza">Целиком по-партнёрски то принимать,<br>Что уже у вас есть! Лучше не осуждать<br>Ни себя, ни его — ведь итог все мы знаем:<br>Все с момента рождения «в яму шагаем»…</div>
+                <div class="stanza">Встречи же происходят и не случайно…<br>Неужели супруга ты выбрал нечаянно<br>Или здесь тебя учат чему-то по жизни?<br>Сам секрет отношений — он в стоицизме!</div>
+              </div>
+            </div>
+            <div class="carousel-slide">
+              <img src="images/carousel-4.jpg" alt="В чём секрет отношений? — 3">
+              <div class="carousel-text">
+                <div class="stanza">В проживании вместе разных эмоций<br>И в размере твоих личных пропорций...<br>Когда двое желают, то нет же преград!<br>Коль разводятся, то и друг друга винят!</div>
+                <div class="stanza">Мой секрет в намерении, но не держу<br>Никого рядом силой... В тот миг отпущу,<br>Когда сам человек мой того пожелает!<br>Рада, что он со мной и меня выбирает!</div>
+              </div>
+            </div>
+            <div class="carousel-slide">
+              <img src="images/carousel-5.jpg" alt="В чём секрет отношений? — 4">
+              <div class="carousel-text">
+                <div class="stanza">Я, конечно, как все, быть могу не права...<br>Здесь история жизни, как есть, но моя!<br>Может, кто-то узрит счастье в другом,<br>А мой мир он таков: я живу за плечом</div>
+                <div class="stanza">Человека, которого всю жизнь люблю,<br>С кем в союзе едином да рядом живу!<br>Вот раскрыла секрет моих отношений!<br>Наше счастье — успех, тут без сомнений!</div>
+              </div>
+            </div>
           </div>
         </div>
         <button class="carousel-btn carousel-next" onclick="carouselMove(1)" aria-label="Следующий слайд">&#8250;</button>
