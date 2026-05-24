@@ -465,8 +465,6 @@
       /* Hero tagline: flanking the Рукопись button */
       .card-bottom{max-width:1100px}
       .card{padding-bottom:8px}
-      .carousel{padding:0;max-width:680px}
-      .carousel-prev{left:14px}.carousel-next{right:14px}
       .tagline-row{flex-direction:row;justify-content:center;align-items:center;gap:32px;max-width:1100px}
       .tagline-row .hero-tagline{flex:1;white-space:normal;max-width:none;font-size:clamp(0.82rem,1.15vw,1.05rem)}
       .tagline-row .hero-tagline:first-child{text-align:right}
@@ -625,6 +623,10 @@
       .carousel{padding:0}
       .carousel-prev{left:8px}.carousel-next{right:8px}
       .carousel-btn{width:36px;height:36px;font-size:1.6rem;background:rgba(0,0,0,0.32);border-color:rgba(201,169,110,0.4)}
+    }
+    @media(min-width:861px){
+      .carousel{padding:0;max-width:680px}
+      .carousel-prev{left:14px}.carousel-next{right:14px}
     }
 
     /* МАГАЗИН — COMING SOON */
