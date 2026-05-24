@@ -516,7 +516,7 @@
       footer{padding:20px 24px}
       .novinka-card{padding:20px 16px}
       .novinka-poem{font-size:1rem}
-      .nav-tab{font-size:0.72rem;letter-spacing:1px;padding:12px 3px}
+      .nav-tab{font-size:0.72rem;letter-spacing:0;padding:12px 3px;white-space:nowrap;overflow:hidden}
       .drop-arrow{font-size:0.5em}
     }
 
@@ -2672,7 +2672,7 @@ Conscientia — «сознанье» на латыни.<br>
         <button class="carousel-btn carousel-prev" onclick="carouselMove(-1)" aria-label="Предыдущий слайд">&#8249;</button>
         <div class="carousel-track-wrap">
           <div class="carousel-track" id="carousel-track">
-            <div class="carousel-slide"><img src="images/carousel-1.jpg" alt="В чём секрет отношений? — 1" loading="lazy"></div>
+            <div class="carousel-slide"><img src="images/carousel-1.jpg" alt="В чём секрет отношений? — 1" loading="lazy" onerror="(function(){var c=document.getElementById('author-carousel');var p=c&&c.previousElementSibling;if(c)c.style.display='none';if(p&&p.classList.contains('carousel-caption'))p.style.display='none';})()"></div>
             <div class="carousel-slide"><img src="images/carousel-2.jpg" alt="В чём секрет отношений? — 2" loading="lazy"></div>
             <div class="carousel-slide"><img src="images/carousel-3.jpg" alt="В чём секрет отношений? — 3" loading="lazy"></div>
             <div class="carousel-slide"><img src="images/carousel-4.jpg" alt="В чём секрет отношений? — 4" loading="lazy"></div>
@@ -2767,16 +2767,11 @@ Conscientia — «сознанье» на латыни.<br>
         <p class="shop-cs-sub">Скоро открытие</p>
         <div class="shop-cs-divider"></div>
         <div class="shop-cs-items">
-          <div class="shop-cs-item">Браслеты</div>
-          <div class="shop-cs-item">Oracle</div>
-          <div class="shop-cs-item">Eva Luna <span style="font-family:'Raleway',sans-serif;font-size:0.65rem;letter-spacing:1px">English</span></div>
-          <div class="shop-cs-item">Lila Board Game</div>
+          <div class="shop-cs-item">Bracelets</div>
+          <div class="shop-cs-item">Oracle Eva Luna</div>
+          <div class="shop-cs-item">Leela Board Game</div>
         </div>
         <p class="shop-cs-note">Следите за обновлениями</p>
-        <a href="https://t.me/IA_Bard" target="_blank" rel="noopener noreferrer" class="shop-cs-tg">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-          Рукопись
-        </a>
       </div>
     </div>
   </div>
