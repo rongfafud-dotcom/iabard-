@@ -2699,11 +2699,11 @@ Conscientia — «сознанье» на латыни.<br>
         <button class="carousel-btn carousel-prev" onclick="carouselMove(-1)" aria-label="Предыдущий слайд">&#8249;</button>
         <div class="carousel-track-wrap">
           <div class="carousel-track" id="carousel-track">
-            <div class="carousel-slide"><img src="images/carousel-1.jpg" alt="В чём секрет отношений? — 1" loading="lazy"></div>
-            <div class="carousel-slide"><img src="images/carousel-2.jpg" alt="В чём секрет отношений? — 2" loading="lazy"></div>
-            <div class="carousel-slide"><img src="images/carousel-3.jpg" alt="В чём секрет отношений? — 3" loading="lazy"></div>
-            <div class="carousel-slide"><img src="images/carousel-4.jpg" alt="В чём секрет отношений? — 4" loading="lazy"></div>
-            <div class="carousel-slide"><img src="images/carousel-5.jpg" alt="В чём секрет отношений? — 5" loading="lazy"></div>
+            <div class="carousel-slide"><img src="images/carousel-1.jpg" alt="В чём секрет отношений? — 1"></div>
+            <div class="carousel-slide"><img src="images/carousel-2.jpg" alt="В чём секрет отношений? — 2"></div>
+            <div class="carousel-slide"><img src="images/carousel-3.jpg" alt="В чём секрет отношений? — 3"></div>
+            <div class="carousel-slide"><img src="images/carousel-4.jpg" alt="В чём секрет отношений? — 4"></div>
+            <div class="carousel-slide"><img src="images/carousel-5.jpg" alt="В чём секрет отношений? — 5"></div>
           </div>
         </div>
         <button class="carousel-btn carousel-next" onclick="carouselMove(1)" aria-label="Следующий слайд">&#8250;</button>
@@ -2977,6 +2977,7 @@ function switchTab(id, btn) {
   if(btn){btn.classList.add('active');btn.setAttribute('aria-selected','true');}
   document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
   if(id==='poems')loadPoems();
+  if(id==='author'){document.querySelectorAll('#carousel-track img').forEach(function(img){if(!img.complete||img.naturalWidth===0){var s=img.src;img.src='';img.src=s;}});}
 }
 function loadMoreNovinka() {
   var hidden = document.querySelectorAll('#novinka .novinka-hidden');
