@@ -109,6 +109,12 @@ function loadFile(){
   .then(function(data){
     currentSha = data.sha;
     var text = decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+    if(currentFile === 'poems.txt'){
+      // показываем новые сверху (как на сайте)
+      var parts = text.split('===').map(function(p){return p.trim();}).filter(Boolean);
+      parts.reverse();
+      text = parts.join('\n\n===\n\n') + '\n\n===\n';
+    }
     document.getElementById('editor').value = text;
     document.getElementById('save-btn').disabled = false;
     setStatus('Загружено ✓', true);
@@ -125,6 +131,12 @@ function saveFile(){
   btn.disabled = true;
   setStatus('Сохранение…');
   var content = document.getElementById('editor').value;
+  if(currentFile === 'poems.txt'){
+    // переворачиваем обратно перед сохранением
+    var parts = content.split('===').map(function(p){return p.trim();}).filter(Boolean);
+    parts.reverse();
+    content = parts.join('\n\n===\n\n') + '\n\n===\n';
+  }
   var encoded = btoa(unescape(encodeURIComponent(content)));
   fetch(API + currentFile, {
     method:'PUT',
