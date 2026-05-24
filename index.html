@@ -266,7 +266,7 @@
     .novinka-load-btn:hover{border-color:var(--gold);color:#fff}
     .novinka-date{font-size:0.63rem;letter-spacing:3px;text-transform:uppercase;color:var(--mauve);
                    margin-bottom:5px}
-    .novinka-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;
+    .novinka-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3vw,2.1rem);font-weight:600;
                     color:var(--gold);text-align:center;margin-bottom:22px;letter-spacing:1px}
     .novinka-poem{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.05rem,2.2vw,1.35rem);
                    color:var(--cream);line-height:1.75;text-align:center}
@@ -581,9 +581,12 @@
       font-family:'Cormorant Garamond',serif;
       font-size:clamp(0.82rem,1.6vw,1.0rem);
       font-weight:400;letter-spacing:2px;text-transform:uppercase;
-      text-align:center;white-space:nowrap;
+      text-align:center;white-space:normal;
       text-shadow:0 1px 12px rgba(0,0,0,0.95);
       transition:color 0.15s}
+    .nav-dropmenu button .book-sub{display:block;font-size:0.72em;
+      letter-spacing:1px;text-transform:none;opacity:0.65;
+      font-weight:300;margin-top:1px}
     .nav-dropmenu button:hover{color:var(--gold)}
     .nav-dropmenu button+button{border-top:1px solid rgba(201,169,110,0.12)}
     @media(max-width:520px){
@@ -656,12 +659,12 @@
 <button onclick="goBook('book-soavtor')">Соавтор жизни</button>
           <button onclick="goBook('book-dom')">Дом</button>
           <button onclick="goBook('book-schastie')">Женское счастье</button>
-          <button onclick="goBook('book-zapiski1')">Записки — Книга 1</button>
-          <button onclick="goBook('book-zapiski2')">Записки — Книга 2</button>
-          <button onclick="goBook('book-citadel1')">My Citadel — Book 1</button>
-          <button onclick="goBook('book-citadel2')">My Citadel — Book 2</button>
-          <button onclick="goBook('book-citadel3')">My Citadel — Book 3</button>
-          <button onclick="goBook('book-lila')">Лила (только книга)</button>
+          <button onclick="goBook('book-zapiski1')">Записки из палаты № 6<span class="book-sub">Книга 1</span></button>
+          <button onclick="goBook('book-zapiski2')">Записки из палаты № 6<span class="book-sub">Книга 2</span></button>
+          <button onclick="goBook('book-citadel1')">Моя Цитадель<span class="book-sub">Книга 1</span></button>
+          <button onclick="goBook('book-citadel2')">Моя Цитадель<span class="book-sub">Книга 2</span></button>
+          <button onclick="goBook('book-citadel3')">Моя Цитадель<span class="book-sub">Книга 3</span></button>
+          <button onclick="goBook('book-lila')">Лила<span class="book-sub">Книга</span></button>
         </div>
       </div>
       <div class="nav-tab-wrap">
