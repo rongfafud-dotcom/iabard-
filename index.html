@@ -572,7 +572,7 @@
     /* Transparent dropdown — same typography as nav */
     .nav-dropmenu{position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);
       background:transparent;border:none;box-shadow:none;
-      z-index:300;min-width:160px;overflow:visible;display:none}
+      z-index:300;min-width:230px;overflow:visible;display:none}
     .nav-dropmenu.open{display:block;animation:dropIn 0.18s ease}
     @keyframes dropIn{from{opacity:0;transform:translateX(-50%) translateY(-4px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
     .nav-dropmenu button{display:block;width:100%;padding:7px 8px;
@@ -2699,7 +2699,7 @@ Conscientia — «сознанье» на латыни.<br>
         <button class="carousel-btn carousel-prev" onclick="carouselMove(-1)" aria-label="Предыдущий слайд">&#8249;</button>
         <div class="carousel-track-wrap">
           <div class="carousel-track" id="carousel-track">
-            <div class="carousel-slide"><img src="images/carousel-1.jpg" alt="В чём секрет отношений? — 1" loading="lazy" onerror="(function(){var c=document.getElementById('author-carousel');var p=c&&c.previousElementSibling;if(c)c.style.display='none';if(p&&p.classList.contains('carousel-caption'))p.style.display='none';})()"></div>
+            <div class="carousel-slide"><img src="images/carousel-1.jpg" alt="В чём секрет отношений? — 1" loading="lazy"></div>
             <div class="carousel-slide"><img src="images/carousel-2.jpg" alt="В чём секрет отношений? — 2" loading="lazy"></div>
             <div class="carousel-slide"><img src="images/carousel-3.jpg" alt="В чём секрет отношений? — 3" loading="lazy"></div>
             <div class="carousel-slide"><img src="images/carousel-4.jpg" alt="В чём секрет отношений? — 4" loading="lazy"></div>
@@ -2941,7 +2941,7 @@ function loadPoems(){
     .then(function(text){
       var list=document.getElementById('poems-list');
       list.innerHTML='';
-      var poems=text.split('===').map(function(p){return p.replace(/[ \t]*#[^\n]*/g,'').trim();}).filter(Boolean);
+      var poems=text.split('===').map(function(p){return p.replace(/[ \t]*#[^\n]*/g,'').trim();}).filter(Boolean).reverse();
       if(!poems.length){
         list.innerHTML='<p class="poems-loading">Скоро здесь будут стихи…</p>';
         return;
