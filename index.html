@@ -2888,16 +2888,13 @@ function loadPoems(){
     .then(function(text){
       var list=document.getElementById('poems-list');
       list.innerHTML='';
-      var poems=text.split('===').map(function(p){return p.replace(/#[^
-]*/g,'').trim();}).filter(Boolean);
+      var poems=text.split('===').map(function(p){return p.replace(/[ \t]*#[^\n]*/g,'').trim();}).filter(Boolean);
       if(!poems.length){
         list.innerHTML='<p class="poems-loading">Скоро здесь будут стихи…</p>';
         return;
       }
       poems.forEach(function(poem){
-        var stanzas=poem.split(/
-
-+/).map(function(s){return s.trim();}).filter(Boolean);
+        var stanzas=poem.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
         var title=stanzas[0]||'';var body=stanzas.slice(1);
         var card=document.createElement('div');card.className='novinka-card fade-up';
         var h=title?'<div class="novinka-title">'+title+'</div>':'';
