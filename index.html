@@ -551,6 +551,75 @@
     .contact-sent{text-align:center;font-family:'Cormorant Garamond',serif;
       font-size:0.9rem;color:var(--gold);letter-spacing:1px;padding:16px 0}
     .contact-honeypot{display:none}
+
+    /* DROPDOWN NAVIGATION */
+    .nav-tab-wrap{flex:1;position:relative;display:flex}
+    .nav-tab-wrap .nav-tab{width:100%}
+    .drop-arrow{display:inline-block;font-size:0.55em;margin-left:3px;vertical-align:middle;
+      opacity:0.65;transition:transform 0.2s;line-height:1;pointer-events:none}
+    .nav-tab.drop-open .drop-arrow{transform:rotate(180deg)}
+    .nav-dropmenu{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);
+      background:#1c0e22;border:1px solid rgba(201,169,110,0.28);border-radius:10px;
+      z-index:300;min-width:190px;box-shadow:0 8px 32px rgba(0,0,0,0.65);overflow:hidden;display:none}
+    .nav-dropmenu.open{display:block;animation:dropIn 0.18s ease}
+    @keyframes dropIn{from{opacity:0;transform:translateX(-50%) translateY(-6px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+    .nav-dropmenu button{display:block;width:100%;padding:10px 20px;
+      background:none;border:none;cursor:pointer;color:rgba(253,246,238,0.80);
+      font-family:'Cormorant Garamond',serif;font-size:0.92rem;letter-spacing:0.5px;
+      text-align:left;transition:background 0.15s,color 0.15s;white-space:nowrap}
+    .nav-dropmenu button:hover{background:rgba(201,169,110,0.10);color:var(--gold)}
+    .nav-dropmenu button+button{border-top:1px solid rgba(201,169,110,0.07)}
+    @media(max-width:520px){
+      .nav-dropmenu{left:0;transform:none;min-width:165px}
+      .nav-dropmenu.open{animation:dropIn2 0.18s ease}
+      @keyframes dropIn2{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+    }
+
+    /* PHOTO CAROUSEL */
+    .carousel{position:relative;margin:0 auto 36px;max-width:340px;width:100%}
+    .carousel-track-wrap{overflow:hidden;border-radius:12px;box-shadow:0 4px 22px rgba(0,0,0,0.45)}
+    .carousel-track{display:flex;transition:transform 0.4s cubic-bezier(.4,0,.2,1)}
+    .carousel-slide{flex-shrink:0;width:100%}
+    .carousel-slide img{width:100%;height:auto;display:block;border-radius:12px}
+    .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);
+      background:rgba(30,18,32,0.72);border:1px solid rgba(201,169,110,0.4);
+      color:var(--gold);font-size:1.6rem;line-height:1;
+      width:36px;height:36px;border-radius:50%;cursor:pointer;z-index:5;
+      display:flex;align-items:center;justify-content:center;padding:0;transition:all 0.2s}
+    .carousel-btn:hover{background:rgba(92,61,85,0.75);border-color:var(--gold)}
+    .carousel-prev{left:-14px}.carousel-next{right:-14px}
+    .carousel-dots{display:flex;justify-content:center;gap:8px;margin-top:14px}
+    .carousel-dot{width:8px;height:8px;border-radius:50%;background:rgba(201,169,110,0.25);
+      border:none;cursor:pointer;padding:0;transition:background 0.2s;flex-shrink:0}
+    .carousel-dot.active{background:var(--gold)}
+    .carousel-caption{font-family:'Cormorant Garamond',serif;font-style:italic;
+      font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;
+      color:var(--mauve);text-align:center;margin-bottom:16px}
+
+    /* МАГАЗИН — COMING SOON */
+    .shop-cs{display:flex;align-items:center;justify-content:center;min-height:55vh;padding:20px}
+    .shop-cs-inner{text-align:center;max-width:380px;width:100%}
+    .shop-cs-ornament{font-size:1.5rem;color:var(--gold);opacity:0.40;letter-spacing:10px;margin-bottom:22px}
+    .shop-cs-title{font-family:'Great Vibes',cursive;font-size:3.2rem;color:var(--gold);margin-bottom:4px;line-height:1.2}
+    .shop-cs-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;
+      color:rgba(253,246,238,0.45);letter-spacing:5px;text-transform:uppercase;margin-bottom:32px}
+    .shop-cs-divider{width:56px;height:1px;background:var(--gold);opacity:0.28;margin:0 auto 32px}
+    .shop-cs-items{display:flex;flex-direction:column;gap:10px;margin-bottom:36px}
+    .shop-cs-item{font-family:'Cormorant Garamond',serif;font-size:1.05rem;
+      color:rgba(253,246,238,0.58);border:1px solid rgba(201,169,110,0.14);
+      border-radius:8px;padding:11px 22px;letter-spacing:1.5px}
+    .shop-cs-note{font-family:'Raleway',sans-serif;font-size:0.58rem;letter-spacing:2.5px;
+      text-transform:uppercase;color:rgba(253,246,238,0.30);margin-bottom:22px}
+    .shop-cs-tg{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;
+      border:1.5px solid rgba(92,61,85,0.38);border-radius:24px;
+      color:rgba(253,246,238,0.68);text-decoration:none;
+      font-family:'Raleway',sans-serif;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;transition:all 0.25s}
+    .shop-cs-tg svg{width:15px;height:15px;fill:currentColor;flex-shrink:0}
+    .shop-cs-tg:hover{background:rgba(92,61,85,0.22);border-color:var(--plum);color:#fff}
+
+    /* СТИХИ — text poems tab */
+    .poems-loading{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
+      color:var(--mauve);font-size:1.1rem;padding:60px 0}
   </style>
 </head>
 <body>
@@ -563,10 +632,31 @@
     <h1 class="name">Ия Бард</h1>
     <p class="name-sub">Hypatia Bard / Ипа́тия Бард</p>
     <div class="nav-tabs" role="tablist" aria-label="Разделы сайта">
-      <button class="nav-tab active" role="tab" aria-selected="true"  aria-controls="books"    id="tab-books"    onclick="switchTab('books',this)">Книги</button>
-      <button class="nav-tab"        role="tab" aria-selected="false" aria-controls="novosti"  id="tab-novosti"  onclick="switchTab('novosti',this)">Зодиак</button>
-      <button class="nav-tab"        role="tab" aria-selected="false" aria-controls="novinka"  id="tab-novinka"  onclick="switchTab('novinka',this)">Новинки</button>
-      <button class="nav-tab"        role="tab" aria-selected="false" aria-controls="author"   id="tab-author"   onclick="switchTab('author',this)">Кто я?</button>
+      <div class="nav-tab-wrap">
+        <button class="nav-tab has-drop active" role="tab" aria-selected="true" aria-controls="books" id="tab-books" onclick="toggleDrop(event,'drop-books')">Книги<span class="drop-arrow">▾</span></button>
+        <div class="nav-dropmenu" id="drop-books">
+          <button onclick="goBook(null)">Все книги</button>
+          <button onclick="goBook('book-soavtor')">Соавтор жизни</button>
+          <button onclick="goBook('book-dom')">Дом</button>
+          <button onclick="goBook('book-schastie')">Женское счастье</button>
+          <button onclick="goBook('book-zapiski1')">Записки — Книга 1</button>
+          <button onclick="goBook('book-zapiski2')">Записки — Книга 2</button>
+          <button onclick="goBook('book-citadel1')">My Citadel — Book 1</button>
+          <button onclick="goBook('book-citadel2')">My Citadel — Book 2</button>
+          <button onclick="goBook('book-citadel3')">My Citadel — Book 3</button>
+          <button onclick="goBook('book-lila')">Лила</button>
+        </div>
+      </div>
+      <div class="nav-tab-wrap">
+        <button class="nav-tab has-drop" role="tab" aria-selected="false" id="tab-creative" onclick="toggleDrop(event,'drop-creative')">Творчество<span class="drop-arrow">▾</span></button>
+        <div class="nav-dropmenu" id="drop-creative">
+          <button onclick="goCreative('novinka')">Новинки</button>
+          <button onclick="goCreative('novosti')">Зодиак</button>
+          <button onclick="goCreative('poems')">Стихи</button>
+        </div>
+      </div>
+      <button class="nav-tab" role="tab" aria-selected="false" aria-controls="author" id="tab-author" onclick="switchTab('author',this)">Кто я?</button>
+      <button class="nav-tab" role="tab" aria-selected="false" aria-controls="shop" id="tab-shop" onclick="switchTab('shop',this)">Магазин</button>
     </div>
   </div>
   <div class="card-bottom">
@@ -1193,7 +1283,7 @@
   <div id="books" class="tab-panel active" role="tabpanel" aria-labelledby="tab-books">
     <div class="books-grid">
 
-      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card" id="book-soavtor" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90112795&abOnly=False"
@@ -1239,7 +1329,7 @@
         </div>
       </div>
 
-      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card" id="book-dom" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90101973&abOnly=False"
@@ -1290,7 +1380,7 @@
         </div>
       </div>
 
-      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card" id="book-schastie" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90098468&abOnly=False"
@@ -1341,7 +1431,7 @@
         </div>
       </div>
 
-      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card" id="book-zapiski2" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90095238&abOnly=False"
@@ -1392,7 +1482,7 @@
         </div>
       </div>
 
-      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card" id="book-zapiski1" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90095237&abOnly=False"
@@ -1443,7 +1533,7 @@
         </div>
       </div>
 
-      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card" id="book-citadel3" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091443&abOnly=False"
@@ -1495,7 +1585,7 @@
         </div>
       </div>
 
-      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card" id="book-citadel2" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091439&abOnly=False"
@@ -1547,7 +1637,7 @@
         </div>
       </div>
 
-      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card" id="book-citadel1" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img src="https://store.bookbaby.com/images/OnePageBookCoverImage.jpg?BookID=BK90091438&abOnly=False"
@@ -1599,7 +1689,7 @@
         </div>
       </div>
 
-      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card" id="book-lila" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <span class="book-banner-leela">Только книга</span>
@@ -2575,6 +2665,28 @@ Conscientia — «сознанье» на латыни.<br>
         </div>
       </div>
 
+      <p class="carousel-caption">В чём секрет отношений?</p>
+      <div class="carousel" id="author-carousel" aria-label="Фотогалерея — В чём секрет отношений?">
+        <button class="carousel-btn carousel-prev" onclick="carouselMove(-1)" aria-label="Предыдущий слайд">&#8249;</button>
+        <div class="carousel-track-wrap">
+          <div class="carousel-track" id="carousel-track">
+            <div class="carousel-slide"><img src="images/carousel-1.jpg" alt="В чём секрет отношений? — 1" loading="lazy"></div>
+            <div class="carousel-slide"><img src="images/carousel-2.jpg" alt="В чём секрет отношений? — 2" loading="lazy"></div>
+            <div class="carousel-slide"><img src="images/carousel-3.jpg" alt="В чём секрет отношений? — 3" loading="lazy"></div>
+            <div class="carousel-slide"><img src="images/carousel-4.jpg" alt="В чём секрет отношений? — 4" loading="lazy"></div>
+            <div class="carousel-slide"><img src="images/carousel-5.jpg" alt="В чём секрет отношений? — 5" loading="lazy"></div>
+          </div>
+        </div>
+        <button class="carousel-btn carousel-next" onclick="carouselMove(1)" aria-label="Следующий слайд">&#8250;</button>
+        <div class="carousel-dots" role="tablist" aria-label="Слайды">
+          <button class="carousel-dot active" onclick="carouselGo(0)" aria-label="Слайд 1"></button>
+          <button class="carousel-dot" onclick="carouselGo(1)" aria-label="Слайд 2"></button>
+          <button class="carousel-dot" onclick="carouselGo(2)" aria-label="Слайд 3"></button>
+          <button class="carousel-dot" onclick="carouselGo(3)" aria-label="Слайд 4"></button>
+          <button class="carousel-dot" onclick="carouselGo(4)" aria-label="Слайд 5"></button>
+        </div>
+      </div>
+
       <div class="author-poem-card">
         <div class="author-poem">
           <div class="stanza">Ведическая женщина — поэт!<br>
@@ -2637,6 +2749,38 @@ Conscientia — «сознанье» на латыни.<br>
 
 
 </div>
+
+  <!-- СТИХИ -->
+  <div id="poems" class="tab-panel" role="tabpanel" aria-labelledby="tab-creative">
+    <div class="novinka-list" id="poems-list">
+      <p class="poems-loading">Загрузка стихов…</p>
+    </div>
+  </div>
+
+  <!-- МАГАЗИН -->
+  <div id="shop" class="tab-panel" role="tabpanel" aria-labelledby="tab-shop">
+    <div class="shop-cs">
+      <div class="shop-cs-inner">
+        <div class="shop-cs-ornament">✦ ✦ ✦</div>
+        <h2 class="shop-cs-title">Магазин</h2>
+        <p class="shop-cs-sub">Скоро открытие</p>
+        <div class="shop-cs-divider"></div>
+        <div class="shop-cs-items">
+          <div class="shop-cs-item">Браслеты</div>
+          <div class="shop-cs-item">Oracle</div>
+          <div class="shop-cs-item">Eva Luna <span style="font-family:'Raleway',sans-serif;font-size:0.65rem;letter-spacing:1px">English</span></div>
+          <div class="shop-cs-item">Lila Board Game</div>
+        </div>
+        <p class="shop-cs-note">Следите за обновлениями</p>
+        <a href="https://t.me/IA_Bard" target="_blank" rel="noopener noreferrer" class="shop-cs-tg">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          Рукопись
+        </a>
+      </div>
+    </div>
+  </div>
+
+
 
 <!-- ═══ FOOTER ═══ -->
 <footer>
@@ -2705,7 +2849,74 @@ document.querySelectorAll('.book-buy-wrap').forEach(function(w){
   if(p) w.querySelector('.book-front-buy').setAttribute('data-price', p);
 });
 
+function closeDrop(){
+  document.querySelectorAll('.nav-dropmenu').forEach(function(d){d.classList.remove('open');});
+  document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('drop-open');});
+}
+function toggleDrop(e,dropId){
+  e.stopPropagation();
+  var drop=document.getElementById(dropId);
+  var btn=e.currentTarget;
+  var wasOpen=drop.classList.contains('open');
+  closeDrop();
+  if(!wasOpen){
+    drop.classList.add('open');
+    btn.classList.add('drop-open');
+    setTimeout(function(){
+      document.addEventListener('click',function h(){closeDrop();document.removeEventListener('click',h);});
+    },0);
+  }
+}
+function goBook(bookId){
+  closeDrop();
+  switchTab('books',document.getElementById('tab-books'));
+  if(bookId)setTimeout(function(){
+    var el=document.getElementById(bookId);
+    if(el)el.scrollIntoView({behavior:'smooth',block:'center'});
+  },180);
+}
+function goCreative(panelId){
+  closeDrop();
+  switchTab(panelId,document.getElementById('tab-creative'));
+}
+function loadPoems(){
+  var panel=document.getElementById('poems');
+  if(!panel||panel.dataset.loaded)return;
+  panel.dataset.loaded='1';
+  fetch('poems.txt?_='+Date.now())
+    .then(function(r){return r.ok?r.text():Promise.reject(r.status);})
+    .then(function(text){
+      var list=document.getElementById('poems-list');
+      list.innerHTML='';
+      var poems=text.split('===').map(function(p){return p.replace(/#[^
+]*/g,'').trim();}).filter(Boolean);
+      if(!poems.length){
+        list.innerHTML='<p class="poems-loading">Скоро здесь будут стихи…</p>';
+        return;
+      }
+      poems.forEach(function(poem){
+        var stanzas=poem.split(/
+
++/).map(function(s){return s.trim();}).filter(Boolean);
+        var title=stanzas[0]||'';var body=stanzas.slice(1);
+        var card=document.createElement('div');card.className='novinka-card fade-up';
+        var h=title?'<div class="novinka-title">'+title+'</div>':'';
+        h+='<div class="novinka-poem">';
+        body.forEach(function(s){
+          h+='<div class="stanza">'+s.split('\n').map(function(l){return l.trim();}).join('<br>\n')+'</div>';
+        });
+        h+='</div>';card.innerHTML=h;list.appendChild(card);
+        if(typeof fadeObserver!=='undefined')fadeObserver.observe(card);
+      });
+    })
+    .catch(function(){
+      var p=document.getElementById('poems');if(p)delete p.dataset.loaded;
+      var l=document.getElementById('poems-list');
+      if(l)l.innerHTML='<p class="poems-loading">Не удалось загрузить стихи.</p>';
+    });
+}
 function switchTab(id, btn) {
+  closeDrop();
   document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
   document.querySelectorAll('.nav-tab').forEach(function(t) {
     t.classList.remove('active');
@@ -2713,9 +2924,9 @@ function switchTab(id, btn) {
   });
   document.getElementById(id).classList.add('active');
   document.getElementById(id).querySelectorAll('img[loading="lazy"]').forEach(function(i){i.loading='eager';});
-  btn.classList.add('active');
-  btn.setAttribute('aria-selected', 'true');
+  if(btn){btn.classList.add('active');btn.setAttribute('aria-selected','true');}
   document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if(id==='poems')loadPoems();
 }
 function loadMoreNovinka() {
   var hidden = document.querySelectorAll('#novinka .novinka-hidden');
@@ -2788,6 +2999,25 @@ var btt = document.getElementById('back-to-top');
 window.addEventListener('scroll', function() {
   btt.classList.toggle('visible', window.scrollY > 400);
 }, {passive: true});
+
+
+// Author photo carousel
+var carouselIdx=0;
+function carouselUpdate(){
+  var t=document.getElementById('carousel-track');
+  if(!t)return;
+  t.style.transform='translateX(-'+(carouselIdx*100)+'%)';
+  document.querySelectorAll('#author-carousel .carousel-dot').forEach(function(d,i){d.classList.toggle('active',i===carouselIdx);});
+}
+function carouselMove(dir){carouselIdx=(carouselIdx+dir+5)%5;carouselUpdate();}
+function carouselGo(idx){carouselIdx=idx;carouselUpdate();}
+(function(){
+  var t=document.getElementById('carousel-track');
+  if(!t)return;
+  var sx=0;
+  t.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+  t.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)carouselMove(dx<0?1:-1);},{passive:true});
+})();
 
 // Scroll fade-in animations
 var fadeObserver = new IntersectionObserver(function(entries) {
