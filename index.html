@@ -559,17 +559,16 @@
     .contact-honeypot{display:none}
 
     /* DROPDOWN NAVIGATION */
-    .nav-tab-wrap{flex:1;min-width:0;position:relative;display:flex;justify-content:center;align-items:stretch}
-    .nav-tab-wrap .nav-tab{flex:0 1 auto}
+    .nav-tab-wrap{flex:1;min-width:0;position:relative;display:flex;align-items:stretch}
+    .nav-tab-wrap .nav-tab{flex:1;text-align:center}
     .drop-arrow{display:inline-block;font-size:0.55em;margin-left:3px;vertical-align:middle;
       opacity:0.65;transition:transform 0.2s;line-height:1;pointer-events:none}
     .nav-tab.drop-open .drop-arrow{transform:rotate(180deg)}
-    /* ▾ chevron trigger — separate from nav-tab text */
-    .nav-drop-btn{flex-shrink:0;background:none;border:none;
-      border-bottom:1px solid rgba(201,169,110,0.20);
+    /* ▾ chevron trigger — absolute so it doesn't shift text off-centre */
+    .nav-drop-btn{position:absolute;right:0;top:0;bottom:0;width:26px;
+      background:none;border:none;border-bottom:1px solid rgba(201,169,110,0.20);
       cursor:pointer;color:rgba(255,255,255,0.65);
-      font-size:1.5rem;line-height:1;
-      padding:0 3px;align-self:stretch;
+      font-size:1.5rem;line-height:1;padding:0;
       display:flex;align-items:center;justify-content:center;
       transition:color 0.2s,border-bottom-color 0.2s}
     .nav-drop-btn:hover,.nav-drop-btn.drop-open{color:var(--gold);border-bottom-color:var(--gold)}
