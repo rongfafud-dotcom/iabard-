@@ -522,6 +522,7 @@
       .nav-tab{font-size:0.72rem;letter-spacing:0;padding:12px 3px;white-space:nowrap;overflow:hidden}
       .drop-arrow{font-size:0.5em}
       .card-bottom{}
+      .nav-tab-wrap--nodrop .nav-tab{margin-right:0}
     }
 
     /* SCROLL ANIMATIONS */
@@ -559,19 +560,21 @@
     .contact-honeypot{display:none}
 
     /* DROPDOWN NAVIGATION */
-    .nav-tab-wrap{flex:1;min-width:0;position:relative;display:flex;align-items:stretch}
-    .nav-tab-wrap .nav-tab{flex:1;text-align:center}
+    .nav-tab-wrap{flex:1;min-width:0;position:relative;display:flex;justify-content:center;align-items:stretch}
+    .nav-tab-wrap .nav-tab{flex:0 1 auto}
     .drop-arrow{display:inline-block;font-size:0.55em;margin-left:3px;vertical-align:middle;
       opacity:0.65;transition:transform 0.2s;line-height:1;pointer-events:none}
     .nav-tab.drop-open .drop-arrow{transform:rotate(180deg)}
-    /* ▾ chevron trigger — absolute so it doesn't shift text off-centre */
-    .nav-drop-btn{position:absolute;right:0;top:0;bottom:0;width:26px;
+    /* ▾ chevron — flex sibling, right next to word */
+    .nav-drop-btn{flex-shrink:0;width:22px;padding:0;
       background:none;border:none;border-bottom:1px solid rgba(201,169,110,0.20);
-      cursor:pointer;color:rgba(255,255,255,0.65);
-      font-size:1.5rem;line-height:1;padding:0;
+      cursor:pointer;color:rgba(255,255,255,0.80);
+      font-size:1.4rem;line-height:1;
       display:flex;align-items:center;justify-content:center;
       transition:color 0.2s,border-bottom-color 0.2s}
     .nav-drop-btn:hover,.nav-drop-btn.drop-open{color:var(--gold);border-bottom-color:var(--gold)}
+    /* phantom counterbalance for the Кто я? wrap (no chevron) keeps text centres symmetric */
+    .nav-tab-wrap--nodrop .nav-tab{margin-right:22px}
     /* Transparent dropdown — same typography as nav */
     .nav-dropmenu{position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);
       background:transparent;border:none;box-shadow:none;
@@ -693,7 +696,9 @@
           <button onclick="goShopItem('shop-leela')">Leela Floor Game</button>
         </div>
       </div>
-      <button class="nav-tab" role="tab" aria-selected="false" aria-controls="author" id="tab-author" onclick="switchTab('author',this)">Кто я?</button>
+      <div class="nav-tab-wrap nav-tab-wrap--nodrop">
+        <button class="nav-tab" role="tab" aria-selected="false" aria-controls="author" id="tab-author" onclick="switchTab('author',this)">Кто я?</button>
+      </div>
     </div>
   </div>
   <div class="card-bottom">
