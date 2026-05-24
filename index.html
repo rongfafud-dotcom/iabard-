@@ -2759,27 +2759,47 @@ Conscientia — «сознанье» на латыни.<br>
               <img src="images/carousel-2.jpg" alt="В чём секрет отношений? — 1">
               <div class="carousel-text">
                 <div class="stanza">Интересный вопрос на днях поступил:<br>«В чём секрет отношений?» — он не удивил.<br>В миг ответ честный я им дала<br>И решила, что стих написать я должна!</div>
-                <div class="stanza">В чём секрет отношений между двумя?<br>Чтобы не потерять в отношеньях себя,<br>Нужно жить с собой честно и говорить<br>Обо всём с тем, кого ты выбрал любить!</div>
               </div>
             </div>
             <div class="carousel-slide">
               <img src="images/carousel-3.jpg" alt="В чём секрет отношений? — 2">
               <div class="carousel-text">
-                <div class="stanza">Целиком по-партнёрски то принимать,<br>Что уже у вас есть! Лучше не осуждать<br>Ни себя, ни его — ведь итог все мы знаем:<br>Все с момента рождения «в яму шагаем»…</div>
-                <div class="stanza">Встречи же происходят и не случайно…<br>Неужели супруга ты выбрал нечаянно<br>Или здесь тебя учат чему-то по жизни?<br>Сам секрет отношений — он в стоицизме!</div>
+                <div class="stanza">В чём секрет отношений между двумя?<br>Чтобы не потерять в отношеньях себя,<br>Нужно жить с собой честно и говорить<br>Обо всём с тем, кого ты выбрал любить!</div>
               </div>
             </div>
             <div class="carousel-slide">
               <img src="images/carousel-4.jpg" alt="В чём секрет отношений? — 3">
               <div class="carousel-text">
-                <div class="stanza">В проживании вместе разных эмоций<br>И в размере твоих личных пропорций...<br>Когда двое желают, то нет же преград!<br>Коль разводятся, то и друг друга винят!</div>
-                <div class="stanza">Мой секрет в намерении, но не держу<br>Никого рядом силой... В тот миг отпущу,<br>Когда сам человек мой того пожелает!<br>Рада, что он со мной и меня выбирает!</div>
+                <div class="stanza">Целиком по-партнёрски то принимать,<br>Что уже у вас есть! Лучше не осуждать<br>Ни себя, ни его — ведь итог все мы знаем:<br>Все с момента рождения «в яму шагаем»…</div>
               </div>
             </div>
             <div class="carousel-slide">
               <img src="images/carousel-5.jpg" alt="В чём секрет отношений? — 4">
               <div class="carousel-text">
+                <div class="stanza">Встречи же происходят и не случайно…<br>Неужели супруга ты выбрал нечаянно<br>Или здесь тебя учат чему-то по жизни?<br>Сам секрет отношений — он в стоицизме!</div>
+              </div>
+            </div>
+            <div class="carousel-slide">
+              <img src="images/carousel-2.jpg" alt="В чём секрет отношений? — 5">
+              <div class="carousel-text">
+                <div class="stanza">В проживании вместе разных эмоций<br>И в размере твоих личных пропорций...<br>Когда двое желают, то нет же преград!<br>Коль разводятся, то и друг друга винят!</div>
+              </div>
+            </div>
+            <div class="carousel-slide">
+              <img src="images/carousel-3.jpg" alt="В чём секрет отношений? — 6">
+              <div class="carousel-text">
+                <div class="stanza">Мой секрет в намерении, но не держу<br>Никого рядом силой... В тот миг отпущу,<br>Когда сам человек мой того пожелает!<br>Рада, что он со мной и меня выбирает!</div>
+              </div>
+            </div>
+            <div class="carousel-slide">
+              <img src="images/carousel-4.jpg" alt="В чём секрет отношений? — 7">
+              <div class="carousel-text">
                 <div class="stanza">Я, конечно, как все, быть могу не права...<br>Здесь история жизни, как есть, но моя!<br>Может, кто-то узрит счастье в другом,<br>А мой мир он таков: я живу за плечом</div>
+              </div>
+            </div>
+            <div class="carousel-slide">
+              <img src="images/carousel-5.jpg" alt="В чём секрет отношений? — 8">
+              <div class="carousel-text">
                 <div class="stanza">Человека, которого всю жизнь люблю,<br>С кем в союзе едином, тут рядом живу!<br>Вот раскрыла секрет моих отношений!<br>Наше счастье — успех, и то без сомнений!</div>
               </div>
             </div>
@@ -2792,6 +2812,10 @@ Conscientia — «сознанье» на латыни.<br>
           <button class="carousel-dot" onclick="carouselGo(2)" aria-label="Слайд 3"></button>
           <button class="carousel-dot" onclick="carouselGo(3)" aria-label="Слайд 4"></button>
           <button class="carousel-dot" onclick="carouselGo(4)" aria-label="Слайд 5"></button>
+          <button class="carousel-dot" onclick="carouselGo(5)" aria-label="Слайд 6"></button>
+          <button class="carousel-dot" onclick="carouselGo(6)" aria-label="Слайд 7"></button>
+          <button class="carousel-dot" onclick="carouselGo(7)" aria-label="Слайд 8"></button>
+          <button class="carousel-dot" onclick="carouselGo(8)" aria-label="Слайд 9"></button>
         </div>
       </div>
 
@@ -3115,7 +3139,7 @@ function carouselUpdate(){
   t.style.transform='translateX(-'+(carouselIdx*100)+'%)';
   document.querySelectorAll('#author-carousel .carousel-dot').forEach(function(d,i){d.classList.toggle('active',i===carouselIdx);});
 }
-function carouselMove(dir){carouselIdx=(carouselIdx+dir+5)%5;carouselUpdate();}
+function carouselMove(dir){carouselIdx=(carouselIdx+dir+9)%9;carouselUpdate();}
 function carouselGo(idx){carouselIdx=idx;carouselUpdate();}
 (function(){
   var t=document.getElementById('carousel-track');
