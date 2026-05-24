@@ -2990,34 +2990,33 @@ function loadPoems(){
   var panel=document.getElementById('poems');
   if(!panel||panel.dataset.loaded)return;
   panel.dataset.loaded='1';
-  fetch('poems.txt?_='+Date.now())
-    .then(function(r){return r.ok?r.text():Promise.reject(r.status);})
-    .then(function(text){
-      var list=document.getElementById('poems-list');
-      list.innerHTML='';
-      var poems=text.split('===').map(function(p){return p.replace(/[ \t]*#[^\n]*/g,'').trim();}).filter(Boolean).reverse();
-      if(!poems.length){
-        list.innerHTML='<p class="poems-loading">Скоро здесь будут стихи…</p>';
-        return;
-      }
-      poems.forEach(function(poem){
-        var stanzas=poem.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
-        var title=stanzas[0]||'';var body=stanzas.slice(1);
-        var card=document.createElement('div');card.className='novinka-card fade-up';
-        var h=title?'<div class="novinka-title">'+title+'</div>':'';
-        h+='<div class="novinka-poem">';
-        body.forEach(function(s){
-          h+='<div class="stanza">'+s.split('\n').map(function(l){return l.trim();}).join('<br>\n')+'</div>';
-        });
-        h+='</div>';card.innerHTML=h;list.appendChild(card);
-        if(typeof fadeObserver!=='undefined')fadeObserver.observe(card);
+  var list=document.getElementById('poems-list');
+  function renderPoems(text){
+    list.innerHTML='';
+    var poems=text.split('===').map(function(p){return p.replace(/[ \t]*#[^\n]*/g,'').trim();}).filter(Boolean).reverse();
+    if(!poems.length){
+      list.innerHTML='<p class="poems-loading">Скоро здесь будут стихи…</p>';
+      return;
+    }
+    poems.forEach(function(poem){
+      var stanzas=poem.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
+      var title=stanzas[0]||'';var body=stanzas.slice(1);
+      var card=document.createElement('div');card.className='novinka-card fade-up';
+      var h=title?'<div class="novinka-title">'+title+'</div>':'';
+      h+='<div class="novinka-poem">';
+      body.forEach(function(s){
+        h+='<div class="stanza">'+s.split('\n').map(function(l){return l.trim();}).join('<br>\n')+'</div>';
       });
-    })
-    .catch(function(){
-      var p=document.getElementById('poems');if(p)delete p.dataset.loaded;
-      var l=document.getElementById('poems-list');
-      if(l)l.innerHTML='<p class="poems-loading">Не удалось загрузить стихи.</p>';
+      h+='</div>';card.innerHTML=h;list.appendChild(card);
+      if(typeof fadeObserver!=='undefined')fadeObserver.observe(card);
     });
+  }
+  if(window._poemsCache){
+    window._poemsCache.then(renderPoems).catch(function(){
+      delete panel.dataset.loaded;
+      list.innerHTML='<p class="poems-loading">Не удалось загрузить стихи.</p>';
+    });
+  }
 }
 function switchTab(id, btn) {
   closeDrop();
@@ -3156,6 +3155,8 @@ function handleContact(e, form) {
     form.parentElement.innerHTML = '<p class="contact-sent">Ошибка — напишите на poet@iabard.com</p>';
   });
 }
+// Preload poems in background so Стихи tab shows instantly
+window._poemsCache=fetch('poems.txt').then(function(r){return r.ok?r.text():Promise.reject(r.status);});
 </script>
 </body>
 </html>
