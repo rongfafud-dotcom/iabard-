@@ -560,21 +560,36 @@
     .drop-arrow{display:inline-block;font-size:0.55em;margin-left:3px;vertical-align:middle;
       opacity:0.65;transition:transform 0.2s;line-height:1;pointer-events:none}
     .nav-tab.drop-open .drop-arrow{transform:rotate(180deg)}
-    .nav-dropmenu{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);
-      background:#1c0e22;border:1px solid rgba(201,169,110,0.28);border-radius:10px;
-      z-index:300;min-width:190px;box-shadow:0 8px 32px rgba(0,0,0,0.65);overflow:hidden;display:none}
+    /* ▾ chevron trigger — separate from nav-tab text */
+    .nav-drop-btn{flex-shrink:0;background:none;border:none;
+      border-bottom:1px solid rgba(201,169,110,0.20);
+      cursor:pointer;color:rgba(255,255,255,0.55);
+      font-size:1.05rem;line-height:1;
+      padding:0 9px;align-self:stretch;
+      display:flex;align-items:center;justify-content:center;
+      transition:color 0.2s,border-bottom-color 0.2s}
+    .nav-drop-btn:hover,.nav-drop-btn.drop-open{color:var(--gold);border-bottom-color:var(--gold)}
+    /* Transparent dropdown — same typography as nav */
+    .nav-dropmenu{position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);
+      background:transparent;border:none;box-shadow:none;
+      z-index:300;min-width:160px;overflow:visible;display:none}
     .nav-dropmenu.open{display:block;animation:dropIn 0.18s ease}
-    @keyframes dropIn{from{opacity:0;transform:translateX(-50%) translateY(-6px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-    .nav-dropmenu button{display:block;width:100%;padding:10px 20px;
-      background:none;border:none;cursor:pointer;color:rgba(253,246,238,0.80);
-      font-family:'Cormorant Garamond',serif;font-size:0.92rem;letter-spacing:0.5px;
-      text-align:left;transition:background 0.15s,color 0.15s;white-space:nowrap}
-    .nav-dropmenu button:hover{background:rgba(201,169,110,0.10);color:var(--gold)}
-    .nav-dropmenu button+button{border-top:1px solid rgba(201,169,110,0.07)}
+    @keyframes dropIn{from{opacity:0;transform:translateX(-50%) translateY(-4px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+    .nav-dropmenu button{display:block;width:100%;padding:7px 8px;
+      background:none;border:none;cursor:pointer;
+      color:rgba(255,255,255,0.88);
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(0.82rem,1.6vw,1.0rem);
+      font-weight:400;letter-spacing:2px;text-transform:uppercase;
+      text-align:center;white-space:nowrap;
+      text-shadow:0 1px 12px rgba(0,0,0,0.95);
+      transition:color 0.15s}
+    .nav-dropmenu button:hover{color:var(--gold)}
+    .nav-dropmenu button+button{border-top:1px solid rgba(201,169,110,0.12)}
     @media(max-width:520px){
-      .nav-dropmenu{left:0;transform:none;min-width:165px}
+      .nav-dropmenu{left:0;transform:none}
       .nav-dropmenu.open{animation:dropIn2 0.18s ease}
-      @keyframes dropIn2{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+      @keyframes dropIn2{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
     }
 
     /* PHOTO CAROUSEL */
@@ -635,7 +650,8 @@
     <p class="name-sub">Hypatia Bard / Ипа́тия Бард</p>
     <div class="nav-tabs" role="tablist" aria-label="Разделы сайта">
       <div class="nav-tab-wrap">
-        <button class="nav-tab has-drop active" role="tab" aria-selected="true" aria-controls="books" id="tab-books" onclick="tabAndDrop(event,'tab-books','books','drop-books')">Книги<span class="drop-arrow">▾</span></button>
+        <button class="nav-tab active" role="tab" aria-selected="true" aria-controls="books" id="tab-books" onclick="switchTab('books',this)">Книги</button>
+        <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-books')" aria-label="Список книг">▾</button>
         <div class="nav-dropmenu" id="drop-books">
           <button onclick="goBook(null)">Все книги</button>
           <button onclick="goBook('book-soavtor')">Соавтор жизни</button>
@@ -650,7 +666,8 @@
         </div>
       </div>
       <div class="nav-tab-wrap">
-        <button class="nav-tab has-drop" role="tab" aria-selected="false" id="tab-creative" onclick="tabAndDrop(event,'tab-creative','novinka','drop-creative')">Творчество<span class="drop-arrow">▾</span></button>
+        <button class="nav-tab" role="tab" aria-selected="false" id="tab-creative" onclick="switchTab('novinka',this)">Творчество</button>
+        <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-creative')" aria-label="Открыть меню творчества">▾</button>
         <div class="nav-dropmenu" id="drop-creative">
           <button onclick="goCreative('novinka')">Новинки</button>
           <button onclick="goCreative('novosti')">Зодиак</button>
@@ -2862,7 +2879,7 @@ function tabAndDrop(e,tabId,panelId,dropId){
 }
 function closeDrop(){
   document.querySelectorAll('.nav-dropmenu').forEach(function(d){d.classList.remove('open');});
-  document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('drop-open');});
+  document.querySelectorAll('.nav-tab,.nav-drop-btn').forEach(function(t){t.classList.remove('drop-open');});
 }
 function toggleDrop(e,dropId){
   e.stopPropagation();
