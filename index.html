@@ -516,6 +516,8 @@
       footer{padding:20px 24px}
       .novinka-card{padding:20px 16px}
       .novinka-poem{font-size:1rem}
+      .nav-tab{font-size:0.72rem;letter-spacing:1px;padding:12px 3px}
+      .drop-arrow{font-size:0.5em}
     }
 
     /* SCROLL ANIMATIONS */
@@ -553,7 +555,7 @@
     .contact-honeypot{display:none}
 
     /* DROPDOWN NAVIGATION */
-    .nav-tab-wrap{flex:1;position:relative;display:flex}
+    .nav-tab-wrap{flex:1;min-width:0;position:relative;display:flex}
     .nav-tab-wrap .nav-tab{width:100%}
     .drop-arrow{display:inline-block;font-size:0.55em;margin-left:3px;vertical-align:middle;
       opacity:0.65;transition:transform 0.2s;line-height:1;pointer-events:none}
@@ -633,7 +635,7 @@
     <p class="name-sub">Hypatia Bard / Ипа́тия Бард</p>
     <div class="nav-tabs" role="tablist" aria-label="Разделы сайта">
       <div class="nav-tab-wrap">
-        <button class="nav-tab has-drop active" role="tab" aria-selected="true" aria-controls="books" id="tab-books" onclick="toggleDrop(event,'drop-books')">Книги<span class="drop-arrow">▾</span></button>
+        <button class="nav-tab has-drop active" role="tab" aria-selected="true" aria-controls="books" id="tab-books" onclick="tabAndDrop(event,'tab-books','books','drop-books')">Книги<span class="drop-arrow">▾</span></button>
         <div class="nav-dropmenu" id="drop-books">
           <button onclick="goBook(null)">Все книги</button>
           <button onclick="goBook('book-soavtor')">Соавтор жизни</button>
@@ -648,7 +650,7 @@
         </div>
       </div>
       <div class="nav-tab-wrap">
-        <button class="nav-tab has-drop" role="tab" aria-selected="false" id="tab-creative" onclick="toggleDrop(event,'drop-creative')">Творчество<span class="drop-arrow">▾</span></button>
+        <button class="nav-tab has-drop" role="tab" aria-selected="false" id="tab-creative" onclick="tabAndDrop(event,'tab-creative','novinka','drop-creative')">Творчество<span class="drop-arrow">▾</span></button>
         <div class="nav-dropmenu" id="drop-creative">
           <button onclick="goCreative('novinka')">Новинки</button>
           <button onclick="goCreative('novosti')">Зодиак</button>
@@ -2678,7 +2680,7 @@ Conscientia — «сознанье» на латыни.<br>
           </div>
         </div>
         <button class="carousel-btn carousel-next" onclick="carouselMove(1)" aria-label="Следующий слайд">&#8250;</button>
-        <div class="carousel-dots" role="tablist" aria-label="Слайды">
+        <div class="carousel-dots" aria-label="Слайды">
           <button class="carousel-dot active" onclick="carouselGo(0)" aria-label="Слайд 1"></button>
           <button class="carousel-dot" onclick="carouselGo(1)" aria-label="Слайд 2"></button>
           <button class="carousel-dot" onclick="carouselGo(2)" aria-label="Слайд 3"></button>
@@ -2748,7 +2750,6 @@ Conscientia — «сознанье» на латыни.<br>
   </div>
 
 
-</div>
 
   <!-- СТИХИ -->
   <div id="poems" class="tab-panel" role="tabpanel" aria-labelledby="tab-creative">
@@ -2780,6 +2781,8 @@ Conscientia — «сознанье» на латыни.<br>
     </div>
   </div>
 
+
+</div>
 
 
 <!-- ═══ FOOTER ═══ -->
@@ -2849,6 +2852,19 @@ document.querySelectorAll('.book-buy-wrap').forEach(function(w){
   if(p) w.querySelector('.book-front-buy').setAttribute('data-price', p);
 });
 
+function tabAndDrop(e,tabId,panelId,dropId){
+  e.stopPropagation();
+  var drop=document.getElementById(dropId);
+  var wasOpen=drop.classList.contains('open');
+  switchTab(panelId,document.getElementById(tabId));
+  if(!wasOpen){
+    drop.classList.add('open');
+    e.currentTarget.classList.add('drop-open');
+    setTimeout(function(){
+      document.addEventListener('click',function h(){closeDrop();document.removeEventListener('click',h);});
+    },0);
+  }
+}
 function closeDrop(){
   document.querySelectorAll('.nav-dropmenu').forEach(function(d){d.classList.remove('open');});
   document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('drop-open');});
