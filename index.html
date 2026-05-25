@@ -3167,5 +3167,6 @@ function handleContact(e, form) {
 // Preload poems in background so Стихи tab shows instantly
 window._poemsCache=fetch('poems.txt?v='+Math.floor(Date.now()/300000)).then(function(r){return r.ok?r.text():Promise.reject(r.status);});
 </script>
+<a href="admin.html" aria-hidden="true" tabindex="-1" style="position:fixed;bottom:10px;right:12px;width:18px;height:18px;opacity:0.12;font-size:14px;line-height:18px;text-align:center;color:#c9a96e;text-decoration:none;z-index:9999;user-select:none" title="">✦</a>
 </body>
 </html>
