@@ -3002,7 +3002,7 @@ function loadPoems(){
   var list=document.getElementById('poems-list');
   function renderPoems(text){
     list.innerHTML='';
-    var poems=text.split('===').map(function(p){return p.replace(/[ \t]*#[^\n]*/g,'').trim();}).filter(Boolean).reverse();
+    var poems=text.split('===').map(function(p){return p.replace(/[ \t]*#[^\n]*/g,'').trim();}).filter(Boolean);
     if(!poems.length){
       list.innerHTML='<p class="poems-loading">Скоро здесь будут стихи…</p>';
       return;
