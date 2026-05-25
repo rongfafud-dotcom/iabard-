@@ -290,7 +290,7 @@
     .author-poem .stanza:last-child{margin-bottom:0}
 
     /* КНИГИ — single column */
-    .books-grid{display:flex;flex-direction:column;align-items:center;gap:20px;max-width:380px;width:100%;margin:0 auto}
+    .books-grid{display:flex;flex-direction:column;align-items:center;gap:44px;max-width:380px;width:100%;margin:0 auto}
     .flip-card{perspective:900px;cursor:pointer;width:100%}
     .flip-card-inner{position:relative;width:100%;padding-top:172%;
                       transform-style:preserve-3d;transition:transform 0.65s cubic-bezier(.4,0,.2,1)}
@@ -469,7 +469,7 @@
       .novinka-card-full .novinka-video-wide{max-width:560px;width:100%}
 
       /* Desktop: show front + back covers side by side, no flip needed */
-      .books-grid{max-width:760px;gap:28px}
+      .books-grid{max-width:760px;gap:56px}
       .flip-card{cursor:default;border-radius:7px;box-shadow:0 4px 20px rgba(92,61,85,0.18)}
       .flip-card-inner{
         padding-top:0 !important;height:calc(100svh - 70px);
@@ -682,9 +682,9 @@
         <button class="nav-tab" role="tab" aria-selected="false" id="tab-creative" onclick="switchTab('novinka',this)">Творчество</button>
         <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-creative')" aria-label="Открыть меню творчества">▾</button>
         <div class="nav-dropmenu" id="drop-creative">
-          <button onclick="goCreative('novinka')">Новинки</button>
+          <button onclick="goCreative('novinka')">Видео новинки</button>
           <button onclick="goCreative('novosti')">Зодиак</button>
-          <button onclick="goCreative('poems')">Стихи</button>
+          <button onclick="goCreative('poems')">Стихотворения</button>
         </div>
       </div>
       <div class="nav-tab-wrap">
