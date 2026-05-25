@@ -122,25 +122,17 @@
 </div>
 
 <div class="novinka-panel" id="poem-add-panel" style="border-radius:10px 10px 0 0;border-bottom:none;margin-bottom:0">
-  <div style="display:flex;gap:10px;margin-bottom:14px">
-    <input type="url" id="poem-yt-url" placeholder="YouTube (необязательно)"
-      style="flex:1;min-width:0;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 12px;color:#e8ddd0;font-size:0.85rem;outline:none"
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+    <input type="url" id="poem-yt-url" placeholder="YouTube"
+      style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:#e8ddd0;font-size:0.88rem;outline:none"
       onfocus="this.style.borderColor='rgba(201,169,110,0.6)'" onblur="this.style.borderColor='rgba(201,169,110,0.25)'">
-    <label id="poem-mp3-label" style="flex:1;min-width:0;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 12px;color:rgba(232,221,208,0.45);font-size:0.85rem;cursor:pointer;display:flex;align-items:center;gap:6px;overflow:hidden;white-space:nowrap;transition:border-color 0.2s">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-      <span id="poem-mp3-name" style="overflow:hidden;text-overflow:ellipsis">MP3 (необязательно)</span>
+    <label id="poem-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:pointer;display:flex;align-items:center;gap:8px;transition:border-color 0.2s">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+      <span id="poem-mp3-name">Добавить MP3 файл</span>
       <input type="file" id="poem-mp3-input" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" style="display:none" onchange="poemMp3Selected(this)">
     </label>
   </div>
-  <textarea id="poem-add-text" placeholder="Название стихотворения
-(подзаголовок — необязательно)
-
-Первая строфа
-строка 2
-строка 3
-
-Вторая строфа
-строка 2" style="width:100%;height:260px;background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;margin-bottom:16px" spellcheck="false"></textarea>
+  <textarea id="poem-add-text" placeholder="Стихотворение" style="width:100%;height:260px;background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;margin-bottom:16px" spellcheck="false"></textarea>
   <button class="novinka-add-btn" id="poem-add-btn" onclick="addPoem()">Добавить стихотворение</button>
   <div class="novinka-status" id="poem-add-status"></div>
   <div style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(201,169,110,0.12);font-size:0.7rem;color:rgba(201,169,110,0.4);letter-spacing:1.5px;text-transform:uppercase;text-align:center">Редактор всех стихов ↓</div>
@@ -565,7 +557,7 @@ function poemMp3Selected(input){
     label.style.borderColor='rgba(201,169,110,0.6)';
     label.style.color='#e8ddd0';
   } else {
-    document.getElementById('poem-mp3-name').textContent='MP3 (необязательно)';
+    document.getElementById('poem-mp3-name').textContent='Добавить MP3 файл';
     label.style.borderColor='rgba(201,169,110,0.25)';
     label.style.color='rgba(232,221,208,0.45)';
   }
