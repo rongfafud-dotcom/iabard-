@@ -51,14 +51,14 @@
   .audio-item audio{flex:1;min-width:0;height:32px}
   .audio-copy-btn{background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:5px 10px;cursor:pointer;font-size:0.75rem;white-space:nowrap;flex-shrink:0}
   .audio-del-btn{background:rgba(180,60,60,0.12);border:1px solid rgba(180,60,60,0.3);border-radius:5px;color:#d47a7a;padding:5px 9px;cursor:pointer;font-size:0.75rem;flex-shrink:0}
-  .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:transparent;border:1px solid rgba(201,169,110,0.3);border-radius:8px;color:rgba(201,169,110,0.7);font-size:0.82rem;letter-spacing:1px;cursor:pointer;text-decoration:none;transition:all 0.2s;flex-shrink:0}
+  .back-btn{display:inline-flex;align-items:center;justify-content:center;padding:8px 16px;background:transparent;border:1px solid rgba(201,169,110,0.3);border-radius:8px;color:rgba(201,169,110,0.7);font-size:0.82rem;letter-spacing:1px;cursor:pointer;text-decoration:none;transition:all 0.2s;width:72px}
   .back-btn:hover{border-color:#c9a96e;color:#c9a96e}
-  .top-bar{max-width:600px;margin:0 auto 16px;display:flex;align-items:center;gap:10px}
-  .top-bar h1{flex:1;margin:0}
-  .inbox-btn{background:transparent;border:1px solid rgba(201,169,110,0.3);border-radius:8px;color:rgba(201,169,110,0.6);padding:0;width:42px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;flex-shrink:0;position:relative}
+  .top-bar{max-width:600px;margin:0 auto 16px;display:flex;align-items:center}
+  .top-bar h1{flex:1;text-align:center;margin:0}
+  .inbox-btn{background:transparent;border:1px solid rgba(201,169,110,0.3);border-radius:8px;color:rgba(201,169,110,0.6);padding:0;width:72px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;flex-shrink:0;position:relative}
   .inbox-btn:hover{border-color:#c9a96e;color:#c9a96e;background:rgba(201,169,110,0.08)}
   .inbox-btn.active{border-color:#c9a96e;color:#c9a96e;background:rgba(201,169,110,0.12)}
-  .inbox-badge{position:absolute;top:-5px;right:-5px;background:#c9a96e;color:#0e0a0e;border-radius:50%;width:16px;height:16px;font-size:0.6rem;font-family:'Raleway',sans-serif;font-weight:700;display:flex;align-items:center;justify-content:center;display:none}
+  .inbox-badge{position:absolute;top:-5px;right:-5px;background:#c9a96e;color:#0e0a0e;border-radius:50%;width:16px;height:16px;font-size:0.6rem;font-weight:700;display:none;align-items:center;justify-content:center}
   .token-section{max-width:600px;margin:0 auto 20px;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.2);border-radius:10px;overflow:hidden}
   .token-toggle{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;user-select:none}
   .token-toggle-label{font-size:0.78rem;color:rgba(201,169,110,0.7);letter-spacing:1px;flex:1}
@@ -74,8 +74,18 @@
   .inbox-msg-date{font-size:0.73rem;color:rgba(201,169,110,0.5);white-space:nowrap}
   .inbox-msg-email{font-size:0.78rem;color:rgba(201,169,110,0.55);margin-bottom:10px}
   .inbox-msg-text{font-size:0.87rem;color:rgba(232,221,208,0.85);line-height:1.65;white-space:pre-wrap;word-break:break-word}
-  .inbox-read-btn{margin-top:12px;background:rgba(100,160,100,0.12);border:1px solid rgba(100,160,100,0.3);border-radius:5px;color:#7bc47b;padding:5px 14px;cursor:pointer;font-size:0.75rem;transition:all 0.2s}
-  .inbox-read-btn:hover{background:rgba(100,160,100,0.25)}
+  .inbox-reply-btn{margin-top:12px;background:transparent;border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:rgba(201,169,110,0.7);padding:5px 14px;cursor:pointer;font-size:0.75rem;transition:all 0.2s}
+  .inbox-reply-btn:hover{border-color:#c9a96e;color:#c9a96e}
+  .inbox-reply-box{margin-top:10px;display:none}
+  .inbox-reply-box textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 12px;color:#e8ddd0;font-family:'Georgia',serif;font-size:0.85rem;line-height:1.6;resize:vertical;outline:none;min-height:80px}
+  .inbox-reply-box textarea:focus{border-color:rgba(201,169,110,0.5)}
+  .inbox-send-btn{margin-top:8px;background:#c9a96e;border:none;border-radius:5px;color:#0e0a0e;padding:7px 20px;cursor:pointer;font-size:0.8rem;font-weight:600;transition:opacity 0.2s}
+  .inbox-send-btn:hover{opacity:0.85}
+  .inbox-send-btn:disabled{opacity:0.4;cursor:not-allowed}
+  .inbox-replies{margin-top:14px;border-top:1px solid rgba(201,169,110,0.1);padding-top:12px;display:flex;flex-direction:column;gap:8px}
+  .inbox-reply-item{background:rgba(201,169,110,0.04);border-left:2px solid rgba(201,169,110,0.3);padding:8px 12px;border-radius:0 6px 6px 0}
+  .inbox-reply-item-date{font-size:0.7rem;color:rgba(201,169,110,0.4);margin-bottom:4px}
+  .inbox-reply-item-text{font-size:0.83rem;color:rgba(232,221,208,0.8);white-space:pre-wrap;word-break:break-word}
   .inbox-empty{font-size:0.88rem;color:rgba(201,169,110,0.4);text-align:center;padding:40px 0}
   .inbox-refresh{width:100%;margin-bottom:18px}
 </style>
@@ -83,9 +93,9 @@
 <body>
 
 <div class="top-bar">
-  <a href="index.html" class="back-btn">← На сайт</a>
+  <a href="index.html" class="back-btn">Сайт</a>
   <h1>✦ Редактор ✦</h1>
-  <button class="inbox-btn" id="inbox-btn" onclick="switchInbox(this)" title="Входящие сообщения">
+  <button class="inbox-btn" id="inbox-btn" onclick="switchInbox()" title="Входящие сообщения">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
     <span class="inbox-badge" id="inbox-badge"></span>
   </button>
@@ -528,7 +538,7 @@ function loadInbox(){
   var token=getToken();
   if(!token){document.getElementById('inbox-list').innerHTML='<div class="inbox-empty">Сначала введите токен</div>';return;}
   document.getElementById('inbox-list').innerHTML='<span style="opacity:0.4;font-size:0.85rem">Загрузка…</span>';
-  fetch('https://api.github.com/repos/'+REPO+'/issues?state=open&per_page=50&sort=created&direction=desc',{
+  fetch('https://api.github.com/repos/'+REPO+'/issues?state=open&per_page=50&sort=created&direction=asc',{
     headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
   })
   .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
@@ -537,7 +547,7 @@ function loadInbox(){
     var badge=document.getElementById('inbox-badge');
     if(msgs.length){badge.textContent=msgs.length;badge.style.display='flex';}else{badge.style.display='none';}
     var list=document.getElementById('inbox-list');
-    if(!msgs.length){list.innerHTML='<div class="inbox-empty">Нет новых сообщений</div>';return;}
+    if(!msgs.length){list.innerHTML='<div class="inbox-empty">Нет сообщений</div>';return;}
     list.innerHTML='';
     msgs.forEach(function(issue){
       var m=issue.title.match(/^💌\s*(.*?)\s*\(([^)]*)\)\s*$/);
@@ -546,31 +556,83 @@ function loadInbox(){
       var date=new Date(issue.created_at).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
       var div=document.createElement('div');
       div.className='inbox-msg';
+      div.dataset.issue=issue.number;
+      var repliesHtml='';
+      if(issue.comments>0){
+        repliesHtml='<div class="inbox-replies" id="replies-'+issue.number+'"><span style="opacity:0.4;font-size:0.78rem">Загрузка ответов…</span></div>';
+      }
       div.innerHTML=
         '<div class="inbox-msg-meta"><span class="inbox-msg-name">'+esc(name)+'</span><span class="inbox-msg-date">'+date+'</span></div>'+
         (email?'<div class="inbox-msg-email">'+esc(email)+'</div>':'')+
         '<div class="inbox-msg-text">'+esc(issue.body||'(пусто)')+'</div>'+
-        '<button class="inbox-read-btn" onclick="markRead('+issue.number+',this)">✓ Прочитано</button>';
+        repliesHtml+
+        '<button class="inbox-reply-btn" onclick="toggleReply('+issue.number+')">Ответить ↩</button>'+
+        '<div class="inbox-reply-box" id="reply-'+issue.number+'">'+
+          '<textarea id="reply-text-'+issue.number+'" placeholder="Ваш ответ…"></textarea>'+
+          '<button class="inbox-send-btn" onclick="sendReply('+issue.number+',this)">Отправить</button>'+
+        '</div>';
       list.appendChild(div);
+      if(issue.comments>0) loadReplies(issue.number);
     });
   })
   .catch(function(e){document.getElementById('inbox-list').innerHTML='<div class="inbox-empty" style="color:#d47a7a">Ошибка: '+e.message+'</div>';});
 }
 
-function markRead(number,btn){
+function loadReplies(number){
   var token=getToken();
-  btn.disabled=true;btn.textContent='…';
-  fetch('https://api.github.com/repos/'+REPO+'/issues/'+number,{
-    method:'PATCH',
+  fetch('https://api.github.com/repos/'+REPO+'/issues/'+number+'/comments',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){return r.json();})
+  .then(function(comments){
+    var el=document.getElementById('replies-'+number);
+    if(!el)return;
+    el.innerHTML='';
+    comments.forEach(function(c){
+      var d=new Date(c.created_at).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+      var item=document.createElement('div');
+      item.className='inbox-reply-item';
+      item.innerHTML='<div class="inbox-reply-item-date">'+d+'</div><div class="inbox-reply-item-text">'+esc(c.body)+'</div>';
+      el.appendChild(item);
+    });
+  }).catch(function(){});
+}
+
+function toggleReply(number){
+  var box=document.getElementById('reply-'+number);
+  box.style.display=box.style.display==='block'?'none':'block';
+  if(box.style.display==='block') document.getElementById('reply-text-'+number).focus();
+}
+
+function sendReply(number,btn){
+  var token=getToken();
+  var text=document.getElementById('reply-text-'+number).value.trim();
+  if(!text)return;
+  btn.disabled=true;btn.textContent='Отправка…';
+  fetch('https://api.github.com/repos/'+REPO+'/issues/'+number+'/comments',{
+    method:'POST',
     headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-    body:JSON.stringify({state:'closed'})
+    body:JSON.stringify({body:text})
   })
   .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-  .then(function(){
-    var msg=btn.closest('.inbox-msg');
-    msg.style.opacity='0.3';
-    btn.textContent='✓ Архивировано';
-    setTimeout(function(){msg.remove();},600);
+  .then(function(c){
+    btn.disabled=false;btn.textContent='Отправить';
+    document.getElementById('reply-text-'+number).value='';
+    document.getElementById('reply-'+number).style.display='none';
+    var repliesEl=document.getElementById('replies-'+number);
+    if(!repliesEl){
+      var msg=document.querySelector('[data-issue="'+number+'"]');
+      var newReplies=document.createElement('div');
+      newReplies.className='inbox-replies';
+      newReplies.id='replies-'+number;
+      msg.querySelector('.inbox-reply-btn').before(newReplies);
+      repliesEl=newReplies;
+    }
+    var d=new Date(c.created_at).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    var item=document.createElement('div');
+    item.className='inbox-reply-item';
+    item.innerHTML='<div class="inbox-reply-item-date">'+d+'</div><div class="inbox-reply-item-text">'+esc(c.body)+'</div>';
+    repliesEl.appendChild(item);
   })
   .catch(function(e){btn.disabled=false;btn.textContent='Ошибка: '+e.message;});
 }
