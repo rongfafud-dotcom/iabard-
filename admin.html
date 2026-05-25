@@ -143,6 +143,8 @@
 Третья строка" style="width:100%;height:220px;background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;margin-bottom:16px" spellcheck="false"></textarea>
   <button class="novinka-add-btn" id="novinka-add-btn" onclick="addNovinka()">Добавить в Новинки</button>
   <div class="novinka-status" id="novinka-status"></div>
+  <div class="audio-list-title" style="margin-top:28px">Добавленные новинки</div>
+  <div class="audio-list" id="novinka-list-items"><span style="opacity:0.4;font-size:0.85rem">Загрузка…</span></div>
 </div>
 
 <div class="audio-panel" id="audio-panel">
@@ -234,6 +236,7 @@ function switchNovinka(btn){
   document.getElementById('audio-panel').style.display='none';
   document.getElementById('novinka-panel').style.display='block';
   document.getElementById('inbox-panel').style.display='none';
+  loadNovinkaList();
 }
 
 function extractVideoId(url){
@@ -308,6 +311,7 @@ function addNovinka(){
     document.getElementById('novinka-url').value='';
     document.getElementById('novinka-poem').value='';
     btn.disabled=false;
+    loadNovinkaList();
   })
   .catch(function(e){
     btn.disabled=false;
@@ -522,6 +526,73 @@ function saveFile(){
       setStatus('Ошибка: ' + e.message);
     }
   });
+}
+
+function loadNovinkaList(){
+  var token=getToken();
+  var listEl=document.getElementById('novinka-list-items');
+  if(!token){listEl.innerHTML='<span style="opacity:0.4;font-size:0.85rem">Нет токена</span>';return;}
+  listEl.innerHTML='<span style="opacity:0.4;font-size:0.85rem">Загрузка…</span>';
+  fetch(API+'index.html?ref=main',{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})
+  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  .then(function(data){
+    var html=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+    var si=html.indexOf('<!-- YT-NOVINKA-START -->');
+    if(si===-1){listEl.innerHTML='<span style="color:#d47a7a;font-size:0.85rem">Маркер не найден</span>';return;}
+    var section=html.slice(si,si+200000);
+    var vids=[];
+    var re=/data-vid="([A-Za-z0-9_-]{11})"/g, m;
+    while((m=re.exec(section))!==null){
+      var vid=m[1];
+      var cardStart=section.lastIndexOf('<div class="novinka-card">',m.index);
+      var snippet=cardStart>=0?section.slice(cardStart,m.index+100):'';
+      var tm=snippet.match(/<div class="novinka-title">([\s\S]*?)<\/div>/);
+      var title=tm?tm[1].replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim():vid;
+      vids.push({vid:vid,title:title});
+    }
+    if(!vids.length){listEl.innerHTML='<span style="opacity:0.4;font-size:0.85rem">Нет добавленных новинок</span>';return;}
+    listEl.innerHTML='';
+    vids.forEach(function(v){
+      var item=document.createElement('div');
+      item.className='audio-item';
+      item.style.alignItems='center';
+      item.innerHTML=
+        '<img src="https://img.youtube.com/vi/'+v.vid+'/mqdefault.jpg" style="width:72px;height:40px;object-fit:cover;border-radius:4px;flex-shrink:0">'+
+        '<span class="audio-item-name" style="flex:1;padding:0 8px">'+esc(v.title)+'</span>'+
+        '<button class="audio-del-btn" onclick="deleteNovinka(\''+v.vid+'\')">✕</button>';
+      listEl.appendChild(item);
+    });
+  })
+  .catch(function(e){listEl.innerHTML='<span style="color:#d47a7a;font-size:0.85rem">Ошибка: '+e.message+'</span>';});
+}
+
+function deleteNovinka(vid){
+  if(!confirm('Удалить это видео из Новинок?'))return;
+  var token=getToken();
+  setNovinkaStatus('Удаление…');
+  fetch(API+'index.html?ref=main',{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})
+  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  .then(function(data){
+    var sha=data.sha;
+    var html=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+    var vidIdx=html.indexOf('data-vid="'+vid+'"');
+    if(vidIdx===-1)throw new Error('Видео не найдено');
+    var cardStart=html.lastIndexOf('<div class="novinka-card">',vidIdx);
+    if(cardStart===-1)throw new Error('Карточка не найдена');
+    var depth=0,i=cardStart,cardEnd=-1;
+    while(i<html.length){
+      if(html.slice(i,i+4)==='<div'){depth++;i+=4;}
+      else if(html.slice(i,i+6)==='</div>'){depth--;if(depth===0){cardEnd=i+6;break;}i+=6;}
+      else{i++;}
+    }
+    if(cardEnd===-1)throw new Error('Конец карточки не найден');
+    var newHtml=html.slice(0,cardStart).trimEnd()+'\n'+html.slice(cardEnd).replace(/^\s*\n/,'');
+    var encoded=btoa(unescape(encodeURIComponent(newHtml)));
+    return fetch(API+'index.html',{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Delete novinka: '+vid,content:encoded,sha:sha,branch:'main'})});
+  })
+  .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
+  .then(function(){setNovinkaStatus('✓ Удалено',true);loadNovinkaList();})
+  .catch(function(e){setNovinkaStatus('Ошибка: '+e.message);});
 }
 
 function switchInbox(){
