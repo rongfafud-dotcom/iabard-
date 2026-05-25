@@ -3003,12 +3003,15 @@ function loadPoems(){
   var list=document.getElementById('poems-list');
   function renderPoems(text){
     list.innerHTML='';
-    var poems=text.split('===').map(function(p){return p.replace(/[ \t]*#[^\n]*/g,'').trim();}).filter(Boolean).reverse();
-    if(!poems.length){
+    var raw=text.split('===').map(function(p){return p.trim();}).filter(Boolean).reverse();
+    if(!raw.length){
       list.innerHTML='<p class="poems-loading">Скоро здесь будут стихи…</p>';
       return;
     }
-    poems.forEach(function(poem){
+    raw.forEach(function(rawPoem){
+      var audioMatch=rawPoem.match(/^[ \t]*#\s*audio:\s*(.+)$/m);
+      var audioFile=audioMatch?audioMatch[1].trim():null;
+      var poem=rawPoem.replace(/[ \t]*#[^\n]*/g,'').trim();
       var stanzas=poem.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
       var title=stanzas[0]||'';var body=stanzas.slice(1);
       var card=document.createElement('div');card.className='novinka-card fade-up';
@@ -3017,7 +3020,11 @@ function loadPoems(){
       body.forEach(function(s){
         h+='<div class="stanza">'+s.split('\n').map(function(l){return l.trim();}).join('<br>\n')+'</div>';
       });
-      h+='</div>';card.innerHTML=h;list.appendChild(card);
+      h+='</div>';
+      if(audioFile){
+        h+='<audio controls src="audio/'+audioFile+'" style="width:100%;margin-top:20px;border-radius:6px;opacity:0.9"></audio>';
+      }
+      card.innerHTML=h;list.appendChild(card);
       if(typeof fadeObserver!=='undefined')fadeObserver.observe(card);
     });
   }
