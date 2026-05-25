@@ -3174,7 +3174,7 @@ function handleContact(e, form) {
   });
 }
 // Preload poems in background so Стихи tab shows instantly
-window._poemsCache=fetch('poems.txt?v='+Math.floor(Date.now()/300000)).then(function(r){return r.ok?r.text():Promise.reject(r.status);});
+window._poemsCache=fetch('poems.txt?v='+Math.floor(Date.now()/60000)).then(function(r){return r.ok?r.text():Promise.reject(r.status);});
 </script>
 <button onclick="adminLogin()" style="position:fixed;top:12px;right:14px;z-index:9999;background:transparent;border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:rgba(201,169,110,0.30);font-family:'Raleway',sans-serif;font-size:0.48rem;letter-spacing:1.4px;text-transform:uppercase;padding:4px 9px;cursor:pointer;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);transition:opacity 0.2s" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity=''">admin</button>
 <script>
