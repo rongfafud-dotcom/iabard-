@@ -77,7 +77,6 @@
 
 <div class="tabs">
   <div class="tab-btn active" onclick="switchFile('poems.txt',this)">📖 Стихи</div>
-  <div class="tab-btn" onclick="switchFile('poem_queue.txt',this)">🎬 Очередь</div>
   <div class="tab-btn" onclick="switchNovinka(this)">📹 Новинки</div>
   <div class="tab-btn" onclick="switchAudio(this)">🎵 Аудио</div>
 </div>
@@ -91,12 +90,17 @@
 </div>
 
 <div class="novinka-panel" id="novinka-panel">
-  <div class="novinka-queue-label">Следующее стихотворение из очереди</div>
-  <div class="novinka-queue-box" id="novinka-queue-preview">Загрузка…</div>
-  <div class="novinka-queue-label" style="margin-top:16px">Ссылка на YouTube Shorts</div>
+  <div class="novinka-queue-label">Ссылка на YouTube Shorts</div>
   <div class="novinka-url-row">
     <input type="url" id="novinka-url" placeholder="https://youtube.com/shorts/…">
   </div>
+  <div class="novinka-queue-label" style="margin-top:16px">Стихотворение</div>
+  <textarea id="novinka-poem" placeholder="Название стихотворения
+
+Первая строфа
+вторая строка
+
+Третья строка" style="width:100%;height:220px;background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;margin-bottom:16px" spellcheck="false"></textarea>
   <button class="novinka-add-btn" id="novinka-add-btn" onclick="addNovinka()">Добавить в Новинки</button>
   <div class="novinka-status" id="novinka-status"></div>
 </div>
@@ -171,30 +175,6 @@ function switchNovinka(btn){
   document.getElementById('editor-wrap').style.display='none';
   document.getElementById('audio-panel').style.display='none';
   document.getElementById('novinka-panel').style.display='block';
-  loadNovinkaQueue();
-}
-
-var _queueSha='', _queuePoems=[];
-
-function loadNovinkaQueue(){
-  var token=getToken();
-  if(!token){document.getElementById('novinka-queue-preview').textContent='Сначала введите токен';return;}
-  document.getElementById('novinka-queue-preview').textContent='Загрузка…';
-  fetch(API+'poem_queue.txt?ref=main',{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})
-  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-  .then(function(data){
-    _queueSha=data.sha;
-    var text=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
-    _queuePoems=text.split('===').map(function(p){return p.trim();}).filter(Boolean);
-    if(!_queuePoems.length){
-      document.getElementById('novinka-queue-preview').textContent='Очередь пуста — добавь стихи во вкладке «Очередь»';
-      document.getElementById('novinka-add-btn').disabled=true;
-    } else {
-      document.getElementById('novinka-queue-preview').textContent=_queuePoems[0];
-      document.getElementById('novinka-add-btn').disabled=false;
-    }
-  })
-  .catch(function(e){document.getElementById('novinka-queue-preview').textContent='Ошибка: '+e.message;});
 }
 
 function extractVideoId(url){
@@ -233,8 +213,8 @@ function addNovinka(){
   var url=document.getElementById('novinka-url').value.trim();
   var vid=extractVideoId(url);
   if(!vid){setNovinkaStatus('Не удалось распознать ID видео из ссылки');return;}
-  if(!_queuePoems.length){setNovinkaStatus('Очередь стихов пуста');return;}
-  var poem=_queuePoems[0];
+  var poem=document.getElementById('novinka-poem').value.trim();
+  if(!poem){setNovinkaStatus('Введи стихотворение');return;}
   var btn=document.getElementById('novinka-add-btn');
   btn.disabled=true;
   setNovinkaStatus('Загрузка index.html…');
@@ -246,13 +226,12 @@ function addNovinka(){
     var START='<!-- YT-NOVINKA-START -->';
     var LIST='<div class="novinka-list">';
     var si=html.indexOf(START);
-    if(si===-1)throw new Error('Маркер YT-NOVINKA-START не найден в index.html');
+    if(si===-1)throw new Error('Маркер YT-NOVINKA-START не найден');
     var li=html.indexOf(LIST,si);
     if(li===-1)throw new Error('novinka-list не найден');
     var insertAt=li+LIST.length;
-    var newCard='\n'+buildNovinkaCard(poem,vid);
-    html=html.slice(0,insertAt)+newCard+html.slice(insertAt);
-    setNovinkaStatus('Сохранение index.html…');
+    html=html.slice(0,insertAt)+'\n'+buildNovinkaCard(poem,vid)+html.slice(insertAt);
+    setNovinkaStatus('Сохранение…');
     var encoded=btoa(unescape(encodeURIComponent(html)));
     return fetch(API+'index.html',{
       method:'PUT',
@@ -262,21 +241,10 @@ function addNovinka(){
   })
   .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
   .then(function(){
-    setNovinkaStatus('Сохранение очереди…');
-    var remaining=_queuePoems.slice(1).join('\n\n===\n\n');
-    if(remaining)remaining+='\n\n===\n';
-    var enc=btoa(unescape(encodeURIComponent(remaining)));
-    return fetch(API+'poem_queue.txt',{
-      method:'PUT',
-      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-      body:JSON.stringify({message:'Remove used poem from queue',content:enc,sha:_queueSha,branch:'main'})
-    });
-  })
-  .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
-  .then(function(){
     setNovinkaStatus('✓ Видео добавлено в Новинки!',true);
     document.getElementById('novinka-url').value='';
-    loadNovinkaQueue();
+    document.getElementById('novinka-poem').value='';
+    btn.disabled=false;
   })
   .catch(function(e){
     btn.disabled=false;
