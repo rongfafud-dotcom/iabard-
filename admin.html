@@ -55,6 +55,17 @@
   .back-btn:hover{border-color:#c9a96e;color:#c9a96e}
   .top-bar{max-width:600px;margin:0 auto 4px;display:flex;align-items:center}
   .top-bar h1{flex:1;margin:0}
+  .inbox-panel{max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:0 0 10px 10px;padding:24px 20px;display:none}
+  .inbox-msg{background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.15);border-radius:8px;padding:16px 18px;margin-bottom:12px;transition:opacity 0.4s}
+  .inbox-msg-meta{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:4px}
+  .inbox-msg-name{font-size:0.9rem;color:#c9a96e;font-weight:600}
+  .inbox-msg-date{font-size:0.73rem;color:rgba(201,169,110,0.5);white-space:nowrap}
+  .inbox-msg-email{font-size:0.78rem;color:rgba(201,169,110,0.55);margin-bottom:10px}
+  .inbox-msg-text{font-size:0.87rem;color:rgba(232,221,208,0.85);line-height:1.65;white-space:pre-wrap;word-break:break-word}
+  .inbox-read-btn{margin-top:12px;background:rgba(100,160,100,0.12);border:1px solid rgba(100,160,100,0.3);border-radius:5px;color:#7bc47b;padding:5px 14px;cursor:pointer;font-size:0.75rem;transition:all 0.2s}
+  .inbox-read-btn:hover{background:rgba(100,160,100,0.25)}
+  .inbox-empty{font-size:0.88rem;color:rgba(201,169,110,0.4);text-align:center;padding:40px 0}
+  .inbox-refresh{width:100%;margin-bottom:18px}
 </style>
 </head>
 <body>
@@ -78,6 +89,7 @@
   <div class="tab-btn active" onclick="switchFile('poems.txt',this)">📖 Стихи</div>
   <div class="tab-btn" onclick="switchNovinka(this)">📹 Новинки</div>
   <div class="tab-btn" onclick="switchAudio(this)">🎵 Аудио</div>
+  <div class="tab-btn" onclick="switchInbox(this)">📬 Входящие</div>
 </div>
 
 <div class="editor-wrap" id="editor-wrap">
@@ -124,6 +136,11 @@
   </div>
 </div>
 
+<div class="inbox-panel" id="inbox-panel">
+  <button class="inbox-refresh" onclick="loadInbox()">↻ Обновить сообщения</button>
+  <div id="inbox-list"><span style="opacity:0.4;font-size:0.85rem">Загрузка…</span></div>
+</div>
+
 <div class="hint">
   Формат стихов: название → пустая строка → строфы → пустая строка → <strong>===</strong> → следующее стихотворение.<br>
   В обеих вкладках вставляй новое стихотворение <strong>над первым разделителем</strong> — оно появится первым на сайте.
@@ -162,6 +179,7 @@ function switchFile(file, btn){
   document.getElementById('editor-wrap').style.display = '';
   document.getElementById('audio-panel').style.display = 'none';
   document.getElementById('novinka-panel').style.display = 'none';
+  document.getElementById('inbox-panel').style.display = 'none';
   document.getElementById('editor').value = '';
   document.getElementById('save-btn').disabled = true;
   currentSha = '';
@@ -174,6 +192,7 @@ function switchNovinka(btn){
   document.getElementById('editor-wrap').style.display='none';
   document.getElementById('audio-panel').style.display='none';
   document.getElementById('novinka-panel').style.display='block';
+  document.getElementById('inbox-panel').style.display='none';
 }
 
 function extractVideoId(url){
@@ -261,6 +280,7 @@ function switchAudio(btn){
   document.getElementById('editor-wrap').style.display = 'none';
   document.getElementById('novinka-panel').style.display = 'none';
   document.getElementById('audio-panel').style.display = 'block';
+  document.getElementById('inbox-panel').style.display = 'none';
   loadAudioList();
 }
 
@@ -461,6 +481,67 @@ function saveFile(){
     }
   });
 }
+
+function switchInbox(btn){
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('editor-wrap').style.display='none';
+  document.getElementById('novinka-panel').style.display='none';
+  document.getElementById('audio-panel').style.display='none';
+  document.getElementById('inbox-panel').style.display='block';
+  loadInbox();
+}
+
+function loadInbox(){
+  var token=getToken();
+  if(!token){document.getElementById('inbox-list').innerHTML='<div class="inbox-empty">Сначала введите токен</div>';return;}
+  document.getElementById('inbox-list').innerHTML='<span style="opacity:0.4;font-size:0.85rem">Загрузка…</span>';
+  fetch('https://api.github.com/repos/'+REPO+'/issues?state=open&per_page=50&sort=created&direction=desc',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  .then(function(issues){
+    var msgs=issues.filter(function(i){return i.title.charAt(0)==='💌';});
+    var list=document.getElementById('inbox-list');
+    if(!msgs.length){list.innerHTML='<div class="inbox-empty">Нет новых сообщений</div>';return;}
+    list.innerHTML='';
+    msgs.forEach(function(issue){
+      var m=issue.title.match(/^💌\s*(.*?)\s*\(([^)]*)\)\s*$/);
+      var name=m?m[1]:issue.title.replace(/^💌\s*/,'');
+      var email=m?m[2]:'';
+      var date=new Date(issue.created_at).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+      var div=document.createElement('div');
+      div.className='inbox-msg';
+      div.innerHTML=
+        '<div class="inbox-msg-meta"><span class="inbox-msg-name">'+esc(name)+'</span><span class="inbox-msg-date">'+date+'</span></div>'+
+        (email?'<div class="inbox-msg-email">'+esc(email)+'</div>':'')+
+        '<div class="inbox-msg-text">'+esc(issue.body||'(пусто)')+'</div>'+
+        '<button class="inbox-read-btn" onclick="markRead('+issue.number+',this)">✓ Прочитано</button>';
+      list.appendChild(div);
+    });
+  })
+  .catch(function(e){document.getElementById('inbox-list').innerHTML='<div class="inbox-empty" style="color:#d47a7a">Ошибка: '+e.message+'</div>';});
+}
+
+function markRead(number,btn){
+  var token=getToken();
+  btn.disabled=true;btn.textContent='…';
+  fetch('https://api.github.com/repos/'+REPO+'/issues/'+number,{
+    method:'PATCH',
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify({state:'closed'})
+  })
+  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  .then(function(){
+    var msg=btn.closest('.inbox-msg');
+    msg.style.opacity='0.3';
+    btn.textContent='✓ Архивировано';
+    setTimeout(function(){msg.remove();},600);
+  })
+  .catch(function(e){btn.disabled=false;btn.textContent='Ошибка: '+e.message;});
+}
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 // Drag & drop
 (function(){

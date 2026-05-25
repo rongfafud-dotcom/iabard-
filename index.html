@@ -3047,10 +3047,20 @@ document.querySelectorAll('.flip-card, .novinka-card').forEach(function(el) {
 function handleContact(e, form) {
   e.preventDefault();
   var data = new FormData(form);
-  fetch('https://formspree.io/f/mlgvnvdv', {
+  var name = (data.get('name')||'').trim()||'Аноним';
+  var email = (data.get('email')||'').trim();
+  var msg = (data.get('message')||'').trim();
+  fetch('https://api.github.com/repos/rongfafud-dotcom/iabard-/issues', {
     method: 'POST',
-    body: data,
-    headers: {'Accept': 'application/json'}
+    headers: {
+      'Authorization': 'token CONTACT_FORM_TOKEN',
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title: '💌 ' + name + (email ? ' (' + email + ')' : ''),
+      body: msg
+    })
   })
   .then(function(r) {
     if (r.ok) {
