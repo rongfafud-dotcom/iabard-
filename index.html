@@ -2903,7 +2903,7 @@ function loadPoems(){
           var tm=mainT.match(/^(.*?)\s*(\([^)]+\))\.?\s*$/);
           if(tm){mainT=tm[1].trim();subT=tm[2];}
         }
-        titleHtml='<div class="novinka-title">'+mainT+(subT?'<br><span style="font-size:0.55em;font-weight:400;opacity:0.65;letter-spacing:1px;font-style:italic">'+subT+'</span>':'')+'</div>';
+        titleHtml='<div class="novinka-title">'+mainT+(subT?'<br>'+subT:'')+'</div>';
       }
       var h=titleHtml;
       h+='<div class="novinka-poem">';
