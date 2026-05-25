@@ -112,10 +112,10 @@ function loadFile(){
     if(currentFile === 'poems.txt'){
       var parts = text.split('===').map(function(p){return p.trim();}).filter(Boolean);
       parts.reverse();
-      text = '――――――――――――――――――――――――――\n\n' + parts.join('\n\n\n――――――――――――――――――――――――――\n\n') + '\n\n――――――――――――――――――――――――――\n';
+      text = '\n\n――――――――――――――――――――――――――\n\n' + parts.join('\n\n\n――――――――――――――――――――――――――\n\n') + '\n\n\n――――――――――――――――――――――――――\n';
     } else {
       var parts = text.split('===').map(function(p){return p.trim();}).filter(Boolean);
-      text = '――――――――――――――――――――――――――\n\n' + parts.join('\n\n\n――――――――――――――――――――――――――\n\n') + '\n\n――――――――――――――――――――――――――\n';
+      text = '\n\n――――――――――――――――――――――――――\n\n' + parts.join('\n\n\n――――――――――――――――――――――――――\n\n') + '\n\n\n――――――――――――――――――――――――――\n';
     }
     document.getElementById('editor').value = text;
     document.getElementById('save-btn').disabled = false;
