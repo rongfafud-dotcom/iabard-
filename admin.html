@@ -75,7 +75,7 @@
   <div class="audio-upload-box" id="upload-box">
     <div class="audio-upload-icon">🎵</div>
     <div class="audio-upload-text">Перетащи аудиофайл сюда или нажми для выбора<br><small style="opacity:0.6">MP3, OGG, WAV, M4A</small></div>
-    <input type="file" id="audio-file-input" accept="audio/*" style="display:none" onchange="uploadAudio(this.files[0])">
+    <input type="file" id="audio-file-input" accept=".mp3,.m4a,.wav,.ogg,.aac,.flac,audio/*" style="display:none" onchange="uploadAudio(this.files[0])">
     <button onclick="document.getElementById('audio-file-input').click()">Выбрать файл</button>
     <div class="audio-progress" id="audio-progress"></div>
   </div>
