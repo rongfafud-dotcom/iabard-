@@ -113,7 +113,6 @@ function loadFile(){
     if(currentFile === 'poems.txt'){
       var parts = text.split('===').map(function(p){return p.trim();}).filter(Boolean);
       currentPoemCount = parts.length;
-      parts.reverse();
       text = '\n\n――――――――――――――――――――――――――\n\n' + parts.join('\n\n\n――――――――――――――――――――――――――\n\n') + '\n\n\n――――――――――――――――――――――――――\n';
     } else {
       var parts = text.split('===').map(function(p){return p.trim();}).filter(Boolean);
@@ -145,7 +144,6 @@ function saveFile(){
       return;
     }
     btn.dataset.confirm = '';
-    parts.reverse();
     content = parts.join('\n\n===\n\n') + '\n\n===\n';
   } else {
     content = content.split(SEP).map(function(p){return p.trim();}).filter(Boolean).join('\n\n===\n\n');
