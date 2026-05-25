@@ -87,7 +87,12 @@
   .inbox-reply-item-date{font-size:0.7rem;color:rgba(201,169,110,0.4);margin-bottom:4px}
   .inbox-reply-item-text{font-size:0.83rem;color:rgba(232,221,208,0.8);white-space:pre-wrap;word-break:break-word}
   .inbox-empty{font-size:0.88rem;color:rgba(201,169,110,0.4);text-align:center;padding:40px 0}
-  .inbox-refresh{width:100%;margin-bottom:18px}
+  .inbox-refresh{width:100%;margin-top:18px;margin-bottom:0}
+  .inbox-tabs{display:flex;margin-bottom:20px;border-bottom:1px solid rgba(201,169,110,0.2)}
+  .inbox-tab-btn{flex:1;padding:10px;text-align:center;cursor:pointer;background:transparent;border:none;border-bottom:2px solid transparent;color:rgba(201,169,110,0.5);font-size:0.85rem;letter-spacing:1px;transition:all 0.2s;margin-bottom:-1px;font-family:'Georgia',serif}
+  .inbox-tab-btn.active{color:#c9a96e;border-bottom-color:#c9a96e}
+  .inbox-tab-btn:hover{color:rgba(201,169,110,0.8)}
+  #poem-yt-url::placeholder,#novinka-url::placeholder,#poem-add-text::placeholder,#novinka-poem::placeholder{color:rgba(232,221,208,0.5)}
   .inbox-close-btn{float:right;background:transparent;border:1px solid rgba(100,180,100,0.3);border-radius:5px;color:rgba(120,200,120,0.65);padding:5px 12px;cursor:pointer;font-size:0.72rem;transition:all 0.2s}
   .inbox-close-btn:hover{border-color:#7bc47b;color:#7bc47b}
   .novinka-edit-box{margin-top:10px;display:none}
@@ -195,8 +200,12 @@
 </div>
 
 <div class="inbox-panel" id="inbox-panel">
-  <button class="inbox-refresh" onclick="loadInbox()">↻ Обновить сообщения</button>
+  <div class="inbox-tabs">
+    <button class="inbox-tab-btn active" id="inbox-tab-open" onclick="switchInboxTab('open')">Входящие</button>
+    <button class="inbox-tab-btn" id="inbox-tab-closed" onclick="switchInboxTab('closed')">Архив</button>
+  </div>
   <div id="inbox-list"><span style="opacity:0.4;font-size:0.85rem">Загрузка…</span></div>
+  <button class="inbox-refresh" onclick="loadInbox()">↻ Обновить сообщения</button>
 </div>
 
 <div class="hint">
@@ -211,6 +220,14 @@ const API  = 'https://api.github.com/repos/' + REPO + '/contents/';
 var currentFile = 'poems.txt';
 var currentSha  = '';
 var currentPoemCount = 0;
+var currentInboxTab = 'open';
+
+function switchInboxTab(tab){
+  currentInboxTab=tab;
+  document.getElementById('inbox-tab-open').classList.toggle('active',tab==='open');
+  document.getElementById('inbox-tab-closed').classList.toggle('active',tab==='closed');
+  loadInbox();
+}
 
 function getToken(){
   return localStorage.getItem('gh_token') || document.getElementById('token').value.trim();
@@ -760,14 +777,14 @@ function loadInbox(){
   var token=getToken();
   if(!token){document.getElementById('inbox-list').innerHTML='<div class="inbox-empty">Сначала введите токен</div>';return;}
   document.getElementById('inbox-list').innerHTML='<span style="opacity:0.4;font-size:0.85rem">Загрузка…</span>';
-  fetch('https://api.github.com/repos/'+REPO+'/issues?state=open&per_page=50&sort=created&direction=asc',{
+  fetch('https://api.github.com/repos/'+REPO+'/issues?state='+currentInboxTab+'&per_page=50&sort=created&direction=asc',{
     headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
   })
   .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
   .then(function(issues){
     var msgs=issues.filter(function(i){return i.title.charAt(0)==='💌';});
     var badge=document.getElementById('inbox-badge');
-    if(msgs.length){badge.textContent=msgs.length;badge.style.display='flex';}else{badge.style.display='none';}
+    if(currentInboxTab==='open'){if(msgs.length){badge.textContent=msgs.length;badge.style.display='flex';}else{badge.style.display='none';}}
     var list=document.getElementById('inbox-list');
     if(!msgs.length){list.innerHTML='<div class="inbox-empty">Нет сообщений</div>';return;}
     list.innerHTML='';
@@ -789,7 +806,7 @@ function loadInbox(){
         '<div class="inbox-msg-text">'+esc(issue.body||'(пусто)')+'</div>'+
         repliesHtml+
         '<button class="inbox-reply-btn" onclick="toggleReply('+issue.number+')">Ответить ↩</button>'+
-        '<button class="inbox-close-btn" onclick="closeMessage('+issue.number+')">✓ Архив</button>'+
+        (currentInboxTab==='open'?'<button class="inbox-close-btn" onclick="closeMessage('+issue.number+')">✓ Архив</button>':'')+
         '<div class="inbox-reply-box" id="reply-'+issue.number+'">'+
           '<textarea id="reply-text-'+issue.number+'" placeholder="Ваш ответ…"></textarea>'+
           '<button class="inbox-send-btn" onclick="sendReply('+issue.number+',this)">Отправить</button>'+
