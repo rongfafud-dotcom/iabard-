@@ -131,7 +131,7 @@
 
 <div class="novinka-panel" id="poem-add-panel" style="border-radius:10px 10px 0 0;border-bottom:none;margin-bottom:0">
   <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
-    <input type="url" id="poem-yt-url" placeholder="YouTube"
+    <input type="url" id="poem-yt-url" placeholder="Добавить ссылку на YouTube"
       style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:#e8ddd0;font-size:0.88rem;outline:none"
       onfocus="this.style.borderColor='rgba(201,169,110,0.6)'" onblur="this.style.borderColor='rgba(201,169,110,0.25)'">
     <label id="poem-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:pointer;display:flex;align-items:center;gap:8px;transition:border-color 0.2s">
@@ -481,10 +481,10 @@ function loadFile(){
       var parts = text.split('===').map(function(p){return p.trim();}).filter(Boolean);
       currentPoemCount = parts.length;
       parts.reverse();
-      text = '\n\n――――――――――――――――――――――――――\n\n' + parts.join('\n\n\n――――――――――――――――――――――――――\n\n') + '\n\n\n――――――――――――――――――――――――――\n';
+      text = parts.join('\n\n――――――――――――――――――――――――――\n\n') + '\n\n――――――――――――――――――――――――――\n';
     } else {
       var parts = text.split('===').map(function(p){return p.trim();}).filter(Boolean);
-      text = '\n\n――――――――――――――――――――――――――\n\n' + parts.join('\n\n\n――――――――――――――――――――――――――\n\n') + '\n\n\n――――――――――――――――――――――――――\n';
+      text = parts.join('\n\n――――――――――――――――――――――――――\n\n') + '\n\n――――――――――――――――――――――――――\n';
     }
     document.getElementById('editor').value = text;
     document.getElementById('save-btn').disabled = false;
@@ -661,7 +661,9 @@ function loadNovinkaList(){
     var cards=[];
     var pos=0;
     while(true){
-      var cs=section.indexOf('<div class="novinka-card">',pos);
+      var cs1=section.indexOf('<div class="novinka-card">',pos);
+      var cs2=section.indexOf('<div class="novinka-card novinka-hidden">',pos);
+      var cs=(cs1===-1)?cs2:(cs2===-1)?cs1:Math.min(cs1,cs2);
       if(cs===-1)break;
       var depth=0,i=cs,ce=-1;
       while(i<section.length){
@@ -722,7 +724,9 @@ function deleteNovinka(vid){
     var html=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
     var vidIdx=html.indexOf('data-vid="'+vid+'"');
     if(vidIdx===-1)throw new Error('Видео не найдено');
-    var cardStart=html.lastIndexOf('<div class="novinka-card">',vidIdx);
+    var ls1=html.lastIndexOf('<div class="novinka-card">',vidIdx);
+    var ls2=html.lastIndexOf('<div class="novinka-card novinka-hidden">',vidIdx);
+    var cardStart=Math.max(ls1,ls2);
     if(cardStart===-1)throw new Error('Карточка не найдена');
     var depth=0,i=cardStart,cardEnd=-1;
     while(i<html.length){
@@ -896,7 +900,9 @@ function saveNovinkaEdit(vid,btn){
     var html=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
     var vidIdx=html.indexOf('data-vid="'+vid+'"');
     if(vidIdx===-1)throw new Error('Видео не найдено');
-    var cardStart=html.lastIndexOf('<div class="novinka-card">',vidIdx);
+    var se1=html.lastIndexOf('<div class="novinka-card">',vidIdx);
+    var se2=html.lastIndexOf('<div class="novinka-card novinka-hidden">',vidIdx);
+    var cardStart=Math.max(se1,se2);
     if(cardStart===-1)throw new Error('Карточка не найдена');
     var depth=0,i=cardStart,cardEnd=-1;
     while(i<html.length){
