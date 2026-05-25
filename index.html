@@ -3011,9 +3011,13 @@ function loadPoems(){
     raw.forEach(function(rawPoem){
       var audioMatch=rawPoem.match(/^[ \t]*#\s*audio:\s*(.+)$/m);
       var audioFile=audioMatch?audioMatch[1].trim():null;
-      var ytMatch=rawPoem.match(/^[ \t]*#\s*youtube:\s*(.+)$/m);
+      var ytMatch=rawPoem.match(/^[ \t]*#\s*youtube:\s*(.+)$/mi);
       var ytUrl=ytMatch?ytMatch[1].trim():null;
       var poem=rawPoem.replace(/[ \t]*#[^\n]*/g,'').trim();
+      if(!ytUrl){
+        var bareYt=poem.match(/^(https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)\S*)$/m);
+        if(bareYt){ytUrl=bareYt[1].trim();poem=poem.replace(bareYt[1],'').trim();}
+      }
       var stanzas=poem.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
       var title=stanzas[0]||'';var body=stanzas.slice(1);
       var card=document.createElement('div');card.className='novinka-card fade-up';
