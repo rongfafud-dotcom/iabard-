@@ -27,6 +27,21 @@
   .save-btn:disabled{opacity:0.4;cursor:not-allowed}
   .hint{max-width:600px;margin:16px auto 0;font-size:0.78rem;color:rgba(201,169,110,0.45);line-height:1.6;text-align:center}
   .token-ok{color:#7bc47b;font-size:0.8rem;margin-top:8px}
+  .audio-panel{max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:0 0 10px 10px;padding:24px 20px;display:none}
+  .audio-upload-box{border:2px dashed rgba(201,169,110,0.3);border-radius:8px;padding:32px 20px;text-align:center;margin-bottom:24px;transition:border-color 0.2s}
+  .audio-upload-box.drag{border-color:#c9a96e}
+  .audio-upload-box input[type=file]{display:none}
+  .audio-upload-box label{cursor:pointer;display:block}
+  .audio-upload-icon{font-size:2.4rem;margin-bottom:10px}
+  .audio-upload-text{font-size:0.9rem;color:rgba(201,169,110,0.7);margin-bottom:14px}
+  .audio-progress{margin-top:14px;font-size:0.82rem;color:rgba(201,169,110,0.8);min-height:1.2em}
+  .audio-list{display:flex;flex-direction:column;gap:10px}
+  .audio-list-title{font-size:0.78rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,169,110,0.5);margin-bottom:4px}
+  .audio-item{display:flex;align-items:center;gap:10px;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.15);border-radius:7px;padding:10px 14px}
+  .audio-item-name{flex:1;font-size:0.88rem;word-break:break-all}
+  .audio-item audio{height:28px;flex-shrink:0;max-width:160px}
+  .audio-copy-btn{background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:5px 10px;cursor:pointer;font-size:0.75rem;white-space:nowrap;flex-shrink:0}
+  .audio-del-btn{background:rgba(180,60,60,0.12);border:1px solid rgba(180,60,60,0.3);border-radius:5px;color:#d47a7a;padding:5px 9px;cursor:pointer;font-size:0.75rem;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -45,14 +60,29 @@
 <div class="tabs">
   <div class="tab-btn active" onclick="switchFile('poems.txt',this)">📖 Стихи</div>
   <div class="tab-btn" onclick="switchFile('poem_queue.txt',this)">🎬 Очередь для Shorts</div>
+  <div class="tab-btn" onclick="switchAudio(this)">🎵 Аудио</div>
 </div>
 
-<div class="editor-wrap">
+<div class="editor-wrap" id="editor-wrap">
   <textarea id="editor" placeholder="Загрузка…" spellcheck="false"></textarea>
   <div class="bar">
     <span class="status" id="status"></span>
     <button class="save-btn" id="save-btn" onclick="saveFile()" disabled>Сохранить</button>
   </div>
+</div>
+
+<div class="audio-panel" id="audio-panel">
+  <div class="audio-upload-box" id="upload-box">
+    <label for="audio-file-input">
+      <div class="audio-upload-icon">🎵</div>
+      <div class="audio-upload-text">Перетащи аудиофайл сюда или нажми для выбора<br><small style="opacity:0.6">MP3, OGG, WAV, M4A</small></div>
+      <button onclick="document.getElementById('audio-file-input').click();event.preventDefault()" style="pointer-events:auto">Выбрать файл</button>
+    </label>
+    <input type="file" id="audio-file-input" accept="audio/*" onchange="uploadAudio(this.files[0])">
+    <div class="audio-progress" id="audio-progress"></div>
+  </div>
+  <div class="audio-list-title">Загруженные треки</div>
+  <div class="audio-list" id="audio-list"><span style="opacity:0.4;font-size:0.85rem">Загрузка…</span></div>
 </div>
 
 <div class="hint">
@@ -90,10 +120,117 @@ function switchFile(file, btn){
   currentFile = file;
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
+  document.getElementById('editor-wrap').style.display = '';
+  document.getElementById('audio-panel').style.display = 'none';
   document.getElementById('editor').value = '';
   document.getElementById('save-btn').disabled = true;
   currentSha = '';
   loadFile();
+}
+
+function switchAudio(btn){
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('editor-wrap').style.display = 'none';
+  document.getElementById('audio-panel').style.display = 'block';
+  loadAudioList();
+}
+
+function loadAudioList(){
+  var token = getToken();
+  if(!token){document.getElementById('audio-list').innerHTML='<span style="color:#d47a7a;font-size:0.85rem">Сначала введите токен</span>';return;}
+  document.getElementById('audio-list').innerHTML='<span style="opacity:0.4;font-size:0.85rem">Загрузка…</span>';
+  fetch('https://api.github.com/repos/'+REPO+'/contents/audio?ref=main',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){
+    if(r.status===404)return[];
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    return r.json();
+  })
+  .then(function(files){
+    var list=document.getElementById('audio-list');
+    if(!files.length){list.innerHTML='<span style="opacity:0.4;font-size:0.85rem">Нет загруженных треков</span>';return;}
+    list.innerHTML='';
+    files.forEach(function(f){
+      var item=document.createElement('div');
+      item.className='audio-item';
+      item.innerHTML=
+        '<span class="audio-item-name">'+f.name+'</span>'+
+        '<audio controls src="'+f.download_url+'"></audio>'+
+        '<button class="audio-copy-btn" onclick="copyAudioTag(\''+f.name+'\')">Копировать тег</button>'+
+        '<button class="audio-del-btn" onclick="deleteAudio(\''+f.name+'\',\''+f.sha+'\')">✕</button>';
+      list.appendChild(item);
+    });
+  })
+  .catch(function(e){
+    document.getElementById('audio-list').innerHTML='<span style="color:#d47a7a;font-size:0.85rem">Ошибка: '+e.message+'</span>';
+  });
+}
+
+function copyAudioTag(filename){
+  navigator.clipboard.writeText('# audio: '+filename).then(function(){
+    setAudioProgress('Скопировано: # audio: '+filename);
+  });
+}
+
+function setAudioProgress(msg,ok){
+  var el=document.getElementById('audio-progress');
+  el.textContent=msg;
+  el.style.color=ok?'#7bc47b':'rgba(201,169,110,0.8)';
+}
+
+function uploadAudio(file){
+  if(!file)return;
+  var token=getToken();
+  if(!token){setAudioProgress('Сначала введите токен');return;}
+  setAudioProgress('Чтение файла…');
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var b64=e.target.result.split(',')[1];
+    setAudioProgress('Загрузка на GitHub…');
+    var path='audio/'+file.name;
+    fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+    })
+    .then(function(r){return r.ok?r.json():null;})
+    .then(function(existing){
+      var body={message:'Upload audio: '+file.name,content:b64,branch:'main'};
+      if(existing&&existing.sha)body.sha=existing.sha;
+      return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{
+        method:'PUT',
+        headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
+    })
+    .then(function(r){
+      if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});
+      return r.json();
+    })
+    .then(function(){
+      setAudioProgress('✓ Загружено! Тег для стихов: # audio: '+file.name, true);
+      document.getElementById('audio-file-input').value='';
+      loadAudioList();
+    })
+    .catch(function(e){setAudioProgress('Ошибка: '+e.message);});
+  };
+  reader.readAsDataURL(file);
+}
+
+function deleteAudio(filename,sha){
+  if(!confirm('Удалить '+filename+'?'))return;
+  var token=getToken();
+  fetch('https://api.github.com/repos/'+REPO+'/contents/audio/'+filename,{
+    method:'DELETE',
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify({message:'Delete audio: '+filename,sha:sha,branch:'main'})
+  })
+  .then(function(r){
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    setAudioProgress('Удалено: '+filename);
+    loadAudioList();
+  })
+  .catch(function(e){setAudioProgress('Ошибка удаления: '+e.message);});
 }
 
 function loadFile(){
@@ -190,6 +327,15 @@ function saveFile(){
     }
   });
 }
+
+// Drag & drop
+(function(){
+  var box=document.getElementById('upload-box');
+  if(!box)return;
+  box.addEventListener('dragover',function(e){e.preventDefault();box.classList.add('drag');});
+  box.addEventListener('dragleave',function(){box.classList.remove('drag');});
+  box.addEventListener('drop',function(e){e.preventDefault();box.classList.remove('drag');var f=e.dataTransfer.files[0];if(f&&f.type.startsWith('audio/'))uploadAudio(f);});
+})();
 
 // Init
 (function(){
