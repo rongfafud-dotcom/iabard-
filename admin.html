@@ -37,16 +37,24 @@
   .audio-progress{margin-top:14px;font-size:0.82rem;color:rgba(201,169,110,0.8);min-height:1.2em}
   .audio-list{display:flex;flex-direction:column;gap:10px}
   .audio-list-title{font-size:0.78rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,169,110,0.5);margin-bottom:4px}
-  .audio-item{display:flex;align-items:center;gap:10px;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.15);border-radius:7px;padding:10px 14px}
-  .audio-item-name{flex:1;font-size:0.88rem;word-break:break-all}
-  .audio-item audio{height:28px;flex-shrink:0;max-width:160px}
+  .audio-item{display:flex;flex-wrap:wrap;gap:8px;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.15);border-radius:7px;padding:10px 14px}
+  .audio-item-name{width:100%;font-size:0.85rem;word-break:break-word;color:rgba(232,221,208,0.9)}
+  .audio-item audio{flex:1;min-width:0;height:32px}
   .audio-copy-btn{background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:5px 10px;cursor:pointer;font-size:0.75rem;white-space:nowrap;flex-shrink:0}
   .audio-del-btn{background:rgba(180,60,60,0.12);border:1px solid rgba(180,60,60,0.3);border-radius:5px;color:#d47a7a;padding:5px 9px;cursor:pointer;font-size:0.75rem;flex-shrink:0}
+  .back-btn{display:inline-flex;align-items:center;gap:6px;margin:0 auto 20px;padding:8px 18px;background:transparent;border:1px solid rgba(201,169,110,0.3);border-radius:8px;color:rgba(201,169,110,0.7);font-size:0.82rem;letter-spacing:1px;cursor:pointer;text-decoration:none;transition:all 0.2s}
+  .back-btn:hover{border-color:#c9a96e;color:#c9a96e}
+  .top-bar{max-width:600px;margin:0 auto 4px;display:flex;align-items:center}
+  .top-bar h1{flex:1;margin:0}
 </style>
 </head>
 <body>
 
-<h1>✦ Редактор контента ✦</h1>
+<div class="top-bar">
+  <a href="index.html" class="back-btn">← На сайт</a>
+  <h1>✦ Редактор ✦</h1>
+  <div style="width:80px"></div>
+</div>
 
 <div class="token-section">
   <label>GitHub Personal Access Token</label>
