@@ -51,11 +51,23 @@
   .audio-item audio{flex:1;min-width:0;height:32px}
   .audio-copy-btn{background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:5px 10px;cursor:pointer;font-size:0.75rem;white-space:nowrap;flex-shrink:0}
   .audio-del-btn{background:rgba(180,60,60,0.12);border:1px solid rgba(180,60,60,0.3);border-radius:5px;color:#d47a7a;padding:5px 9px;cursor:pointer;font-size:0.75rem;flex-shrink:0}
-  .back-btn{display:inline-flex;align-items:center;gap:6px;margin:0 auto 20px;padding:8px 18px;background:transparent;border:1px solid rgba(201,169,110,0.3);border-radius:8px;color:rgba(201,169,110,0.7);font-size:0.82rem;letter-spacing:1px;cursor:pointer;text-decoration:none;transition:all 0.2s}
+  .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:transparent;border:1px solid rgba(201,169,110,0.3);border-radius:8px;color:rgba(201,169,110,0.7);font-size:0.82rem;letter-spacing:1px;cursor:pointer;text-decoration:none;transition:all 0.2s;flex-shrink:0}
   .back-btn:hover{border-color:#c9a96e;color:#c9a96e}
-  .top-bar{max-width:600px;margin:0 auto 4px;display:flex;align-items:center}
+  .top-bar{max-width:600px;margin:0 auto 16px;display:flex;align-items:center;gap:10px}
   .top-bar h1{flex:1;margin:0}
-  .inbox-panel{max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:0 0 10px 10px;padding:24px 20px;display:none}
+  .inbox-btn{background:transparent;border:1px solid rgba(201,169,110,0.3);border-radius:8px;color:rgba(201,169,110,0.6);padding:0;width:42px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;flex-shrink:0;position:relative}
+  .inbox-btn:hover{border-color:#c9a96e;color:#c9a96e;background:rgba(201,169,110,0.08)}
+  .inbox-btn.active{border-color:#c9a96e;color:#c9a96e;background:rgba(201,169,110,0.12)}
+  .inbox-badge{position:absolute;top:-5px;right:-5px;background:#c9a96e;color:#0e0a0e;border-radius:50%;width:16px;height:16px;font-size:0.6rem;font-family:'Raleway',sans-serif;font-weight:700;display:flex;align-items:center;justify-content:center;display:none}
+  .token-section{max-width:600px;margin:0 auto 20px;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.2);border-radius:10px;overflow:hidden}
+  .token-toggle{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;user-select:none}
+  .token-toggle-label{font-size:0.78rem;color:rgba(201,169,110,0.7);letter-spacing:1px;flex:1}
+  .token-toggle-status{font-size:0.78rem;color:#7bc47b}
+  .token-arrow{font-size:0.65rem;color:rgba(201,169,110,0.4);transition:transform 0.2s}
+  .token-arrow.open{transform:rotate(180deg)}
+  .token-body{padding:0 16px 16px;display:none}
+  .token-row{display:flex;gap:10px}
+  .inbox-panel{max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:10px;padding:24px 20px;display:none}
   .inbox-msg{background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.15);border-radius:8px;padding:16px 18px;margin-bottom:12px;transition:opacity 0.4s}
   .inbox-msg-meta{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:4px}
   .inbox-msg-name{font-size:0.9rem;color:#c9a96e;font-weight:600}
@@ -73,23 +85,30 @@
 <div class="top-bar">
   <a href="index.html" class="back-btn">← На сайт</a>
   <h1>✦ Редактор ✦</h1>
-  <div style="width:80px"></div>
+  <button class="inbox-btn" id="inbox-btn" onclick="switchInbox(this)" title="Входящие сообщения">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    <span class="inbox-badge" id="inbox-badge"></span>
+  </button>
 </div>
 
-<div class="token-section">
-  <label>GitHub Personal Access Token</label>
-  <div class="token-row">
-    <input type="password" id="token" placeholder="ghp_xxxxxxxxxxxxxxxx">
-    <button onclick="saveToken()">Сохранить</button>
+<div class="token-section" id="token-section">
+  <div class="token-toggle" onclick="toggleToken()">
+    <span class="token-toggle-label">GitHub Token</span>
+    <span class="token-toggle-status" id="token-status"></span>
+    <span class="token-arrow" id="token-arrow">▼</span>
   </div>
-  <div id="token-status" class="token-ok"></div>
+  <div class="token-body" id="token-body">
+    <div class="token-row">
+      <input type="password" id="token" placeholder="ghp_xxxxxxxxxxxxxxxx">
+      <button onclick="saveToken()">Сохранить</button>
+    </div>
+  </div>
 </div>
 
 <div class="tabs">
   <div class="tab-btn active" onclick="switchFile('poems.txt',this)">📖 Стихи</div>
-  <div class="tab-btn" onclick="switchNovinka(this)">📹 Новинки</div>
   <div class="tab-btn" onclick="switchAudio(this)">🎵 Аудио</div>
-  <div class="tab-btn" onclick="switchInbox(this)">📬 Входящие</div>
+  <div class="tab-btn" onclick="switchNovinka(this)">📹 Новинки</div>
 </div>
 
 <div class="editor-wrap" id="editor-wrap">
@@ -158,11 +177,21 @@ function getToken(){
   return localStorage.getItem('gh_token') || document.getElementById('token').value.trim();
 }
 
+function toggleToken(){
+  var body=document.getElementById('token-body');
+  var arrow=document.getElementById('token-arrow');
+  var open=body.style.display==='block';
+  body.style.display=open?'none':'block';
+  arrow.classList.toggle('open',!open);
+}
+
 function saveToken(){
   var t = document.getElementById('token').value.trim();
   if(!t){setStatus('Введите токен');return;}
   localStorage.setItem('gh_token', t);
-  document.getElementById('token-status').textContent = '✓ Токен сохранён';
+  document.getElementById('token-status').textContent = '✓';
+  document.getElementById('token-body').style.display='none';
+  document.getElementById('token-arrow').classList.remove('open');
   loadFile();
 }
 
@@ -176,6 +205,7 @@ function switchFile(file, btn){
   currentFile = file;
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
+  document.getElementById('inbox-btn').classList.remove('active');
   document.getElementById('editor-wrap').style.display = '';
   document.getElementById('audio-panel').style.display = 'none';
   document.getElementById('novinka-panel').style.display = 'none';
@@ -189,6 +219,7 @@ function switchFile(file, btn){
 function switchNovinka(btn){
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
+  document.getElementById('inbox-btn').classList.remove('active');
   document.getElementById('editor-wrap').style.display='none';
   document.getElementById('audio-panel').style.display='none';
   document.getElementById('novinka-panel').style.display='block';
@@ -277,6 +308,7 @@ function addNovinka(){
 function switchAudio(btn){
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
+  document.getElementById('inbox-btn').classList.remove('active');
   document.getElementById('editor-wrap').style.display = 'none';
   document.getElementById('novinka-panel').style.display = 'none';
   document.getElementById('audio-panel').style.display = 'block';
@@ -482,9 +514,9 @@ function saveFile(){
   });
 }
 
-function switchInbox(btn){
+function switchInbox(){
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
+  document.getElementById('inbox-btn').classList.add('active');
   document.getElementById('editor-wrap').style.display='none';
   document.getElementById('novinka-panel').style.display='none';
   document.getElementById('audio-panel').style.display='none';
@@ -502,6 +534,8 @@ function loadInbox(){
   .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
   .then(function(issues){
     var msgs=issues.filter(function(i){return i.title.charAt(0)==='💌';});
+    var badge=document.getElementById('inbox-badge');
+    if(msgs.length){badge.textContent=msgs.length;badge.style.display='flex';}else{badge.style.display='none';}
     var list=document.getElementById('inbox-list');
     if(!msgs.length){list.innerHTML='<div class="inbox-empty">Нет новых сообщений</div>';return;}
     list.innerHTML='';
@@ -557,8 +591,11 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
   var saved = localStorage.getItem('gh_token');
   if(saved){
     document.getElementById('token').value = saved;
-    document.getElementById('token-status').textContent = '✓ Токен загружен из памяти';
+    document.getElementById('token-status').textContent = '✓';
     loadFile();
+  } else {
+    document.getElementById('token-body').style.display='block';
+    document.getElementById('token-arrow').classList.add('open');
   }
 })();
 </script>
