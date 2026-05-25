@@ -31,10 +31,13 @@ video_ids = [
 ]
 
 if result.stderr:
-    print("yt-dlp stderr:", result.stderr[:400])
+    print("yt-dlp stderr:", result.stderr[:600])
 
 if not video_ids:
-    print("No videos found. Skipping.")
+    if result.returncode != 0:
+        print(f"ERROR: yt-dlp failed (exit {result.returncode}). Check stderr above.")
+        sys.exit(1)  # fail loudly so GitHub Actions marks the run as failed
+    print("No videos found (channel may be empty or private). Skipping.")
     sys.exit(0)
 
 print(f"Found {len(video_ids)} Shorts: {video_ids}")
