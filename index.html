@@ -2898,7 +2898,7 @@ function loadPoems(){
         var tlines=title.split('\n').map(function(l){return l.trim();}).filter(Boolean);
         var mainT=tlines[0]||title, subT=null;
         if(tlines.length>=2 && tlines[1].charAt(0)==='('){
-          subT=tlines[1];
+          subT=tlines.slice(1).reduce(function(a,b){return a.endsWith('-')?a+b:a+' '+b;});
         }
         titleHtml='<div class="novinka-title">'+mainT+(subT?'<br><span class="poem-subtitle">'+subT+'</span>':'')+'</div>';
       }
