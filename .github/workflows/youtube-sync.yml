@@ -2,7 +2,7 @@ name: YouTube Shorts Auto-Sync
 
 on:
   schedule:
-    - cron: '0 * * * *'  # every hour
+    - cron: '*/5 * * * *'  # every 5 minutes (GitHub minimum)
   workflow_dispatch:
 
 jobs:
