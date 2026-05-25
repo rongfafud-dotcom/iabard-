@@ -66,6 +66,7 @@ const API  = 'https://api.github.com/repos/' + REPO + '/contents/';
 
 var currentFile = 'poems.txt';
 var currentSha  = '';
+var currentPoemCount = 0;
 
 function getToken(){
   return localStorage.getItem('gh_token') || document.getElementById('token').value.trim();
@@ -111,6 +112,7 @@ function loadFile(){
     var text = decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
     if(currentFile === 'poems.txt'){
       var parts = text.split('===').map(function(p){return p.trim();}).filter(Boolean);
+      currentPoemCount = parts.length;
       parts.reverse();
       text = '\n\n――――――――――――――――――――――――――\n\n' + parts.join('\n\n\n――――――――――――――――――――――――――\n\n') + '\n\n\n――――――――――――――――――――――――――\n';
     } else {
@@ -136,6 +138,13 @@ function saveFile(){
   var SEP = '――――――――――――――――――――――――――';
   if(currentFile === 'poems.txt'){
     var parts = content.split(SEP).map(function(p){return p.trim();}).filter(Boolean);
+    if(parts.length < currentPoemCount - 2 && btn.dataset.confirm !== '1'){
+      btn.disabled = false;
+      setStatus('⚠ Стихов станет ' + parts.length + ' вместо ' + currentPoemCount + '. Нажми ещё раз для подтверждения.');
+      btn.dataset.confirm = '1';
+      return;
+    }
+    btn.dataset.confirm = '';
     parts.reverse();
     content = parts.join('\n\n===\n\n') + '\n\n===\n';
   } else {
