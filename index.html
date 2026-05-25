@@ -268,6 +268,7 @@
                     color:var(--gold);text-align:center;margin-bottom:22px;letter-spacing:1px}
     .novinka-poem{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.05rem,2.2vw,1.35rem);
                    color:var(--cream);line-height:1.75;text-align:center}
+    .poem-subtitle{display:block;font-size:0.62em;font-weight:400;font-style:italic;opacity:0.75;letter-spacing:1px;margin-top:4px}
     .novinka-poem .stanza{margin-bottom:1.5em}
     .novinka-poem .stanza:last-child{margin-bottom:0}
     .chorus-label{font-family:'Raleway',sans-serif;font-size:0.6rem;letter-spacing:3px;
@@ -2903,7 +2904,7 @@ function loadPoems(){
           if(tm){mainT=tm[1].trim();subT=tm[2];}
         }
         titleHtml=subT
-          ?'<div class="novinka-title">'+mainT+'<br><span style="font-size:0.55em;font-weight:400;opacity:0.65;letter-spacing:1px;font-style:italic">'+subT+'</span></div>'
+          ?'<div class="novinka-title">'+mainT+'<span class="poem-subtitle">'+subT+'</span></div>'
           :'<div class="novinka-title">'+mainT+'</div>';
       }
       var h=titleHtml;
