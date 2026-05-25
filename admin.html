@@ -182,19 +182,25 @@ function uploadAudio(file){
   if(!file)return;
   var token=getToken();
   if(!token){setAudioProgress('Сначала введите токен');return;}
-  setAudioProgress('Чтение файла…');
+  if(file.size>25*1024*1024){setAudioProgress('Файл больше 25MB — GitHub не принимает такие файлы. Сожми MP3.');return;}
+  var mb=Math.round(file.size/1024/1024*10)/10;
+  setAudioProgress('Чтение файла ('+mb+' MB)…');
   var reader=new FileReader();
+  reader.onerror=function(){setAudioProgress('Ошибка чтения файла');};
   reader.onload=function(e){
-    var b64=e.target.result.split(',')[1];
-    setAudioProgress('Загрузка на GitHub…');
+    var arr=new Uint8Array(e.target.result);
+    var chunks=[];
+    for(var i=0;i<arr.length;i+=8192){chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));}
+    var b64=btoa(chunks.join(''));
+    setAudioProgress('Отправка на GitHub…');
     var path='audio/'+file.name;
     fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
       headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
     })
-    .then(function(r){return r.ok?r.json():null;})
+    .then(function(r){return r.json();})
     .then(function(existing){
       var body={message:'Upload audio: '+file.name,content:b64,branch:'main'};
-      if(existing&&existing.sha)body.sha=existing.sha;
+      if(existing&&existing.sha&&!existing.message)body.sha=existing.sha;
       return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{
         method:'PUT',
         headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
@@ -206,13 +212,13 @@ function uploadAudio(file){
       return r.json();
     })
     .then(function(){
-      setAudioProgress('✓ Загружено! Тег для стихов: # audio: '+file.name, true);
+      setAudioProgress('✓ Загружено: '+file.name, true);
       document.getElementById('audio-file-input').value='';
       loadAudioList();
     })
     .catch(function(e){setAudioProgress('Ошибка: '+e.message);});
   };
-  reader.readAsDataURL(file);
+  reader.readAsArrayBuffer(file);
 }
 
 function deleteAudio(filename,sha){
