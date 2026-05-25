@@ -2912,7 +2912,7 @@ function loadPoems(){
         h+='<audio controls src="audio/'+audioFile+'" style="width:100%;margin-top:20px;border-radius:6px;opacity:0.9"></audio>';
       }
       if(ytUrl){
-        h+='<div style="text-align:center;margin-top:20px"><a href="'+ytUrl+'" target="_blank" rel="noopener noreferrer" class="yt-watch-btn" style="display:inline-flex"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Смотреть на YouTube</a></div>';
+        h+='<div style="text-align:center;margin-top:20px"><a href="'+ytUrl+'" target="_blank" rel="noopener noreferrer" class="yt-watch-btn" style="display:inline-flex"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Смотреть видео на YouTube</a></div>';
       }
       card.innerHTML=h;list.appendChild(card);
       if(typeof fadeObserver!=='undefined')fadeObserver.observe(card);
@@ -2951,7 +2951,7 @@ function loadMoreNovinka() {
 history.scrollRestoration = 'manual';
 window.addEventListener('load', function(){ window.scrollTo(0,0); });
 
-// Inject "Смотреть на YouTube" + "Поделиться" under every video
+// Inject "Смотреть видео на YouTube" + "Поделиться" under every video
 function showShareMenu(anchor, url, shortsUrl) {
   var existing = document.querySelector('.share-menu');
   if (existing) { existing.remove(); if (existing._anchor === anchor) return; }
@@ -2981,7 +2981,7 @@ document.querySelectorAll('.novinka-video').forEach(function(v) {
   var wa = document.createElement('a');
   wa.href = url; wa.target = '_blank'; wa.rel = 'noopener noreferrer'; wa.className = 'yt-watch-btn';
   wa.addEventListener('click', function(e){ e.stopPropagation(); });
-  wa.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Смотреть на YouTube';
+  wa.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Смотреть видео на YouTube';
   row.appendChild(wa);
   // Share button
   var sb = document.createElement('button');
