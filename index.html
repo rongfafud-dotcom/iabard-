@@ -2896,16 +2896,12 @@ function loadPoems(){
       var titleHtml='';
       if(title){
         var tlines=title.split('\n').map(function(l){return l.trim();}).filter(Boolean);
-        var mainT=tlines[0], subT=null;
-        if(tlines.length>=2&&/^\(.*\)\.?$/.test(tlines[1])){
+        var mainT=tlines[0]||title, subT=null;
+        if(tlines.length>=2 && tlines[1].charAt(0)==='('){
           subT=tlines[1];
-        } else {
-          var tm=mainT.match(/^(.*?)\s*(\([^)]+\))\.?\s*$/);
-          if(tm){mainT=tm[1].trim();subT=tm[2];}
         }
-        titleHtml='<div class="novinka-title">'+mainT+(subT?'<br>'+subT:'')+'</div>';
+        titleHtml='<div class="novinka-title">'+mainT+(subT?'<br><span style="color:red;font-size:0.8em">'+subT+'</span>':'')+'</div>';
       }
-      var h=titleHtml;
       h+='<div class="novinka-poem">';
       body.forEach(function(s){
         h+='<div class="stanza">'+s.split('\n').map(function(l){return l.trim();}).join('<br>\n')+'</div>';
