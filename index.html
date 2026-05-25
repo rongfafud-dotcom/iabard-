@@ -3063,7 +3063,14 @@ function loadPoems(){
       var stanzas=poem.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
       var title=stanzas[0]||'';var body=stanzas.slice(1);
       var card=document.createElement('div');card.className='novinka-card fade-up';
-      var h=title?'<div class="novinka-title">'+title+'</div>':'';
+      var titleHtml='';
+      if(title){
+        var tm=title.match(/^(.*?)\s*(\(.*\))\s*$/);
+        titleHtml=tm
+          ?'<div class="novinka-title">'+tm[1]+'<br><span style="font-size:0.55em;font-weight:400;opacity:0.65;letter-spacing:1px;font-style:italic">'+tm[2]+'</span></div>'
+          :'<div class="novinka-title">'+title+'</div>';
+      }
+      var h=titleHtml;
       h+='<div class="novinka-poem">';
       body.forEach(function(s){
         h+='<div class="stanza">'+s.split('\n').map(function(l){return l.trim();}).join('<br>\n')+'</div>';

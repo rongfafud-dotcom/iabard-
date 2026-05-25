@@ -189,7 +189,11 @@ function buildNovinkaCard(poem,vid){
   var stanzas=poem.trim().split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
   var title=stanzas[0]||'';
   var body=stanzas.slice(1);
-  var titleHtml=title?'\n        <div class="novinka-title">'+title+'</div>':'';
+  var tm=title.match(/^(.*?)\s*(\(.*\))\s*$/);
+  var titleHtml=title?(tm
+    ?'\n        <div class="novinka-title">'+tm[1]+'<br><span style="font-size:0.55em;font-weight:400;opacity:0.65;letter-spacing:1px;font-style:italic">'+tm[2]+'</span></div>'
+    :'\n        <div class="novinka-title">'+title+'</div>')
+    :'';
   var poemHtml='';
   if(body.length){
     poemHtml='\n        <div class="novinka-poem">';
