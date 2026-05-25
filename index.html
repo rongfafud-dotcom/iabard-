@@ -3167,6 +3167,20 @@ function handleContact(e, form) {
 // Preload poems in background so Стихи tab shows instantly
 window._poemsCache=fetch('poems.txt?v='+Math.floor(Date.now()/300000)).then(function(r){return r.ok?r.text():Promise.reject(r.status);});
 </script>
-<a href="admin.html" aria-hidden="true" tabindex="-1" style="position:fixed;bottom:10px;right:12px;width:18px;height:18px;opacity:0.12;font-size:14px;line-height:18px;text-align:center;color:#c9a96e;text-decoration:none;z-index:9999;user-select:none" title="">✦</a>
+<button onclick="adminLogin()" style="position:fixed;top:12px;right:14px;z-index:9999;background:transparent;border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:rgba(201,169,110,0.30);font-family:'Raleway',sans-serif;font-size:0.48rem;letter-spacing:1.4px;text-transform:uppercase;padding:4px 9px;cursor:pointer;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);transition:opacity 0.2s" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity=''">admin</button>
+<script>
+function adminLogin(){
+  var pw=prompt('');
+  if(!pw)return;
+  crypto.subtle.digest('SHA-256',new TextEncoder().encode(pw)).then(function(buf){
+    var hex=Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+    if(hex==='62f774e49697ad2b75b6280641fd78f1f56728511e1c35a1111c8eac5c1d009d'){
+      window.location.href='admin.html';
+    }else{
+      alert('Неверный пароль');
+    }
+  });
+}
+</script>
 </body>
 </html>
