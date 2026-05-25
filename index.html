@@ -2894,10 +2894,17 @@ function loadPoems(){
       var card=document.createElement('div');card.className='novinka-card fade-up';
       var titleHtml='';
       if(title){
-        var tm=title.match(/^(.*?)\s*(\(.*\))\s*$/);
-        titleHtml=tm
-          ?'<div class="novinka-title">'+tm[1]+'<br><span style="font-size:0.55em;font-weight:400;opacity:0.65;letter-spacing:1px;font-style:italic">'+tm[2]+'</span></div>'
-          :'<div class="novinka-title">'+title+'</div>';
+        var tlines=title.split('\n').map(function(l){return l.trim();}).filter(Boolean);
+        var mainT=tlines[0], subT=null;
+        if(tlines.length>=2&&/^\(.*\)\.?$/.test(tlines[1])){
+          subT=tlines[1];
+        } else {
+          var tm=mainT.match(/^(.*?)\s*(\([^)]+\))\.?\s*$/);
+          if(tm){mainT=tm[1].trim();subT=tm[2];}
+        }
+        titleHtml=subT
+          ?'<div class="novinka-title">'+mainT+'<br><span style="font-size:0.55em;font-weight:400;opacity:0.65;letter-spacing:1px;font-style:italic">'+subT+'</span></div>'
+          :'<div class="novinka-title">'+mainT+'</div>';
       }
       var h=titleHtml;
       h+='<div class="novinka-poem">';
