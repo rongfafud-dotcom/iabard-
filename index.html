@@ -2903,9 +2903,7 @@ function loadPoems(){
           var tm=mainT.match(/^(.*?)\s*(\([^)]+\))\.?\s*$/);
           if(tm){mainT=tm[1].trim();subT=tm[2];}
         }
-        titleHtml=subT
-          ?'<div class="novinka-title">'+mainT+'</div><div style="text-align:center;font-family:\'Cormorant Garamond\',serif;font-style:italic;font-size:1.05rem;color:#c9a96e;opacity:0.85;margin:-14px 0 18px;letter-spacing:1px">'+subT+'</div>'
-          :'<div class="novinka-title">'+mainT+'</div>';
+        titleHtml='<div class="novinka-title">'+mainT+(subT?'<br><span style="font-size:0.55em;font-weight:400;opacity:0.65;letter-spacing:1px;font-style:italic">'+subT+'</span>':'')+'</div>';
       }
       var h=titleHtml;
       h+='<div class="novinka-poem">';
