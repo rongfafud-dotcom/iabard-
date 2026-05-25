@@ -593,6 +593,9 @@
       font-weight:300;margin-top:1px}
     .nav-dropmenu button:hover{color:var(--gold)}
     .nav-dropmenu button+button{border-top:1px solid rgba(201,169,110,0.12)}
+    #drop-books{left:0;transform:none}
+    #drop-books.open{animation:dropIn2 0.18s ease}
+    @keyframes dropIn2{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
     @media(max-width:520px){
       .nav-dropmenu{min-width:160px}
     }
