@@ -73,12 +73,10 @@
 
 <div class="audio-panel" id="audio-panel">
   <div class="audio-upload-box" id="upload-box">
-    <label for="audio-file-input">
-      <div class="audio-upload-icon">🎵</div>
-      <div class="audio-upload-text">Перетащи аудиофайл сюда или нажми для выбора<br><small style="opacity:0.6">MP3, OGG, WAV, M4A</small></div>
-      <button onclick="document.getElementById('audio-file-input').click();event.preventDefault()" style="pointer-events:auto">Выбрать файл</button>
-    </label>
-    <input type="file" id="audio-file-input" accept="audio/*" onchange="uploadAudio(this.files[0])">
+    <div class="audio-upload-icon">🎵</div>
+    <div class="audio-upload-text">Перетащи аудиофайл сюда или нажми для выбора<br><small style="opacity:0.6">MP3, OGG, WAV, M4A</small></div>
+    <input type="file" id="audio-file-input" accept="audio/*" style="display:none" onchange="uploadAudio(this.files[0])">
+    <button onclick="document.getElementById('audio-file-input').click()">Выбрать файл</button>
     <div class="audio-progress" id="audio-progress"></div>
   </div>
   <div class="audio-list-title">Загруженные треки</div>
