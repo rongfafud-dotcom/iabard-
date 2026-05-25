@@ -2900,8 +2900,9 @@ function loadPoems(){
         if(tlines.length>=2 && tlines[1].charAt(0)==='('){
           subT=tlines[1];
         }
-        titleHtml='<div class="novinka-title">'+mainT+(subT?'<br><span style="color:red;font-size:0.8em">'+subT+'</span>':'')+'</div>';
+        titleHtml='<div class="novinka-title">'+mainT+(subT?'<br><span class="poem-subtitle">'+subT+'</span>':'')+'</div>';
       }
+      var h=titleHtml;
       h+='<div class="novinka-poem">';
       body.forEach(function(s){
         h+='<div class="stanza">'+s.split('\n').map(function(l){return l.trim();}).join('<br>\n')+'</div>';
