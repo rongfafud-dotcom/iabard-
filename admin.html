@@ -57,7 +57,7 @@
 
 <div class="hint">
   Формат стихов: название → пустая строка → строфы → пустая строка → <strong>===</strong> → следующее стихотворение.<br>
-  В «Стихах» новые добавляйте в <strong>начало</strong> файла. В «Очереди для Shorts» — в <strong>конец</strong>.
+  В обеих вкладках вставляй новое стихотворение <strong>над первым разделителем</strong> — оно появится первым на сайте.
 </div>
 
 <script>
@@ -177,7 +177,17 @@ function saveFile(){
   })
   .catch(function(e){
     btn.disabled = false;
-    setStatus('Ошибка: ' + e.message);
+    if(e.message && e.message.indexOf('does not match') !== -1){
+      setStatus('SHA устарел — обновляю и повторяю…');
+      fetch(API + currentFile + '?ref=main', {
+        headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+      }).then(function(r){return r.json();}).then(function(d){
+        currentSha = d.sha;
+        setStatus('SHA обновлён. Нажми «Сохранить» ещё раз.');
+      }).catch(function(){setStatus('Не удалось обновить SHA.');});
+    } else {
+      setStatus('Ошибка: ' + e.message);
+    }
   });
 }
 
