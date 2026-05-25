@@ -3011,6 +3011,8 @@ function loadPoems(){
     raw.forEach(function(rawPoem){
       var audioMatch=rawPoem.match(/^[ \t]*#\s*audio:\s*(.+)$/m);
       var audioFile=audioMatch?audioMatch[1].trim():null;
+      var ytMatch=rawPoem.match(/^[ \t]*#\s*youtube:\s*(.+)$/m);
+      var ytUrl=ytMatch?ytMatch[1].trim():null;
       var poem=rawPoem.replace(/[ \t]*#[^\n]*/g,'').trim();
       var stanzas=poem.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
       var title=stanzas[0]||'';var body=stanzas.slice(1);
@@ -3023,6 +3025,9 @@ function loadPoems(){
       h+='</div>';
       if(audioFile){
         h+='<audio controls src="audio/'+audioFile+'" style="width:100%;margin-top:20px;border-radius:6px;opacity:0.9"></audio>';
+      }
+      if(ytUrl){
+        h+='<a href="'+ytUrl+'" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:10px 20px;background:rgba(255,0,0,0.08);border:1px solid rgba(255,0,0,0.35);border-radius:8px;color:rgba(255,100,100,0.9);text-decoration:none;font-family:\'Raleway\',sans-serif;font-size:0.78rem;letter-spacing:1.5px;text-transform:uppercase;transition:all 0.2s" onmouseover="this.style.background=\'rgba(255,0,0,0.18)\'" onmouseout="this.style.background=\'rgba(255,0,0,0.08)\'"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#ff4444;flex-shrink:0"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>Смотреть Shorts</a>';
       }
       card.innerHTML=h;list.appendChild(card);
       if(typeof fadeObserver!=='undefined')fadeObserver.observe(card);
