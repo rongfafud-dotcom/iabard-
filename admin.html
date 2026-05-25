@@ -122,7 +122,16 @@
 </div>
 
 <div class="novinka-panel" id="poem-add-panel" style="border-radius:10px 10px 0 0;border-bottom:none;margin-bottom:0">
-  <div class="novinka-queue-label">Стихотворение</div>
+  <div style="display:flex;gap:10px;margin-bottom:14px">
+    <input type="url" id="poem-yt-url" placeholder="YouTube (необязательно)"
+      style="flex:1;min-width:0;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 12px;color:#e8ddd0;font-size:0.85rem;outline:none"
+      onfocus="this.style.borderColor='rgba(201,169,110,0.6)'" onblur="this.style.borderColor='rgba(201,169,110,0.25)'">
+    <label id="poem-mp3-label" style="flex:1;min-width:0;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 12px;color:rgba(232,221,208,0.45);font-size:0.85rem;cursor:pointer;display:flex;align-items:center;gap:6px;overflow:hidden;white-space:nowrap;transition:border-color 0.2s">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+      <span id="poem-mp3-name" style="overflow:hidden;text-overflow:ellipsis">MP3 (необязательно)</span>
+      <input type="file" id="poem-mp3-input" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" style="display:none" onchange="poemMp3Selected(this)">
+    </label>
+  </div>
   <textarea id="poem-add-text" placeholder="Название стихотворения
 (подзаголовок — необязательно)
 
@@ -131,7 +140,7 @@
 строка 3
 
 Вторая строфа
-строка 2" style="width:100%;height:200px;background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;margin-bottom:16px" spellcheck="false"></textarea>
+строка 2" style="width:100%;height:260px;background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;margin-bottom:16px" spellcheck="false"></textarea>
   <button class="novinka-add-btn" id="poem-add-btn" onclick="addPoem()">Добавить стихотворение</button>
   <div class="novinka-status" id="poem-add-status"></div>
   <div style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(201,169,110,0.12);font-size:0.7rem;color:rgba(201,169,110,0.4);letter-spacing:1.5px;text-transform:uppercase;text-align:center">Редактор всех стихов ↓</div>
@@ -548,32 +557,92 @@ function saveFile(){
   });
 }
 
-function addPoem(){
+function poemMp3Selected(input){
+  var f=input.files[0];
+  var label=document.getElementById('poem-mp3-label');
+  if(f){
+    document.getElementById('poem-mp3-name').textContent=f.name;
+    label.style.borderColor='rgba(201,169,110,0.6)';
+    label.style.color='#e8ddd0';
+  } else {
+    document.getElementById('poem-mp3-name').textContent='MP3 (необязательно)';
+    label.style.borderColor='rgba(201,169,110,0.25)';
+    label.style.color='rgba(232,221,208,0.45)';
+  }
+}
+
+function setPoemAddStatus(msg,ok){
+  var s=document.getElementById('poem-add-status');
+  s.textContent=msg;
+  s.style.color=ok?'#7bc47b':'rgba(201,169,110,0.8)';
+}
+
+function savePoemEntry(poemText, audioFilename){
   var token=getToken();
-  var text=document.getElementById('poem-add-text').value.trim();
-  if(!text){document.getElementById('poem-add-status').textContent='Введите стихотворение';return;}
-  var btn=document.getElementById('poem-add-btn');
-  btn.disabled=true;
-  document.getElementById('poem-add-status').textContent='Сохранение…';
+  var ytUrl=document.getElementById('poem-yt-url').value.trim();
+  var lines=poemText.split('\n');
+  var title=lines[0];
+  var rest=lines.slice(1).join('\n');
+  var extras='';
+  if(audioFilename) extras+='\n# audio: '+audioFilename;
+  if(ytUrl) extras+='\n'+ytUrl;
+  var finalPoem=title+extras+rest;
   fetch(API+'poems.txt?ref=main',{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})
   .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
   .then(function(data){
     var sha=data.sha;
     var content=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
-    content=content.trimEnd()+'\n\n===\n\n'+text+'\n\n===\n';
+    content=content.trimEnd()+'\n\n===\n\n'+finalPoem+'\n\n===\n';
     var encoded=btoa(unescape(encodeURIComponent(content)));
-    return fetch(API+'poems.txt',{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Add poem: '+text.split('\n')[0],content:encoded,sha:sha,branch:'main'})});
+    return fetch(API+'poems.txt',{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Add poem: '+title,content:encoded,sha:sha,branch:'main'})});
   })
   .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
   .then(function(){
-    btn.disabled=false;
-    var s=document.getElementById('poem-add-status');
-    s.textContent='✓ Стихотворение добавлено!';
-    s.style.color='#7bc47b';
+    document.getElementById('poem-add-btn').disabled=false;
+    setPoemAddStatus('✓ Стихотворение добавлено!',true);
     document.getElementById('poem-add-text').value='';
+    document.getElementById('poem-yt-url').value='';
+    document.getElementById('poem-mp3-input').value='';
+    poemMp3Selected(document.getElementById('poem-mp3-input'));
     if(currentFile==='poems.txt')loadFile();
   })
-  .catch(function(e){btn.disabled=false;var s=document.getElementById('poem-add-status');s.textContent='Ошибка: '+e.message;s.style.color='';});
+  .catch(function(e){document.getElementById('poem-add-btn').disabled=false;setPoemAddStatus('Ошибка: '+e.message);});
+}
+
+function addPoem(){
+  var token=getToken();
+  var poemText=document.getElementById('poem-add-text').value.trim();
+  if(!poemText){setPoemAddStatus('Введите стихотворение');return;}
+  var mp3File=document.getElementById('poem-mp3-input').files[0]||null;
+  var btn=document.getElementById('poem-add-btn');
+  btn.disabled=true;
+  if(mp3File){
+    if(mp3File.size>25*1024*1024){btn.disabled=false;setPoemAddStatus('Файл больше 25MB');return;}
+    setPoemAddStatus('Загрузка аудио…');
+    var reader=new FileReader();
+    reader.onerror=function(){btn.disabled=false;setPoemAddStatus('Ошибка чтения файла');};
+    reader.onload=function(e){
+      var arr=new Uint8Array(e.target.result);
+      var chunks=[];
+      for(var i=0;i<arr.length;i+=8192)chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));
+      var b64=btoa(chunks.join(''));
+      var path='audio/'+mp3File.name;
+      fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})
+      .then(function(r){return r.json();})
+      .then(function(existing){
+        var body={message:'Upload audio: '+mp3File.name,content:b64,branch:'main'};
+        if(existing&&existing.sha&&!existing.message)body.sha=existing.sha;
+        return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+      })
+      .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
+      .then(function(){setPoemAddStatus('Аудио загружено, сохраняю стихотворение…');savePoemEntry(poemText,mp3File.name);})
+      .catch(function(e){btn.disabled=false;setPoemAddStatus('Ошибка загрузки аудио: '+e.message);});
+    };
+    reader.readAsArrayBuffer(mp3File);
+  } else {
+    setPoemAddStatus('Сохранение…');
+    savePoemEntry(poemText,null);
+  }
 }
 
 function loadNovinkaList(){
