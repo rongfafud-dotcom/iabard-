@@ -784,7 +784,16 @@ function switchInbox(){
   document.getElementById('novinka-panel').style.display='none';
   document.getElementById('audio-panel').style.display='none';
   document.getElementById('inbox-panel').style.display='block';
+  localStorage.setItem('inbox_seen', Date.now());
+  document.getElementById('inbox-badge').style.display='none';
   loadInbox();
+}
+
+function updateBadge(msgs){
+  var badge=document.getElementById('inbox-badge');
+  var seen=parseInt(localStorage.getItem('inbox_seen')||'0');
+  var newCount=msgs.filter(function(i){return new Date(i.created_at).getTime()>seen;}).length;
+  if(newCount>0){badge.textContent=newCount;badge.style.display='flex';}else{badge.style.display='none';}
 }
 
 function loadInbox(){
@@ -797,8 +806,11 @@ function loadInbox(){
   .then(function(r){return checkR(r).json();})
   .then(function(issues){
     var msgs=issues.filter(function(i){return i.title.startsWith('💌');});
-    var badge=document.getElementById('inbox-badge');
-    if(currentInboxTab==='open'){if(msgs.length){badge.textContent=msgs.length;badge.style.display='flex';}else{badge.style.display='none';}}
+    var inboxOpen=document.getElementById('inbox-panel').style.display==='block';
+    if(currentInboxTab==='open'){
+      if(inboxOpen){document.getElementById('inbox-badge').style.display='none';}
+      else{updateBadge(msgs);}
+    }
     var list=document.getElementById('inbox-list');
     if(!msgs.length){list.innerHTML='<div class="inbox-empty">Нет сообщений</div>';return;}
     list.innerHTML='';
@@ -907,10 +919,12 @@ function closeMessage(number){
   })
   .then(function(){
     var msg=document.querySelector('[data-issue="'+number+'"]');
-    if(msg){msg.style.transition='opacity 0.4s';msg.style.opacity='0';setTimeout(function(){msg.remove();},400);}
-    var badge=document.getElementById('inbox-badge');
-    var count=parseInt(badge.textContent||'0')-1;
-    if(count>0){badge.textContent=count;}else{badge.style.display='none';}
+    if(msg){msg.style.transition='opacity 0.4s';msg.style.opacity='0';setTimeout(function(){
+      msg.remove();
+      var remaining=document.querySelectorAll('#inbox-list .inbox-msg');
+      if(!remaining.length){document.getElementById('inbox-list').innerHTML='<div class="inbox-empty">Нет сообщений</div>';}
+    },400);}
+    document.getElementById('inbox-badge').style.display='none';
   })
   .catch(function(e){
     if(e.message==='skip')return;
