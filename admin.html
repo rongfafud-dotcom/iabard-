@@ -796,7 +796,7 @@ function loadInbox(){
   })
   .then(function(r){return checkR(r).json();})
   .then(function(issues){
-    var msgs=issues.filter(function(i){return i.title.charAt(0)==='💌';});
+    var msgs=issues.filter(function(i){return i.title.startsWith('💌');});
     var badge=document.getElementById('inbox-badge');
     if(currentInboxTab==='open'){if(msgs.length){badge.textContent=msgs.length;badge.style.display='flex';}else{badge.style.display='none';}}
     var list=document.getElementById('inbox-list');
