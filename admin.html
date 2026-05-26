@@ -892,14 +892,19 @@ function sendReply(number,btn){
 }
 
 function closeMessage(number){
-  if(!confirm('Переместить сообщение в архив?'))return;
   var token=getToken();
+  var btn=document.querySelector('[data-issue="'+number+'"] .inbox-close-btn');
+  if(btn){btn.disabled=true;btn.textContent='…';}
   fetch('https://api.github.com/repos/'+REPO+'/issues/'+number,{
     method:'PATCH',
     headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
     body:JSON.stringify({state:'closed'})
   })
-  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  .then(function(r){
+    if(r.status===401){invalidToken();throw new Error('skip');}
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    return r.json();
+  })
   .then(function(){
     var msg=document.querySelector('[data-issue="'+number+'"]');
     if(msg){msg.style.transition='opacity 0.4s';msg.style.opacity='0';setTimeout(function(){msg.remove();},400);}
@@ -907,7 +912,11 @@ function closeMessage(number){
     var count=parseInt(badge.textContent||'0')-1;
     if(count>0){badge.textContent=count;}else{badge.style.display='none';}
   })
-  .catch(function(e){alert('Ошибка: '+e.message);});
+  .catch(function(e){
+    if(e.message==='skip')return;
+    if(btn){btn.disabled=false;btn.textContent='✓ Архив';}
+    alert('Ошибка архивирования: '+e.message);
+  });
 }
 
 function editNovinka(vid){
