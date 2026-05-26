@@ -246,6 +246,21 @@ function saveToken(){
   loadFile();
 }
 
+function invalidToken(){
+  localStorage.removeItem('gh_token');
+  document.getElementById('token').value = '';
+  document.getElementById('token-status').textContent = '';
+  document.getElementById('token-body').style.display='block';
+  document.getElementById('token-arrow').classList.add('open');
+  setStatus('Токен недействителен — введите новый');
+}
+
+function checkR(r){
+  if(r.status===401){invalidToken();throw new Error('skip');}
+  if(!r.ok)throw new Error('HTTP '+r.status);
+  return r;
+}
+
 function setStatus(msg, ok){
   var el = document.getElementById('status');
   el.textContent = msg;
@@ -327,7 +342,7 @@ function addNovinka(){
   btn.disabled=true;
   setNovinkaStatus('Загрузка index.html…');
   fetch(API+'index.html?ref=main',{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})
-  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  .then(function(r){return checkR(r).json();})
   .then(function(data){
     var htmlSha=data.sha;
     var html=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
@@ -347,7 +362,7 @@ function addNovinka(){
       body:JSON.stringify({message:'Add novinka: '+vid,content:encoded,sha:htmlSha,branch:'main'})
     });
   })
-  .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
+  .then(function(r){if(r.status===401){invalidToken();throw new Error('skip');}if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
   .then(function(){
     setNovinkaStatus('✓ Видео добавлено в Новинки!',true);
     document.getElementById('novinka-url').value='';
@@ -381,6 +396,7 @@ function loadAudioList(){
     headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
   })
   .then(function(r){
+    if(r.status===401){invalidToken();throw new Error('skip');}
     if(r.status===404)return[];
     if(!r.ok)throw new Error('HTTP '+r.status);
     return r.json();
@@ -484,6 +500,7 @@ function loadFile(){
     headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
   })
   .then(function(r){
+    if(r.status===401){invalidToken();throw new Error('skip');}
     if(!r.ok)throw new Error('HTTP '+r.status);
     return r.json();
   })
@@ -504,7 +521,7 @@ function loadFile(){
     setStatus('Загружено ✓', true);
   })
   .catch(function(e){
-    setStatus('Ошибка загрузки: ' + e.message);
+    if(e.message!=='skip')setStatus('Ошибка загрузки: ' + e.message);
   });
 }
 
@@ -547,6 +564,7 @@ function saveFile(){
     })
   })
   .then(function(r){
+    if(r.status===401){invalidToken();throw new Error('skip');}
     if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});
     return r.json();
   })
@@ -556,6 +574,7 @@ function saveFile(){
     setStatus('Сохранено ✓', true);
   })
   .catch(function(e){
+    if(e.message==='skip'){btn.disabled=false;return;}
     btn.disabled = false;
     if(e.message && e.message.indexOf('does not match') !== -1){
       setStatus('SHA устарел — обновляю и повторяю…');
@@ -775,7 +794,7 @@ function loadInbox(){
   fetch('https://api.github.com/repos/'+REPO+'/issues?state='+currentInboxTab+'&per_page=50&sort=created&direction=asc',{
     headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
   })
-  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  .then(function(r){return checkR(r).json();})
   .then(function(issues){
     var msgs=issues.filter(function(i){return i.title.charAt(0)==='💌';});
     var badge=document.getElementById('inbox-badge');
