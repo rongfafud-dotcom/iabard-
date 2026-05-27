@@ -73,6 +73,11 @@
   .inbox-msg-name{font-size:0.9rem;color:#c9a96e;font-weight:600}
   .inbox-msg-date{font-size:0.73rem;color:rgba(201,169,110,0.5);white-space:nowrap}
   .inbox-msg-email{font-size:0.78rem;color:rgba(201,169,110,0.55);margin-bottom:10px}
+  .inbox-contacts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .inbox-contact-link{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;
+    background:rgba(201,169,110,0.10);border:1px solid rgba(201,169,110,0.25);
+    color:rgba(201,169,110,0.75);font-size:0.72rem;text-decoration:none;transition:all 0.2s}
+  .inbox-contact-link:hover{background:rgba(201,169,110,0.20);border-color:#c9a96e;color:#c9a96e}
   .inbox-msg-text{font-size:0.87rem;color:rgba(232,221,208,0.85);line-height:1.65;white-space:pre-wrap;word-break:break-word}
   .inbox-reply-btn{margin-top:12px;background:transparent;border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:rgba(201,169,110,0.7);padding:5px 14px;cursor:pointer;font-size:0.75rem;transition:all 0.2s}
   .inbox-reply-btn:hover{border-color:#c9a96e;color:#c9a96e}
@@ -779,8 +784,29 @@ function loadInbox(){
     msgs.forEach(function(issue){
       var m=issue.title.match(/^💌\s*(.*?)\s*\(([^)]*)\)\s*$/);
       var name=m?m[1]:issue.title.replace(/^💌\s*/,'');
-      var email=m?m[2]:'';
       var date=new Date(issue.created_at).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+      // Parse contact lines from body (new format) or fall back to email in title (old format)
+      var bodyRaw=issue.body||'';
+      var bodyLines=bodyRaw.split('\n');
+      var contacts={email:m?m[2]:'',instagram:'',telegram:''};
+      var msgStart=0;
+      for(var li=0;li<bodyLines.length;li++){
+        var bl=bodyLines[li];
+        if(bl.startsWith('Email: ')){contacts.email=bl.slice(7).trim();msgStart=li+1;}
+        else if(bl.startsWith('Instagram: ')){contacts.instagram=bl.slice(11).trim();msgStart=li+1;}
+        else if(bl.startsWith('Telegram: ')){contacts.telegram=bl.slice(10).trim();msgStart=li+1;}
+        else if(bl.trim()===''&&msgStart===li){msgStart=li+1;}
+        else if(msgStart>0){break;}
+      }
+      var msgText=bodyLines.slice(msgStart).join('\n').trim()||bodyRaw.trim();
+      var contactsHtml='';
+      if(contacts.email||contacts.instagram||contacts.telegram){
+        contactsHtml='<div class="inbox-contacts">';
+        if(contacts.email)contactsHtml+='<a href="mailto:'+esc(contacts.email)+'" class="inbox-contact-link">📧 '+esc(contacts.email)+'</a>';
+        if(contacts.telegram){var tg=contacts.telegram.replace(/^@/,'');contactsHtml+='<a href="https://t.me/'+esc(tg)+'" target="_blank" rel="noopener noreferrer" class="inbox-contact-link">✈️ '+esc(contacts.telegram)+'</a>';}
+        if(contacts.instagram){var ig=contacts.instagram.replace(/^@/,'');contactsHtml+='<a href="https://instagram.com/'+esc(ig)+'" target="_blank" rel="noopener noreferrer" class="inbox-contact-link">📸 '+esc(contacts.instagram)+'</a>';}
+        contactsHtml+='</div>';
+      }
       var div=document.createElement('div');
       div.className='inbox-msg';
       div.dataset.issue=issue.number;
@@ -790,14 +816,14 @@ function loadInbox(){
       }
       div.innerHTML=
         '<div class="inbox-msg-meta"><span class="inbox-msg-name">'+esc(name)+'</span><span class="inbox-msg-date">'+date+'</span></div>'+
-        (email?'<div class="inbox-msg-email">'+esc(email)+'</div>':'')+
-        '<div class="inbox-msg-text">'+esc(issue.body||'(пусто)')+'</div>'+
+        contactsHtml+
+        '<div class="inbox-msg-text">'+esc(msgText)+'</div>'+
         repliesHtml+
-        '<button class="inbox-reply-btn" onclick="toggleReply('+issue.number+')">Ответить ↩</button>'+
+        '<button class="inbox-reply-btn" onclick="toggleReply('+issue.number+')">Заметка ↩</button>'+
         (currentInboxTab==='open'?'<button class="inbox-close-btn" onclick="closeMessage('+issue.number+')">✓ Архив</button>':'')+
         '<div class="inbox-reply-box" id="reply-'+issue.number+'">'+
-          '<textarea id="reply-text-'+issue.number+'" placeholder="Ваш ответ…"></textarea>'+
-          '<button class="inbox-send-btn" onclick="sendReply('+issue.number+',this)">Отправить</button>'+
+          '<textarea id="reply-text-'+issue.number+'" placeholder="Заметка (только для вас)…"></textarea>'+
+          '<button class="inbox-send-btn" onclick="sendReply('+issue.number+',this)">Сохранить</button>'+
         '</div>';
       list.appendChild(div);
       if(issue.comments>0) loadReplies(issue.number);
