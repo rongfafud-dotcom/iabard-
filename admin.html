@@ -143,10 +143,12 @@
         onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'"
         onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
     </label>
-    <label id="poem-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:pointer;display:flex;align-items:center;gap:8px;transition:border-color 0.2s">
+    <label id="poem-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:text;display:flex;align-items:center;gap:8px;transition:border-color 0.2s">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-      <span id="poem-mp3-name">Добавить MP3 файл</span>
-      <input type="file" id="poem-mp3-input" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" style="display:none" onchange="poemMp3Selected(this)">
+      <input type="text" id="poem-mp3-input" placeholder="Имя MP3 файла (например: танцуй.mp3)"
+        style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text"
+        onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'"
+        onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
     </label>
   </div>
   <textarea id="poem-add-text" placeholder="Добавить стихотворение" style="width:100%;height:260px;background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;margin-bottom:16px" spellcheck="false"></textarea>
@@ -590,19 +592,6 @@ function saveFile(){
   });
 }
 
-function poemMp3Selected(input){
-  var f=input.files[0];
-  var label=document.getElementById('poem-mp3-label');
-  if(f){
-    document.getElementById('poem-mp3-name').textContent=f.name;
-    label.style.borderColor='rgba(201,169,110,0.6)';
-    label.style.color='#e8ddd0';
-  } else {
-    document.getElementById('poem-mp3-name').textContent='Добавить MP3 файл';
-    label.style.borderColor='rgba(201,169,110,0.25)';
-    label.style.color='rgba(232,221,208,0.45)';
-  }
-}
 
 function setPoemAddStatus(msg,ok){
   var s=document.getElementById('poem-add-status');
@@ -636,46 +625,19 @@ function savePoemEntry(poemText, audioFilename){
     document.getElementById('poem-add-text').value='';
     document.getElementById('poem-yt-url').value='';
     document.getElementById('poem-mp3-input').value='';
-    poemMp3Selected(document.getElementById('poem-mp3-input'));
     if(currentFile==='poems.txt')loadFile();
   })
   .catch(function(e){document.getElementById('poem-add-btn').disabled=false;setPoemAddStatus('Ошибка: '+e.message);});
 }
 
 function addPoem(){
-  var token=getToken();
   var poemText=document.getElementById('poem-add-text').value.trim();
   if(!poemText){setPoemAddStatus('Введите стихотворение');return;}
-  var mp3File=document.getElementById('poem-mp3-input').files[0]||null;
+  var audioName=document.getElementById('poem-mp3-input').value.trim()||null;
   var btn=document.getElementById('poem-add-btn');
   btn.disabled=true;
-  if(mp3File){
-    if(mp3File.size>25*1024*1024){btn.disabled=false;setPoemAddStatus('Файл больше 25MB');return;}
-    setPoemAddStatus('Загрузка аудио…');
-    var reader=new FileReader();
-    reader.onerror=function(){btn.disabled=false;setPoemAddStatus('Ошибка чтения файла');};
-    reader.onload=function(e){
-      var arr=new Uint8Array(e.target.result);
-      var chunks=[];
-      for(var i=0;i<arr.length;i+=8192)chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));
-      var b64=btoa(chunks.join(''));
-      var path='audio/'+mp3File.name;
-      fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})
-      .then(function(r){return r.json();})
-      .then(function(existing){
-        var body={message:'Upload audio: '+mp3File.name,content:b64,branch:'main'};
-        if(existing&&existing.sha&&!existing.message)body.sha=existing.sha;
-        return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
-      })
-      .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
-      .then(function(){setPoemAddStatus('Аудио загружено, сохраняю стихотворение…');savePoemEntry(poemText,mp3File.name);})
-      .catch(function(e){btn.disabled=false;setPoemAddStatus('Ошибка загрузки аудио: '+e.message);});
-    };
-    reader.readAsArrayBuffer(mp3File);
-  } else {
-    setPoemAddStatus('Сохранение…');
-    savePoemEntry(poemText,null);
-  }
+  setPoemAddStatus('Сохранение…');
+  savePoemEntry(poemText,audioName);
 }
 
 function loadNovinkaList(){
