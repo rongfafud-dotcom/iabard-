@@ -2692,9 +2692,9 @@ Conscientia — «сознанье» на латыни.<br>
           <form name="contact" method="POST" class="contact-form" onsubmit="handleContact(event,this)">
             <input type="hidden" name="_gotcha" style="display:none">
             <input type="text" name="name" placeholder="Ваше имя" required class="contact-input">
-            <input type="email" name="email" placeholder="Email" class="contact-input" id="c-email" autocomplete="email">
-            <input type="text" name="telegram" placeholder="Telegram (@nickname)" class="contact-input" id="c-telegram" autocomplete="off">
-            <p class="contact-hint" id="contact-hint">Укажите email или Telegram</p>
+            <input type="email" name="email" placeholder="Email" class="contact-input" id="c-email" autocomplete="email" oninput="clearContactWarn()">
+            <input type="text" name="telegram" placeholder="Telegram (@nickname)" class="contact-input" id="c-telegram" autocomplete="off" oninput="clearContactWarn()">
+            <p class="contact-hint" id="contact-hint">Обязательно: email или Telegram — иначе не смогу ответить</p>
             <textarea name="message" placeholder="Ваше сообщение…" required rows="4" class="contact-textarea"></textarea>
             <button type="submit" class="contact-submit">Отправить</button>
           </form>
@@ -3090,12 +3090,11 @@ function handleContact(e, form) {
   var email = (data.get('email')||'').trim();
   var telegram = (data.get('telegram')||'').trim();
   var msg = (data.get('message')||'').trim();
-  var hint = document.getElementById('contact-hint');
-  var fields = ['c-email','c-telegram'].map(function(id){return document.getElementById(id);});
   if (!email && !telegram) {
+    var hint = document.getElementById('contact-hint');
     hint.classList.add('error');
-    fields.forEach(function(f){if(f)f.classList.add('warn');});
-    setTimeout(function(){hint.classList.remove('error');fields.forEach(function(f){if(f)f.classList.remove('warn');});},2000);
+    ['c-email','c-telegram'].forEach(function(id){var f=document.getElementById(id);if(f)f.classList.add('warn');});
+    document.getElementById('c-email').focus();
     return;
   }
   var contactLines = [];
@@ -3121,6 +3120,10 @@ function handleContact(e, form) {
   .catch(function() {
     form.parentElement.innerHTML = '<p class="contact-sent">Ошибка — напишите на poet@iabard.com</p>';
   });
+}
+function clearContactWarn(){
+  document.getElementById('contact-hint').classList.remove('error');
+  ['c-email','c-telegram'].forEach(function(id){var f=document.getElementById(id);if(f)f.classList.remove('warn');});
 }
 // Preload poems in background so Стихи tab shows instantly
 window._poemsCache=fetch('poems.txt?v='+Math.floor(Date.now()/60000)).then(function(r){return r.ok?r.text():Promise.reject(r.status);});
