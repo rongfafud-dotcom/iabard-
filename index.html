@@ -3242,7 +3242,7 @@ function clearContactWarn(){
 // Preload poems in background so Стихи tab shows instantly
 window._poemsCache=fetch('poems.txt?v='+Math.floor(Date.now()/60000)).then(function(r){return r.ok?r.text():Promise.reject(r.status);});
 </script>
-<button onclick="adminLogin()" style="position:fixed;top:12px;right:14px;z-index:9999;background:transparent;border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:rgba(201,169,110,0.30);font-family:'Raleway',sans-serif;font-size:0.48rem;letter-spacing:1.4px;text-transform:uppercase;padding:4px 9px;cursor:pointer;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);transition:opacity 0.2s" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity=''">admin</button>
+<button onclick="adminLogin()" style="position:absolute;top:12px;right:14px;z-index:9999;background:transparent;border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:rgba(201,169,110,0.30);font-family:'Raleway',sans-serif;font-size:0.48rem;letter-spacing:1.4px;text-transform:uppercase;padding:4px 9px;cursor:pointer;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);transition:opacity 0.2s" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity=''">admin</button>
 
 <div id="admin-modal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(10,6,10,0.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:24px">
   <div style="background:#16101a;border:1px solid rgba(201,169,110,0.3);border-radius:16px;padding:36px 32px;max-width:340px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.7);text-align:center">
