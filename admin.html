@@ -365,6 +365,37 @@ function addNovinka(){
     if(li===-1)throw new Error('novinka-list не найден');
     var insertAt=li+LIST.length;
     html=html.slice(0,insertAt)+'\n'+buildNovinkaCard(poem,vid)+html.slice(insertAt);
+    // Auto-rotation: keep exactly 20 cards, first 5 visible, rest hidden
+    (function(){
+      var novS=html.indexOf('<!-- YT-NOVINKA-START -->');
+      var novE=html.indexOf('<!-- YT-NOVINKA-END -->');
+      if(novS===-1||novE===-1)return;
+      // Make the 6th visible card hidden
+      var VP='<div class="novinka-card">';
+      var vc=0,sf=0,sec=html.slice(novS,novE);
+      while(true){var vp=sec.indexOf(VP,sf);if(vp===-1)break;vc++;if(vc===6){var ap=novS+vp;html=html.slice(0,ap)+'<div class="novinka-card novinka-hidden">'+html.slice(ap+VP.length);break;}sf=vp+1;}
+      // Recompute section after change
+      novE=html.indexOf('<!-- YT-NOVINKA-END -->');sec=html.slice(novS,novE);
+      // Collect all card start positions
+      var cardStarts=[],sf2=0;
+      while(true){
+        var c1=sec.indexOf('<div class="novinka-card">',sf2);
+        var c2=sec.indexOf('<div class="novinka-card novinka-hidden">',sf2);
+        var cp=(c1!==-1&&(c2===-1||c1<c2))?c1:c2;
+        if(cp===-1)break;cardStarts.push(novS+cp);sf2=cp+1;
+      }
+      // Remove last card if total > 20
+      if(cardStarts.length>20){
+        var ls=cardStarts[cardStarts.length-1];
+        var depth=0,i=ls,le=-1;
+        while(i<html.length){
+          if(html.slice(i,i+4)==='<div'){depth++;i+=4;}
+          else if(html.slice(i,i+6)==='</div>'){depth--;if(depth===0){le=i+6;break;}i+=6;}
+          else i++;
+        }
+        if(le!==-1){var rs=ls;while(rs>0&&html[rs-1]!=='\n')rs--;html=html.slice(0,rs)+html.slice(le);}
+      }
+    })();
     setNovinkaStatus('Сохранение…');
     var encoded=btoa(unescape(encodeURIComponent(html)));
     return fetch(API+'index.html',{
