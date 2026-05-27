@@ -642,7 +642,7 @@ function savePoemEntry(poemText, audioFilename){
 function addPoem(){
   var poemText=document.getElementById('poem-add-text').value.trim();
   if(!poemText){setPoemAddStatus('Введите стихотворение');return;}
-  var audioName=document.getElementById('poem-mp3-input').value.trim()||null;
+  var audioName=(document.getElementById('poem-mp3-input').value.trim().replace(/^#\s*audio:\s*/i,'')||null);
   var btn=document.getElementById('poem-add-btn');
   btn.disabled=true;
   setPoemAddStatus('Сохранение…');
