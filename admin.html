@@ -58,7 +58,7 @@
   .inbox-btn{background:transparent;border:1px solid rgba(201,169,110,0.3);border-radius:8px;color:rgba(201,169,110,0.6);padding:0;width:72px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;flex-shrink:0;position:relative}
   .inbox-btn:hover{border-color:#c9a96e;color:#c9a96e;background:rgba(201,169,110,0.08)}
   .inbox-btn.active{border-color:#c9a96e;color:#c9a96e;background:rgba(201,169,110,0.12)}
-  .inbox-badge{position:absolute;top:-5px;right:-5px;background:#c9a96e;color:#0e0a0e;border-radius:50%;width:16px;height:16px;font-size:0.6rem;font-weight:700;display:none;align-items:center;justify-content:center}
+  .inbox-badge{position:absolute;top:-6px;right:-6px;background:#c9a96e;color:#0e0a0e;border-radius:9px;min-width:18px;height:18px;padding:0 4px;font-size:0.68rem;font-weight:700;display:none;align-items:center;justify-content:center;line-height:1}
   .token-section{max-width:600px;margin:0 auto 20px;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.2);border-radius:10px;overflow:hidden}
   .token-toggle{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;user-select:none}
   .token-toggle-label{font-size:0.78rem;color:rgba(201,169,110,0.7);letter-spacing:1px;flex:1}
@@ -748,13 +748,32 @@ function deleteNovinka(vid){
 }
 
 function switchInbox(){
+  var panel=document.getElementById('inbox-panel');
+  if(panel.style.display==='block'){
+    // Closing: auto-archive all open messages in background
+    if(currentInboxTab==='open'){
+      var token=getToken();
+      document.querySelectorAll('#inbox-list .inbox-msg').forEach(function(msg){
+        var num=msg.dataset.issue;
+        if(!num||!token)return;
+        fetch('https://api.github.com/repos/'+REPO+'/issues/'+num,{
+          method:'PATCH',
+          headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+          body:JSON.stringify({state:'closed'})
+        }).catch(function(){});
+      });
+    }
+    panel.style.display='none';
+    document.getElementById('inbox-btn').classList.remove('active');
+    return;
+  }
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
   document.getElementById('inbox-btn').classList.add('active');
   document.getElementById('poem-add-panel').style.display='none';
   document.getElementById('editor-wrap').style.display='none';
   document.getElementById('novinka-panel').style.display='none';
   document.getElementById('audio-panel').style.display='none';
-  document.getElementById('inbox-panel').style.display='block';
+  panel.style.display='block';
   localStorage.setItem('inbox_seen', Date.now());
   document.getElementById('inbox-badge').style.display='none';
   loadInbox();
@@ -858,9 +877,9 @@ function showReplyMenu(btn){
   var tg=btn.dataset.tg||'';
   var menu=document.createElement('div');
   menu.className='inbox-reply-menu';menu._anchor=btn;
-  var html='';
-  if(email)html+='<a href="mailto:'+esc(email)+'">📧 Ответить на email — '+esc(email)+'</a>';
-  if(tg){var tgHandle=tg.replace(/^@/,'');html+='<a href="https://t.me/'+esc(tgHandle)+'" target="_blank" rel="noopener noreferrer">✈️ Написать в Telegram — '+esc(tg)+'</a>';}
+  var html='<div style="padding:6px 14px 5px;font-size:0.67rem;color:rgba(201,169,110,0.45);border-bottom:1px solid rgba(201,169,110,0.12)">Отвечай с poet@iabard.com</div>';
+  if(email)html+='<a href="mailto:'+esc(email)+'?from=poet%40iabard.com">📧 Email — '+esc(email)+'</a>';
+  if(tg){var tgHandle=tg.replace(/^@/,'');html+='<a href="https://t.me/'+esc(tgHandle)+'" target="_blank" rel="noopener noreferrer">✈️ Telegram — '+esc(tg)+'</a>';}
   if(!html)return;
   menu.innerHTML=html;
   btn.insertAdjacentElement('afterend',menu);
