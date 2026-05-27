@@ -81,6 +81,10 @@
   .inbox-msg-text{font-size:0.87rem;color:rgba(232,221,208,0.85);line-height:1.65;white-space:pre-wrap;word-break:break-word}
   .inbox-reply-btn{margin-top:12px;background:transparent;border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:rgba(201,169,110,0.7);padding:5px 14px;cursor:pointer;font-size:0.75rem;transition:all 0.2s}
   .inbox-reply-btn:hover{border-color:#c9a96e;color:#c9a96e}
+  .inbox-reply-menu{margin-top:6px;background:#1e1220;border:1px solid rgba(201,169,110,0.25);border-radius:8px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.55)}
+  .inbox-reply-menu a{display:block;padding:9px 16px;color:rgba(253,246,238,0.80);text-decoration:none;font-size:0.78rem;transition:background 0.15s;white-space:nowrap}
+  .inbox-reply-menu a+a{border-top:1px solid rgba(201,169,110,0.10)}
+  .inbox-reply-menu a:hover{background:rgba(201,169,110,0.08);color:#c9a96e}
   .inbox-reply-box{margin-top:10px;display:none}
   .inbox-reply-box textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 12px;color:#e8ddd0;font-family:'Georgia',serif;font-size:0.85rem;line-height:1.6;resize:vertical;outline:none;min-height:80px}
   .inbox-reply-box textarea:focus{border-color:rgba(201,169,110,0.5)}
@@ -788,23 +792,22 @@ function loadInbox(){
       // Parse contact lines from body (new format) or fall back to email in title (old format)
       var bodyRaw=issue.body||'';
       var bodyLines=bodyRaw.split('\n');
-      var contacts={email:m?m[2]:'',instagram:'',telegram:''};
+      var contacts={email:m?m[2]:'',telegram:''};
       var msgStart=0;
       for(var li=0;li<bodyLines.length;li++){
         var bl=bodyLines[li];
         if(bl.startsWith('Email: ')){contacts.email=bl.slice(7).trim();msgStart=li+1;}
-        else if(bl.startsWith('Instagram: ')){contacts.instagram=bl.slice(11).trim();msgStart=li+1;}
         else if(bl.startsWith('Telegram: ')){contacts.telegram=bl.slice(10).trim();msgStart=li+1;}
+        else if(bl.startsWith('Instagram: ')){msgStart=li+1;}
         else if(bl.trim()===''&&msgStart===li){msgStart=li+1;}
         else if(msgStart>0){break;}
       }
       var msgText=bodyLines.slice(msgStart).join('\n').trim()||bodyRaw.trim();
       var contactsHtml='';
-      if(contacts.email||contacts.instagram||contacts.telegram){
+      if(contacts.email||contacts.telegram){
         contactsHtml='<div class="inbox-contacts">';
         if(contacts.email)contactsHtml+='<a href="mailto:'+esc(contacts.email)+'" class="inbox-contact-link">📧 '+esc(contacts.email)+'</a>';
         if(contacts.telegram){var tg=contacts.telegram.replace(/^@/,'');contactsHtml+='<a href="https://t.me/'+esc(tg)+'" target="_blank" rel="noopener noreferrer" class="inbox-contact-link">✈️ '+esc(contacts.telegram)+'</a>';}
-        if(contacts.instagram){var ig=contacts.instagram.replace(/^@/,'');contactsHtml+='<a href="https://instagram.com/'+esc(ig)+'" target="_blank" rel="noopener noreferrer" class="inbox-contact-link">📸 '+esc(contacts.instagram)+'</a>';}
         contactsHtml+='</div>';
       }
       var div=document.createElement('div');
@@ -819,12 +822,8 @@ function loadInbox(){
         contactsHtml+
         '<div class="inbox-msg-text">'+esc(msgText)+'</div>'+
         repliesHtml+
-        '<button class="inbox-reply-btn" onclick="toggleReply('+issue.number+')">Заметка ↩</button>'+
-        (currentInboxTab==='open'?'<button class="inbox-close-btn" onclick="closeMessage('+issue.number+')">✓ Архив</button>':'')+
-        '<div class="inbox-reply-box" id="reply-'+issue.number+'">'+
-          '<textarea id="reply-text-'+issue.number+'" placeholder="Заметка (только для вас)…"></textarea>'+
-          '<button class="inbox-send-btn" onclick="sendReply('+issue.number+',this)">Сохранить</button>'+
-        '</div>';
+        (contacts.email||contacts.telegram?'<button class="inbox-reply-btn" data-email="'+esc(contacts.email)+'" data-tg="'+esc(contacts.telegram)+'" onclick="showReplyMenu(this)">Ответить ↩</button>':'')+
+        (currentInboxTab==='open'?'<button class="inbox-close-btn" onclick="closeMessage('+issue.number+')">✓ Архив</button>':'');
       list.appendChild(div);
       if(issue.comments>0) loadReplies(issue.number);
     });
@@ -852,43 +851,22 @@ function loadReplies(number){
   }).catch(function(){});
 }
 
-function toggleReply(number){
-  var box=document.getElementById('reply-'+number);
-  box.style.display=box.style.display==='block'?'none':'block';
-  if(box.style.display==='block') document.getElementById('reply-text-'+number).focus();
-}
-
-function sendReply(number,btn){
-  var token=getToken();
-  var text=document.getElementById('reply-text-'+number).value.trim();
-  if(!text)return;
-  btn.disabled=true;btn.textContent='Отправка…';
-  fetch('https://api.github.com/repos/'+REPO+'/issues/'+number+'/comments',{
-    method:'POST',
-    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-    body:JSON.stringify({body:text})
-  })
-  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-  .then(function(c){
-    btn.disabled=false;btn.textContent='Отправить';
-    document.getElementById('reply-text-'+number).value='';
-    document.getElementById('reply-'+number).style.display='none';
-    var repliesEl=document.getElementById('replies-'+number);
-    if(!repliesEl){
-      var msg=document.querySelector('[data-issue="'+number+'"]');
-      var newReplies=document.createElement('div');
-      newReplies.className='inbox-replies';
-      newReplies.id='replies-'+number;
-      msg.querySelector('.inbox-reply-btn').before(newReplies);
-      repliesEl=newReplies;
-    }
-    var d=new Date(c.created_at).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-    var item=document.createElement('div');
-    item.className='inbox-reply-item';
-    item.innerHTML='<div class="inbox-reply-item-date">'+d+'</div><div class="inbox-reply-item-text">'+esc(c.body)+'</div>';
-    repliesEl.appendChild(item);
-  })
-  .catch(function(e){btn.disabled=false;btn.textContent='Ошибка: '+e.message;});
+function showReplyMenu(btn){
+  var existing=document.querySelector('.inbox-reply-menu');
+  if(existing){existing.remove();if(existing._anchor===btn)return;}
+  var email=btn.dataset.email||'';
+  var tg=btn.dataset.tg||'';
+  var menu=document.createElement('div');
+  menu.className='inbox-reply-menu';menu._anchor=btn;
+  var html='';
+  if(email)html+='<a href="mailto:'+esc(email)+'">📧 Ответить на email — '+esc(email)+'</a>';
+  if(tg){var tgHandle=tg.replace(/^@/,'');html+='<a href="https://t.me/'+esc(tgHandle)+'" target="_blank" rel="noopener noreferrer">✈️ Написать в Telegram — '+esc(tg)+'</a>';}
+  if(!html)return;
+  menu.innerHTML=html;
+  btn.insertAdjacentElement('afterend',menu);
+  setTimeout(function(){
+    document.addEventListener('click',function h(e){if(!menu.contains(e.target)&&e.target!==btn){menu.remove();document.removeEventListener('click',h);}});
+  },0);
 }
 
 function closeMessage(number){
