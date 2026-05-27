@@ -370,25 +370,23 @@ function addNovinka(){
       var novS=html.indexOf('<!-- YT-NOVINKA-START -->');
       var novE=html.indexOf('<!-- YT-NOVINKA-END -->');
       if(novS===-1||novE===-1)return;
-      // Make the 6th visible card hidden
       var VP='<div class="novinka-card">';
-      var vc=0,sf=0,sec=html.slice(novS,novE);
-      while(true){var vp=sec.indexOf(VP,sf);if(vp===-1)break;vc++;if(vc===6){var ap=novS+vp;html=html.slice(0,ap)+'<div class="novinka-card novinka-hidden">'+html.slice(ap+VP.length);break;}sf=vp+1;}
-      // Recompute section after change
-      novE=html.indexOf('<!-- YT-NOVINKA-END -->');sec=html.slice(novS,novE);
-      // Collect all card start positions
-      var cardStarts=[],sf2=0;
+      var HP='<div class="novinka-card novinka-hidden">';
+      var sec,sf,i,k;
+      // Step 1: collect positions of all visible cards beyond the 5th (process last→first)
+      sec=html.slice(novS,novE);sf=0;var toHide=[],vc=0;
+      while(true){var vp=sec.indexOf(VP,sf);if(vp===-1)break;vc++;if(vc>5)toHide.push(novS+vp);sf=vp+1;}
+      for(k=toHide.length-1;k>=0;k--){var ap=toHide[k];html=html.slice(0,ap)+HP+html.slice(ap+VP.length);}
+      // Step 2: collect all card positions after changes, remove any beyond 20 (last→first)
+      novE=html.indexOf('<!-- YT-NOVINKA-END -->');sec=html.slice(novS,novE);sf=0;var all=[];
       while(true){
-        var c1=sec.indexOf('<div class="novinka-card">',sf2);
-        var c2=sec.indexOf('<div class="novinka-card novinka-hidden">',sf2);
+        var c1=sec.indexOf(VP,sf),c2=sec.indexOf(HP,sf);
         var cp=(c1!==-1&&(c2===-1||c1<c2))?c1:c2;
-        if(cp===-1)break;cardStarts.push(novS+cp);sf2=cp+1;
+        if(cp===-1)break;all.push(novS+cp);sf=cp+1;
       }
-      // Remove last card if total > 20
-      if(cardStarts.length>20){
-        var ls=cardStarts[cardStarts.length-1];
-        var depth=0,i=ls,le=-1;
-        while(i<html.length){
+      for(k=all.length-1;k>=20;k--){
+        var ls=all[k],depth=0,le=-1;
+        for(i=ls;i<html.length;){
           if(html.slice(i,i+4)==='<div'){depth++;i+=4;}
           else if(html.slice(i,i+6)==='</div>'){depth--;if(depth===0){le=i+6;break;}i+=6;}
           else i++;
