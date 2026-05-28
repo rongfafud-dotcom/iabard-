@@ -110,6 +110,10 @@
   .novinka-edit-save{margin-top:8px;background:#c9a96e;border:none;border-radius:5px;color:#0e0a0e;padding:7px 20px;cursor:pointer;font-size:0.8rem;font-weight:600;transition:opacity 0.2s}
   .novinka-edit-save:hover{opacity:0.85}
   .novinka-edit-save:disabled{opacity:0.4;cursor:not-allowed}
+  #back-to-top{position:fixed;bottom:24px;right:20px;width:44px;height:44px;border-radius:50%;background:rgba(92,61,85,0.88);border:1px solid rgba(201,169,110,0.45);color:#c9a96e;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,0.4)}
+  #back-to-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+  #back-to-top:hover{background:#5c3d55;border-color:#c9a96e;box-shadow:0 6px 20px rgba(0,0,0,0.5)}
+  #back-to-top svg{width:18px;height:18px;fill:currentColor}
 </style>
 </head>
 <body>
@@ -1024,6 +1028,9 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
     p.innerHTML=vid?'<img src="https://img.youtube.com/vi/'+vid+'/mqdefault.jpg" style="width:100%;max-width:320px;border-radius:6px;margin-top:4px">':'';
   });
 })();
+var btt=document.getElementById('back-to-top');
+window.addEventListener('scroll',function(){btt.classList.toggle('visible',window.scrollY>400);},{passive:true});
 </script>
+<button id="back-to-top" aria-label="Наверх" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg></button>
 </body>
 </html>
