@@ -237,7 +237,8 @@
     /* SECTIONS */
     .sections-wrap{background:var(--deep);border-top:1px solid rgba(201,169,110,0.15)}
     .tab-panel{display:none;padding:40px 56px 52px;background:var(--deep)}
-    .tab-panel.active{display:block}
+    @keyframes tabFadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .tab-panel.active{display:block;animation:tabFadeIn 0.28s ease}
 
     /* VIDEO EMBED — 9:16 portrait */
     .novinka-video{position:relative;width:100%;max-width:300px;margin:0 auto 28px;
@@ -664,11 +665,56 @@
     /* СТИХИ — text poems tab */
     .poems-loading{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
       color:var(--mauve);font-size:1.1rem;padding:60px 0}
+
+    /* SCROLL PROGRESS BAR */
+    #scroll-prog{position:fixed;top:0;left:0;height:2px;width:0;background:var(--gold);z-index:9999;pointer-events:none;transition:width 0.08s linear}
+
+    /* STICKY NAV */
+    #sticky-nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:center;gap:0;
+      background:rgba(14,6,22,0.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(201,169,110,0.18);
+      transform:translateY(-100%);transition:transform 0.3s ease}
+    #sticky-nav.visible{transform:translateY(0)}
+    #sticky-nav button{font-family:'Cormorant Garamond',serif;font-size:0.78rem;letter-spacing:2px;
+      text-transform:uppercase;color:rgba(255,255,255,0.8);background:none;border:none;
+      border-bottom:2px solid transparent;padding:13px 22px;cursor:pointer;transition:all 0.2s}
+    #sticky-nav button:hover,#sticky-nav button.s-active{color:var(--gold);border-bottom-color:var(--gold)}
+
+    /* CUSTOM AUDIO PLAYER */
+    .ap{display:flex;align-items:center;gap:10px;width:100%;margin-top:20px;padding:10px 14px;
+        background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.18);
+        border-radius:8px;box-sizing:border-box}
+    .ap-play{background:none;border:1.5px solid rgba(201,169,110,0.5);border-radius:50%;
+        width:34px;height:34px;min-width:34px;color:var(--gold);cursor:pointer;
+        display:flex;align-items:center;justify-content:center;transition:all 0.2s;padding:0}
+    .ap-play svg{width:14px;height:14px;fill:currentColor;pointer-events:none}
+    .ap-play:hover{background:rgba(201,169,110,0.15);border-color:var(--gold)}
+    .ap-bar{flex:1;height:4px;background:rgba(201,169,110,0.2);border-radius:2px;cursor:pointer;position:relative}
+    .ap-fill{height:100%;background:var(--gold);border-radius:2px;width:0%;pointer-events:none}
+    .ap-time{font-family:'Cormorant Garamond',serif;font-size:0.75rem;color:rgba(201,169,110,0.65);white-space:nowrap;min-width:78px;text-align:right}
+
+    /* POEM SEARCH */
+    .poem-search-wrap{display:flex;justify-content:center;margin-bottom:28px}
+    .poem-search{background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.22);
+        border-radius:24px;padding:10px 22px;color:rgba(253,246,238,0.9);width:100%;max-width:360px;
+        font-family:'Cormorant Garamond',serif;font-size:1rem;letter-spacing:1px;outline:none;
+        transition:border-color 0.2s;-webkit-appearance:none}
+    .poem-search:focus{border-color:rgba(201,169,110,0.6)}
+    .poem-search::placeholder{color:rgba(201,169,110,0.38)}
   </style>
 </head>
 <body>
+<div id="scroll-prog" aria-hidden="true"></div>
 
 <a href="#main-content" class="skip-link">Перейти к содержимому</a>
+
+<!-- STICKY NAV -->
+<nav id="sticky-nav" aria-label="Быстрая навигация">
+  <button data-panels="books" onclick="switchTab('books',this)">Книги</button>
+  <button data-panels="novinka novosti poems" onclick="switchTab('poems',this)">Творчество</button>
+  <button data-panels="shop" onclick="switchTab('shop',this)">Shop</button>
+  <button data-panels="author" onclick="switchTab('author',this)">Кто я?</button>
+</nav>
 
 <!-- ═══ HERO ═══ -->
 <div class="card">
@@ -2844,6 +2890,10 @@ Conscientia — «сознанье» на латыни.<br>
 
   <!-- СТИХИ -->
   <div id="poems" class="tab-panel" role="tabpanel" aria-labelledby="tab-creative">
+    <div class="poem-search-wrap">
+      <input type="search" id="poem-search" class="poem-search" placeholder="Найти стихотворение…" aria-label="Поиск стихотворений" autocomplete="off">
+    </div>
+    <p id="poem-notfound" class="poems-loading" style="display:none">Ничего не найдено</p>
     <div class="novinka-list" id="poems-list">
       <p class="poems-loading" id="poems-ver">Загрузка стихов… v72a</p>
     </div>
@@ -3040,7 +3090,7 @@ function loadPoems(){
       h+='</div>';
       if(ytUrl&&!/^https?:\/\//i.test(ytUrl))ytUrl=null;
       if(audioFile){
-        h+='<audio controls src="audio/'+encodeURIComponent(audioFile)+'" aria-label="Аудио: '+esc(mainT||'стихотворение')+'" style="width:100%;margin-top:20px;border-radius:6px;opacity:0.9"></audio>';
+        h+='<div class="audio-ph" data-src="audio/'+encodeURIComponent(audioFile)+'" data-label="'+esc(mainT||'стихотворение')+'"></div>';
       }
       var safeT=(mainT||'Стихотворение').replace(/&/g,'&amp;').replace(/"/g,'&quot;');
       h+='<div class="poem-actions">';
@@ -3052,9 +3102,11 @@ function loadPoems(){
       if(ytUrl){
         h+='<div style="text-align:center;margin-top:16px"><a href="'+esc(ytUrl)+'" target="_blank" rel="noopener noreferrer" class="yt-watch-btn" style="display:inline-flex"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Смотреть видео на YouTube</a></div>';
       }
+      card.dataset.search=(mainT+' '+body.join(' ')).toLowerCase();
       card.innerHTML=h;list.appendChild(card);
       if(typeof fadeObserver!=='undefined')fadeObserver.observe(card);
     });
+    initAudioPlayers(list);
   }
   list.innerHTML='<p class="poems-loading">Загрузка…</p>';
   fetch('poems.txt?v='+Math.floor(Date.now()/60000))
@@ -3075,6 +3127,10 @@ function switchTab(id, btn) {
   document.getElementById(id).classList.add('active');
   document.getElementById(id).querySelectorAll('img[loading="lazy"]').forEach(function(i){i.loading='eager';});
   if(btn){btn.classList.add('active');btn.setAttribute('aria-selected','true');}
+  // Sync sticky nav highlight
+  document.querySelectorAll('#sticky-nav button').forEach(function(b){
+    b.classList.toggle('s-active',(b.dataset.panels||'').split(' ').indexOf(id)!==-1);
+  });
   var el=document.getElementById(id);
   window.scrollTo({top:el.getBoundingClientRect().top+window.pageYOffset,behavior:'smooth'});
   if(id==='poems')loadPoems();
@@ -3283,6 +3339,83 @@ if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
     wrap.addEventListener('mouseleave',function(){drop.classList.remove('open');});
   });
 }
+
+// Scroll progress bar + sticky nav
+(function(){
+  var prog=document.getElementById('scroll-prog');
+  var stickyNav=document.getElementById('sticky-nav');
+  var heroCard=document.querySelector('.card');
+  window.addEventListener('scroll',function(){
+    var s=window.scrollY||document.documentElement.scrollTop;
+    var h=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+    prog.style.width=(h>0?(s/h*100):0)+'%';
+    stickyNav.classList.toggle('visible', heroCard && s > heroCard.offsetHeight * 0.55);
+  },{passive:true});
+})();
+
+// Custom audio player
+var AP_PLAY='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+var AP_PAUSE='<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+function initAudioPlayers(container){
+  container.querySelectorAll('.audio-ph').forEach(function(ph){
+    var src=ph.dataset.src;
+    var label=ph.dataset.label||'стихотворение';
+    var audio=new Audio();
+    var el=document.createElement('div');
+    el.className='ap';
+    el.innerHTML=
+      '<button class="ap-play" aria-label="Воспроизвести">'+AP_PLAY+'</button>'+
+      '<div class="ap-bar"><div class="ap-fill"></div></div>'+
+      '<span class="ap-time">0:00 / —:——</span>';
+    var btn=el.querySelector('.ap-play');
+    var bar=el.querySelector('.ap-bar');
+    var fill=el.querySelector('.ap-fill');
+    var timeEl=el.querySelector('.ap-time');
+    el._audio=audio;
+    function fmt(s){var m=Math.floor(s/60);return m+':'+('0'+Math.floor(s%60)).slice(-2);}
+    audio.addEventListener('timeupdate',function(){
+      if(!audio.duration)return;
+      fill.style.width=(audio.currentTime/audio.duration*100)+'%';
+      timeEl.textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration);
+    });
+    audio.addEventListener('loadedmetadata',function(){timeEl.textContent='0:00 / '+fmt(audio.duration);});
+    audio.addEventListener('ended',function(){btn.innerHTML=AP_PLAY;fill.style.width='0%';});
+    btn.addEventListener('click',function(){
+      if(audio.paused){
+        document.querySelectorAll('.ap').forEach(function(a){
+          if(a!==el&&a._audio&&!a._audio.paused){a._audio.pause();a.querySelector('.ap-play').innerHTML=AP_PLAY;}
+        });
+        if(!audio.src)audio.src=src;
+        audio.play();
+        btn.innerHTML=AP_PAUSE;
+      } else {
+        audio.pause();
+        btn.innerHTML=AP_PLAY;
+      }
+    });
+    bar.addEventListener('click',function(e){
+      if(!audio.src)audio.src=src;
+      if(!audio.duration){audio.load();audio.addEventListener('loadedmetadata',function(){
+        audio.currentTime=(e.clientX-bar.getBoundingClientRect().left)/bar.offsetWidth*audio.duration;
+      },{once:true});return;}
+      audio.currentTime=(e.clientX-bar.getBoundingClientRect().left)/bar.offsetWidth*audio.duration;
+    });
+    ph.parentNode.replaceChild(el,ph);
+  });
+}
+
+// Poem search filter
+document.getElementById('poem-search').addEventListener('input',function(){
+  var q=this.value.toLowerCase().trim();
+  var found=0;
+  document.querySelectorAll('#poems-list .novinka-card').forEach(function(card){
+    var show=!q||card.dataset.search.indexOf(q)!==-1;
+    card.style.display=show?'':'none';
+    if(show)found++;
+  });
+  var nf=document.getElementById('poem-notfound');
+  if(nf)nf.style.display=(q&&!found)?'block':'none';
+});
 </script>
 </body>
 </html>
