@@ -598,6 +598,8 @@
       font-weight:300;margin-top:1px}
     .nav-dropmenu button:hover{color:var(--gold)}
     .nav-dropmenu button+button{border-top:1px solid rgba(201,169,110,0.12)}
+    /* Whole wrap glows on hover — tab text and arrow both light up */
+    .nav-tab-wrap:hover .nav-tab,.nav-tab-wrap:hover .nav-drop-btn{color:var(--gold);border-bottom-color:var(--gold)}
     #drop-books{left:0;transform:none}
     #drop-books.open{animation:dropIn2 0.18s ease}
     @keyframes dropIn2{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
@@ -3271,6 +3273,15 @@ function handleContact(e, form) {
 function clearContactWarn(){
   document.getElementById('contact-hint').classList.remove('error');
   ['c-email','c-telegram'].forEach(function(id){var f=document.getElementById(id);if(f)f.classList.remove('warn');});
+}
+// Hover-open dropdowns on pointer devices (desktop only)
+if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+  document.querySelectorAll('.nav-tab-wrap:not(.nav-tab-wrap--nodrop)').forEach(function(wrap){
+    var drop=wrap.querySelector('.nav-dropmenu');
+    if(!drop)return;
+    wrap.addEventListener('mouseenter',function(){closeDrop();drop.classList.add('open');});
+    wrap.addEventListener('mouseleave',function(){drop.classList.remove('open');});
+  });
 }
 </script>
 </body>
