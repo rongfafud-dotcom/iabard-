@@ -1,4 +1,4 @@
-const CACHE = 'iabard-v1';
+const CACHE = 'iabard-v2';
 const CORE = [
   '/',
   '/index.html',
@@ -31,8 +31,8 @@ self.addEventListener('fetch', function(e) {
   var url = new URL(e.request.url);
   if (url.origin !== location.origin) return;
 
-  // Network-first for HTML — always show latest content
-  if (e.request.headers.get('Accept') && e.request.headers.get('Accept').includes('text/html')) {
+  // Network-first for HTML and poems.txt — always show latest content
+  if (url.pathname.endsWith('poems.txt') || (e.request.headers.get('Accept') && e.request.headers.get('Accept').includes('text/html'))) {
     e.respondWith(
       fetch(e.request).then(function(res) {
         var clone = res.clone();

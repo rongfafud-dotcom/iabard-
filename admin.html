@@ -240,7 +240,7 @@ function switchInboxTab(tab){
 }
 
 function getToken(){
-  return localStorage.getItem('gh_token') || document.getElementById('token').value.trim();
+  return sessionStorage.getItem('gh_token') || document.getElementById('token').value.trim();
 }
 
 function toggleToken(){
@@ -254,7 +254,7 @@ function toggleToken(){
 function saveToken(){
   var t = document.getElementById('token').value.trim();
   if(!t){setStatus('Введите токен');return;}
-  localStorage.setItem('gh_token', t);
+  sessionStorage.setItem('gh_token', t);
   document.getElementById('token-status').textContent = '✓';
   document.getElementById('token-body').style.display='none';
   document.getElementById('token-arrow').classList.remove('open');
@@ -262,7 +262,7 @@ function saveToken(){
 }
 
 function invalidToken(){
-  localStorage.removeItem('gh_token');
+  sessionStorage.removeItem('gh_token');
   document.getElementById('token').value = '';
   document.getElementById('token-status').textContent = '';
   document.getElementById('token-body').style.display='block';
@@ -325,18 +325,18 @@ function buildNovinkaCard(poem,vid){
   var body=stanzas.slice(1);
   var tm=title.match(/^(.*?)\s*(\(.*\))\s*$/);
   var titleHtml=title?(tm
-    ?'\n        <div class="novinka-title">'+tm[1]+'<br><span style="font-size:0.55em;font-weight:400;opacity:0.65;letter-spacing:1px;font-style:italic">'+tm[2]+'</span></div>'
-    :'\n        <div class="novinka-title">'+title+'</div>')
+    ?'\n        <div class="novinka-title">'+esc(tm[1])+'<br><span style="font-size:0.55em;font-weight:400;opacity:0.65;letter-spacing:1px;font-style:italic">'+esc(tm[2])+'</span></div>'
+    :'\n        <div class="novinka-title">'+esc(title)+'</div>')
     :'';
   var poemHtml='';
   if(body.length){
     poemHtml='\n        <div class="novinka-poem">';
     body.forEach(function(s){
-      poemHtml+='\n        <div class="stanza">'+s.split('\n').map(function(l){return l.trim();}).join('<br>\n')+'\n        </div>';
+      poemHtml+='\n        <div class="stanza">'+s.split('\n').map(function(l){return esc(l.trim());}).join('<br>\n')+'\n        </div>';
     });
     poemHtml+='\n        </div>';
   }
-  return '      <div class="novinka-card">'+titleHtml+'\n        <div class="novinka-video">\n          <div class="yt-facade" data-vid="'+vid+'" onclick="ytPlay(this)">\n            <img src="https://img.youtube.com/vi/'+vid+'/hqdefault.jpg" alt="Ипатия Бард">\n            <button class="yt-play" aria-label="Смотреть видео">&#9654;</button>\n          </div>\n        </div>'+poemHtml+'\n      </div>';
+  return '      <div class="novinka-card">'+titleHtml+'\n        <div class="novinka-video">\n          <div class="yt-facade" data-vid="'+vid+'" onclick="ytPlay(this)">\n            <img src="https://img.youtube.com/vi/'+vid+'/hqdefault.jpg" alt="Ипатия Бард" loading="lazy">\n            <button class="yt-play" aria-label="Смотреть видео">&#9654;</button>\n          </div>\n        </div>'+poemHtml+'\n      </div>';
 }
 
 function setNovinkaStatus(msg,ok){
@@ -523,6 +523,7 @@ function uploadAudio(file){
 function deleteAudio(filename,sha){
   if(!confirm('Удалить '+filename+'?'))return;
   var token=getToken();
+  if(!token){setAudioProgress('Сначала введите токен');return;}
   fetch('https://api.github.com/repos/'+REPO+'/contents/audio/'+filename,{
     method:'DELETE',
     headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
@@ -650,7 +651,7 @@ function savePoemEntry(poemText, audioFilename){
   var extras='';
   if(audioFilename) extras+='\n# audio: '+audioFilename;
   if(ytUrl) extras+='\n'+ytUrl;
-  var finalPoem=title+rest+extras;
+  var finalPoem=title+'\n\n'+rest.trimStart()+extras;
   fetch(API+'poems.txt?ref=main',{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})
   .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
   .then(function(data){
@@ -693,7 +694,7 @@ function loadNovinkaList(){
     var html=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
     var si=html.indexOf('<!-- YT-NOVINKA-START -->');
     if(si===-1){listEl.innerHTML='<span style="color:#d47a7a;font-size:0.85rem">Маркер не найден</span>';return;}
-    var section=html.slice(si,si+200000);
+    var section=html.slice(si,html.indexOf('<!-- YT-NOVINKA-END -->',si));
     var cards=[];
     var pos=0;
     while(true){
@@ -783,19 +784,6 @@ function deleteNovinka(vid){
 function switchInbox(){
   var panel=document.getElementById('inbox-panel');
   if(panel.style.display==='block'){
-    // Closing: auto-archive all open messages in background
-    if(currentInboxTab==='open'){
-      var token=getToken();
-      document.querySelectorAll('#inbox-list .inbox-msg').forEach(function(msg){
-        var num=msg.dataset.issue;
-        if(!num||!token)return;
-        fetch('https://api.github.com/repos/'+REPO+'/issues/'+num,{
-          method:'PATCH',
-          headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-          body:JSON.stringify({state:'closed'})
-        }).catch(function(){});
-      });
-    }
     panel.style.display='none';
     document.getElementById('inbox-btn').classList.remove('active');
     return;
@@ -1013,7 +1001,7 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 // Init
 (function(){
   document.getElementById('poem-add-panel').style.display='block';
-  var saved = localStorage.getItem('gh_token');
+  var saved = sessionStorage.getItem('gh_token');
   if(saved){
     document.getElementById('token').value = saved;
     document.getElementById('token-status').textContent = '✓';
