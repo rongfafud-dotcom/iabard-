@@ -105,6 +105,8 @@
   #poem-yt-url::placeholder,#novinka-url::placeholder,#poem-add-text::placeholder,#novinka-poem::placeholder,#poem-mp3-input::placeholder{color:rgba(232,221,208,0.5)}
   .inbox-close-btn{float:right;background:transparent;border:1px solid rgba(100,180,100,0.3);border-radius:5px;color:rgba(120,200,120,0.65);padding:5px 12px;cursor:pointer;font-size:0.72rem;transition:all 0.2s}
   .inbox-close-btn:hover{border-color:#7bc47b;color:#7bc47b}
+  .inbox-del-btn{float:right;margin-right:8px;background:transparent;border:1px solid rgba(180,60,60,0.3);border-radius:5px;color:rgba(200,100,100,0.65);padding:5px 12px;cursor:pointer;font-size:0.72rem;transition:all 0.2s}
+  .inbox-del-btn:hover{border-color:#d47a7a;color:#d47a7a}
   .novinka-edit-box{margin-top:10px;display:none}
   .novinka-edit-box textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 12px;color:#e8ddd0;font-family:'Georgia',serif;font-size:0.85rem;line-height:1.6;resize:vertical;outline:none;min-height:140px}
   .novinka-edit-box textarea:focus{border-color:rgba(201,169,110,0.5)}
@@ -862,7 +864,8 @@ function loadInbox(){
         '<div class="inbox-msg-text">'+esc(msgText)+'</div>'+
         repliesHtml+
         (contacts.email||contacts.telegram?'<button class="inbox-reply-btn" data-email="'+esc(contacts.email)+'" data-tg="'+esc(contacts.telegram)+'" onclick="showReplyMenu(this)">Ответить ↩</button>':'')+
-        (currentInboxTab==='open'?'<button class="inbox-close-btn" onclick="closeMessage('+issue.number+')">✓ Архив</button>':'');
+        (currentInboxTab==='open'?'<button class="inbox-close-btn" onclick="closeMessage('+issue.number+')">✓ Архив</button>':'')+
+        (currentInboxTab==='closed'?'<button class="inbox-del-btn" onclick="deleteMessage('+issue.number+',this)">✕ Удалить</button>':'');
       list.appendChild(div);
       if(issue.comments>0) loadReplies(issue.number);
     });
@@ -935,6 +938,36 @@ function closeMessage(number){
     if(e.message==='skip')return;
     if(btn){btn.disabled=false;btn.textContent='✓ Архив';}
     alert('Ошибка архивирования: '+e.message);
+  });
+}
+
+function deleteMessage(number,btn){
+  if(!confirm('Удалить сообщение навсегда?'))return;
+  var token=getToken();
+  if(!token){alert('Сначала введите токен');return;}
+  if(btn){btn.disabled=true;btn.textContent='…';}
+  fetch('https://api.github.com/repos/'+REPO+'/issues/'+number,{
+    method:'PATCH',
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify({state:'closed',state_reason:'not_planned'})
+  })
+  .then(function(r){
+    if(r.status===401){invalidToken();throw new Error('skip');}
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    return r.json();
+  })
+  .then(function(){
+    var msg=document.querySelector('[data-issue="'+number+'"]');
+    if(msg){msg.style.transition='opacity 0.4s';msg.style.opacity='0';setTimeout(function(){
+      msg.remove();
+      var remaining=document.querySelectorAll('#inbox-list .inbox-msg');
+      if(!remaining.length){document.getElementById('inbox-list').innerHTML='<div class="inbox-empty">Нет сообщений в архиве</div>';}
+    },400);}
+  })
+  .catch(function(e){
+    if(e.message==='skip')return;
+    if(btn){btn.disabled=false;btn.textContent='✕ Удалить';}
+    alert('Ошибка удаления: '+e.message);
   });
 }
 
