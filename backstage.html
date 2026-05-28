@@ -271,7 +271,7 @@ function archiveAll(){
 }
 
 function getToken(){
-  return localStorage.getItem('gh_token') || document.getElementById('token').value.trim();
+  return localStorage.getItem('gh_token') || sessionStorage.getItem('gh_token') || document.getElementById('token').value.trim();
 }
 
 function toggleToken(){
@@ -972,7 +972,6 @@ function closeMessage(number){
 function deleteMessage(number,btn){
   if(!confirm('Удалить сообщение навсегда?'))return;
   var token=getToken();
-  if(!token){alert('Сначала введите токен');return;}
   if(btn){btn.disabled=true;btn.textContent='…';}
   fetch('https://api.github.com/repos/'+REPO+'/issues/'+number,{
     method:'PATCH',
