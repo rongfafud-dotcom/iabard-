@@ -240,7 +240,7 @@ function switchInboxTab(tab){
 }
 
 function getToken(){
-  return sessionStorage.getItem('gh_token') || document.getElementById('token').value.trim();
+  return localStorage.getItem('gh_token') || document.getElementById('token').value.trim();
 }
 
 function toggleToken(){
@@ -254,7 +254,7 @@ function toggleToken(){
 function saveToken(){
   var t = document.getElementById('token').value.trim();
   if(!t){setStatus('Введите токен');return;}
-  sessionStorage.setItem('gh_token', t);
+  localStorage.setItem('gh_token', t);
   document.getElementById('token-status').textContent = '✓';
   document.getElementById('token-body').style.display='none';
   document.getElementById('token-arrow').classList.remove('open');
@@ -262,7 +262,7 @@ function saveToken(){
 }
 
 function invalidToken(){
-  sessionStorage.removeItem('gh_token');
+  localStorage.removeItem('gh_token');
   document.getElementById('token').value = '';
   document.getElementById('token-status').textContent = '';
   document.getElementById('token-body').style.display='block';
@@ -1001,7 +1001,7 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 // Init
 (function(){
   document.getElementById('poem-add-panel').style.display='block';
-  var saved = sessionStorage.getItem('gh_token');
+  var saved = localStorage.getItem('gh_token');
   if(saved){
     document.getElementById('token').value = saved;
     document.getElementById('token-status').textContent = '✓';
