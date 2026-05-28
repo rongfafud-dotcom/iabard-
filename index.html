@@ -3251,56 +3251,5 @@ function clearContactWarn(){
   ['c-email','c-telegram'].forEach(function(id){var f=document.getElementById(id);if(f)f.classList.remove('warn');});
 }
 </script>
-<button onclick="adminLogin()" style="position:absolute;top:12px;right:14px;z-index:9999;background:transparent;border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:rgba(201,169,110,0.30);font-family:'Raleway',sans-serif;font-size:0.48rem;letter-spacing:1.4px;text-transform:uppercase;padding:4px 9px;cursor:pointer;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);transition:opacity 0.2s" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity=''">admin</button>
-
-<div id="admin-modal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(10,6,10,0.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:24px">
-  <div style="background:#16101a;border:1px solid rgba(201,169,110,0.3);border-radius:16px;padding:36px 32px;max-width:340px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.7);text-align:center">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:#c9a96e;letter-spacing:2px;margin-bottom:6px">✦ Редактор ✦</div>
-    <div style="font-family:'Raleway',sans-serif;font-size:0.7rem;color:rgba(201,169,110,0.45);letter-spacing:2px;text-transform:uppercase;margin-bottom:28px">Введите пароль</div>
-    <input id="admin-pw" type="password" placeholder="••••••••"
-      style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:8px;padding:12px 16px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;outline:none;text-align:center;letter-spacing:4px;margin-bottom:10px"
-      onfocus="this.style.borderColor='rgba(201,169,110,0.6)'"
-      onblur="this.style.borderColor='rgba(201,169,110,0.25)'"
-      onkeydown="if(event.key==='Enter')adminSubmit();if(event.key==='Escape')adminClose()">
-    <div id="admin-error" style="font-size:0.75rem;color:#d47a7a;min-height:1.2em;margin-bottom:14px;font-family:'Raleway',sans-serif"></div>
-    <button onclick="adminSubmit()"
-      style="width:100%;background:#c9a96e;border:none;border-radius:8px;color:#16101a;font-family:'Raleway',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px;cursor:pointer;transition:opacity 0.2s;margin-bottom:12px"
-      onmouseenter="this.style.opacity='0.85'" onmouseleave="this.style.opacity='1'">Войти</button>
-    <button onclick="adminClose()"
-      style="width:100%;background:transparent;border:1px solid rgba(201,169,110,0.2);border-radius:8px;color:rgba(201,169,110,0.5);font-family:'Raleway',sans-serif;font-size:0.78rem;letter-spacing:1px;padding:10px;cursor:pointer;transition:all 0.2s"
-      onmouseenter="this.style.borderColor='rgba(201,169,110,0.5)';this.style.color='rgba(201,169,110,0.8)'"
-      onmouseleave="this.style.borderColor='rgba(201,169,110,0.2)';this.style.color='rgba(201,169,110,0.5)'">Отмена</button>
-  </div>
-</div>
-
-<script>
-function adminLogin(){
-  var modal=document.getElementById('admin-modal');
-  modal.style.display='flex';
-  document.getElementById('admin-pw').value='';
-  document.getElementById('admin-error').textContent='';
-  setTimeout(function(){document.getElementById('admin-pw').focus();},50);
-}
-function adminClose(){
-  document.getElementById('admin-modal').style.display='none';
-}
-function adminSubmit(){
-  var pw=document.getElementById('admin-pw').value;
-  if(!pw)return;
-  crypto.subtle.digest('SHA-256',new TextEncoder().encode(pw)).then(function(buf){
-    var hex=Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
-    if(hex==='62f774e49697ad2b75b6280641fd78f1f56728511e1c35a1111c8eac5c1d009d'){
-      window.location.href='admin.html';
-    }else{
-      document.getElementById('admin-error').textContent='Неверный пароль';
-      document.getElementById('admin-pw').value='';
-      document.getElementById('admin-pw').focus();
-    }
-  });
-}
-document.getElementById('admin-modal').addEventListener('click',function(e){
-  if(e.target===this)adminClose();
-});
-</script>
 </body>
 </html>
