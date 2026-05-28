@@ -2808,7 +2808,7 @@ Conscientia — «сознанье» на латыни.<br>
             <input type="text" name="name" placeholder="Ваше имя" required class="contact-input">
             <input type="email" name="email" placeholder="Email" class="contact-input" id="c-email" autocomplete="email" oninput="clearContactWarn()">
             <input type="text" name="telegram" placeholder="Telegram (@nickname)" class="contact-input" id="c-telegram" autocomplete="off" oninput="clearContactWarn()">
-            <p class="contact-hint" id="contact-hint">Обязательно: email или Telegram — иначе не смогу ответить</p>
+            <p class="contact-hint" id="contact-hint" role="status" aria-live="polite">Обязательно: email или Telegram — иначе не смогу ответить</p>
             <textarea name="message" placeholder="Ваше сообщение…" required rows="4" class="contact-textarea"></textarea>
             <button type="submit" class="contact-submit">Отправить</button>
           </form>
@@ -2994,6 +2994,7 @@ function goShopItem(itemId){
     if(el)el.scrollIntoView({behavior:'smooth',block:'center'});
   },50);
 }
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function loadPoems(){
   var panel=document.getElementById('poems');
   if(!panel||panel.dataset.loaded)return;
@@ -3027,16 +3028,17 @@ function loadPoems(){
         if(tlines.length>=2 && tlines[1].charAt(0)==='('){
           subT=tlines.slice(1).reduce(function(a,b){return a.endsWith('-')?a+b:a+' '+b;});
         }
-        titleHtml='<div class="novinka-title">'+mainT+(subT?'<br><span class="poem-subtitle">'+subT+'</span>':'')+'</div>';
+        titleHtml='<div class="novinka-title">'+esc(mainT)+(subT?'<br><span class="poem-subtitle">'+esc(subT)+'</span>':'')+'</div>';
       }
       var h=titleHtml;
       h+='<div class="novinka-poem">';
       body.forEach(function(s){
-        h+='<div class="stanza">'+s.split('\n').map(function(l){return l.trim();}).join('<br>\n')+'</div>';
+        h+='<div class="stanza">'+s.split('\n').map(function(l){return esc(l.trim());}).join('<br>\n')+'</div>';
       });
       h+='</div>';
+      if(ytUrl&&!/^https?:\/\//i.test(ytUrl))ytUrl=null;
       if(audioFile){
-        h+='<audio controls src="audio/'+encodeURIComponent(audioFile)+'" style="width:100%;margin-top:20px;border-radius:6px;opacity:0.9"></audio>';
+        h+='<audio controls src="audio/'+encodeURIComponent(audioFile)+'" aria-label="Аудио: '+esc(mainT||'стихотворение')+'" style="width:100%;margin-top:20px;border-radius:6px;opacity:0.9"></audio>';
       }
       var safeT=(mainT||'Стихотворение').replace(/&/g,'&amp;').replace(/"/g,'&quot;');
       h+='<div class="poem-actions">';
@@ -3099,7 +3101,7 @@ function showShareMenu(anchor, url, shortsUrl) {
     '<a href="https://t.me/share/url?url='+enc(url)+'&text='+enc(title)+'" target="_blank" rel="noopener noreferrer">Telegram</a>' +
     '<a href="https://wa.me/?text='+enc(title+' '+url)+'" target="_blank" rel="noopener noreferrer">WhatsApp</a>' +
     '<a href="https://vk.com/share.php?url='+enc(url)+'" target="_blank" rel="noopener noreferrer">ВКонтакте</a>' +
-    '<button onclick="navigator.clipboard.writeText(\''+url+'\').then(function(){this.textContent=\'Скопировано ✓\'}.bind(this))">Копировать ссылку</button>';
+    '<button onclick="navigator.clipboard.writeText('+JSON.stringify(url)+').then(function(){this.textContent=\'Скопировано ✓\'}.bind(this))">Копировать ссылку</button>';
   anchor.insertAdjacentElement('afterend', menu);
   setTimeout(function() {
     document.addEventListener('click', function h(e){ if (!menu.contains(e.target)){ menu.remove(); document.removeEventListener('click',h); }});
@@ -3118,7 +3120,7 @@ function poemShare(btn) {
     '<a href="https://t.me/share/url?url='+enc(url)+'&text='+enc(text)+'" target="_blank" rel="noopener noreferrer">Telegram</a>' +
     '<a href="https://wa.me/?text='+enc(text+' '+url)+'" target="_blank" rel="noopener noreferrer">WhatsApp</a>' +
     '<a href="https://vk.com/share.php?url='+enc(url)+'&title='+enc(text)+'" target="_blank" rel="noopener noreferrer">ВКонтакте</a>' +
-    '<button onclick="navigator.clipboard.writeText(\''+url+'\').then(function(){this.textContent=\'Скопировано ✓\'}.bind(this))">Копировать ссылку</button>';
+    '<button onclick="navigator.clipboard.writeText('+JSON.stringify(url)+').then(function(){this.textContent=\'Скопировано ✓\'}.bind(this))">Копировать ссылку</button>';
   btn.insertAdjacentElement('afterend', menu);
   setTimeout(function() {
     document.addEventListener('click', function h(e){ if (!menu.contains(e.target)){ menu.remove(); document.removeEventListener('click',h); }});
@@ -3179,6 +3181,20 @@ function carouselUpdate(){
 function carouselMove(dir){var n=document.querySelectorAll('#carousel-track .carousel-slide').length||9;carouselIdx=(carouselIdx+dir+n)%n;carouselUpdate();}
 function carouselGo(idx){carouselIdx=idx;carouselUpdate();}
 (function(){
+  var slides=document.querySelectorAll('#carousel-track .carousel-slide');
+  var dotsEl=document.querySelector('#author-carousel .carousel-dots');
+  if(dotsEl&&slides.length){
+    dotsEl.innerHTML='';
+    Array.from(slides).forEach(function(_,i){
+      var b=document.createElement('button');
+      b.className='carousel-dot'+(i===0?' active':'');
+      b.setAttribute('aria-label','Слайд '+(i+1));
+      b.onclick=function(){carouselGo(i);};
+      dotsEl.appendChild(b);
+    });
+  }
+})();
+(function(){
   var t=document.getElementById('carousel-track');
   if(!t)return;
   var sx=0;
@@ -3187,6 +3203,13 @@ function carouselGo(idx){carouselIdx=idx;carouselUpdate();}
   t.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)carouselMove(dx<0?1:-1);},{passive:true});
 })();
 
+// Flip cards keyboard accessibility
+document.querySelectorAll('.flip-card').forEach(function(card){
+  card.setAttribute('tabindex','0');
+  card.setAttribute('role','button');
+  card.setAttribute('aria-label','Нажмите для описания книги');
+  card.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();card.classList.toggle('flipped');}});
+});
 // Scroll fade-in animations
 var fadeObserver = new IntersectionObserver(function(entries) {
   entries.forEach(function(e) {
@@ -3203,9 +3226,9 @@ function handleContact(e, form) {
   e.preventDefault();
   var data = new FormData(form);
   if (data.get('_gotcha')) return;
+  var hint = document.getElementById('contact-hint');
   var last = parseInt(sessionStorage.getItem('contact_sent')||'0');
   if (Date.now() - last < 60000) {
-    var hint = document.getElementById('contact-hint');
     hint.textContent = 'Подождите минуту перед следующей отправкой';
     hint.classList.add('error');
     return;
@@ -3215,7 +3238,6 @@ function handleContact(e, form) {
   var telegram = (data.get('telegram')||'').trim();
   var msg = (data.get('message')||'').trim();
   if (!email && !telegram) {
-    var hint = document.getElementById('contact-hint');
     hint.classList.add('error');
     ['c-email','c-telegram'].forEach(function(id){var f=document.getElementById(id);if(f)f.classList.add('warn');});
     document.getElementById('c-email').focus();

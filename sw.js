@@ -31,14 +31,23 @@ self.addEventListener('fetch', function(e) {
   var url = new URL(e.request.url);
   if (url.origin !== location.origin) return;
 
-  // Network-first for HTML and poems.txt — always show latest content
-  if (url.pathname.endsWith('poems.txt') || (e.request.headers.get('Accept') && e.request.headers.get('Accept').includes('text/html'))) {
+  // Network-first for navigation (HTML pages) and poems.txt
+  var isNav = e.request.mode === 'navigate';
+  var isPoems = url.pathname.endsWith('poems.txt');
+  if (isNav || isPoems) {
     e.respondWith(
       fetch(e.request).then(function(res) {
-        var clone = res.clone();
-        caches.open(CACHE).then(function(c) { c.put(e.request, clone); });
+        if (res && res.ok) {
+          var clone = res.clone();
+          // Cache poems.txt without query string to avoid cache bloat
+          var cacheKey = isPoems ? new Request(url.pathname) : e.request;
+          caches.open(CACHE).then(function(c) { c.put(cacheKey, clone); });
+        }
         return res;
-      }).catch(function() { return caches.match(e.request); })
+      }).catch(function() {
+        var fallbackKey = isPoems ? new Request(url.pathname) : e.request;
+        return caches.match(fallbackKey);
+      })
     );
     return;
   }

@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
 <title>Редактор — Ипатия Бард</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
@@ -468,7 +469,7 @@ function loadAudioList(){
 function copyAudioTag(filename){
   navigator.clipboard.writeText('# audio: '+filename).then(function(){
     setAudioProgress('Скопировано: # audio: '+filename);
-  });
+  }).catch(function(){setAudioProgress('Ошибка копирования');});
 }
 
 function setAudioProgress(msg,ok){
@@ -552,15 +553,12 @@ function loadFile(){
   .then(function(data){
     currentSha = data.sha;
     var text = decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+    var parts = text.split('===').map(function(p){return p.trim();}).filter(Boolean);
     if(currentFile === 'poems.txt'){
-      var parts = text.split('===').map(function(p){return p.trim();}).filter(Boolean);
       currentPoemCount = parts.length;
       parts.reverse();
-      text = parts.join('\n\n――――――――――――――――――――――――――\n\n') + '\n\n――――――――――――――――――――――――――\n';
-    } else {
-      var parts = text.split('===').map(function(p){return p.trim();}).filter(Boolean);
-      text = parts.join('\n\n――――――――――――――――――――――――――\n\n') + '\n\n――――――――――――――――――――――――――\n';
     }
+    text = parts.join('\n\n――――――――――――――――――――――――――\n\n') + '\n\n――――――――――――――――――――――――――\n';
     document.getElementById('editor').value = text;
     document.getElementById('save-btn').disabled = false;
     setStatus('Загружено ✓', true);
@@ -753,6 +751,7 @@ function loadNovinkaList(){
 function deleteNovinka(vid){
   if(!confirm('Удалить это видео из Новинок?'))return;
   var token=getToken();
+  if(!token){setNovinkaStatus('Сначала введите токен');return;}
   setNovinkaStatus('Удаление…');
   fetch(API+'index.html?ref=main',{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})
   .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
@@ -949,6 +948,7 @@ function editNovinka(vid){
 
 function saveNovinkaEdit(vid,btn){
   var token=getToken();
+  if(!token){setNovinkaStatus('Сначала введите токен');return;}
   var box=btn.parentElement;
   var textarea=box.querySelector('textarea');
   var poem=textarea.value.trim();
