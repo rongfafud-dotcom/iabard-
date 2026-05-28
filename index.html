@@ -3131,8 +3131,11 @@ function switchTab(id, btn) {
   document.querySelectorAll('#sticky-nav button').forEach(function(b){
     b.classList.toggle('s-active',(b.dataset.panels||'').split(' ').indexOf(id)!==-1);
   });
-  var el=document.getElementById(id);
-  window.scrollTo({top:el.getBoundingClientRect().top+window.pageYOffset,behavior:'smooth'});
+  // Scroll to sections top — stable offsetTop, offset by sticky nav if visible
+  var mainContent=document.getElementById('main-content');
+  var stickyNav=document.getElementById('sticky-nav');
+  var stickyH=(stickyNav&&stickyNav.classList.contains('visible'))?stickyNav.offsetHeight:0;
+  window.scrollTo({top:mainContent.offsetTop-stickyH,behavior:'smooth'});
   if(id==='poems')loadPoems();
   if(id==='author'){document.querySelectorAll('#carousel-track img').forEach(function(img){if(!img.complete||img.naturalWidth===0){var s=img.src;img.src='';img.src=s;}});}
 }
