@@ -98,7 +98,9 @@
   .inbox-reply-item-text{font-size:0.83rem;color:rgba(232,221,208,0.8);white-space:pre-wrap;word-break:break-word}
   .inbox-empty{font-size:0.88rem;color:rgba(201,169,110,0.4);text-align:center;padding:40px 0}
   .inbox-refresh{width:100%;margin-top:18px;margin-bottom:0}
-  .inbox-tabs{display:flex;margin-bottom:20px;border-bottom:1px solid rgba(201,169,110,0.2)}
+  .inbox-tabs{display:flex;margin-bottom:12px;border-bottom:1px solid rgba(201,169,110,0.2)}
+  .inbox-archive-all{width:100%;margin-bottom:16px;background:transparent;border:1px solid rgba(100,180,100,0.35);border-radius:6px;color:rgba(120,200,120,0.75);padding:8px;cursor:pointer;font-size:0.78rem;letter-spacing:0.5px;transition:all 0.2s}
+  .inbox-archive-all:hover{border-color:#7bc47b;color:#7bc47b}
   .inbox-tab-btn{flex:1;padding:10px;text-align:center;cursor:pointer;background:transparent;border:none;border-bottom:2px solid transparent;color:rgba(201,169,110,0.5);font-size:0.85rem;letter-spacing:1px;transition:all 0.2s;margin-bottom:-1px;font-family:'Georgia',serif}
   .inbox-tab-btn.active{color:#c9a96e;border-bottom-color:#c9a96e}
   .inbox-tab-btn:hover{color:rgba(201,169,110,0.8)}
@@ -222,6 +224,7 @@
     <button class="inbox-tab-btn active" id="inbox-tab-open" onclick="switchInboxTab('open')">Входящие</button>
     <button class="inbox-tab-btn" id="inbox-tab-closed" onclick="switchInboxTab('closed')">Архив</button>
   </div>
+  <button class="inbox-archive-all" id="inbox-archive-all-btn" onclick="archiveAll()">✓ Архивировать все сообщения</button>
   <div id="inbox-list"><span style="opacity:0.4;font-size:0.85rem">Загрузка…</span></div>
   <button class="inbox-refresh" onclick="loadInbox()">↻ Обновить сообщения</button>
 </div>
@@ -239,7 +242,32 @@ function switchInboxTab(tab){
   currentInboxTab=tab;
   document.getElementById('inbox-tab-open').classList.toggle('active',tab==='open');
   document.getElementById('inbox-tab-closed').classList.toggle('active',tab==='closed');
+  document.getElementById('inbox-archive-all-btn').style.display=tab==='open'?'block':'none';
   loadInbox();
+}
+
+function archiveAll(){
+  var token=getToken();
+  if(!token){alert('Сначала введите токен');return;}
+  var msgs=document.querySelectorAll('#inbox-list .inbox-msg');
+  if(!msgs.length)return;
+  if(!confirm('Архивировать все сообщения ('+msgs.length+')?'))return;
+  var btn=document.getElementById('inbox-archive-all-btn');
+  btn.disabled=true;btn.textContent='Архивирование…';
+  var nums=Array.from(msgs).map(function(m){return m.dataset.issue;}).filter(Boolean);
+  Promise.all(nums.map(function(num){
+    return fetch('https://api.github.com/repos/'+REPO+'/issues/'+num,{
+      method:'PATCH',
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify({state:'closed'})
+    });
+  })).then(function(){
+    btn.disabled=false;btn.textContent='✓ Архивировать все сообщения';
+    loadInbox();
+  }).catch(function(e){
+    btn.disabled=false;btn.textContent='✓ Архивировать все сообщения';
+    alert('Ошибка: '+e.message);
+  });
 }
 
 function getToken(){
@@ -864,8 +892,8 @@ function loadInbox(){
         '<div class="inbox-msg-text">'+esc(msgText)+'</div>'+
         repliesHtml+
         (contacts.email||contacts.telegram?'<button class="inbox-reply-btn" data-email="'+esc(contacts.email)+'" data-tg="'+esc(contacts.telegram)+'" onclick="showReplyMenu(this)">Ответить ↩</button>':'')+
-        (currentInboxTab==='open'?'<button class="inbox-close-btn" onclick="closeMessage('+issue.number+')">✓ Архив</button>':'')+
-        (currentInboxTab==='closed'?'<button class="inbox-del-btn" onclick="deleteMessage('+issue.number+',this)">✕ Удалить</button>':'');
+        '<button class="inbox-del-btn" onclick="deleteMessage('+issue.number+',this)">✕ Удалить</button>'+
+        (currentInboxTab==='open'?'<button class="inbox-close-btn" onclick="closeMessage('+issue.number+')">✓ Архив</button>':'');
       list.appendChild(div);
       if(issue.comments>0) loadReplies(issue.number);
     });
