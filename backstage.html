@@ -1016,9 +1016,11 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
     p.innerHTML=vid?'<img src="https://img.youtube.com/vi/'+vid+'/mqdefault.jpg" style="width:100%;max-width:320px;border-radius:6px;margin-top:4px">':'';
   });
 })();
+</script>
+<button id="back-to-top" aria-label="Наверх" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg></button>
+<script>
 var btt=document.getElementById('back-to-top');
 window.addEventListener('scroll',function(){btt.classList.toggle('visible',window.scrollY>400);},{passive:true});
 </script>
-<button id="back-to-top" aria-label="Наверх" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg></button>
 </body>
 </html>
