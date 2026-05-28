@@ -646,7 +646,7 @@ function savePoemEntry(poemText, audioFilename){
   var extras='';
   if(audioFilename) extras+='\n# audio: '+audioFilename;
   if(ytUrl) extras+='\n'+ytUrl;
-  var finalPoem=title+extras+rest;
+  var finalPoem=title+rest+extras;
   fetch(API+'poems.txt?ref=main',{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})
   .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
   .then(function(data){

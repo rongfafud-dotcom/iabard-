@@ -10580,8 +10580,7 @@ https://youtube.com/shorts/EEtHIqYOWl8?si=T6qC78RtLANqeFhF
 ===
 
 Шаманка Айая.
-# audio: айяа.mp3
-https://youtube.com/shorts/UWvnqzFPMG8?si=tT9VbZ8KapsN1Vc4
+
 Давно бы я раскисла
 В семнадцатом году...
 А помогли мне числа
@@ -10622,5 +10621,7 @@ https://youtube.com/shorts/UWvnqzFPMG8?si=tT9VbZ8KapsN1Vc4
 Подаст всем чая-чая!
 И жизнь — простая, Рая,
 Живи, тот сок вкушая!
+# audio: айяа.mp3
+https://youtube.com/shorts/UWvnqzFPMG8?si=tT9VbZ8KapsN1Vc4
 
 ===
