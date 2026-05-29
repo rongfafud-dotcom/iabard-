@@ -679,8 +679,19 @@
       text-transform:uppercase;color:rgba(255,255,255,0.8);background:none;border:none;
       border-bottom:2px solid transparent;padding:13px 22px;cursor:pointer;transition:all 0.2s;
       white-space:nowrap}
-    #sticky-nav button:hover,#sticky-nav button.s-active{color:var(--gold);border-bottom-color:var(--gold)}
-    @media(max-width:500px){#sticky-nav button{padding:12px 11px;font-size:0.72rem;letter-spacing:1px}}
+    .snav-btn:hover,.snav-btn.s-active{color:var(--gold);border-bottom-color:var(--gold)}
+    .snav-wrap{position:relative;display:flex;align-items:stretch}
+    .snav-drop{position:absolute;top:100%;left:50%;transform:translateX(-50%);
+      background:rgba(10,4,18,0.97);border:1px solid rgba(201,169,110,0.2);border-radius:8px;
+      padding:4px 0;min-width:220px;z-index:600;display:none}
+    .snav-wrap--nodrop .snav-drop{display:none!important}
+    .snav-wrap:hover .snav-drop{display:block;animation:dropIn 0.18s ease}
+    .snav-drop button{display:block;width:100%;padding:8px 16px;background:none;border:none;cursor:pointer;
+      font-family:'Cormorant Garamond',serif;font-size:0.9rem;letter-spacing:1px;
+      color:rgba(255,255,255,0.85);text-align:left;transition:color 0.15s}
+    .snav-drop button:hover{color:var(--gold)}
+    .snav-drop button+button{border-top:1px solid rgba(201,169,110,0.1)}
+    @media(max-width:500px){.snav-btn{padding:12px 11px;font-size:0.72rem;letter-spacing:1px}}
 
     /* CUSTOM AUDIO PLAYER */
     .ap{display:flex;align-items:center;gap:10px;width:100%;margin-top:20px;padding:10px 14px;
@@ -715,10 +726,39 @@
 
 <!-- STICKY NAV -->
 <nav id="sticky-nav" aria-label="Быстрая навигация">
-  <button data-panels="books" onclick="switchTab('books',this)">Книги</button>
-  <button data-panels="novinka novosti poems" onclick="switchTab('poems',this)">Творчество</button>
-  <button data-panels="shop" onclick="switchTab('shop',this)">Shop</button>
-  <button data-panels="author" onclick="switchTab('author',this)">Кто я?</button>
+  <div class="snav-wrap">
+    <button class="snav-btn" data-panels="books" onclick="switchTab('books',this)">Книги</button>
+    <div class="snav-drop">
+      <button onclick="goBook('book-soavtor')">Соавтор жизни</button>
+      <button onclick="goBook('book-dom')">Дом</button>
+      <button onclick="goBook('book-schastie')">Женское счастье</button>
+      <button onclick="goBook('book-zapiski1')">Записки из палаты № 6 — Кн. 1</button>
+      <button onclick="goBook('book-zapiski2')">Записки из палаты № 6 — Кн. 2</button>
+      <button onclick="goBook('book-citadel1')">Моя Цитадель — Кн. 1</button>
+      <button onclick="goBook('book-citadel2')">Моя Цитадель — Кн. 2</button>
+      <button onclick="goBook('book-citadel3')">Моя Цитадель — Кн. 3</button>
+      <button onclick="goBook('book-lila')">Лила</button>
+    </div>
+  </div>
+  <div class="snav-wrap">
+    <button class="snav-btn" data-panels="novinka novosti poems" onclick="switchTab('poems',this)">Творчество</button>
+    <div class="snav-drop">
+      <button onclick="goCreative('novinka')">Видео новинки</button>
+      <button onclick="goCreative('novosti')">Знаки зодиака</button>
+      <button onclick="goCreative('poems')">Стихотворения</button>
+    </div>
+  </div>
+  <div class="snav-wrap">
+    <button class="snav-btn" data-panels="shop" onclick="switchTab('shop',this)">Shop</button>
+    <div class="snav-drop">
+      <button onclick="goShopItem('shop-bracelets')">Spiritual Bracelets</button>
+      <button onclick="goShopItem('shop-oracle')">Oracle Eva Luna</button>
+      <button onclick="goShopItem('shop-leela')">Leela Floor Game</button>
+    </div>
+  </div>
+  <div class="snav-wrap snav-wrap--nodrop">
+    <button class="snav-btn" data-panels="author" onclick="switchTab('author',this)">Кто я?</button>
+  </div>
 </nav>
 
 <!-- ═══ HERO ═══ -->
@@ -3026,7 +3066,6 @@ function toggleDrop(e,dropId){
 }
 function goBook(bookId){
   closeDrop();
-  // Activate tab without triggering switchTab's own scrollIntoView
   document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');t.setAttribute('aria-selected','false');});
   var panel=document.getElementById('books');
@@ -3034,10 +3073,17 @@ function goBook(bookId){
   panel.querySelectorAll('img[loading="lazy"]').forEach(function(i){i.loading='eager';});
   var tabBtn=document.getElementById('tab-books');
   if(tabBtn){tabBtn.classList.add('active');tabBtn.setAttribute('aria-selected','true');}
-  setTimeout(function(){
-    var target=bookId?document.getElementById(bookId):panel;
-    if(target)target.scrollIntoView({behavior:'smooth',block:bookId?'center':'start'});
-  },50);
+  document.querySelectorAll('#sticky-nav .snav-btn').forEach(function(b){
+    b.classList.toggle('s-active',(b.dataset.panels||'').split(' ').indexOf('books')!==-1);
+  });
+  var stickyNav=document.getElementById('sticky-nav');
+  var stickyH=stickyNav?stickyNav.offsetHeight:0;
+  requestAnimationFrame(function(){
+    var target=bookId?document.getElementById(bookId):document.getElementById('main-content');
+    if(!target)return;
+    var top=target.getBoundingClientRect().top+window.pageYOffset-stickyH-12;
+    window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+  });
 }
 function goCreative(panelId){
   closeDrop();
@@ -3133,7 +3179,7 @@ function switchTab(id, btn) {
   document.getElementById(id).querySelectorAll('img[loading="lazy"]').forEach(function(i){i.loading='eager';});
   if(btn){btn.classList.add('active');btn.setAttribute('aria-selected','true');}
   // Sync sticky nav highlight
-  document.querySelectorAll('#sticky-nav button').forEach(function(b){
+  document.querySelectorAll('#sticky-nav .snav-btn').forEach(function(b){
     b.classList.toggle('s-active',(b.dataset.panels||'').split(' ').indexOf(id)!==-1);
   });
   // Load content FIRST so page height is stable before scroll
