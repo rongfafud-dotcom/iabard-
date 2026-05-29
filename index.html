@@ -675,11 +675,12 @@
       border-bottom:1px solid rgba(201,169,110,0.18);
       transform:translateY(-100%);transition:transform 0.3s ease}
     #sticky-nav.visible{transform:translateY(0)}
-    #sticky-nav button{font-family:'Cormorant Garamond',serif;font-size:0.78rem;letter-spacing:2px;
+    #sticky-nav .snav-btn{font-family:'Cormorant Garamond',serif;font-size:0.78rem;letter-spacing:2px;
       text-transform:uppercase;color:rgba(255,255,255,0.8);background:none;border:none;
       border-bottom:2px solid transparent;padding:13px 22px;cursor:pointer;transition:all 0.2s;
       white-space:nowrap}
     .snav-btn:hover,.snav-btn.s-active{color:var(--gold);border-bottom-color:var(--gold)}
+    .snav-wrap:not(.snav-wrap--nodrop) .snav-btn::after{content:'▾';font-size:0.55em;margin-left:3px;vertical-align:middle;opacity:0.65}
     .snav-wrap{position:relative;display:flex;align-items:stretch}
     .snav-drop{position:absolute;top:100%;left:50%;transform:translateX(-50%);
       background:transparent;border:none;box-shadow:none;
