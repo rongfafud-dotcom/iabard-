@@ -3567,6 +3567,28 @@ document.getElementById('poem-search').addEventListener('input',function(){
   var nf=document.getElementById('poem-notfound');
   if(nf)nf.style.display=(q&&!found)?'block':'none';
 });
+
+// Add YouTube watch + share buttons to hardcoded novinka cards
+(function(){
+  var YT_SVG='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>';
+  var SHARE_SVG='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>';
+  document.querySelectorAll('#novinka .novinka-card').forEach(function(card){
+    var facade=card.querySelector('.yt-facade');
+    if(!facade)return;
+    var vid=facade.dataset.vid;
+    if(!vid)return;
+    var videoDiv=card.querySelector('.novinka-video');
+    if(!videoDiv)return;
+    var titleEl=card.querySelector('.novinka-title');
+    var title=(titleEl?titleEl.textContent:'').trim().replace(/"/g,'&quot;');
+    var actions=document.createElement('div');
+    actions.className='poem-actions';
+    actions.innerHTML=
+      '<a href="https://youtu.be/'+vid+'" target="_blank" rel="noopener noreferrer" class="yt-watch-btn">'+YT_SVG+'Смотреть видео на YouTube</a>'+
+      '<button class="yt-share-btn" data-title="'+title+'" onclick="poemShare(this)">'+SHARE_SVG+'Поделиться</button>';
+    videoDiv.insertAdjacentElement('afterend',actions);
+  });
+})();
 </script>
 </body>
 </html>
