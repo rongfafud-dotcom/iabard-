@@ -580,9 +580,9 @@
     /* phantom counterbalance for the Кто я? wrap (no chevron) keeps text centres symmetric */
     .nav-tab-wrap--nodrop .nav-tab{margin-right:22px}
     /* Transparent dropdown — same typography as nav */
-    .nav-dropmenu{position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);
+    .nav-dropmenu{position:absolute;top:100%;left:50%;transform:translateX(-50%);
       background:transparent;border:none;box-shadow:none;
-      z-index:300;min-width:230px;overflow:visible;display:none}
+      z-index:300;min-width:230px;overflow:visible;display:none;padding-top:6px}
     .nav-dropmenu.open{display:block;animation:dropIn 0.18s ease}
     @keyframes dropIn{from{opacity:0;transform:translateX(-50%) translateY(-4px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
     .nav-dropmenu button{display:block;width:100%;padding:7px 8px;
