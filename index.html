@@ -3235,7 +3235,9 @@ function switchTab(id, btn) {
   var stickyNav=document.getElementById('sticky-nav');
   var stickyH=stickyNav?stickyNav.offsetHeight:0;
   requestAnimationFrame(function(){
-    var absY=0,el=panel;
+    var scrollEl=panel;
+    if(id==='books'){var fc=panel.querySelector('[id^="book-"]');if(fc)scrollEl=fc;}
+    var absY=0,el=scrollEl;
     while(el){absY+=el.offsetTop;el=el.offsetParent;}
     window.scrollTo({top:Math.max(0,absY-stickyH),behavior:'smooth'});
   });
@@ -3482,13 +3484,16 @@ if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
     var t;
     w.addEventListener('mouseenter',function(){clearTimeout(t);w.classList.add('snav-open');});
     w.addEventListener('mouseleave',function(){t=setTimeout(function(){w.classList.remove('snav-open');},350);});
-    var drop=w.querySelector('.snav-drop');
-    if(drop)drop.addEventListener('click',function(){
+    function closeSnavWrap(){
       clearTimeout(t);
       w.classList.remove('snav-open');
       w.style.pointerEvents='none';
       setTimeout(function(){w.style.pointerEvents='';},400);
-    });
+    }
+    var drop=w.querySelector('.snav-drop');
+    if(drop)drop.addEventListener('click',closeSnavWrap);
+    var btn=w.querySelector('.snav-btn');
+    if(btn)btn.addEventListener('click',closeSnavWrap);
   });
 })();
 
