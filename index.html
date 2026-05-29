@@ -524,7 +524,7 @@
     .fade-up.visible{opacity:1;transform:translateY(0)}
 
     /* BACK TO TOP */
-    #back-to-top{position:fixed;bottom:24px;right:20px;width:44px;height:44px;border-radius:50%;
+    #back-to-top{position:fixed;bottom:80px;right:20px;width:44px;height:44px;border-radius:50%;
       background:rgba(92,61,85,0.88);border:1px solid rgba(201,169,110,0.45);
       color:var(--gold);cursor:pointer;display:flex;align-items:center;justify-content:center;
       z-index:200;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none;
@@ -3082,14 +3082,13 @@ function goBook(bookId){
   });
   var stickyNav=document.getElementById('sticky-nav');
   var stickyH=stickyNav?stickyNav.offsetHeight:0;
-  requestAnimationFrame(function(){
-    requestAnimationFrame(function(){
-      var target=bookId?document.getElementById(bookId):document.getElementById('main-content');
-      if(!target)return;
-      var top=target.getBoundingClientRect().top+window.pageYOffset-stickyH-12;
-      window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
-    });
-  });
+  var target=bookId?document.getElementById(bookId):document.getElementById('main-content');
+  if(target){
+    // Use offsetTop traversal for stable absolute position (unaffected by scroll or CSS transforms)
+    var absY=0,el=target;
+    while(el){absY+=el.offsetTop;el=el.offsetParent;}
+    window.scrollTo({top:Math.max(0,absY-stickyH-12),behavior:'smooth'});
+  }
 }
 function goCreative(panelId){
   closeDrop();
