@@ -3231,12 +3231,13 @@ function switchTab(id, btn) {
   // Load content FIRST so page height is stable before scroll
   if(id==='poems')loadPoems();
   if(id==='author'){document.querySelectorAll('#carousel-track img').forEach(function(img){if(!img.complete||img.naturalWidth===0){var s=img.src;img.src='';img.src=s;}});}
-  // Always offset by sticky nav height so content lands below it
-  var mainContent=document.getElementById('main-content');
+  // Scroll to panel top (not main-content top) so content lands right below sticky nav
   var stickyNav=document.getElementById('sticky-nav');
   var stickyH=stickyNav?stickyNav.offsetHeight:0;
   requestAnimationFrame(function(){
-    window.scrollTo({top:mainContent.offsetTop-stickyH,behavior:'smooth'});
+    var absY=0,el=panel;
+    while(el){absY+=el.offsetTop;el=el.offsetParent;}
+    window.scrollTo({top:Math.max(0,absY-stickyH),behavior:'smooth'});
   });
 }
 function loadMoreNovinka() {
