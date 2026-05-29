@@ -581,23 +581,25 @@
     .nav-tab-wrap--nodrop .nav-tab{margin-right:22px}
     /* Transparent dropdown — same typography as nav */
     .nav-dropmenu{position:absolute;top:100%;left:50%;transform:translateX(-50%);
-      background:transparent;border:none;box-shadow:none;
-      z-index:300;min-width:230px;overflow:visible;display:none;padding-top:6px}
+      background:rgba(10,5,15,0.92);
+      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+      border:1px solid rgba(201,169,110,0.30);border-radius:8px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.6);
+      z-index:300;min-width:230px;overflow:hidden;display:none;margin-top:2px;padding:8px 0}
     .nav-dropmenu.open{display:block;animation:dropIn 0.18s ease}
-    @keyframes dropIn{from{opacity:0;transform:translateX(-50%) translateY(-4px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-    .nav-dropmenu button{display:block;width:100%;padding:7px 8px;
+    @keyframes dropIn{from{opacity:0;transform:translateX(-50%) translateY(-6px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+    .nav-dropmenu button{display:block;width:100%;padding:8px 20px;
       background:none;border:none;cursor:pointer;
-      color:rgba(255,255,255,0.88);
+      color:rgba(255,255,255,0.90);
       font-family:'Cormorant Garamond',serif;
       font-size:clamp(0.82rem,1.6vw,1.0rem);
       font-weight:400;letter-spacing:2px;text-transform:uppercase;
       text-align:center;white-space:nowrap;
-      text-shadow:0 1px 12px rgba(0,0,0,0.95);
-      transition:color 0.15s}
+      transition:color 0.15s,background 0.15s}
     .nav-dropmenu button .book-sub,.snav-drop button .book-sub{display:block;font-size:0.72em;
       letter-spacing:1px;text-transform:none;opacity:0.65;
       font-weight:300;margin-top:1px}
-    .nav-dropmenu button:hover{color:var(--gold)}
+    .nav-dropmenu button:hover{color:var(--gold);background:rgba(201,169,110,0.07)}
     .nav-dropmenu button+button{border-top:1px solid rgba(201,169,110,0.12)}
     /* Whole wrap glows on hover — tab text and arrow both light up */
     .nav-tab-wrap:hover .nav-tab,.nav-tab-wrap:hover .nav-drop-btn{color:var(--gold);border-bottom-color:var(--gold)}
@@ -685,27 +687,32 @@
     .snav-wrap:not(.snav-wrap--nodrop) .snav-btn::after{content:'▾';font-size:0.6em;color:var(--gold);opacity:0.75;margin-left:5px;pointer-events:none;flex-shrink:0}
     .snav-wrap{position:relative;display:flex;align-items:stretch;flex:1;max-width:200px;justify-content:center}
     .snav-drop{position:absolute;top:100%;left:50%;transform:translateX(-50%);
-      background:none;border:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;
-      margin-top:0;padding:0;min-width:0;z-index:600;display:none}
+      background:rgba(10,5,15,0.92);
+      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+      border:1px solid rgba(201,169,110,0.30);border-radius:8px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.6);
+      margin-top:2px;padding:10px 0;min-width:140px;z-index:600;display:none}
     /* Invisible bridge above dropdown — closes the sub-pixel gap so hover never breaks */
-    .snav-drop::before{content:'';position:absolute;top:-10px;left:0;right:0;height:10px}
+    .snav-drop::before{content:'';position:absolute;top:-12px;left:0;right:0;height:12px}
     .snav-wrap:first-child .snav-drop{left:0;transform:none}
     .snav-wrap:nth-child(3) .snav-drop{left:auto;right:0;transform:none}
     .snav-wrap--nodrop .snav-drop{display:none!important}
-    @keyframes snavDropIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes snavDropIn{from{opacity:0;transform:translateX(-50%) translateY(-6px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+    .snav-wrap:first-child .snav-drop{animation-name:snavDropInLeft}
+    .snav-wrap:nth-child(3) .snav-drop{animation-name:snavDropInRight}
+    @keyframes snavDropInLeft{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes snavDropInRight{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
     .snav-wrap:hover .snav-drop,.snav-wrap.snav-open .snav-drop{
-      display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0 8px;
-      animation:snavDropIn 0.16s ease}
-    .snav-drop button{display:block;width:auto;padding:4px 2px;
+      display:flex;flex-direction:column;align-items:stretch;gap:0;
+      animation:snavDropIn 0.18s ease}
+    .snav-drop button{display:block;width:100%;padding:8px 20px;
       background:none;border-radius:0;border:none;cursor:pointer;
       font-family:'Cormorant Garamond',serif;font-size:clamp(0.82rem,1.6vw,1.0rem);
       font-weight:400;letter-spacing:2px;text-transform:uppercase;
-      color:rgba(255,255,255,0.95);text-align:center;white-space:nowrap;
-      text-shadow:0 0 4px #000,0 0 4px #000,0 0 8px #000,0 0 12px rgba(0,0,0,0.9),
-        1px 1px 3px #000,-1px -1px 3px #000,1px -1px 3px #000,-1px 1px 3px #000;
-      transition:color 0.15s}
-    .snav-drop button:hover{color:var(--gold)}
-    .snav-drop button+button{border-top:none}
+      color:rgba(255,255,255,0.90);text-align:center;white-space:nowrap;
+      transition:color 0.15s,background 0.15s}
+    .snav-drop button:hover{color:var(--gold);background:rgba(201,169,110,0.07)}
+    .snav-drop button+button{border-top:1px solid rgba(201,169,110,0.12)}
     @media(max-width:500px){.snav-btn{padding:12px 11px;font-size:0.72rem;letter-spacing:1px}}
 
     /* CUSTOM AUDIO PLAYER */
