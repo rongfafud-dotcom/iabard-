@@ -694,13 +694,15 @@
     .snav-wrap:hover .snav-drop,.snav-wrap.snav-open .snav-drop{
       display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0 8px;
       animation:snavDropIn 0.16s ease}
-    .snav-drop button{display:block;width:auto;padding:5px 18px;
-      background:rgba(12,5,20,0.88);border-radius:5px;border:none;cursor:pointer;
+    .snav-drop button{display:block;width:auto;padding:4px 14px;
+      background:rgba(0,0,0,0.28);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+      border-radius:4px;border:none;cursor:pointer;
       font-family:'Cormorant Garamond',serif;font-size:clamp(0.82rem,1.6vw,1.0rem);
       font-weight:400;letter-spacing:2px;text-transform:uppercase;
-      color:rgba(255,255,255,0.88);text-align:center;white-space:nowrap;
-      text-shadow:0 1px 8px rgba(0,0,0,0.7);transition:color 0.15s,background 0.15s}
-    .snav-drop button:hover{color:var(--gold);background:rgba(25,10,38,0.95)}
+      color:rgba(255,255,255,0.92);text-align:center;white-space:nowrap;
+      text-shadow:0 1px 10px rgba(0,0,0,0.95),0 0 6px rgba(0,0,0,0.8);
+      transition:color 0.15s,background 0.15s}
+    .snav-drop button:hover{color:var(--gold);background:rgba(0,0,0,0.42)}
     .snav-drop button+button{border-top:none}
     @media(max-width:500px){.snav-btn{padding:12px 11px;font-size:0.72rem;letter-spacing:1px}}
 
