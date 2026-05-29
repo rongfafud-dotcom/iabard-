@@ -682,19 +682,22 @@
     .snav-btn:hover,.snav-btn.s-active{color:var(--gold);border-bottom-color:var(--gold)}
     .snav-wrap{position:relative;display:flex;align-items:stretch}
     .snav-drop{position:absolute;top:100%;left:50%;transform:translateX(-50%);
-      background:rgba(10,4,18,0.97);border:1px solid rgba(201,169,110,0.2);border-radius:8px;
-      padding:4px 0;min-width:220px;z-index:600;display:none}
+      background:transparent;border:none;box-shadow:none;
+      padding-top:6px;min-width:230px;z-index:600;display:none}
     /* First dropdown (Книги) align to left edge so it doesn't go off-screen */
     .snav-wrap:first-child .snav-drop{left:0;transform:none}
     /* Third dropdown (Shop) align to right edge */
     .snav-wrap:nth-child(3) .snav-drop{left:auto;right:0;transform:none}
     .snav-wrap--nodrop .snav-drop{display:none!important}
-    .snav-wrap:hover .snav-drop{display:block;animation:dropIn 0.18s ease}
-    .snav-drop button{display:block;width:100%;padding:8px 16px;background:none;border:none;cursor:pointer;
-      font-family:'Cormorant Garamond',serif;font-size:0.9rem;letter-spacing:1px;
-      color:rgba(255,255,255,0.85);text-align:left;transition:color 0.15s}
+    @keyframes snavDropIn{from{opacity:0}to{opacity:1}}
+    .snav-wrap:hover .snav-drop{display:block;animation:snavDropIn 0.18s ease}
+    .snav-drop button{display:block;width:100%;padding:7px 8px;background:none;border:none;cursor:pointer;
+      font-family:'Cormorant Garamond',serif;font-size:clamp(0.82rem,1.6vw,1.0rem);
+      font-weight:400;letter-spacing:2px;text-transform:uppercase;
+      color:rgba(255,255,255,0.88);text-align:center;white-space:nowrap;
+      text-shadow:0 1px 12px rgba(0,0,0,0.95);transition:color 0.15s}
     .snav-drop button:hover{color:var(--gold)}
-    .snav-drop button+button{border-top:1px solid rgba(201,169,110,0.1)}
+    .snav-drop button+button{border-top:1px solid rgba(201,169,110,0.12)}
     @media(max-width:500px){.snav-btn{padding:12px 11px;font-size:0.72rem;letter-spacing:1px}}
 
     /* CUSTOM AUDIO PLAYER */
