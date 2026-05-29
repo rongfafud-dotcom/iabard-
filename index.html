@@ -3396,10 +3396,28 @@ function handleContact(e, form) {
   var email = (data.get('email')||'').trim();
   var telegram = (data.get('telegram')||'').trim();
   var msg = (data.get('message')||'').trim();
+  var emailOk = !email || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+  var tgRaw = telegram.replace(/^@/,'');
+  var tgOk = !telegram || /^[a-zA-Z][a-zA-Z0-9_]{4,31}$/.test(tgRaw);
   if (!email && !telegram) {
+    hint.textContent = 'Обязательно: email или Telegram — иначе не смогу ответить';
     hint.classList.add('error');
     ['c-email','c-telegram'].forEach(function(id){var f=document.getElementById(id);if(f)f.classList.add('warn');});
     document.getElementById('c-email').focus();
+    return;
+  }
+  if (!emailOk) {
+    hint.textContent = 'Введите корректный email (например: name@mail.ru)';
+    hint.classList.add('error');
+    var ef=document.getElementById('c-email');
+    if(ef){ef.classList.add('warn');ef.focus();}
+    return;
+  }
+  if (!tgOk) {
+    hint.textContent = 'Telegram: 5–32 символа, только латиница, цифры и _';
+    hint.classList.add('error');
+    var tf=document.getElementById('c-telegram');
+    if(tf){tf.classList.add('warn');tf.focus();}
     return;
   }
   var contactLines = [];
