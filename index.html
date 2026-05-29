@@ -683,24 +683,25 @@
     .snav-wrap:not(.snav-wrap--nodrop) .snav-btn::after{content:'▾';font-size:0.7em;margin-left:10px;vertical-align:middle;opacity:0.7;display:inline-block}
     .snav-wrap{position:relative;display:flex;align-items:stretch;flex:1;max-width:200px;justify-content:center}
     .snav-drop{position:absolute;top:100%;left:50%;transform:translateX(-50%);
-      background:rgba(14,6,22,0.75);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
-      border:none;border-radius:0 0 10px 10px;
-      box-shadow:0 14px 32px rgba(0,0,0,0.45);
-      margin-top:0;padding:6px 0 8px;min-width:230px;z-index:600;display:none}
-    /* First dropdown (Книги) align to left edge so it doesn't go off-screen */
+      background:none;border:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;
+      margin-top:0;padding:0;min-width:0;z-index:600;display:none}
+    /* Invisible bridge above dropdown — closes the sub-pixel gap so hover never breaks */
+    .snav-drop::before{content:'';position:absolute;top:-10px;left:0;right:0;height:10px}
     .snav-wrap:first-child .snav-drop{left:0;transform:none}
-    /* Third dropdown (Shop) align to right edge */
     .snav-wrap:nth-child(3) .snav-drop{left:auto;right:0;transform:none}
     .snav-wrap--nodrop .snav-drop{display:none!important}
-    @keyframes snavDropIn{from{opacity:0}to{opacity:1}}
-    .snav-wrap:hover .snav-drop,.snav-wrap.snav-open .snav-drop{display:block;animation:snavDropIn 0.18s ease}
-    .snav-drop button{display:block;width:100%;padding:7px 8px;background:none;border:none;cursor:pointer;
+    @keyframes snavDropIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+    .snav-wrap:hover .snav-drop,.snav-wrap.snav-open .snav-drop{
+      display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0 8px;
+      animation:snavDropIn 0.16s ease}
+    .snav-drop button{display:block;width:auto;padding:5px 18px;
+      background:rgba(12,5,20,0.88);border-radius:5px;border:none;cursor:pointer;
       font-family:'Cormorant Garamond',serif;font-size:clamp(0.82rem,1.6vw,1.0rem);
       font-weight:400;letter-spacing:2px;text-transform:uppercase;
       color:rgba(255,255,255,0.88);text-align:center;white-space:nowrap;
-      text-shadow:0 1px 12px rgba(0,0,0,0.95);transition:color 0.15s}
-    .snav-drop button:hover{color:var(--gold)}
-    .snav-drop button+button{border-top:1px solid rgba(201,169,110,0.12)}
+      text-shadow:0 1px 8px rgba(0,0,0,0.7);transition:color 0.15s,background 0.15s}
+    .snav-drop button:hover{color:var(--gold);background:rgba(25,10,38,0.95)}
+    .snav-drop button+button{border-top:none}
     @media(max-width:500px){.snav-btn{padding:12px 11px;font-size:0.72rem;letter-spacing:1px}}
 
     /* CUSTOM AUDIO PLAYER */
@@ -3477,7 +3478,7 @@ if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
   document.querySelectorAll('.snav-wrap:not(.snav-wrap--nodrop)').forEach(function(w){
     var t;
     w.addEventListener('mouseenter',function(){clearTimeout(t);w.classList.add('snav-open');});
-    w.addEventListener('mouseleave',function(){t=setTimeout(function(){w.classList.remove('snav-open');},120);});
+    w.addEventListener('mouseleave',function(){t=setTimeout(function(){w.classList.remove('snav-open');},350);});
   });
 })();
 
