@@ -10622,10 +10622,10 @@ https://youtube.com/shorts/EEtHIqYOWl8?si=T6qC78RtLANqeFhF
 Подаст всем чая-чая!
 И жизнь — простая, Рая,
 Живи, тот сок вкушая!
-# audio: айяа.mp3
-https://youtube.com/shorts/UWvnqzFPMG8?si=tT9VbZ8KapsN1Vc4
 
-===
+# audio: айяа.mp3
+
+https://youtube.com/shorts/UWvnqzFPMG8?si=tT9VbZ8KapsN1Vc4
 
 Тебе меня не забыть!
 
@@ -10661,7 +10661,9 @@ https://youtube.com/shorts/UWvnqzFPMG8?si=tT9VbZ8KapsN1Vc4
 Но опять в объятия зовёт!
 Я — огонь, а он тебя поглотит, 
 И я — лёд, что тело обожжёт!
+
 # audio: тебе-меня-не-забыть.mp3
+
 https://youtube.com/shorts/hHBi1PwtAxY?si=ieVPlFcrZl9W3baA
 
 ===

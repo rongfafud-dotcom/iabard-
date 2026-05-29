@@ -1938,7 +1938,7 @@
   <div id="novinka" class="tab-panel" role="tabpanel" aria-labelledby="tab-novinka">
     <div class="novinka-list">
       <div class="novinka-card">
-        <div class="novinka-title">Тебе меня не забыть!<br><span class="poem-subtitle">#любовнаялирика</span></div>
+        <div class="novinka-title">Тебе меня не забыть!<span class="poem-subtitle">#любовнаялирика</span></div>
         <div class="novinka-video">
           <div class="yt-facade" data-vid="hHBi1PwtAxY" onclick="ytPlay(this)">
             <img src="https://img.youtube.com/vi/hHBi1PwtAxY/hqdefault.jpg" alt="Ипатия Бард" loading="lazy">
@@ -2443,7 +2443,7 @@ Conscientia — «сознанье» на латыни.<br>
         </div>
       </div>
       <div class="novinka-card novinka-hidden">
-        <div class="novinka-title">Пропала совесть.<br><span class="poem-subtitle">(по мотивам одноимённого произведения Салтыкова-Щедрина, 1869г.)</span></div>
+        <div class="novinka-title">Пропала совесть.<span class="poem-subtitle">(по мотивам одноимённого произведения Салтыкова-Щедрина, 1869г.)</span></div>
         <div class="novinka-video">
           <div class="yt-facade" data-vid="qqVicQWb9aA" onclick="ytPlay(this)">
             <img src="https://img.youtube.com/vi/qqVicQWb9aA/hqdefault.jpg" alt="Ипатия Бард" loading="lazy">
@@ -2485,7 +2485,7 @@ Conscientia — «сознанье» на латыни.<br>
         </div>
       </div>
       <div class="novinka-card novinka-hidden">
-        <div class="novinka-title">Шуточная песня<br><span class="poem-subtitle">#яжемать</span></div>
+        <div class="novinka-title">Шуточная песня<span class="poem-subtitle">#яжемать</span></div>
         <div class="novinka-video">
           <div class="yt-facade" data-vid="WiKYg-DRtH0" onclick="ytPlay(this)">
             <img src="https://img.youtube.com/vi/WiKYg-DRtH0/hqdefault.jpg" alt="Ипатия Бард" loading="lazy">
@@ -2622,7 +2622,7 @@ Conscientia — «сознанье» на латыни.<br>
         </div>
       </div>
       <div class="novinka-card novinka-hidden">
-        <div class="novinka-title">Claude<br><span class="poem-subtitle">(шуточная песня)</span></div>
+        <div class="novinka-title">Claude<span class="poem-subtitle">(шуточная песня)</span></div>
         <div class="novinka-video">
           <div class="yt-facade" data-vid="Dq7iFq_kdHA" onclick="ytPlay(this)">
             <img src="https://img.youtube.com/vi/Dq7iFq_kdHA/hqdefault.jpg" alt="Ипатия Бард" loading="lazy">
@@ -2659,7 +2659,7 @@ Conscientia — «сознанье» на латыни.<br>
         </div>
       </div>
       <div class="novinka-card novinka-hidden">
-        <div class="novinka-title">Привет, Олег!<br><span class="poem-subtitle">(шуточная песня)</span></div>
+        <div class="novinka-title">Привет, Олег!<span class="poem-subtitle">(шуточная песня)</span></div>
         <div class="novinka-video">
           <div class="yt-facade" data-vid="10dtg7IJOuI" onclick="ytPlay(this)">
             <img src="https://img.youtube.com/vi/10dtg7IJOuI/hqdefault.jpg" alt="Ипатия Бард" loading="lazy">
@@ -3173,8 +3173,8 @@ function loadPoems(){
           subT=tlines.slice(1).reduce(function(a,b){return a.endsWith('-')?a+b:a+' '+b;});
         }
         titleHtml='<div class="novinka-title">'+esc(mainT)+
-          (subT?'<br><span class="poem-subtitle">'+esc(subT)+'</span>':'')+
-          (titleHashTag?'<br><span class="poem-subtitle">'+esc(titleHashTag)+'</span>':'')+
+          (subT?'<span class="poem-subtitle">'+esc(subT)+'</span>':'')+
+          (titleHashTag?'<span class="poem-subtitle">'+esc(titleHashTag)+'</span>':'')+
           '</div>';
       }
       var h=titleHtml;
