@@ -680,9 +680,9 @@
       background:none;border:none;border-bottom:1px solid rgba(201,169,110,0.2);
       padding:14px 8px;cursor:pointer;transition:all 0.3s;white-space:nowrap;flex:1;text-align:center}
     .snav-btn:hover,.snav-btn.s-active{color:var(--gold);border-bottom-color:var(--gold)}
-    /* ▾ absolutely-positioned so it never shifts the button text off-centre */
-    .snav-wrap:not(.snav-wrap--nodrop) .snav-btn{position:relative;padding-right:22px}
-    .snav-wrap:not(.snav-wrap--nodrop) .snav-btn::after{content:'▾';position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:0.7em;opacity:0.7;pointer-events:none}
+    /* ▾ absolutely-positioned — does not affect text centering at all */
+    .snav-wrap:not(.snav-wrap--nodrop) .snav-btn{position:relative}
+    .snav-wrap:not(.snav-wrap--nodrop) .snav-btn::after{content:'▾';position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:0.65em;opacity:0.6;pointer-events:none}
     .snav-wrap{position:relative;display:flex;align-items:stretch;flex:1;max-width:200px;justify-content:center}
     .snav-drop{position:absolute;top:100%;left:50%;transform:translateX(-50%);
       background:none;border:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;
