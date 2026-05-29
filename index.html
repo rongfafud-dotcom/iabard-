@@ -684,6 +684,10 @@
     .snav-drop{position:absolute;top:100%;left:50%;transform:translateX(-50%);
       background:rgba(10,4,18,0.97);border:1px solid rgba(201,169,110,0.2);border-radius:8px;
       padding:4px 0;min-width:220px;z-index:600;display:none}
+    /* First dropdown (Книги) align to left edge so it doesn't go off-screen */
+    .snav-wrap:first-child .snav-drop{left:0;transform:none}
+    /* Third dropdown (Shop) align to right edge */
+    .snav-wrap:nth-child(3) .snav-drop{left:auto;right:0;transform:none}
     .snav-wrap--nodrop .snav-drop{display:none!important}
     .snav-wrap:hover .snav-drop{display:block;animation:dropIn 0.18s ease}
     .snav-drop button{display:block;width:100%;padding:8px 16px;background:none;border:none;cursor:pointer;
@@ -3079,10 +3083,12 @@ function goBook(bookId){
   var stickyNav=document.getElementById('sticky-nav');
   var stickyH=stickyNav?stickyNav.offsetHeight:0;
   requestAnimationFrame(function(){
-    var target=bookId?document.getElementById(bookId):document.getElementById('main-content');
-    if(!target)return;
-    var top=target.getBoundingClientRect().top+window.pageYOffset-stickyH-12;
-    window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+    requestAnimationFrame(function(){
+      var target=bookId?document.getElementById(bookId):document.getElementById('main-content');
+      if(!target)return;
+      var top=target.getBoundingClientRect().top+window.pageYOffset-stickyH-12;
+      window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+    });
   });
 }
 function goCreative(panelId){
