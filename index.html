@@ -581,25 +581,23 @@
     .nav-tab-wrap--nodrop .nav-tab{margin-right:22px}
     /* Transparent dropdown — same typography as nav */
     .nav-dropmenu{position:absolute;top:100%;left:50%;transform:translateX(-50%);
-      background:rgba(30,18,32,0.96);
-      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-      border:1px solid rgba(201,169,110,0.30);border-radius:8px;
-      box-shadow:0 8px 32px rgba(0,0,0,0.6);
-      z-index:300;min-width:230px;overflow:hidden;display:none;margin-top:2px;padding:8px 0}
+      background:transparent;border:none;box-shadow:none;
+      z-index:300;min-width:230px;overflow:visible;display:none;padding-top:6px}
     .nav-dropmenu.open{display:block;animation:dropIn 0.18s ease}
-    @keyframes dropIn{from{opacity:0;transform:translateX(-50%) translateY(-6px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-    .nav-dropmenu button{display:block;width:100%;padding:8px 20px;
+    @keyframes dropIn{from{opacity:0;transform:translateX(-50%) translateY(-4px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+    .nav-dropmenu button{display:block;width:100%;padding:7px 8px;
       background:none;border:none;cursor:pointer;
-      color:rgba(255,255,255,0.90);
+      color:rgba(255,255,255,0.88);
       font-family:'Cormorant Garamond',serif;
       font-size:clamp(0.82rem,1.6vw,1.0rem);
       font-weight:400;letter-spacing:2px;text-transform:uppercase;
       text-align:center;white-space:nowrap;
-      transition:color 0.15s,background 0.15s}
+      text-shadow:0 1px 12px rgba(0,0,0,0.95);
+      transition:color 0.15s}
     .nav-dropmenu button .book-sub,.snav-drop button .book-sub{display:block;font-size:0.72em;
       letter-spacing:1px;text-transform:none;opacity:0.65;
       font-weight:300;margin-top:1px}
-    .nav-dropmenu button:hover{color:var(--gold);background:rgba(201,169,110,0.07)}
+    .nav-dropmenu button:hover{color:var(--gold)}
     .nav-dropmenu button+button{border-top:1px solid rgba(201,169,110,0.12)}
     /* Whole wrap glows on hover — tab text and arrow both light up */
     .nav-tab-wrap:hover .nav-tab,.nav-tab-wrap:hover .nav-drop-btn{color:var(--gold);border-bottom-color:var(--gold)}
