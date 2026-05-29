@@ -512,7 +512,7 @@
       .social-chip{padding:5px 10px;font-size:0.62rem}
       footer{padding:20px 24px}
       .novinka-card{padding:20px 16px}
-      .novinka-poem{font-size:1rem}
+      .novinka-poem{font-size:1rem;line-height:1.9}
       .nav-tab{font-size:0.72rem;letter-spacing:0;padding:12px 3px;white-space:nowrap;overflow:hidden}
       .drop-arrow{font-size:0.5em}
       .card-bottom{}
@@ -721,6 +721,11 @@
         transition:border-color 0.2s;-webkit-appearance:none}
     .poem-search:focus{border-color:rgba(201,169,110,0.6)}
     .poem-search::placeholder{color:rgba(201,169,110,0.38)}
+
+    /* FOCUS-VISIBLE — keyboard nav accessibility */
+    :focus-visible{outline:2px solid rgba(201,169,110,0.7);outline-offset:3px;border-radius:3px}
+    button:focus:not(:focus-visible),a:focus:not(:focus-visible),
+    input:focus:not(:focus-visible),textarea:focus:not(:focus-visible){outline:none}
   </style>
 </head>
 <body>
@@ -3016,7 +3021,7 @@ function ytPlay(el) {
   var vid = el.dataset.vid;
   var iframe = document.createElement('iframe');
   iframe.src = 'https://www.youtube.com/embed/' + vid + '?autoplay=1&playsinline=1';
-  iframe.title = el.querySelector('img').alt;
+  var _img=el.querySelector('img');iframe.title=_img?_img.alt:'';
   iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
   iframe.allowFullscreen = true;
   el.parentNode.replaceChild(iframe, el);
@@ -3053,6 +3058,10 @@ function tabAndDrop(e,tabId,panelId,dropId){
 function closeDrop(){
   document.querySelectorAll('.nav-dropmenu').forEach(function(d){d.classList.remove('open');});
   document.querySelectorAll('.nav-tab,.nav-drop-btn').forEach(function(t){t.classList.remove('drop-open');});
+  // Touch: break CSS :hover simulation on sticky nav so its dropdowns close
+  if(!window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    document.querySelectorAll('.snav-wrap').forEach(function(w){w.style.pointerEvents='none';setTimeout(function(){w.style.pointerEvents='';},150);});
+  }
 }
 function toggleDrop(e,dropId){
   e.stopPropagation();
@@ -3180,8 +3189,10 @@ function switchTab(id, btn) {
     t.classList.remove('active');
     t.setAttribute('aria-selected', 'false');
   });
-  document.getElementById(id).classList.add('active');
-  document.getElementById(id).querySelectorAll('img[loading="lazy"]').forEach(function(i){i.loading='eager';});
+  var panel=document.getElementById(id);
+  if(!panel)return;
+  panel.classList.add('active');
+  panel.querySelectorAll('img[loading="lazy"]').forEach(function(i){i.loading='eager';});
   if(btn){btn.classList.add('active');btn.setAttribute('aria-selected','true');}
   // Sync sticky nav highlight
   document.querySelectorAll('#sticky-nav .snav-btn').forEach(function(b){
@@ -3273,7 +3284,8 @@ document.querySelectorAll('.novinka-video').forEach(function(v) {
   v.insertAdjacentElement('afterend', row);
 });
 
-document.querySelector('[role="tablist"]').addEventListener('keydown', function(e) {
+var _tablist=document.querySelector('[role="tablist"]');
+if(_tablist)_tablist.addEventListener('keydown', function(e) {
   var tabs = Array.from(this.querySelectorAll('[role="tab"]'));
   var idx = tabs.indexOf(document.activeElement);
   if (idx === -1) return;
@@ -3320,7 +3332,7 @@ function carouselGo(idx){carouselIdx=idx;carouselUpdate();}
   var sx=0;
   t.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
   t.addEventListener('touchmove',function(e){var dx=e.touches[0].clientX-sx;if(Math.abs(dx)>10)e.preventDefault();},{passive:false});
-  t.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)carouselMove(dx<0?1:-1);},{passive:true});
+  t.addEventListener('touchend',function(e){if(!e.changedTouches||!e.changedTouches.length)return;var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)carouselMove(dx<0?1:-1);},{passive:true});
 })();
 
 // Flip cards keyboard accessibility
