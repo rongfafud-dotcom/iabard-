@@ -677,8 +677,10 @@
     #sticky-nav.visible{transform:translateY(0)}
     #sticky-nav button{font-family:'Cormorant Garamond',serif;font-size:0.78rem;letter-spacing:2px;
       text-transform:uppercase;color:rgba(255,255,255,0.8);background:none;border:none;
-      border-bottom:2px solid transparent;padding:13px 22px;cursor:pointer;transition:all 0.2s}
+      border-bottom:2px solid transparent;padding:13px 22px;cursor:pointer;transition:all 0.2s;
+      white-space:nowrap}
     #sticky-nav button:hover,#sticky-nav button.s-active{color:var(--gold);border-bottom-color:var(--gold)}
+    @media(max-width:500px){#sticky-nav button{padding:12px 11px;font-size:0.72rem;letter-spacing:1px}}
 
     /* CUSTOM AUDIO PLAYER */
     .ap{display:flex;align-items:center;gap:10px;width:100%;margin-top:20px;padding:10px 14px;
@@ -692,6 +694,9 @@
     .ap-bar{flex:1;height:4px;background:rgba(201,169,110,0.2);border-radius:2px;cursor:pointer;position:relative}
     .ap-fill{height:100%;background:var(--gold);border-radius:2px;width:0%;pointer-events:none}
     .ap-time{font-family:'Cormorant Garamond',serif;font-size:0.75rem;color:rgba(201,169,110,0.65);white-space:nowrap;min-width:78px;text-align:right}
+
+    /* Keep poems section tall enough during loading so scroll target is reachable */
+    #poems{min-height:100svh}
 
     /* POEM SEARCH */
     .poem-search-wrap{display:flex;justify-content:center;margin-bottom:28px}
@@ -3131,13 +3136,16 @@ function switchTab(id, btn) {
   document.querySelectorAll('#sticky-nav button').forEach(function(b){
     b.classList.toggle('s-active',(b.dataset.panels||'').split(' ').indexOf(id)!==-1);
   });
-  // Scroll to sections top — stable offsetTop, offset by sticky nav if visible
-  var mainContent=document.getElementById('main-content');
-  var stickyNav=document.getElementById('sticky-nav');
-  var stickyH=(stickyNav&&stickyNav.classList.contains('visible'))?stickyNav.offsetHeight:0;
-  window.scrollTo({top:mainContent.offsetTop-stickyH,behavior:'smooth'});
+  // Load content FIRST so page height is stable before scroll
   if(id==='poems')loadPoems();
   if(id==='author'){document.querySelectorAll('#carousel-track img').forEach(function(img){if(!img.complete||img.naturalWidth===0){var s=img.src;img.src='';img.src=s;}});}
+  // Always offset by sticky nav height so content lands below it
+  var mainContent=document.getElementById('main-content');
+  var stickyNav=document.getElementById('sticky-nav');
+  var stickyH=stickyNav?stickyNav.offsetHeight:0;
+  requestAnimationFrame(function(){
+    window.scrollTo({top:mainContent.offsetTop-stickyH,behavior:'smooth'});
+  });
 }
 function loadMoreNovinka() {
   var hidden = document.querySelectorAll('#novinka .novinka-hidden');
