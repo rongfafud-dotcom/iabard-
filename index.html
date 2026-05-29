@@ -3506,7 +3506,6 @@ function initAudioPlayers(container){
     var label=ph.dataset.label||'стихотворение';
     var audio=new Audio();
     audio.preload='metadata';
-    audio.src=src;
     var el=document.createElement('div');
     el.className='ap';
     el.innerHTML=
@@ -3526,6 +3525,9 @@ function initAudioPlayers(container){
     });
     audio.addEventListener('loadedmetadata',function(){timeEl.textContent='0:00 / '+fmt(audio.duration);});
     audio.addEventListener('ended',function(){btn.innerHTML=AP_PLAY;fill.style.width='0%';});
+    audio.src=src;
+    // If metadata already cached, readyState >= HAVE_METADATA — update immediately
+    if(audio.readyState>=1&&audio.duration)timeEl.textContent='0:00 / '+fmt(audio.duration);
     btn.addEventListener('click',function(){
       if(audio.paused){
         document.querySelectorAll('.ap').forEach(function(a){
