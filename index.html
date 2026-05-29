@@ -3156,6 +3156,10 @@ function loadPoems(){
       var titleHashTag=null;
       var hashM=mainT.match(/((?:\s+#\S+)+)$/);
       if(hashM){titleHashTag=hashM[1].trim();mainT=mainT.slice(0,mainT.length-hashM[1].length).trim();}
+      // Also extract a standalone hashtag stanza right after the title, e.g. "#любовнаялирика" on its own line
+      if(!titleHashTag && body.length && /^(?:#\S+\s*)+$/.test(body[0])){
+        titleHashTag=body[0].trim();body=body.slice(1);
+      }
       var titleHtml='';
       if(title){
         var tlines=title.split('\n').map(function(l){return l.trim();}).filter(Boolean);
