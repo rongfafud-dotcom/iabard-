@@ -3083,10 +3083,6 @@ function tabAndDrop(e,tabId,panelId,dropId){
 function closeDrop(){
   document.querySelectorAll('.nav-dropmenu').forEach(function(d){d.classList.remove('open');});
   document.querySelectorAll('.nav-tab,.nav-drop-btn').forEach(function(t){t.classList.remove('drop-open');});
-  // Touch: break CSS :hover simulation on sticky nav so its dropdowns close
-  if(!window.matchMedia('(hover:hover) and (pointer:fine)').matches){
-    document.querySelectorAll('.snav-wrap').forEach(function(w){w.style.pointerEvents='none';setTimeout(function(){w.style.pointerEvents='';},150);});
-  }
 }
 function toggleDrop(e,dropId){
   e.stopPropagation();
