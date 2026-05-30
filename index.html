@@ -3483,6 +3483,8 @@ if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
 
 // Sticky nav dropdown — hover (desktop) + tap-toggle (mobile), close on outside click / scroll
 (function(){
+  var isHoverDevice=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+
   function closeAll(){
     document.querySelectorAll('.snav-wrap.snav-open').forEach(function(w){
       w.classList.remove('snav-open');
@@ -3492,11 +3494,14 @@ if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
   document.querySelectorAll('.snav-wrap:not(.snav-wrap--nodrop)').forEach(function(w){
     var t;
 
-    // Desktop: open on hover, close with grace timer
-    w.addEventListener('mouseenter',function(){clearTimeout(t);w.classList.add('snav-open');});
-    w.addEventListener('mouseleave',function(){t=setTimeout(function(){w.classList.remove('snav-open');},350);});
+    // Desktop only: open on hover, close with grace timer
+    // On touch devices mouseenter/mouseleave are synthesized and conflict with click
+    if(isHoverDevice){
+      w.addEventListener('mouseenter',function(){clearTimeout(t);w.classList.add('snav-open');});
+      w.addEventListener('mouseleave',function(){t=setTimeout(function(){w.classList.remove('snav-open');},350);});
+    }
 
-    // Button click: toggle open/closed (handles mobile tap)
+    // Button click: toggle open/closed (primary handler on mobile)
     var btn=w.querySelector('.snav-btn');
     if(btn)btn.addEventListener('click',function(e){
       e.stopPropagation();
