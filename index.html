@@ -700,7 +700,7 @@
     .snav-wrap:nth-child(3) .snav-drop{animation-name:snavDropInRight}
     @keyframes snavDropInLeft{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
     @keyframes snavDropInRight{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-    .snav-wrap:hover .snav-drop,.snav-wrap.snav-open .snav-drop{
+    .snav-wrap.snav-open .snav-drop{
       display:flex;flex-direction:column;align-items:stretch;gap:0;
       animation:snavDropIn 0.18s ease}
     .snav-drop button{display:block;width:100%;padding:8px 20px;
@@ -3485,23 +3485,49 @@ if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
   },{passive:true});
 })();
 
-// Sticky nav dropdown — JS hover with grace timer so micro-gaps don't close the menu
+// Sticky nav dropdown — hover (desktop) + tap-toggle (mobile), close on outside click / scroll
 (function(){
+  function closeAll(){
+    document.querySelectorAll('.snav-wrap.snav-open').forEach(function(w){
+      w.classList.remove('snav-open');
+    });
+  }
+
   document.querySelectorAll('.snav-wrap:not(.snav-wrap--nodrop)').forEach(function(w){
     var t;
+
+    // Desktop: open on hover, close with grace timer
     w.addEventListener('mouseenter',function(){clearTimeout(t);w.classList.add('snav-open');});
     w.addEventListener('mouseleave',function(){t=setTimeout(function(){w.classList.remove('snav-open');},350);});
-    function closeSnavWrap(){
-      clearTimeout(t);
-      w.classList.remove('snav-open');
-      w.style.pointerEvents='none';
-      setTimeout(function(){w.style.pointerEvents='';},400);
-    }
-    var drop=w.querySelector('.snav-drop');
-    if(drop)drop.addEventListener('click',closeSnavWrap);
+
+    // Button click: toggle open/closed (handles mobile tap)
     var btn=w.querySelector('.snav-btn');
-    if(btn)btn.addEventListener('click',closeSnavWrap);
+    if(btn)btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      if(w.classList.contains('snav-open')){
+        clearTimeout(t);w.classList.remove('snav-open');
+      } else {
+        closeAll();clearTimeout(t);w.classList.add('snav-open');
+      }
+    });
+
+    // Item click: close immediately
+    var drop=w.querySelector('.snav-drop');
+    if(drop)drop.addEventListener('click',function(){
+      clearTimeout(t);w.classList.remove('snav-open');
+    });
   });
+
+  // Close when clicking anywhere outside the sticky nav
+  document.addEventListener('click',function(e){
+    if(!e.target.closest('.snav-wrap'))closeAll();
+  });
+
+  // Close when sticky nav scrolls out of view
+  window.addEventListener('scroll',function(){
+    var sn=document.getElementById('sticky-nav');
+    if(sn&&!sn.classList.contains('visible'))closeAll();
+  },{passive:true});
 })();
 
 // Custom audio player
