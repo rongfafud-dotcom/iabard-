@@ -20,7 +20,7 @@
   .tab-btn{flex:1;padding:12px;text-align:center;cursor:pointer;border:1px solid rgba(201,169,110,0.2);border-bottom:none;border-radius:8px 8px 0 0;background:rgba(255,255,255,0.03);color:rgba(201,169,110,0.6);font-size:0.85rem;letter-spacing:1px;transition:all 0.2s}
   .tab-btn.active{background:rgba(201,169,110,0.1);color:#c9a96e;border-color:rgba(201,169,110,0.4)}
   .editor-wrap{max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:0 0 10px 10px;overflow:hidden}
-  textarea{width:100%;height:65vh;background:#0a060a;color:#e8ddd0;border:none;padding:20px;font-family:'Georgia',serif;font-size:0.95rem;line-height:1.7;resize:none;outline:none}
+  textarea{width:100%;height:65vh;background:#0a060a;color:#e8ddd0;border:none;padding:20px;font-family:'Georgia',serif;font-size:0.95rem;line-height:1.7;resize:none;outline:none;-webkit-user-select:text;user-select:text}
   .bar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:rgba(201,169,110,0.07);border-top:1px solid rgba(201,169,110,0.15)}
   .status{font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1.2em}
   .save-btn{background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px 28px;cursor:pointer;font-size:0.95rem;font-weight:600;transition:opacity 0.2s}
@@ -169,14 +169,14 @@
         onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
     </label>
   </div>
-  <textarea id="poem-add-text" placeholder="Добавить стихотворение" style="width:100%;height:260px;background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;margin-bottom:16px" spellcheck="false"></textarea>
+  <textarea id="poem-add-text" placeholder="Добавить стихотворение" style="width:100%;height:260px;background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;margin-bottom:16px" spellcheck="false" autocorrect="off" autocapitalize="none" autocomplete="off"></textarea>
   <button class="novinka-add-btn" id="poem-add-btn" onclick="addPoem()">Добавить стихотворение</button>
   <div class="novinka-status" id="poem-add-status"></div>
   <div style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(201,169,110,0.12);font-size:0.7rem;color:rgba(201,169,110,0.4);letter-spacing:1.5px;text-transform:uppercase;text-align:center">Редактор всех стихов ↓</div>
 </div>
 
 <div class="editor-wrap" id="editor-wrap" style="border-radius:0 0 10px 10px">
-  <textarea id="editor" placeholder="Загрузка…" spellcheck="false"></textarea>
+  <textarea id="editor" placeholder="Загрузка…" spellcheck="false" autocorrect="off" autocapitalize="none" autocomplete="off"></textarea>
   <div class="bar">
     <span class="status" id="status"></span>
     <button class="save-btn" id="save-btn" onclick="saveFile()" disabled>Сохранить</button>
@@ -192,7 +192,7 @@
       onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
   </label>
   <div id="novinka-preview" style="text-align:center;margin-bottom:8px"></div>
-  <textarea id="novinka-poem" placeholder="Добавить текст" style="width:100%;height:220px;background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;margin-bottom:16px" spellcheck="false"></textarea>
+  <textarea id="novinka-poem" placeholder="Добавить текст" style="width:100%;height:220px;background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;margin-bottom:16px" spellcheck="false" autocorrect="off" autocapitalize="none" autocomplete="off"></textarea>
   <button class="novinka-add-btn" id="novinka-add-btn" onclick="addNovinka()">Добавить в Новинки</button>
   <div class="novinka-status" id="novinka-status"></div>
   <div class="audio-list-title" style="margin-top:28px">Добавленные новинки</div>
@@ -232,6 +232,8 @@
 <script>
 const REPO = 'rongfafud-dotcom/iabard-';
 const API  = 'https://api.github.com/repos/' + REPO + '/contents/';
+function b64d(s){return new TextDecoder().decode(Uint8Array.from(atob(s),function(c){return c.charCodeAt(0);}));}
+function b64e(s){return btoa(Array.from(new TextEncoder().encode(s),function(b){return String.fromCharCode(b);}).join(''));}
 
 var currentFile = 'poems.txt';
 var currentSha  = '';
@@ -395,7 +397,7 @@ function addNovinka(){
   .then(function(r){return checkR(r).json();})
   .then(function(data){
     var htmlSha=data.sha;
-    var html=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+    var html=b64d(data.content.replace(/\n/g,''));
     var START='<!-- YT-NOVINKA-START -->';
     var LIST='<div class="novinka-list">';
     var si=html.indexOf(START);
@@ -434,7 +436,7 @@ function addNovinka(){
       }
     })();
     setNovinkaStatus('Сохранение…');
-    var encoded=btoa(unescape(encodeURIComponent(html)));
+    var encoded=b64e(html);
     return fetch(API+'index.html',{
       method:'PUT',
       headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
@@ -586,7 +588,7 @@ function loadFile(){
   })
   .then(function(data){
     currentSha = data.sha;
-    var text = decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+    var text = b64d(data.content.replace(/\n/g,''));
     var parts = text.split('===').map(function(p){return p.trim();}).filter(Boolean);
     if(currentFile === 'poems.txt'){
       currentPoemCount = parts.length;
@@ -625,7 +627,7 @@ function saveFile(){
     content = content.split(SEP).map(function(p){return p.trim();}).filter(Boolean).join('\n\n===\n\n');
     if(content) content += '\n\n===\n';
   }
-  var encoded = btoa(unescape(encodeURIComponent(content)));
+  var encoded = b64e(content);
   fetch(API + currentFile, {
     method:'PUT',
     headers:{
@@ -688,9 +690,9 @@ function savePoemEntry(poemText, audioFilename){
   .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
   .then(function(data){
     var sha=data.sha;
-    var content=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+    var content=b64d(data.content.replace(/\n/g,''));
     content=content.trimEnd()+'\n\n===\n\n'+finalPoem+'\n\n===\n';
-    var encoded=btoa(unescape(encodeURIComponent(content)));
+    var encoded=b64e(content);
     return fetch(API+'poems.txt',{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Add poem: '+title,content:encoded,sha:sha,branch:'main'})});
   })
   .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
@@ -723,7 +725,7 @@ function loadNovinkaList(){
   fetch(API+'index.html?ref=main',{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})
   .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
   .then(function(data){
-    var html=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+    var html=b64d(data.content.replace(/\n/g,''));
     var si=html.indexOf('<!-- YT-NOVINKA-START -->');
     if(si===-1){listEl.innerHTML='<span style="color:#d47a7a;font-size:0.85rem">Маркер не найден</span>';return;}
     var section=html.slice(si,html.indexOf('<!-- YT-NOVINKA-END -->',si));
@@ -773,7 +775,7 @@ function loadNovinkaList(){
           '<button class="audio-del-btn" onclick="deleteNovinka(\''+v.vid+'\')">✕</button>'+
         '</div>'+poemHtml+
         '<div class="novinka-edit-box" id="'+eid+'">'+
-          '<textarea placeholder="Название\n\nСтрофа 1\n\nСтрофа 2">'+esc(v.fullPoem)+'</textarea>'+
+          '<textarea placeholder="Название\n\nСтрофа 1\n\nСтрофа 2" spellcheck="false" autocorrect="off" autocapitalize="none" autocomplete="off">'+esc(v.fullPoem)+'</textarea>'+
           '<button class="novinka-edit-save" onclick="saveNovinkaEdit(\''+v.vid+'\',this)">Сохранить</button>'+
         '</div>';
       listEl.appendChild(item);
@@ -791,7 +793,7 @@ function deleteNovinka(vid){
   .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
   .then(function(data){
     var sha=data.sha;
-    var html=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+    var html=b64d(data.content.replace(/\n/g,''));
     var vidIdx=html.indexOf('data-vid="'+vid+'"');
     if(vidIdx===-1)throw new Error('Видео не найдено');
     var ls1=html.lastIndexOf('<div class="novinka-card">',vidIdx);
@@ -806,7 +808,7 @@ function deleteNovinka(vid){
     }
     if(cardEnd===-1)throw new Error('Конец карточки не найден');
     var newHtml=html.slice(0,cardStart).trimEnd()+'\n'+html.slice(cardEnd).replace(/^\s*\n/,'');
-    var encoded=btoa(unescape(encodeURIComponent(newHtml)));
+    var encoded=b64e(newHtml);
     return fetch(API+'index.html',{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Delete novinka: '+vid,content:encoded,sha:sha,branch:'main'})});
   })
   .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
@@ -1022,7 +1024,7 @@ function saveNovinkaEdit(vid,btn){
   .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
   .then(function(data){
     var sha=data.sha;
-    var html=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+    var html=b64d(data.content.replace(/\n/g,''));
     var vidIdx=html.indexOf('data-vid="'+vid+'"');
     if(vidIdx===-1)throw new Error('Видео не найдено');
     var se1=html.lastIndexOf('<div class="novinka-card">',vidIdx);
@@ -1038,7 +1040,7 @@ function saveNovinkaEdit(vid,btn){
     if(cardEnd===-1)throw new Error('Конец карточки не найден');
     var newCard=buildNovinkaCard(poem,vid);
     var newHtml=html.slice(0,cardStart)+newCard+html.slice(cardEnd);
-    var encoded=btoa(unescape(encodeURIComponent(newHtml)));
+    var encoded=b64e(newHtml);
     return fetch(API+'index.html',{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Edit novinka: '+vid,content:encoded,sha:sha,branch:'main'})});
   })
   .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
