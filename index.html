@@ -696,13 +696,13 @@
     .snav-wrap:nth-child(3) .snav-drop{left:auto;right:0;transform:none}
     .snav-wrap--nodrop .snav-drop{display:none!important}
     @keyframes snavDropIn{from{opacity:0;transform:translateX(-50%) translateY(-6px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-    .snav-wrap:first-child .snav-drop{animation-name:snavDropInLeft}
-    .snav-wrap:nth-child(3) .snav-drop{animation-name:snavDropInRight}
     @keyframes snavDropInLeft{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
     @keyframes snavDropInRight{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
     .snav-wrap.snav-open .snav-drop{
       display:flex;flex-direction:column;align-items:stretch;gap:0;
       animation:snavDropIn 0.18s ease}
+    .snav-wrap.snav-open:first-child .snav-drop{animation-name:snavDropInLeft}
+    .snav-wrap.snav-open:nth-child(3) .snav-drop{animation-name:snavDropInRight}
     .snav-drop button{display:block;width:100%;padding:8px 20px;
       background:none;border-radius:0;border:none;cursor:pointer;
       font-family:'Cormorant Garamond',serif;font-size:clamp(0.82rem,1.6vw,1.0rem);
