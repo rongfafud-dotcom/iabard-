@@ -2974,7 +2974,7 @@ Conscientia — «сознанье» на латыни.<br>
     </div>
     <p id="poem-notfound" class="poems-loading" style="display:none">Ничего не найдено</p>
     <div class="novinka-list" id="poems-list">
-      <p class="poems-loading" id="poems-ver">Загрузка стихов… v72a</p>
+      <p class="poems-loading" id="poems-ver">Загрузка стихов…</p>
     </div>
   </div>
 
@@ -3433,6 +3433,8 @@ function handleContact(e, form) {
   if (email) contactLines.push('Email: ' + email);
   if (telegram) contactLines.push('Telegram: ' + (telegram.startsWith('@') ? telegram : '@' + telegram));
   var body = contactLines.join('\n') + '\n\n' + msg;
+  var submitBtn = form.querySelector('.contact-submit');
+  if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Отправка…'; }
   fetch('https://api.github.com/repos/rongfafud-dotcom/iabard-/issues', {
     method: 'POST',
     headers: {
@@ -3447,10 +3449,12 @@ function handleContact(e, form) {
       sessionStorage.setItem('contact_sent', Date.now());
       form.parentElement.innerHTML = '<p class="contact-sent">Спасибо! Сообщение отправлено ✦</p>';
     } else {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Отправить'; }
       form.parentElement.innerHTML = '<p class="contact-sent">Ошибка — напишите на poet@iabard.com</p>';
     }
   })
   .catch(function() {
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Отправить'; }
     form.parentElement.innerHTML = '<p class="contact-sent">Ошибка — напишите на poet@iabard.com</p>';
   });
 }
@@ -3590,16 +3594,21 @@ function initAudioPlayers(container){
 }
 
 // Poem search filter
+var _poemSearchTimer;
 document.getElementById('poem-search').addEventListener('input',function(){
-  var q=this.value.toLowerCase().trim();
-  var found=0;
-  document.querySelectorAll('#poems-list .novinka-card').forEach(function(card){
-    var show=!q||card.dataset.search.indexOf(q)!==-1;
-    card.style.display=show?'':'none';
-    if(show)found++;
-  });
-  var nf=document.getElementById('poem-notfound');
-  if(nf)nf.style.display=(q&&!found)?'block':'none';
+  clearTimeout(_poemSearchTimer);
+  var val=this.value;
+  _poemSearchTimer=setTimeout(function(){
+    var q=val.toLowerCase().trim();
+    var found=0;
+    document.querySelectorAll('#poems-list .novinka-card').forEach(function(card){
+      var show=!q||card.dataset.search.indexOf(q)!==-1;
+      card.style.display=show?'':'none';
+      if(show)found++;
+    });
+    var nf=document.getElementById('poem-notfound');
+    if(nf)nf.style.display=(q&&!found)?'block':'none';
+  },200);
 });
 </script>
 </body>
