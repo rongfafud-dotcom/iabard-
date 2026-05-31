@@ -3515,14 +3515,21 @@ if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
       w.addEventListener('mouseleave',function(){t=setTimeout(function(){w.classList.remove('snav-open');},350);});
     }
 
-    // Button click: toggle open/closed (primary handler on mobile)
+    // Button click: navigate on desktop, toggle dropdown on mobile
     var btn=w.querySelector('.snav-btn');
     if(btn)btn.addEventListener('click',function(e){
       e.stopPropagation();
-      if(w.classList.contains('snav-open')){
-        clearTimeout(t);w.classList.remove('snav-open');
+      if(isHoverDevice){
+        var panels=(btn.dataset.panels||'').split(' ');
+        if(panels.indexOf('books')!==-1){closeAll();goBook();}
+        else if(panels.indexOf('novinka')!==-1){closeAll();goCreative('novinka');}
+        else if(panels.indexOf('shop')!==-1){closeAll();switchTab('shop',document.getElementById('tab-shop'));}
       } else {
-        closeAll();clearTimeout(t);w.classList.add('snav-open');
+        if(w.classList.contains('snav-open')){
+          clearTimeout(t);w.classList.remove('snav-open');
+        } else {
+          closeAll();clearTimeout(t);w.classList.add('snav-open');
+        }
       }
     });
 
