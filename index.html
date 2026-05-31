@@ -266,8 +266,9 @@
       letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:border-color 0.2s,color 0.2s}
     .novinka-load-btn:hover{border-color:var(--gold);color:#fff}
     .novinka-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3vw,2.1rem);font-weight:600;
-                    color:var(--gold);text-align:center;margin-bottom:22px;letter-spacing:1px;line-height:1.2;
-                    display:flex;flex-direction:column;align-items:center;gap:3px}
+                    color:var(--gold);text-align:center;margin-bottom:22px;letter-spacing:1px;
+                    display:flex;flex-direction:column;align-items:center;gap:2px}
+    .poem-title-main{line-height:1}
     .novinka-poem{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.05rem,2.2vw,1.35rem);
                    color:var(--cream);line-height:1.75;text-align:center}
     .poem-subtitle{display:block;font-size:0.62em;font-weight:400;font-style:italic;opacity:0.75;letter-spacing:1px;margin-top:0;white-space:normal;text-align:center;max-width:100%}
@@ -851,7 +852,7 @@
     <div class="novinka-list">
 
       <div class="novinka-card novinka-card-full">
-        <div class="novinka-title">Баллада о Зодиаке<span class="poem-subtitle">Полная версия</span></div>
+        <div class="novinka-title"><span class="poem-title-main">Баллада о Зодиаке</span><span class="poem-subtitle">Полная версия</span></div>
         <div class="novinka-video novinka-video-wide">
           <div class="yt-facade" data-vid="8cZ-G4rRvRI" onclick="ytPlay(this)">
             <img src="https://img.youtube.com/vi/8cZ-G4rRvRI/hqdefault.jpg" alt="Зодиак — полная версия — Ипатия Бард" loading="lazy">
@@ -1952,7 +1953,7 @@
   <div id="novinka" class="tab-panel" role="tabpanel" aria-labelledby="tab-creative">
     <div class="novinka-list">
       <div class="novinka-card">
-        <div class="novinka-title">Тебе меня не забыть!<span class="poem-subtitle">#любовнаялирика</span></div>
+        <div class="novinka-title"><span class="poem-title-main">Тебе меня не забыть!</span><span class="poem-subtitle">#любовнаялирика</span></div>
         <div class="novinka-video">
           <div class="yt-facade" data-vid="hHBi1PwtAxY" onclick="ytPlay(this)">
             <img src="https://img.youtube.com/vi/hHBi1PwtAxY/hqdefault.jpg" alt="Ипатия Бард" loading="lazy">
@@ -2457,7 +2458,7 @@ Conscientia — «сознанье» на латыни.<br>
         </div>
       </div>
       <div class="novinka-card novinka-hidden">
-        <div class="novinka-title">Пропала совесть.<span class="poem-subtitle">(по мотивам одноимённого произведения Салтыкова-Щедрина, 1869г.)</span></div>
+        <div class="novinka-title"><span class="poem-title-main">Пропала совесть.</span><span class="poem-subtitle">(по мотивам одноимённого произведения Салтыкова-Щедрина, 1869г.)</span></div>
         <div class="novinka-video">
           <div class="yt-facade" data-vid="qqVicQWb9aA" onclick="ytPlay(this)">
             <img src="https://img.youtube.com/vi/qqVicQWb9aA/hqdefault.jpg" alt="Ипатия Бард" loading="lazy">
@@ -2499,7 +2500,7 @@ Conscientia — «сознанье» на латыни.<br>
         </div>
       </div>
       <div class="novinka-card novinka-hidden">
-        <div class="novinka-title">Шуточная песня<span class="poem-subtitle">#яжемать</span></div>
+        <div class="novinka-title"><span class="poem-title-main">Шуточная песня</span><span class="poem-subtitle">#яжемать</span></div>
         <div class="novinka-video">
           <div class="yt-facade" data-vid="WiKYg-DRtH0" onclick="ytPlay(this)">
             <img src="https://img.youtube.com/vi/WiKYg-DRtH0/hqdefault.jpg" alt="Ипатия Бард" loading="lazy">
@@ -2636,7 +2637,7 @@ Conscientia — «сознанье» на латыни.<br>
         </div>
       </div>
       <div class="novinka-card novinka-hidden">
-        <div class="novinka-title">Claude<span class="poem-subtitle">(шуточная песня)</span></div>
+        <div class="novinka-title"><span class="poem-title-main">Claude</span><span class="poem-subtitle">(шуточная песня)</span></div>
         <div class="novinka-video">
           <div class="yt-facade" data-vid="Dq7iFq_kdHA" onclick="ytPlay(this)">
             <img src="https://img.youtube.com/vi/Dq7iFq_kdHA/hqdefault.jpg" alt="Ипатия Бард" loading="lazy">
@@ -2673,7 +2674,7 @@ Conscientia — «сознанье» на латыни.<br>
         </div>
       </div>
       <div class="novinka-card novinka-hidden">
-        <div class="novinka-title">Привет, Олег!<span class="poem-subtitle">(шуточная песня)</span></div>
+        <div class="novinka-title"><span class="poem-title-main">Привет, Олег!</span><span class="poem-subtitle">(шуточная песня)</span></div>
         <div class="novinka-video">
           <div class="yt-facade" data-vid="10dtg7IJOuI" onclick="ytPlay(this)">
             <img src="https://img.youtube.com/vi/10dtg7IJOuI/hqdefault.jpg" alt="Ипатия Бард" loading="lazy">
@@ -3188,7 +3189,7 @@ function loadPoems(){
         if(tlines.length>=2 && tlines[1].charAt(0)==='('){
           subT=tlines.slice(1).reduce(function(a,b){return a.endsWith('-')?a+b:a+' '+b;});
         }
-        titleHtml='<div class="novinka-title">'+esc(mainT)+
+        titleHtml='<div class="novinka-title"><span class="poem-title-main">'+esc(mainT)+'</span>'+
           (subT?'<span class="poem-subtitle">'+esc(subT)+'</span>':'')+
           (titleHashTag?'<span class="poem-subtitle">'+esc(titleHashTag)+'</span>':'')+
           '</div>';
