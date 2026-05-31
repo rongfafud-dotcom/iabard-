@@ -1,4 +1,4 @@
-const CACHE = 'iabard-v2';
+const CACHE = 'iabard-v3';
 const CORE = [
   '/',
   '/index.html',
