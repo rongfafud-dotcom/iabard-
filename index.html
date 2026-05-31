@@ -3167,8 +3167,8 @@ function loadPoems(){
         var bareYt=poem.match(/^(https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)\S*)$/m);
         if(bareYt){ytUrl=bareYt[1].trim();poem=poem.replace(bareYt[1],'').trim();}
       }
-      // Collapse blank line between title and (subtitle) if stored that way
-      poem=poem.replace(/^([^\n]+)\n\n(\()/, '$1\n$2');
+      // Collapse blank line between title and (subtitle) or #hashtag if stored that way
+      poem=poem.replace(/^([^\n]+)\n\n([#(])/, '$1\n$2');
       var stanzas=poem.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
       var title=stanzas[0]||'';var body=stanzas.slice(1);
       var card=document.createElement('div');card.className='novinka-card fade-up';
