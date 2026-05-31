@@ -585,6 +585,8 @@ function loadFile(){
     if(currentFile === 'poems.txt'){
       currentPoemCount = parts.length;
       parts.reverse();
+      // Remove blank line between title and (subtitle)
+      parts = parts.map(function(p){return p.replace(/^([^\n]+)\n\n(\()/, '$1\n$2');});
     }
     text = parts.join('\n\n――――――――――――――――――――――――――\n\n') + '\n\n――――――――――――――――――――――――――\n';
     document.getElementById('editor').value = text;
@@ -613,6 +615,7 @@ function saveFile(){
       return;
     }
     btn.dataset.confirm = '';
+    parts = parts.map(function(p){return p.replace(/^([^\n]+)\n\n(\()/, '$1\n$2');});
     parts.reverse();
     content = parts.join('\n\n===\n\n') + '\n\n===\n';
   } else {
