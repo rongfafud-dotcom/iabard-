@@ -408,7 +408,20 @@ function addNovinka(){
   if(!poem){setNovinkaStatus('Введи стихотворение');return;}
   var btn=document.getElementById('novinka-add-btn');
   btn.disabled=true;
-  setNovinkaStatus('Загрузка index.html…');
+  setNovinkaStatus('Сохранение…');
+  _insertNovinkaCard(token,vid,poem,function(){
+    setNovinkaStatus('✓ Видео добавлено в Новинки!',true);
+    document.getElementById('novinka-url').value='';
+    document.getElementById('novinka-poem').value='';
+    btn.disabled=false;
+    loadNovinkaList();
+  },function(e){
+    btn.disabled=false;
+    if(e.message!=='skip')setNovinkaStatus('Ошибка: '+e.message);
+  });
+}
+
+function _insertNovinkaCard(token,vid,poem,onSuccess,onError){
   fetch(API+'index.html?ref=main',{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})
   .then(function(r){return checkR(r).json();})
   .then(function(data){
@@ -422,7 +435,6 @@ function addNovinka(){
     if(li===-1)throw new Error('novinka-list не найден');
     var insertAt=li+LIST.length;
     html=html.slice(0,insertAt)+'\n'+buildNovinkaCard(poem,vid)+html.slice(insertAt);
-    // Auto-rotation: keep exactly 20 cards, first 5 visible, rest hidden
     (function(){
       var novS=html.indexOf('<!-- YT-NOVINKA-START -->');
       var novE=html.indexOf('<!-- YT-NOVINKA-END -->');
@@ -430,11 +442,9 @@ function addNovinka(){
       var VP='<div class="novinka-card">';
       var HP='<div class="novinka-card novinka-hidden">';
       var sec,sf,i,k;
-      // Step 1: collect positions of all visible cards beyond the 5th (process last→first)
       sec=html.slice(novS,novE);sf=0;var toHide=[],vc=0;
       while(true){var vp=sec.indexOf(VP,sf);if(vp===-1)break;vc++;if(vc>5)toHide.push(novS+vp);sf=vp+1;}
       for(k=toHide.length-1;k>=0;k--){var ap=toHide[k];html=html.slice(0,ap)+HP+html.slice(ap+VP.length);}
-      // Step 2: collect all card positions after changes, remove any beyond 20 (last→first)
       novE=html.indexOf('<!-- YT-NOVINKA-END -->');sec=html.slice(novS,novE);sf=0;var all=[];
       while(true){
         var c1=sec.indexOf(VP,sf),c2=sec.indexOf(HP,sf);
@@ -451,7 +461,6 @@ function addNovinka(){
         if(le!==-1){var rs=ls;while(rs>0&&html[rs-1]!=='\n')rs--;html=html.slice(0,rs)+html.slice(le);}
       }
     })();
-    setNovinkaStatus('Сохранение…');
     var encoded=b64e(html);
     return fetch(API+'index.html',{
       method:'PUT',
@@ -460,17 +469,8 @@ function addNovinka(){
     });
   })
   .then(function(r){if(r.status===401){invalidToken();throw new Error('skip');}if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
-  .then(function(){
-    setNovinkaStatus('✓ Видео добавлено в Новинки!',true);
-    document.getElementById('novinka-url').value='';
-    document.getElementById('novinka-poem').value='';
-    btn.disabled=false;
-    loadNovinkaList();
-  })
-  .catch(function(e){
-    btn.disabled=false;
-    setNovinkaStatus('Ошибка: '+e.message);
-  });
+  .then(function(){if(onSuccess)onSuccess();})
+  .catch(function(e){if(onError)onError(e);else if(e.message!=='skip')console.error('_insertNovinkaCard:',e);});
 }
 
 function switchAudio(btn){
@@ -721,11 +721,21 @@ function savePoemEntry(poemText, audioFilename){
   .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
   .then(function(){
     document.getElementById('poem-add-btn').disabled=false;
-    setPoemAddStatus('✓ Стихотворение добавлено!',true);
     document.getElementById('poem-add-text').value='';
     document.getElementById('poem-yt-url').value='';
     document.getElementById('poem-mp3-input').value='';
     if(currentFile==='poems.txt')loadFile();
+    var vid=extractVideoId(ytUrl);
+    if(vid){
+      setPoemAddStatus('✓ Стих сохранён — публикую в Новинках…');
+      _insertNovinkaCard(token,vid,poemText,function(){
+        setPoemAddStatus('✓ Добавлено в Стихи и Новинки!',true);
+      },function(e){
+        if(e.message!=='skip')setPoemAddStatus('✓ Стих сохранён, но ошибка Новинок: '+e.message);
+      });
+    } else {
+      setPoemAddStatus('✓ Стихотворение добавлено!',true);
+    }
   })
   .catch(function(e){document.getElementById('poem-add-btn').disabled=false;setPoemAddStatus('Ошибка: '+e.message);});
 }
