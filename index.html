@@ -553,6 +553,8 @@
     .contact-hint{font-size:0.72rem;color:rgba(253,246,238,0.32);text-align:center;margin:0;transition:color 0.2s}
     .contact-hint.error{color:#d47a7a}
     .contact-input.warn{border-color:rgba(212,122,122,0.6)}
+    .poem-image{text-align:center;margin:0 0 20px}
+    .poem-image img{max-width:100%;border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,0.35)}
     .poem-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:18px 0 4px}
     .poem-dl-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 16px;border-radius:16px;
       background:rgba(18,6,24,0.55);border:1px solid rgba(201,169,110,0.30);
@@ -3190,6 +3192,8 @@ function loadPoems(){
     raw.forEach(function(rawPoem){
       var audioMatch=rawPoem.match(/^[ \t]*#\s*audio:\s*(.+)$/m);
       var audioFile=audioMatch?audioMatch[1].trim():null;
+      var imageMatch=rawPoem.match(/^[ \t]*#\s*image:\s*(.+)$/m);
+      var imageFile=imageMatch?imageMatch[1].trim():null;
       var ytMatch=rawPoem.match(/^[ \t]*#\s*youtube:\s*(.+)$/mi);
       var ytUrl=ytMatch?ytMatch[1].trim():null;
       // Strip # directives (# keyword: value) but keep inline #hashtags (no space after #)
@@ -3225,6 +3229,10 @@ function loadPoems(){
           '</div>';
       }
       var h=titleHtml;
+      if(imageFile){
+        var imgSrc=/^https?:\/\//i.test(imageFile)?imageFile:'images/'+encodeURIComponent(imageFile);
+        h+='<div class="poem-image"><img src="'+esc(imgSrc)+'" alt="'+esc(mainT||'иллюстрация')+'" loading="lazy"></div>';
+      }
       h+='<div class="novinka-poem">';
       body.forEach(function(s){
         h+='<div class="stanza">'+s.split('\n').map(function(l){return esc(l.trim());}).join('<br>\n')+'</div>';

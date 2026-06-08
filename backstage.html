@@ -190,6 +190,15 @@
         onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'"
         onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
     </label>
+    <label id="poem-img-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:pointer;display:flex;align-items:center;gap:8px;transition:border-color 0.2s" for="poem-image-input">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+      <span id="poem-img-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Добавить картинку</span>
+      <input type="file" id="poem-image-input" accept="image/*" style="display:none" onchange="previewPoemImage(this)">
+    </label>
+    <div id="poem-img-preview" style="display:none;position:relative;border-radius:6px;overflow:hidden">
+      <img id="poem-img-prev-img" style="max-width:100%;max-height:180px;display:block;object-fit:contain;margin:0 auto">
+      <button onclick="clearPoemImage()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.65);border:none;border-radius:50%;color:#e8ddd0;width:22px;height:22px;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;line-height:1">✕</button>
+    </div>
   </div>
   <textarea id="poem-add-text" placeholder="Добавить стихотворение" style="width:100%;height:260px;background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;margin-bottom:16px" spellcheck="false" autocorrect="off" autocapitalize="none" autocomplete="off"></textarea>
   <button class="novinka-add-btn" id="poem-add-btn" onclick="addPoem()">Добавить стихотворение</button>
@@ -694,7 +703,7 @@ function setPoemAddStatus(msg,ok){
   s.style.color=ok?'#7bc47b':'rgba(201,169,110,0.8)';
 }
 
-function savePoemEntry(poemText, audioFilename){
+function savePoemEntry(poemText, audioFilename, imageFilename){
   var token=getToken();
   var ytUrl=document.getElementById('poem-yt-url').value.trim();
   var lines=poemText.split('\n');
@@ -705,6 +714,7 @@ function savePoemEntry(poemText, audioFilename){
   var rest=restLines.join('\n').trimEnd();
   var extras='';
   if(audioFilename) extras+='\n\n# audio: '+audioFilename;
+  if(imageFilename) extras+='\n\n# image: '+imageFilename;
   if(ytUrl) extras+='\n\n'+ytUrl;
   // (subtitle) stays in same stanza as title; everything else gets blank-line separator
   var sep=rest&&rest.charAt(0)==='('?'\n':'\n\n';
@@ -724,6 +734,7 @@ function savePoemEntry(poemText, audioFilename){
     document.getElementById('poem-add-text').value='';
     document.getElementById('poem-yt-url').value='';
     document.getElementById('poem-mp3-input').value='';
+    clearPoemImage();
     if(currentFile==='poems.txt')loadFile();
     var vid=extractVideoId(ytUrl);
     if(vid){
@@ -740,14 +751,73 @@ function savePoemEntry(poemText, audioFilename){
   .catch(function(e){document.getElementById('poem-add-btn').disabled=false;setPoemAddStatus('Ошибка: '+e.message);});
 }
 
+function previewPoemImage(input){
+  var file=input.files[0];
+  if(!file)return;
+  document.getElementById('poem-img-name').textContent=file.name;
+  var img=document.getElementById('poem-img-prev-img');
+  img.src=URL.createObjectURL(file);
+  document.getElementById('poem-img-preview').style.display='block';
+  document.getElementById('poem-img-label').style.borderColor='rgba(201,169,110,0.6)';
+}
+
+function clearPoemImage(){
+  var inp=document.getElementById('poem-image-input');
+  if(inp)inp.value='';
+  var nm=document.getElementById('poem-img-name');
+  if(nm)nm.textContent='Добавить картинку';
+  var pv=document.getElementById('poem-img-preview');
+  if(pv)pv.style.display='none';
+  var lbl=document.getElementById('poem-img-label');
+  if(lbl)lbl.style.borderColor='rgba(201,169,110,0.25)';
+}
+
+function uploadPoemImage(file,onSuccess,onError){
+  var token=getToken();
+  if(!token){onError(new Error('Нет токена'));return;}
+  if(file.size>10*1024*1024){onError(new Error('Файл больше 10 МБ'));return;}
+  var reader=new FileReader();
+  reader.onerror=function(){onError(new Error('Ошибка чтения файла'));};
+  reader.onload=function(e){
+    var arr=new Uint8Array(e.target.result);
+    var chunks=[];
+    for(var i=0;i<arr.length;i+=8192){chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));}
+    var b64=btoa(chunks.join(''));
+    var filename=file.name.replace(/[^\w.\-]/g,'_');
+    var path='images/'+filename;
+    fetch(API+path+'?ref=main',{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})
+    .then(function(r){return r.json();})
+    .then(function(existing){
+      var body={message:'Upload image: '+filename,content:b64,branch:'main'};
+      if(existing&&existing.sha&&!existing.message)body.sha=existing.sha;
+      return fetch(API+path,{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+    })
+    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
+    .then(function(){onSuccess(filename);})
+    .catch(onError);
+  };
+  reader.readAsArrayBuffer(file);
+}
+
 function addPoem(){
   var poemText=document.getElementById('poem-add-text').value.trim();
   if(!poemText){setPoemAddStatus('Введите стихотворение');return;}
   var audioName=(document.getElementById('poem-mp3-input').value.trim().replace(/^#\s*audio:\s*/i,'')||null);
+  var imageFile=document.getElementById('poem-image-input').files[0]||null;
   var btn=document.getElementById('poem-add-btn');
   btn.disabled=true;
-  setPoemAddStatus('Сохранение…');
-  savePoemEntry(poemText,audioName);
+  if(imageFile){
+    setPoemAddStatus('Загрузка картинки…');
+    uploadPoemImage(imageFile,function(filename){
+      savePoemEntry(poemText,audioName,filename);
+    },function(e){
+      btn.disabled=false;
+      setPoemAddStatus('Ошибка загрузки картинки: '+e.message);
+    });
+  } else {
+    setPoemAddStatus('Сохранение…');
+    savePoemEntry(poemText,audioName,null);
+  }
 }
 
 function loadNovinkaList(){
