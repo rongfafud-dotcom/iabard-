@@ -196,7 +196,7 @@
            margin-bottom:6px;text-align:center;text-shadow:0 4px 24px rgba(201,169,110,0.4)}
     .name-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(0.65rem,1.4vw,0.82rem);letter-spacing:5px;
                text-transform:uppercase;color:rgba(253,246,238,0.80);text-align:center;margin-bottom:14px;line-height:1.9}
-    .gold-rule{width:48px;height:1px;background:var(--gold);opacity:0.5;margin-bottom:20px}
+
 
     /* TABS */
     .nav-tabs{display:flex;gap:0;margin-bottom:28px;width:100%;max-width:800px}
@@ -220,7 +220,6 @@
     /* on mobile: push button to end so both phrases stay together above it */
     .tagline-row .social-chip-hero{order:10;margin-top:16px}
     /* SOCIAL */
-    .social-row{display:grid;grid-template-columns:repeat(3,auto);gap:8px;justify-content:center}
     .social-chip{display:inline-flex;align-items:center;gap:4px;padding:5px 11px;
                   border:1px solid rgba(201,169,110,0.55);border-radius:20px;color:rgba(253,246,238,0.92);
                   text-decoration:none;font-size:0.62rem;letter-spacing:1px;transition:all 0.25s;white-space:nowrap}
@@ -273,8 +272,7 @@
     .poem-subtitle{display:block;font-size:0.62em;font-weight:400;font-style:italic;opacity:0.75;letter-spacing:1px;margin-top:2px;line-height:1.2;white-space:normal;text-align:center;max-width:100%}
     .novinka-poem .stanza{margin-bottom:1.5em}
     .novinka-poem .stanza:last-child{margin-bottom:0}
-    .chorus-label{font-family:'Raleway',sans-serif;font-size:0.6rem;letter-spacing:3px;
-                   text-transform:uppercase;color:var(--mauve);margin:0.5em 0 0.8em;opacity:0.9}
+
 
     /* ОБ АВТОРЕ */
     .author-section{max-width:680px;margin:0 auto}
@@ -377,11 +375,7 @@
     .book-back-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.84rem;
       color:#2a1505;line-height:1.55;text-align:center;margin:0;white-space:pre-line}
 
-    /* AUTHOR SOCIAL */
-    .author-social{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:28px 0 0}
-    .author-social .social-chip{color:var(--mauve);border-color:rgba(92,61,85,0.22);
-      background:rgba(92,61,85,0.05)}
-    .author-social .social-chip:hover{color:var(--plum);border-color:var(--plum);background:rgba(92,61,85,0.08)}
+
 
     /* AUTHOR FOOTER */
     .author-footer{margin-top:28px;padding-top:24px;border-top:1px solid rgba(160,110,40,0.25)}
@@ -392,9 +386,7 @@
       font-size:0.72rem;letter-spacing:2.5px;text-transform:uppercase;font-family:'Raleway',sans-serif;
       font-weight:500;box-shadow:0 3px 14px rgba(92,61,85,0.4);transition:all 0.25s}
     .contact-email-btn:hover{background:#3d2040;box-shadow:0 4px 18px rgba(92,61,85,0.55);transform:translateY(-1px)}
-    .author-rights-copy{font-size:0.6rem;letter-spacing:2px;color:rgba(50,28,5,0.85);margin-top:14px}
-    .author-rights .stihi-btn{color:rgba(92,61,85,0.65);border-color:rgba(92,61,85,0.3)}
-    .author-rights .stihi-btn:hover{border-color:var(--plum);color:var(--plum);background:rgba(92,61,85,0.07)}
+
 
 
 
@@ -412,10 +404,7 @@
     footer span{color:rgba(201,169,110,0.9)}
     @media(min-width:521px){footer p br{display:none}.hero-tagline{max-width:900px;white-space:nowrap;font-size:clamp(1.0rem,1.8vw,1.35rem)}}
     .footer-social{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:20px}
-    .stihi-btn{display:inline-block;padding:3px 10px;border:1px solid rgba(201,169,110,0.6);
-                border-radius:12px;color:var(--gold);text-decoration:none;
-                font-size:0.65rem;letter-spacing:1px;transition:all 0.25s;vertical-align:middle}
-    .stihi-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,0.07)}
+
 
     /* YouTube «watch» link under each video */
     .yt-btn-row{display:flex;flex-direction:column;align-items:center;gap:10px;margin:16px 0 24px}
@@ -500,22 +489,19 @@
       .card{padding:40px 24px 44px}.tab-panel{padding:24px 24px 40px}
     }
     @media(max-width:600px){
-      .social-row{grid-template-columns:repeat(3,auto)}
       .novinka-video{max-width:250px}
     }
     @media(max-width:520px){
       .card{padding:36px 16px 4px;min-height:100svh;background-position:50% 18%}
       .tab-panel{padding:20px 16px 32px}
       .name{margin-bottom:2px}.name-sub{margin-bottom:4px}
-      .nav-tabs{margin-bottom:6px}.gold-rule{display:none}
+      .nav-tabs{margin-bottom:6px}
       .hero-tagline{font-size:1.05rem;margin-top:8px}
-      .social-row{gap:6px;margin-bottom:14px;grid-template-columns:repeat(3,auto)}
       .social-chip{padding:5px 10px;font-size:0.62rem}
       footer{padding:20px 24px}
       .novinka-card{padding:20px 16px}
       .novinka-poem{font-size:1rem;line-height:1.9}
       .nav-tab{font-size:0.72rem;letter-spacing:0;padding:12px 3px;white-space:nowrap;overflow:hidden}
-      .drop-arrow{font-size:0.5em}
       .card-bottom{}
       .nav-tab-wrap--nodrop .nav-tab{margin-right:0}
     }
@@ -569,9 +555,6 @@
     /* DROPDOWN NAVIGATION */
     .nav-tab-wrap{flex:1;min-width:0;position:relative;display:flex;justify-content:center;align-items:stretch}
     .nav-tab-wrap .nav-tab{flex:0 1 auto}
-    .drop-arrow{display:inline-block;font-size:0.55em;margin-left:3px;vertical-align:middle;
-      opacity:0.65;transition:transform 0.2s;line-height:1;pointer-events:none}
-    .nav-tab.drop-open .drop-arrow{transform:rotate(180deg)}
     /* ▾ chevron — flex sibling, right next to word */
     .nav-drop-btn{flex-shrink:0;width:22px;padding:0;
       background:none;border:none;border-bottom:1px solid rgba(201,169,110,0.20);
@@ -636,9 +619,7 @@
     .carousel-dot{width:8px;height:8px;border-radius:50%;background:rgba(201,169,110,0.25);
       border:none;cursor:pointer;padding:0;transition:background 0.2s;flex-shrink:0}
     .carousel-dot.active{background:var(--gold)}
-    .carousel-caption{font-family:'Cormorant Garamond',serif;font-style:italic;
-      font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;
-      color:var(--mauve);text-align:center;margin-bottom:16px}
+
     @media(max-width:520px){
       .carousel{padding:0}
       .carousel-prev{left:8px}.carousel-next{right:8px}
@@ -1930,26 +1911,6 @@
     </div>
   </div>
 
-  <!-- НОВИНКИ (автообновление) -->
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <!-- YT-NOVINKA-START -->
   <div id="novinka" class="tab-panel" role="tabpanel" aria-labelledby="tab-creative">
     <div class="novinka-list">
@@ -3111,19 +3072,7 @@ document.querySelectorAll('.book-buy-wrap').forEach(function(w){
   if(p) w.querySelector('.book-front-buy').setAttribute('data-price', p);
 });
 
-function tabAndDrop(e,tabId,panelId,dropId){
-  e.stopPropagation();
-  var drop=document.getElementById(dropId);
-  var wasOpen=drop.classList.contains('open');
-  switchTab(panelId,document.getElementById(tabId));
-  if(!wasOpen){
-    drop.classList.add('open');
-    e.currentTarget.classList.add('drop-open');
-    setTimeout(function(){
-      document.addEventListener('click',function h(){closeDrop();document.removeEventListener('click',h);});
-    },0);
-  }
-}
+
 function closeDrop(){
   document.querySelectorAll('.nav-dropmenu').forEach(function(d){d.classList.remove('open');});
   document.querySelectorAll('.nav-tab,.nav-drop-btn').forEach(function(t){t.classList.remove('drop-open');});
@@ -3242,10 +3191,10 @@ function loadPoems(){
       if(audioFile){
         h+='<div class="audio-ph" data-src="audio/'+encodeURIComponent(audioFile)+'" data-label="'+esc(mainT||'стихотворение')+'"></div>';
       }
-      var safeT=(mainT||'Стихотворение').replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+      var safeT=esc(mainT||'Стихотворение');
       h+='<div class="poem-actions">';
       if(audioFile){
-        h+='<a href="audio/'+encodeURIComponent(audioFile)+'" download="'+audioFile.replace(/"/g,'&quot;')+'" class="poem-dl-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Скачать MP3</a>';
+        h+='<a href="audio/'+encodeURIComponent(audioFile)+'" download="'+esc(audioFile)+'" class="poem-dl-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Скачать MP3</a>';
       }
       h+='<button class="yt-share-btn" data-title="'+safeT+'" onclick="poemShare(this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>Поделиться</button>';
       h+='</div>';
