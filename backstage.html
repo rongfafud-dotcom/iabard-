@@ -479,6 +479,18 @@ function switchAudio(btn){
   loadAudioList();
 }
 
+function sanitizeFilename(name,fallback){
+  return name.replace(/[^\w.\-]/g,'_').replace(/\.{2,}/g,'_').replace(/^[._]+/,'') || fallback;
+}
+
+function showListError(el,msg){
+  var s=document.createElement('span');
+  s.style.cssText='color:#d47a7a;font-size:0.85rem';
+  s.textContent=msg;
+  el.innerHTML='';
+  el.appendChild(s);
+}
+
 function loadAudioList(){
   var token = getToken();
   if(!token){document.getElementById('audio-list').innerHTML='<span style="color:#d47a7a;font-size:0.85rem">Сначала введите токен</span>';return;}
@@ -508,11 +520,11 @@ function loadAudioList(){
       var copyBtn=document.createElement('button');
       copyBtn.className='audio-copy-btn';
       copyBtn.textContent='Копировать тег';
-      (function(name){copyBtn.addEventListener('click',function(){copyAudioTag(name);});})(f.name);
+      copyBtn.addEventListener('click',function(){copyAudioTag(f.name);});
       var delBtn=document.createElement('button');
       delBtn.className='audio-del-btn';
       delBtn.textContent='✕';
-      (function(name,sha){delBtn.addEventListener('click',function(){deleteAudio(name,sha);});})(f.name,f.sha);
+      delBtn.addEventListener('click',function(){deleteAudio(f.name,f.sha);});
       item.appendChild(nameSpan);
       item.appendChild(audio);
       item.appendChild(copyBtn);
@@ -520,14 +532,7 @@ function loadAudioList(){
       list.appendChild(item);
     });
   })
-  .catch(function(e){
-    var span=document.createElement('span');
-    span.style.cssText='color:#d47a7a;font-size:0.85rem';
-    span.textContent='Ошибка: '+e.message;
-    var al=document.getElementById('audio-list');
-    al.innerHTML='';
-    al.appendChild(span);
-  });
+  .catch(function(e){showListError(document.getElementById('audio-list'),'Ошибка: '+e.message);});
 }
 
 function copyAudioTag(filename){
@@ -557,7 +562,7 @@ function uploadAudio(file){
     for(var i=0;i<arr.length;i+=8192){chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));}
     var b64=btoa(chunks.join(''));
     setAudioProgress('Отправка на GitHub…');
-    var safeName=file.name.replace(/[^\w.\-]/g,'_').replace(/\.{2,}/g,'_').replace(/^[._]+/,'') || 'audio';
+    var safeName=sanitizeFilename(file.name,'audio');
     var path='audio/'+safeName;
     fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
       headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
@@ -603,9 +608,9 @@ function deleteAudio(filename,sha){
   .catch(function(e){setAudioProgress('Ошибка удаления: '+e.message);});
 }
 
-function loadFile(){
+function loadFile(onDone){
   var token = getToken();
-  if(!token){setStatus('Сначала введите токен');return;}
+  if(!token){setStatus('Сначала введите токен');if(onDone)onDone();return;}
   setStatus('Загрузка…');
   fetch(API + currentFile + '?ref=main', {
     headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
@@ -623,12 +628,15 @@ function loadFile(){
       parts = parts.map(function(p){return p.replace(/^([^\n]+)\n\n(\()/, '$1\n$2');});
       renderPoemCards(parts);
       setStatus('Загружено ✓', true);
+      if(onDone)onDone();
       return;
     }
     setStatus('Загружено ✓', true);
+    if(onDone)onDone();
   })
   .catch(function(e){
     if(e.message!=='skip')setStatus('Ошибка загрузки: ' + e.message);
+    if(onDone)onDone();
   });
 }
 
@@ -640,6 +648,12 @@ function setPoemAddStatus(msg,ok){
 
 function savePoemEntry(poemText, audioFilename, imageFilename){
   var token=getToken();
+  if(_writeBusy){
+    document.getElementById('poem-add-btn').disabled=false;
+    setPoemAddStatus('Подождите, идёт запись…');
+    return;
+  }
+  _writeBusy=true;
   var ytUrl=document.getElementById('poem-yt-url').value.trim();
   var lines=poemText.split('\n');
   var title=lines[0];
@@ -670,7 +684,11 @@ function savePoemEntry(poemText, audioFilename, imageFilename){
     document.getElementById('poem-yt-url').value='';
     document.getElementById('poem-mp3-input').value='';
     clearPoemImage();
-    if(currentFile==='poems.txt')loadFile();
+    if(currentFile==='poems.txt'){
+      loadFile(function(){_writeBusy=false;});
+    } else {
+      _writeBusy=false;
+    }
     var vid=extractVideoId(ytUrl);
     if(vid){
       setPoemAddStatus('✓ Стих сохранён — публикую в Новинках…');
@@ -683,7 +701,7 @@ function savePoemEntry(poemText, audioFilename, imageFilename){
       setPoemAddStatus('✓ Стихотворение добавлено!',true);
     }
   })
-  .catch(function(e){document.getElementById('poem-add-btn').disabled=false;setPoemAddStatus('Ошибка: '+e.message);});
+  .catch(function(e){_writeBusy=false;document.getElementById('poem-add-btn').disabled=false;setPoemAddStatus('Ошибка: '+e.message);});
 }
 
 function previewPoemImage(input){
@@ -713,7 +731,7 @@ function uploadPoemImage(file,onSuccess,onError){
   if(!token){onError(new Error('Нет токена'));return;}
   if(!_ALLOWED_IMG.includes(file.type)){onError(new Error('Разрешены только JPEG, PNG, WebP, GIF, AVIF'));return;}
   if(file.size>10*1024*1024){onError(new Error('Файл больше 10 МБ'));return;}
-  var filename=file.name.replace(/[^\w.\-]/g,'_').replace(/\.{2,}/g,'_').replace(/^[._]+/,'') || 'image';
+  var filename=sanitizeFilename(file.name,'image');
   var path='images/'+filename;
   var reader=new FileReader();
   reader.onerror=function(){onError(new Error('Ошибка чтения файла'));};
@@ -821,7 +839,7 @@ function loadNovinkaList(){
       listEl.appendChild(item);
     });
   })
-  .catch(function(e){var s=document.createElement('span');s.style.cssText='color:#d47a7a;font-size:0.85rem';s.textContent='Ошибка: '+e.message;listEl.innerHTML='';listEl.appendChild(s);});
+  .catch(function(e){showListError(listEl,'Ошибка: '+e.message);});
 }
 
 function deleteNovinka(vid){
@@ -944,7 +962,7 @@ function loadInbox(){
       if(issue.comments>0) loadReplies(issue.number);
     });
   })
-  .catch(function(e){var d=document.createElement('div');d.className='inbox-empty';d.style.color='#d47a7a';d.textContent='Ошибка: '+e.message;var il=document.getElementById('inbox-list');il.innerHTML='';il.appendChild(d);});
+  .catch(function(e){showListError(document.getElementById('inbox-list'),'Ошибка: '+e.message);});
 }
 
 function loadReplies(number){
@@ -1157,9 +1175,11 @@ function filterPoemCards(q){
 }
 
 var _writeBusy=false;
-function _writePoemsFile(token,cardStatusEl,saveBtn,delBtn,onSuccess){
+function _writePoemsFile(token,cardStatusEl,saveBtn,delBtn,onSuccess,onError,_isRetry){
   if(_writeBusy){
     if(cardStatusEl){cardStatusEl.textContent='Подождите…';cardStatusEl.style.color='rgba(201,169,110,0.8)';}
+    if(saveBtn)saveBtn.disabled=false;
+    if(delBtn)delBtn.disabled=false;
     return;
   }
   _writeBusy=true;
@@ -1195,12 +1215,19 @@ function _writePoemsFile(token,cardStatusEl,saveBtn,delBtn,onSuccess){
   })
   .catch(function(e){
     _writeBusy=false;
+    if(e.message==='skip')return;
+    if(!_isRetry&&e.message&&e.message.indexOf('does not match')!==-1){
+      if(cardStatusEl){cardStatusEl.textContent='Конфликт, повтор…';cardStatusEl.style.color='rgba(201,169,110,0.8)';}
+      else setStatus('SHA конфликт — повтор…');
+      _writePoemsFile(token,cardStatusEl,saveBtn,delBtn,onSuccess,onError,true);
+      return;
+    }
     if(saveBtn)saveBtn.disabled=false;
     if(delBtn)delBtn.disabled=false;
-    if(e.message==='skip')return;
     var errMsg='Ошибка: '+e.message;
     if(cardStatusEl){cardStatusEl.textContent=errMsg;cardStatusEl.style.color='rgba(200,100,100,0.8)';}
     else setStatus(errMsg);
+    if(onError)onError(e);
   });
 }
 
@@ -1228,11 +1255,15 @@ function deletePoemCard(btn){
   var idx=parseInt(card.dataset.idx);
   var saveBtn=card.querySelector('.pcard-save');
   btn.disabled=true;saveBtn.disabled=true;
-  poemParts.splice(idx,1);
+  var removed=poemParts.splice(idx,1)[0];
   setStatus('Удаление…');
   _writePoemsFile(token,null,null,null,function(){
     setStatus('Удалено ✓',true);
     renderPoemCards(poemParts);
+  },function(){
+    poemParts.splice(idx,0,removed);
+    btn.disabled=false;
+    saveBtn.disabled=false;
   });
 }
 
