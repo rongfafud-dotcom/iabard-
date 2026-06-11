@@ -2312,18 +2312,16 @@ function loadPoems(){
           '</div>';
       }
       if(ytUrl&&!/^https?:\/\//i.test(ytUrl))ytUrl=null;
-      var h=titleHtml;
+      var h='';
       if(imageFile){
         var imgSrc=/^https?:\/\//i.test(imageFile)?imageFile:'images/'+encodeURIComponent(imageFile);
         h+='<div class="poem-image"><img src="'+esc(imgSrc)+'" alt="'+esc(mainT||'иллюстрация')+'" loading="lazy"></div>';
       }
-      if(ytUrl){
-        var vid=extractVideoId(ytUrl);
-        if(vid){
-          h+='<div class="novinka-video poem-video"><div class="yt-facade" data-vid="'+esc(vid)+'" onclick="ytPlay(this)"><img src="https://img.youtube.com/vi/'+esc(vid)+'/hqdefault.jpg" alt="'+esc(mainT||'видео')+'" loading="lazy"><button class="yt-play" aria-label="Смотреть видео">&#9654;</button></div></div>';
-          h+='<div class="yt-btn-row poem-yt-row"><a href="https://www.youtube.com/watch?v='+esc(vid)+'" target="_blank" rel="noopener noreferrer" class="yt-watch-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Смотреть видео на YouTube</a></div>';
-        }
+      var vid=ytUrl?extractVideoId(ytUrl):null;
+      if(vid){
+        h+='<div class="novinka-video poem-video"><div class="yt-facade" data-vid="'+esc(vid)+'" onclick="ytPlay(this)"><img src="https://img.youtube.com/vi/'+esc(vid)+'/hqdefault.jpg" alt="'+esc(mainT||'видео')+'" loading="lazy"><button class="yt-play" aria-label="Смотреть видео">&#9654;</button></div></div>';
       }
+      h+=titleHtml;
       if(audioFile){
         h+='<div class="audio-ph" data-src="audio/'+encodeURIComponent(audioFile)+'" data-label="'+esc(mainT||'стихотворение')+'"></div>';
       }
@@ -2334,6 +2332,9 @@ function loadPoems(){
       }
       h+='<button class="yt-share-btn" data-title="'+safeT+'" onclick="poemShare(this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>Поделиться</button>';
       h+='</div>';
+      if(vid){
+        h+='<div class="yt-btn-row poem-yt-row"><a href="https://www.youtube.com/watch?v='+esc(vid)+'" target="_blank" rel="noopener noreferrer" class="yt-watch-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Смотреть видео на YouTube</a></div>';
+      }
       h+='<hr class="poem-divider">';
       h+='<div class="novinka-poem">';
       body.forEach(function(s){
