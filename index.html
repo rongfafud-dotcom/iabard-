@@ -533,10 +533,12 @@
     .contact-hint{font-size:0.72rem;color:rgba(253,246,238,0.32);text-align:center;margin:0;transition:color 0.2s}
     .contact-hint.error{color:#d47a7a}
     .contact-input.warn{border-color:rgba(212,122,122,0.6)}
-    .poem-image{text-align:center;margin:0 0 20px}
+    .poem-image{text-align:center;margin:0 0 24px}
     .poem-image img{max-width:100%;border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,0.35)}
-    .poem-video{max-width:100%}
-    .poem-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:18px 0 4px}
+    .poem-video{max-width:100%;aspect-ratio:9/16;margin-bottom:0}
+    .poem-yt-row{margin:20px 0 24px}
+    .poem-divider{border:none;border-top:1px solid rgba(201,169,110,0.18);margin:28px 0 24px}
+    .poem-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:16px 0 20px}
     .poem-dl-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 16px;border-radius:16px;
       background:rgba(18,6,24,0.55);border:1px solid rgba(201,169,110,0.30);
       color:rgba(253,246,238,0.70);text-decoration:none;
@@ -2318,8 +2320,8 @@ function loadPoems(){
       if(ytUrl){
         var vid=extractVideoId(ytUrl);
         if(vid){
-          h+='<div class="novinka-video novinka-video-wide poem-video"><div class="yt-facade" data-vid="'+esc(vid)+'" onclick="ytPlay(this)"><img src="https://img.youtube.com/vi/'+esc(vid)+'/hqdefault.jpg" alt="'+esc(mainT||'видео')+'" loading="lazy"><button class="yt-play" aria-label="Смотреть видео">&#9654;</button></div></div>';
-          h+='<div class="yt-btn-row"><a href="https://www.youtube.com/watch?v='+esc(vid)+'" target="_blank" rel="noopener noreferrer" class="yt-watch-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Смотреть видео на YouTube</a></div>';
+          h+='<div class="novinka-video poem-video"><div class="yt-facade" data-vid="'+esc(vid)+'" onclick="ytPlay(this)"><img src="https://img.youtube.com/vi/'+esc(vid)+'/hqdefault.jpg" alt="'+esc(mainT||'видео')+'" loading="lazy"><button class="yt-play" aria-label="Смотреть видео">&#9654;</button></div></div>';
+          h+='<div class="yt-btn-row poem-yt-row"><a href="https://www.youtube.com/watch?v='+esc(vid)+'" target="_blank" rel="noopener noreferrer" class="yt-watch-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Смотреть видео на YouTube</a></div>';
         }
       }
       if(audioFile){
@@ -2332,6 +2334,7 @@ function loadPoems(){
       }
       h+='<button class="yt-share-btn" data-title="'+safeT+'" onclick="poemShare(this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>Поделиться</button>';
       h+='</div>';
+      h+='<hr class="poem-divider">';
       h+='<div class="novinka-poem">';
       body.forEach(function(s){
         h+='<div class="stanza">'+s.split('\n').map(function(l){return esc(l.trim());}).join('<br>\n')+'</div>';
