@@ -334,7 +334,7 @@ function switchAudio(btn){
 }
 
 function sanitizeFilename(name,fallback){
-  return name.replace(/[^\w.\-]/g,'_').replace(/\.{2,}/g,'_').replace(/^[._]+/,'') || fallback;
+  return name.replace(/[^\wЀ-ӿ.\-]/g,'_').replace(/\.{2,}/g,'_').replace(/^[._\-]+/,'') || fallback;
 }
 
 function showListError(el,msg){
