@@ -2361,7 +2361,7 @@ function loadPoems(){
       if(offset<raw.length){
         var btn=document.createElement('button');
         btn.className='poems-load-more';
-        btn.textContent='Загрузить ещё ('+(raw.length-offset)+')';
+        btn.textContent='Загрузить следующие 5';
         btn.onclick=renderBatch;
         list.appendChild(btn);
       }
