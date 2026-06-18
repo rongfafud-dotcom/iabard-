@@ -415,17 +415,25 @@ function renderYTList(list){
     row.appendChild(inp);
     // Audio row
     var audioRow=document.createElement('div');audioRow.className='yt-item-audio';
-    var fileInp=document.createElement('input');fileInp.type='file';fileInp.id=uid;fileInp.accept='.mp3,.m4a,.wav,.ogg,.aac,.flac,audio/*';fileInp.style.display='none';
-    var audioLabel=document.createElement('label');audioLabel.htmlFor=uid;audioLabel.className='yt-item-audio-label';audioLabel.textContent='🎵 Добавить MP3 (необязательно)';
+    var fileInp=document.createElement('input');fileInp.type='file';fileInp.id=uid+'-a';fileInp.accept='.mp3,.m4a,.wav,.ogg,.aac,.flac,audio/*';fileInp.style.display='none';
+    var audioLabel=document.createElement('label');audioLabel.htmlFor=uid+'-a';audioLabel.className='yt-item-audio-label';audioLabel.textContent='🎵 Добавить MP3 (необязательно)';
     fileInp.addEventListener('change',function(){
       audioLabel.textContent=fileInp.files[0]?'🎵 '+fileInp.files[0].name:'🎵 Добавить MP3 (необязательно)';
     });
     audioRow.appendChild(fileInp);audioRow.appendChild(audioLabel);
+    // Image row
+    var imgRow=document.createElement('div');imgRow.className='yt-item-audio';
+    var imgInp=document.createElement('input');imgInp.type='file';imgInp.id=uid+'-i';imgInp.accept='image/*';imgInp.style.display='none';
+    var imgLabel=document.createElement('label');imgLabel.htmlFor=uid+'-i';imgLabel.className='yt-item-audio-label';imgLabel.textContent='🖼 Добавить картинку (необязательно)';
+    imgInp.addEventListener('change',function(){
+      imgLabel.textContent=imgInp.files[0]?'🖼 '+imgInp.files[0].name:'🖼 Добавить картинку (необязательно)';
+    });
+    imgRow.appendChild(imgInp);imgRow.appendChild(imgLabel);
     // Save button + status
     var btn=document.createElement('button');btn.className='yt-item-btn';btn.style.marginTop='8px';btn.style.width='100%';btn.textContent='Сохранить';
     var status=document.createElement('div');status.className='yt-item-status';
-    btn.onclick=function(){saveYTEntry(p.title,inp.value.trim(),fileInp.files[0]||null,btn,status);};
-    item.appendChild(titleDiv);item.appendChild(row);item.appendChild(audioRow);item.appendChild(btn);item.appendChild(status);
+    btn.onclick=function(){saveYTEntry(p.title,inp.value.trim(),fileInp.files[0]||null,imgInp.files[0]||null,btn,status);};
+    item.appendChild(titleDiv);item.appendChild(row);item.appendChild(audioRow);item.appendChild(imgRow);item.appendChild(btn);item.appendChild(status);
     el.appendChild(item);
   });
 }
@@ -442,8 +450,8 @@ function filterYT(q){
   document.getElementById('yt-count').textContent=shown+' стих.';
 }
 
-function saveYTEntry(title,url,audioFile,btn,status){
-  if(!url&&!audioFile){status.textContent='Добавьте ссылку или MP3';status.style.color='#d47a7a';return;}
+function saveYTEntry(title,url,audioFile,imageFile,btn,status){
+  if(!url&&!audioFile&&!imageFile){status.textContent='Добавьте ссылку, MP3 или картинку';status.style.color='#d47a7a';return;}
   if(url&&!/^https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)/i.test(url)){status.textContent='Неверная YouTube-ссылка';status.style.color='#d47a7a';return;}
   var token=getToken();
   if(!token){status.textContent='Нет токена';status.style.color='#d47a7a';return;}
@@ -487,7 +495,15 @@ function saveYTEntry(title,url,audioFile,btn,status){
     });
   }
 
-  uploadAudioPromise.then(function(safeName){
+  var uploadImagePromise=Promise.resolve(null);
+  if(imageFile){
+    uploadImagePromise=new Promise(function(resolve,reject){
+      uploadPoemImage(imageFile,resolve,reject);
+    });
+  }
+
+  Promise.all([uploadAudioPromise,uploadImagePromise]).then(function(results){
+    var safeName=results[0];var imgName=results[1];
     status.textContent='Обновление стихотворения…';
     return fetch('https://api.github.com/repos/'+REPO+'/contents/poems.txt?ref=main',{
       headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
@@ -506,6 +522,7 @@ function saveYTEntry(title,url,audioFile,btn,status){
         if(firstLine.trim()===title){
           found=true;
           var addition='';
+          if(imgName)addition+='\n# image: '+imgName;
           if(safeName)addition+='\n# audio: '+safeName;
           if(url)addition+='\n\n'+url;
           return sec.trimEnd()+addition+'\n';
