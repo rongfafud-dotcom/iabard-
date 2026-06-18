@@ -11,8 +11,7 @@
   body{font-family:'Georgia',serif;background:#0e0a0e;color:#e8ddd0;min-height:100vh;padding:24px 16px}
   h1{font-size:1.4rem;color:#c9a96e;letter-spacing:2px;text-align:center;margin-bottom:24px;font-weight:400}
   .tabs{max-width:600px;margin:0 auto 0;display:flex;gap:0}
-  .tab-btn{flex:1;padding:12px;text-align:center;cursor:pointer;border:1px solid rgba(201,169,110,0.2);border-bottom:none;border-radius:8px 8px 0 0;background:rgba(255,255,255,0.03);color:rgba(201,169,110,0.6);font-size:0.85rem;letter-spacing:1px;transition:all 0.2s}
-  .tab-btn.active{background:rgba(201,169,110,0.1);color:#c9a96e;border-color:rgba(201,169,110,0.4)}
+  .tab-btn{flex:1;padding:12px;text-align:center;cursor:pointer;border:1px solid rgba(201,169,110,0.2);border-bottom:none;border-radius:8px 8px 0 0;background:rgba(255,255,255,0.03);color:rgba(201,169,110,0.6);font-size:0.85rem;letter-spacing:1px;transition:all 0.2s}  .tab-btn.active{background:rgba(201,169,110,0.1);color:#c9a96e;border-color:rgba(201,169,110,0.4)}
   .bar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:rgba(201,169,110,0.07);border-top:1px solid rgba(201,169,110,0.15)}
   .status{font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1.2em}
   .novinka-panel{max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:0 0 10px 10px;padding:24px 20px;display:none}
@@ -121,6 +120,20 @@
   .pcard-del{background:transparent;border:1px solid rgba(180,60,60,0.35);border-radius:5px;color:rgba(200,100,100,0.7);padding:7px 12px;cursor:pointer;font-size:0.83rem;transition:all 0.2s}
   .pcard-del:hover{border-color:#d47a7a;color:#d47a7a}
   .pcard-del:disabled{opacity:0.4;cursor:not-allowed}
+  .yt-panel{max-width:600px;margin:0 auto;display:none}
+  .yt-search-wrap{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(201,169,110,0.04);border:1px solid rgba(201,169,110,0.3);border-bottom:none;border-radius:10px 10px 0 0}
+  .yt-search-wrap input{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.2);border-radius:6px;padding:7px 12px;color:#e8ddd0;outline:none;font-family:'Georgia',serif}
+  .yt-count{font-size:0.72rem;color:rgba(201,169,110,0.4);white-space:nowrap}
+  .yt-list{border:1px solid rgba(201,169,110,0.3);border-radius:0 0 10px 10px;overflow:hidden}
+  .yt-item{padding:12px 16px;border-bottom:1px solid rgba(201,169,110,0.1)}
+  .yt-item:last-child{border-bottom:none}
+  .yt-item-title{font-size:0.88rem;color:rgba(201,169,110,0.85);margin-bottom:8px}
+  .yt-item-row{display:flex;gap:8px;align-items:center}
+  .yt-item-input{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.2);border-radius:6px;padding:7px 10px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;min-width:0}
+  .yt-item-input:focus{border-color:rgba(201,169,110,0.5)}
+  .yt-item-btn{background:#c9a96e;border:none;border-radius:5px;color:#0e0a0e;padding:7px 14px;cursor:pointer;font-size:0.82rem;font-weight:600;white-space:nowrap;flex-shrink:0}
+  .yt-item-btn:disabled{opacity:0.4;cursor:not-allowed}
+  .yt-item-status{font-size:0.74rem;color:rgba(201,169,110,0.7);margin-top:5px;min-height:1em}
 </style>
 </head>
 <body>
@@ -151,7 +164,7 @@
 <div class="tabs">
   <div class="tab-btn active" onclick="switchFile('poems.txt',this)">📖 Стихи</div>
   <div class="tab-btn" onclick="switchAudio(this)">🎵 Аудио</div>
-
+  <div class="tab-btn" onclick="switchYT(this)">🎬 YouTube</div>
 </div>
 
 <div class="novinka-panel" id="poem-add-panel" style="border-radius:10px 10px 0 0;border-bottom:none;margin-bottom:0">
@@ -208,6 +221,14 @@
   </div>
   <div class="audio-list-title">Загруженные треки</div>
   <div class="audio-list" id="audio-list"><span style="opacity:0.4;font-size:0.85rem">Загрузка…</span></div>
+</div>
+
+<div class="yt-panel" id="yt-panel">
+  <div class="yt-search-wrap">
+    <input type="search" id="yt-search" placeholder="Найти стихотворение…" oninput="filterYT(this.value)" autocomplete="off">
+    <span class="yt-count" id="yt-count"></span>
+  </div>
+  <div class="yt-list" id="yt-list"><div style="padding:20px;text-align:center;opacity:0.4;font-size:0.85rem">Загрузка…</div></div>
 </div>
 
 <div class="inbox-panel" id="inbox-panel">
@@ -332,6 +353,126 @@ function switchAudio(btn){
   document.getElementById('audio-panel').style.display = 'block';
   document.getElementById('inbox-panel').style.display = 'none';
   loadAudioList();
+}
+
+function switchYT(btn){
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('inbox-btn').classList.remove('active');
+  document.getElementById('poem-add-panel').style.display='none';
+  document.getElementById('poem-list-wrap').style.display='none';
+  document.getElementById('audio-panel').style.display='none';
+  document.getElementById('yt-panel').style.display='block';
+  document.getElementById('inbox-panel').style.display='none';
+  loadYTList();
+}
+
+var _ytPoems=[];
+function loadYTList(){
+  var token=getToken();
+  var el=document.getElementById('yt-list');
+  if(!token){el.innerHTML='<div style="padding:16px;color:#d47a7a;font-size:0.85rem">Сначала введите токен</div>';return;}
+  el.innerHTML='<div style="padding:20px;text-align:center;opacity:0.4;font-size:0.85rem">Загрузка…</div>';
+  fetch('https://api.github.com/repos/'+REPO+'/contents/poems.txt?ref=main',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){if(r.status===401){invalidToken();throw new Error('skip');}return r.json();})
+  .then(function(d){
+    var text=atob(d.content.replace(/\n/g,''));
+    var poems=text.split('===').map(function(p){return p.trim();}).filter(Boolean);
+    _ytPoems=[];
+    poems.forEach(function(raw){
+      var hasYT=/^https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)/m.test(raw);
+      if(hasYT)return;
+      var clean=raw.replace(/[ \t]*#\s+[^\n]*/g,'').trim();
+      var lines=clean.split('\n').map(function(l){return l.trim();}).filter(Boolean);
+      var title=lines[0]||'';
+      if(!title)return;
+      _ytPoems.push({title:title,raw:raw});
+    });
+    renderYTList(_ytPoems);
+  })
+  .catch(function(e){if(e.message!=='skip')el.innerHTML='<div style="padding:16px;color:#d47a7a;font-size:0.85rem">Ошибка загрузки</div>';});
+}
+
+function renderYTList(list){
+  var el=document.getElementById('yt-list');
+  document.getElementById('yt-count').textContent=list.length+' стих.';
+  if(!list.length){el.innerHTML='<div style="padding:20px;text-align:center;opacity:0.5;font-size:0.85rem">Все стихи уже со ссылками!</div>';return;}
+  el.innerHTML='';
+  list.forEach(function(p){
+    var item=document.createElement('div');
+    item.className='yt-item';
+    item.dataset.title=p.title.toLowerCase();
+    var titleDiv=document.createElement('div');titleDiv.className='yt-item-title';titleDiv.textContent=p.title;
+    var row=document.createElement('div');row.className='yt-item-row';
+    var inp=document.createElement('input');inp.type='url';inp.className='yt-item-input';inp.placeholder='https://youtube.com/shorts/…';
+    var btn=document.createElement('button');btn.className='yt-item-btn';btn.textContent='Сохранить';
+    var status=document.createElement('div');status.className='yt-item-status';
+    btn.onclick=function(){saveYTLink(p.title,p.raw,inp.value.trim(),btn,status);};
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')btn.click();});
+    row.appendChild(inp);row.appendChild(btn);
+    item.appendChild(titleDiv);item.appendChild(row);item.appendChild(status);
+    el.appendChild(item);
+  });
+}
+
+function filterYT(q){
+  q=q.toLowerCase().trim();
+  var items=document.querySelectorAll('#yt-list .yt-item');
+  var shown=0;
+  items.forEach(function(it){
+    var match=!q||it.dataset.title.indexOf(q)!==-1;
+    it.style.display=match?'':'none';
+    if(match)shown++;
+  });
+  document.getElementById('yt-count').textContent=shown+' стих.';
+}
+
+function saveYTLink(title,originalRaw,url,btn,status){
+  if(!url){status.textContent='Вставьте ссылку';status.style.color='#d47a7a';return;}
+  if(!/^https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)/i.test(url)){status.textContent='Неверная ссылка';status.style.color='#d47a7a';return;}
+  var token=getToken();
+  if(!token){status.textContent='Нет токена';status.style.color='#d47a7a';return;}
+  btn.disabled=true;status.textContent='Сохранение…';status.style.color='rgba(201,169,110,0.7)';
+  fetch('https://api.github.com/repos/'+REPO+'/contents/poems.txt?ref=main',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){return r.json();})
+  .then(function(d){
+    var text=atob(d.content.replace(/\n/g,''));
+    var sha=d.sha;
+    // Find the exact poem section and append the URL before closing
+    var sections=text.split('===');
+    var found=false;
+    var newSections=sections.map(function(sec){
+      var trimmed=sec.trim();
+      if(!trimmed)return sec;
+      var clean=trimmed.replace(/[ \t]*#\s+[^\n]*/g,'').trim();
+      var firstLine=clean.split('\n')[0]||'';
+      if(firstLine.trim()===title){
+        found=true;
+        // Add URL at end of section, before trailing whitespace
+        return sec.trimEnd()+'\n\n'+url+'\n';
+      }
+      return sec;
+    });
+    if(!found){status.textContent='Стихотворение не найдено';status.style.color='#d47a7a';btn.disabled=false;return;}
+    var newText=newSections.join('===');
+    var encoded=btoa(unescape(encodeURIComponent(newText)));
+    return fetch('https://api.github.com/repos/'+REPO+'/contents/poems.txt',{
+      method:'PUT',
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify({message:'Add YouTube link to: '+title,content:encoded,sha:sha,branch:'main'})
+    });
+  })
+  .then(function(r){
+    if(!r||!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});
+    status.textContent='✓ Сохранено!';status.style.color='#7bc47b';
+    btn.closest('.yt-item').style.opacity='0.4';
+    btn.disabled=true;
+  })
+  .catch(function(e){status.textContent='Ошибка: '+e.message;status.style.color='#d47a7a';btn.disabled=false;});
 }
 
 function sanitizeFilename(name,fallback){
