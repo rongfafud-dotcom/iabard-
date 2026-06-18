@@ -134,6 +134,9 @@
   .yt-item-btn{background:#c9a96e;border:none;border-radius:5px;color:#0e0a0e;padding:7px 14px;cursor:pointer;font-size:0.82rem;font-weight:600;white-space:nowrap;flex-shrink:0}
   .yt-item-btn:disabled{opacity:0.4;cursor:not-allowed}
   .yt-item-status{font-size:0.74rem;color:rgba(201,169,110,0.7);margin-top:5px;min-height:1em}
+  .yt-item-audio{display:flex;align-items:center;gap:8px;margin-top:7px}
+  .yt-item-audio-label{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(201,169,110,0.2);border-radius:6px;padding:6px 10px;color:rgba(232,221,208,0.5);font-size:0.8rem;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .yt-item-audio-label:hover{border-color:rgba(201,169,110,0.45)}
 </style>
 </head>
 <body>
@@ -401,18 +404,28 @@ function renderYTList(list){
   if(!list.length){el.innerHTML='<div style="padding:20px;text-align:center;opacity:0.5;font-size:0.85rem">Все стихи уже со ссылками!</div>';return;}
   el.innerHTML='';
   list.forEach(function(p){
+    var uid='yt-'+Math.random().toString(36).slice(2);
     var item=document.createElement('div');
     item.className='yt-item';
     item.dataset.title=p.title.toLowerCase();
     var titleDiv=document.createElement('div');titleDiv.className='yt-item-title';titleDiv.textContent=p.title;
+    // YouTube URL row
     var row=document.createElement('div');row.className='yt-item-row';
-    var inp=document.createElement('input');inp.type='url';inp.className='yt-item-input';inp.placeholder='https://youtube.com/shorts/…';
-    var btn=document.createElement('button');btn.className='yt-item-btn';btn.textContent='Сохранить';
+    var inp=document.createElement('input');inp.type='url';inp.className='yt-item-input';inp.placeholder='https://youtube.com/shorts/… (необязательно)';
+    row.appendChild(inp);
+    // Audio row
+    var audioRow=document.createElement('div');audioRow.className='yt-item-audio';
+    var fileInp=document.createElement('input');fileInp.type='file';fileInp.id=uid;fileInp.accept='.mp3,.m4a,.wav,.ogg,.aac,.flac,audio/*';fileInp.style.display='none';
+    var audioLabel=document.createElement('label');audioLabel.htmlFor=uid;audioLabel.className='yt-item-audio-label';audioLabel.textContent='🎵 Добавить MP3 (необязательно)';
+    fileInp.addEventListener('change',function(){
+      audioLabel.textContent=fileInp.files[0]?'🎵 '+fileInp.files[0].name:'🎵 Добавить MP3 (необязательно)';
+    });
+    audioRow.appendChild(fileInp);audioRow.appendChild(audioLabel);
+    // Save button + status
+    var btn=document.createElement('button');btn.className='yt-item-btn';btn.style.marginTop='8px';btn.style.width='100%';btn.textContent='Сохранить';
     var status=document.createElement('div');status.className='yt-item-status';
-    btn.onclick=function(){saveYTLink(p.title,p.raw,inp.value.trim(),btn,status);};
-    inp.addEventListener('keydown',function(e){if(e.key==='Enter')btn.click();});
-    row.appendChild(inp);row.appendChild(btn);
-    item.appendChild(titleDiv);item.appendChild(row);item.appendChild(status);
+    btn.onclick=function(){saveYTEntry(p.title,inp.value.trim(),fileInp.files[0]||null,btn,status);};
+    item.appendChild(titleDiv);item.appendChild(row);item.appendChild(audioRow);item.appendChild(btn);item.appendChild(status);
     el.appendChild(item);
   });
 }
@@ -429,45 +442,89 @@ function filterYT(q){
   document.getElementById('yt-count').textContent=shown+' стих.';
 }
 
-function saveYTLink(title,originalRaw,url,btn,status){
-  if(!url){status.textContent='Вставьте ссылку';status.style.color='#d47a7a';return;}
-  if(!/^https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)/i.test(url)){status.textContent='Неверная ссылка';status.style.color='#d47a7a';return;}
+function saveYTEntry(title,url,audioFile,btn,status){
+  if(!url&&!audioFile){status.textContent='Добавьте ссылку или MP3';status.style.color='#d47a7a';return;}
+  if(url&&!/^https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)/i.test(url)){status.textContent='Неверная YouTube-ссылка';status.style.color='#d47a7a';return;}
   var token=getToken();
   if(!token){status.textContent='Нет токена';status.style.color='#d47a7a';return;}
-  btn.disabled=true;status.textContent='Сохранение…';status.style.color='rgba(201,169,110,0.7)';
-  fetch('https://api.github.com/repos/'+REPO+'/contents/poems.txt?ref=main',{
-    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
-  })
-  .then(function(r){return r.json();})
-  .then(function(d){
-    var text=atob(d.content.replace(/\n/g,''));
-    var sha=d.sha;
-    // Find the exact poem section and append the URL before closing
-    var sections=text.split('===');
-    var found=false;
-    var newSections=sections.map(function(sec){
-      var trimmed=sec.trim();
-      if(!trimmed)return sec;
-      var clean=trimmed.replace(/[ \t]*#\s+[^\n]*/g,'').trim();
-      var firstLine=clean.split('\n')[0]||'';
-      if(firstLine.trim()===title){
-        found=true;
-        // Add URL at end of section, before trailing whitespace
-        return sec.trimEnd()+'\n\n'+url+'\n';
-      }
-      return sec;
+  btn.disabled=true;status.style.color='rgba(201,169,110,0.7)';
+
+  var uploadAudioPromise=Promise.resolve(null);
+  if(audioFile){
+    status.textContent='Загрузка аудио…';
+    uploadAudioPromise=new Promise(function(resolve,reject){
+      var reader=new FileReader();
+      reader.onload=function(e){
+        var arr=new Uint8Array(e.target.result);
+        var chunks=[];
+        for(var i=0;i<arr.length;i+=8192){chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));}
+        var b64=btoa(chunks.join(''));
+        var safeName=sanitizeFilename(audioFile.name,'audio');
+        var path='audio/'+safeName;
+        fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
+          headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+        })
+        .then(function(r){return r.json();})
+        .then(function(existing){
+          var body={message:'Upload audio: '+safeName,content:b64,branch:'main'};
+          if(existing&&existing.sha&&!existing.message)body.sha=existing.sha;
+          return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{
+            method:'PUT',
+            headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+            body:JSON.stringify(body)
+          });
+        })
+        .then(function(r){
+          if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});
+          var ts=JSON.parse(localStorage.getItem('audio_ts')||'{}');
+          ts[safeName]=Date.now();
+          localStorage.setItem('audio_ts',JSON.stringify(ts));
+          resolve(safeName);
+        })
+        .catch(reject);
+      };
+      reader.readAsArrayBuffer(audioFile);
     });
-    if(!found){status.textContent='Стихотворение не найдено';status.style.color='#d47a7a';btn.disabled=false;return;}
-    var newText=newSections.join('===');
-    var encoded=btoa(unescape(encodeURIComponent(newText)));
-    return fetch('https://api.github.com/repos/'+REPO+'/contents/poems.txt',{
-      method:'PUT',
-      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-      body:JSON.stringify({message:'Add YouTube link to: '+title,content:encoded,sha:sha,branch:'main'})
+  }
+
+  uploadAudioPromise.then(function(safeName){
+    status.textContent='Обновление стихотворения…';
+    return fetch('https://api.github.com/repos/'+REPO+'/contents/poems.txt?ref=main',{
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+    })
+    .then(function(r){return r.json();})
+    .then(function(d){
+      var text=atob(d.content.replace(/\n/g,''));
+      var sha=d.sha;
+      var sections=text.split('===');
+      var found=false;
+      var newSections=sections.map(function(sec){
+        var trimmed=sec.trim();
+        if(!trimmed)return sec;
+        var clean=trimmed.replace(/[ \t]*#\s+[^\n]*/g,'').trim();
+        var firstLine=clean.split('\n')[0]||'';
+        if(firstLine.trim()===title){
+          found=true;
+          var addition='';
+          if(safeName)addition+='\n# audio: '+safeName;
+          if(url)addition+='\n\n'+url;
+          return sec.trimEnd()+addition+'\n';
+        }
+        return sec;
+      });
+      if(!found){status.textContent='Стихотворение не найдено';status.style.color='#d47a7a';btn.disabled=false;return Promise.resolve(null);}
+      var newText=newSections.join('===');
+      var encoded=btoa(unescape(encodeURIComponent(newText)));
+      return fetch('https://api.github.com/repos/'+REPO+'/contents/poems.txt',{
+        method:'PUT',
+        headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+        body:JSON.stringify({message:'Add media to: '+title,content:encoded,sha:sha,branch:'main'})
+      });
     });
   })
   .then(function(r){
-    if(!r||!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});
+    if(!r)return;
+    if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});
     status.textContent='✓ Сохранено!';status.style.color='#7bc47b';
     btn.closest('.yt-item').style.opacity='0.4';
     btn.disabled=true;
