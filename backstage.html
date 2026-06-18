@@ -361,6 +361,12 @@ function loadAudioList(){
   .then(function(files){
     var list=document.getElementById('audio-list');
     if(!files.length){list.innerHTML='<span style="opacity:0.4;font-size:0.85rem">Нет загруженных треков</span>';return;}
+    var ts=JSON.parse(localStorage.getItem('audio_ts')||'{}');
+    files.sort(function(a,b){
+      var ta=ts[a.name]||0, tb=ts[b.name]||0;
+      if(ta!==tb)return tb-ta;
+      return a.name.localeCompare(b.name);
+    });
     list.innerHTML='';
     files.forEach(function(f){
       var item=document.createElement('div');
@@ -438,6 +444,9 @@ function uploadAudio(file){
     .then(function(){
       setAudioProgress('✓ Загружено: '+safeName, true);
       document.getElementById('audio-file-input').value='';
+      var ts=JSON.parse(localStorage.getItem('audio_ts')||'{}');
+      ts[safeName]=Date.now();
+      localStorage.setItem('audio_ts',JSON.stringify(ts));
       loadAudioList();
     })
     .catch(function(e){setAudioProgress('Ошибка: '+e.message);});
