@@ -567,10 +567,10 @@
     /* Transparent dropdown — same typography as nav */
     /* ── Единый стиль дропдаунов (hero + sticky) ── */
     .nav-dropmenu,.snav-drop{
-      background:rgba(30,18,32,0.96);
-      backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-      border:1px solid rgba(201,169,110,0.30);border-radius:8px;
-      box-shadow:0 8px 32px rgba(0,0,0,0.6);
+      background:rgba(14,6,22,0.78);
+      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+      border:1px solid rgba(201,169,110,0.20);border-radius:8px;
+      box-shadow:0 6px 24px rgba(0,0,0,0.45);
       padding:8px 0;min-width:148px;z-index:600}
     .nav-dropmenu{position:absolute;top:100%;left:50%;transform:translateX(-50%);display:none}
     .nav-dropmenu.open{display:block;animation:dropIn 0.18s ease}
@@ -583,7 +583,7 @@
       font-family:'Cormorant Garamond',serif;
       font-size:clamp(0.82rem,1.6vw,0.95rem);
       font-weight:400;letter-spacing:2px;text-transform:uppercase;
-      color:rgba(255,255,255,0.88);text-align:center;white-space:normal;
+      color:rgba(255,255,255,0.90);text-align:center;white-space:nowrap;
       transition:color 0.15s,background 0.15s}
     .nav-dropmenu button:hover,.snav-drop button:hover{color:var(--gold);background:rgba(201,169,110,0.07)}
     .nav-dropmenu button+button,.snav-drop button+button{border-top:1px solid rgba(201,169,110,0.12)}
@@ -591,7 +591,6 @@
       letter-spacing:1px;text-transform:none;opacity:0.65;font-weight:300;margin-top:1px}
     /* Whole wrap glows on hover */
     .nav-tab-wrap:hover .nav-tab,.nav-tab-wrap:hover .nav-drop-btn{color:var(--gold);border-bottom-color:var(--gold)}
-    #drop-books{max-height:52vh;overflow-y:auto}
 
     /* PHOTO CAROUSEL */
     .carousel{position:relative;margin:0 auto 36px;max-width:420px;width:100%;padding:0 48px;box-sizing:border-box}
