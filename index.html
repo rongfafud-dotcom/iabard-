@@ -735,6 +735,13 @@
 <!-- STICKY NAV -->
 <nav id="sticky-nav" aria-label="Быстрая навигация">
   <div class="snav-wrap">
+    <button class="snav-btn" data-panels="novosti poems">Творчество</button>
+    <div class="snav-drop">
+      <button onclick="goCreative('poems')">Поэзия</button>
+      <button onclick="goCreative('novosti')">Balada о зодиаке</button>
+    </div>
+  </div>
+  <div class="snav-wrap">
     <button class="snav-btn" data-panels="books">Книги</button>
     <div class="snav-drop">
       <button onclick="goBook('book-soavtor')">Соавтор жизни</button>
@@ -746,13 +753,6 @@
       <button onclick="goBook('book-citadel2')">Моя Цитадель<span class="book-sub">Книга 2</span></button>
       <button onclick="goBook('book-citadel3')">Моя Цитадель<span class="book-sub">Книга 3</span></button>
       <button onclick="goBook('book-lila')">Лила<span class="book-sub">Книга</span></button>
-    </div>
-  </div>
-  <div class="snav-wrap">
-    <button class="snav-btn" data-panels="novosti poems">Творчество</button>
-    <div class="snav-drop">
-      <button onclick="goCreative('poems')">Поэзия</button>
-      <button onclick="goCreative('novosti')">Balada о зодиаке</button>
     </div>
   </div>
   <div class="snav-wrap">
@@ -777,10 +777,18 @@
     <p class="name-sub">Hypatia Bard / Ипа́тия Бард</p>
     <div class="nav-tabs" role="tablist" aria-label="Разделы сайта">
       <div class="nav-tab-wrap">
+        <button class="nav-tab active" role="tab" aria-selected="true" id="tab-creative" onclick="switchTab('poems',this)">Творчество</button>
+        <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-creative')" aria-label="Открыть меню творчества">▾</button>
+        <div class="nav-dropmenu" id="drop-creative">
+          <button onclick="goCreative('novosti')">Balada о зодиаке</button>
+          <button onclick="goCreative('poems')">Поэзия</button>
+        </div>
+      </div>
+      <div class="nav-tab-wrap">
         <button class="nav-tab" role="tab" aria-selected="false" aria-controls="books" id="tab-books" onclick="switchTab('books',this)">Книги</button>
         <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-books')" aria-label="Список книг">▾</button>
         <div class="nav-dropmenu" id="drop-books">
-<button onclick="goBook('book-soavtor')">Соавтор жизни</button>
+          <button onclick="goBook('book-soavtor')">Соавтор жизни</button>
           <button onclick="goBook('book-dom')">Дом</button>
           <button onclick="goBook('book-schastie')">Женское счастье</button>
           <button onclick="goBook('book-zapiski1')">Записки из палаты № 6<span class="book-sub">Книга 1</span></button>
@@ -789,14 +797,6 @@
           <button onclick="goBook('book-citadel2')">Моя Цитадель<span class="book-sub">Книга 2</span></button>
           <button onclick="goBook('book-citadel3')">Моя Цитадель<span class="book-sub">Книга 3</span></button>
           <button onclick="goBook('book-lila')">Лила<span class="book-sub">Книга</span></button>
-        </div>
-      </div>
-      <div class="nav-tab-wrap">
-        <button class="nav-tab active" role="tab" aria-selected="true" id="tab-creative" onclick="switchTab('poems',this)">Творчество</button>
-        <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-creative')" aria-label="Открыть меню творчества">▾</button>
-        <div class="nav-dropmenu" id="drop-creative">
-          <button onclick="goCreative('novosti')">Balada о зодиаке</button>
-          <button onclick="goCreative('poems')">Поэзия</button>
         </div>
       </div>
       <div class="nav-tab-wrap">
