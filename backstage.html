@@ -657,13 +657,25 @@ function uploadAudio(file){
       if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});
       return r.json();
     })
-    .then(function(){
+    .then(function(data){
       setAudioProgress('✓ Загружено: '+safeName, true);
       document.getElementById('audio-file-input').value='';
       var ts=JSON.parse(localStorage.getItem('audio_ts')||'{}');
       ts[safeName]=Date.now();
       localStorage.setItem('audio_ts',JSON.stringify(ts));
-      loadAudioList();
+      var url=(data&&data.content&&data.content.download_url)||('https://raw.githubusercontent.com/'+REPO+'/main/audio/'+safeName);
+      var sha=(data&&data.content&&data.content.sha)||'';
+      var list=document.getElementById('audio-list');
+      if(!list.querySelector('.audio-item'))list.innerHTML='';
+      var item=document.createElement('div');item.className='audio-item';
+      var nameSpan=document.createElement('span');nameSpan.className='audio-item-name';nameSpan.textContent=safeName;
+      var audio=document.createElement('audio');audio.controls=true;audio.src=url;
+      var copyBtn=document.createElement('button');copyBtn.className='audio-copy-btn';copyBtn.textContent='Копировать тег';
+      copyBtn.addEventListener('click',function(){copyAudioTag(safeName);});
+      var delBtn=document.createElement('button');delBtn.className='audio-del-btn';delBtn.textContent='✕';
+      delBtn.addEventListener('click',function(){deleteAudio(safeName,sha);});
+      item.appendChild(nameSpan);item.appendChild(audio);item.appendChild(copyBtn);item.appendChild(delBtn);
+      list.insertBefore(item,list.firstChild);
     })
     .catch(function(e){setAudioProgress('Ошибка: '+e.message);});
   };
