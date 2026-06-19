@@ -777,7 +777,7 @@
     <p class="name-sub">Hypatia Bard / Ипа́тия Бард</p>
     <div class="nav-tabs" role="tablist" aria-label="Разделы сайта">
       <div class="nav-tab-wrap">
-        <button class="nav-tab active" role="tab" aria-selected="true" aria-controls="books" id="tab-books" onclick="switchTab('books',this)">Книги</button>
+        <button class="nav-tab" role="tab" aria-selected="false" aria-controls="books" id="tab-books" onclick="switchTab('books',this)">Книги</button>
         <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-books')" aria-label="Список книг">▾</button>
         <div class="nav-dropmenu" id="drop-books">
 <button onclick="goBook('book-soavtor')">Соавтор жизни</button>
@@ -792,7 +792,7 @@
         </div>
       </div>
       <div class="nav-tab-wrap">
-        <button class="nav-tab" role="tab" aria-selected="false" id="tab-creative" onclick="switchTab('poems',this)">Творчество</button>
+        <button class="nav-tab active" role="tab" aria-selected="true" id="tab-creative" onclick="switchTab('poems',this)">Творчество</button>
         <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-creative')" aria-label="Открыть меню творчества">▾</button>
         <div class="nav-dropmenu" id="drop-creative">
           <button onclick="goCreative('novosti')">Balada о зодиаке</button>
@@ -1437,7 +1437,7 @@
   </div>
 
   <!-- КНИГИ -->
-  <div id="books" class="tab-panel active" role="tabpanel" aria-labelledby="tab-books">
+  <div id="books" class="tab-panel" role="tabpanel" aria-labelledby="tab-books">
     <div class="books-grid">
 
       <div class="flip-card" id="book-soavtor" onclick="this.classList.toggle('flipped')">
@@ -2096,7 +2096,7 @@
 
 
   <!-- СТИХИ -->
-  <div id="poems" class="tab-panel" role="tabpanel" aria-labelledby="tab-creative">
+  <div id="poems" class="tab-panel active" role="tabpanel" aria-labelledby="tab-creative">
     <div class="poem-search-wrap">
       <input type="search" id="poem-search" class="poem-search" placeholder="Найти стихотворение…" aria-label="Поиск стихотворений" autocomplete="off">
     </div>
@@ -2420,7 +2420,13 @@ function switchTab(id, btn) {
   });
 }
 history.scrollRestoration = 'manual';
-window.addEventListener('load', function(){ window.scrollTo(0,0); });
+window.addEventListener('load', function(){
+  window.scrollTo(0,0);
+  loadPoems();
+  document.querySelectorAll('#sticky-nav .snav-btn').forEach(function(b){
+    b.classList.toggle('s-active',(b.dataset.panels||'').split(' ').indexOf('poems')!==-1);
+  });
+});
 
 // Inject "Смотреть видео на YouTube" + "Поделиться" under every video
 function showShareMenu(anchor, url, shortsUrl) {
