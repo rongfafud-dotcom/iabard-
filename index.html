@@ -576,7 +576,7 @@
       font-family:'Cormorant Garamond',serif;
       font-size:clamp(0.82rem,1.6vw,1.0rem);
       font-weight:400;letter-spacing:2px;text-transform:uppercase;
-      text-align:center;white-space:nowrap;
+      text-align:center;white-space:normal;
       text-shadow:0 1px 12px rgba(0,0,0,0.95);
       transition:color 0.15s}
     .nav-dropmenu button .book-sub,.snav-drop button .book-sub{display:block;font-size:0.72em;
@@ -586,8 +586,8 @@
     .nav-dropmenu button+button{border-top:1px solid rgba(201,169,110,0.12)}
     /* Whole wrap glows on hover — tab text and arrow both light up */
     .nav-tab-wrap:hover .nav-tab,.nav-tab-wrap:hover .nav-drop-btn{color:var(--gold);border-bottom-color:var(--gold)}
-    #drop-books{left:0;transform:none}
-    #drop-books.open{animation:dropIn2 0.18s ease}
+    #drop-creative{left:0;transform:none}
+    #drop-creative.open{animation:dropIn2 0.18s ease}
     @keyframes dropIn2{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
     @media(max-width:520px){
       .nav-dropmenu{min-width:160px}
@@ -738,7 +738,7 @@
     <button class="snav-btn" data-panels="novosti poems">Творчество</button>
     <div class="snav-drop">
       <button onclick="goCreative('poems')">Поэзия</button>
-      <button onclick="goCreative('novosti')">Balada о зодиаке</button>
+      <button onclick="goCreative('novosti')">Баллада о<br>Зодиаке</button>
     </div>
   </div>
   <div class="snav-wrap">
@@ -780,7 +780,7 @@
         <button class="nav-tab active" role="tab" aria-selected="true" id="tab-creative" onclick="switchTab('poems',this)">Творчество</button>
         <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-creative')" aria-label="Открыть меню творчества">▾</button>
         <div class="nav-dropmenu" id="drop-creative">
-          <button onclick="goCreative('novosti')">Balada о зодиаке</button>
+          <button onclick="goCreative('novosti')">Баллада о<br>Зодиаке</button>
           <button onclick="goCreative('poems')">Поэзия</button>
         </div>
       </div>
