@@ -566,8 +566,9 @@
     .nav-tab-wrap--nodrop .nav-tab{margin-right:22px}
     /* Transparent dropdown — same typography as nav */
     .nav-dropmenu{position:absolute;top:100%;left:50%;transform:translateX(-50%);
-      background:transparent;border:none;box-shadow:none;
-      z-index:300;min-width:230px;overflow:visible;display:none;padding-top:6px}
+      background:rgba(14,10,14,0.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+      border:1px solid rgba(201,169,110,0.18);border-radius:8px;box-shadow:0 8px 32px rgba(0,0,0,0.55);
+      z-index:300;min-width:160px;overflow:visible;display:none;padding:4px 0}
     .nav-dropmenu.open{display:block;animation:dropIn 0.18s ease}
     @keyframes dropIn{from{opacity:0;transform:translateX(-50%) translateY(-4px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
     .nav-dropmenu button{display:block;width:100%;padding:7px 8px;
@@ -586,9 +587,7 @@
     .nav-dropmenu button+button{border-top:1px solid rgba(201,169,110,0.12)}
     /* Whole wrap glows on hover — tab text and arrow both light up */
     .nav-tab-wrap:hover .nav-tab,.nav-tab-wrap:hover .nav-drop-btn{color:var(--gold);border-bottom-color:var(--gold)}
-    #drop-creative{left:0;transform:none}
-    #drop-creative.open{animation:dropIn2 0.18s ease}
-    @keyframes dropIn2{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes dropIn2{from{opacity:0;transform:translateX(-50%) translateY(-4px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
     @media(max-width:520px){
       .nav-dropmenu{min-width:160px}
     }
@@ -780,8 +779,8 @@
         <button class="nav-tab active" role="tab" aria-selected="true" id="tab-creative" onclick="switchTab('poems',this)">Творчество</button>
         <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-creative')" aria-label="Открыть меню творчества">▾</button>
         <div class="nav-dropmenu" id="drop-creative">
-          <button onclick="goCreative('novosti')">Баллада о<br>Зодиаке</button>
           <button onclick="goCreative('poems')">Поэзия</button>
+          <button onclick="goCreative('novosti')">Баллада о<br>Зодиаке</button>
         </div>
       </div>
       <div class="nav-tab-wrap">
