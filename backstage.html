@@ -164,28 +164,18 @@
   </div>
 </div>
 
-<div id="main-panel" style="max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:10px;overflow:hidden">
-
-  <!-- ВЫБОР РЕЖИМА -->
-  <div id="mode-selector" style="padding:16px;display:flex;flex-direction:column;gap:10px">
-    <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);text-align:center;padding-bottom:4px">Что хотите сделать?</div>
-    <button onclick="setMode('add')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="font-size:1.3rem">✏️</span><span style="color:#c9a96e;font-size:1.05rem">Добавить</span>
-    </button>
-    <button onclick="setMode('edit')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="font-size:1.3rem">📋</span><span style="color:#c9a96e;font-size:1.05rem">Редактировать</span>
-    </button>
-  </div>
+<div class="tabs" style="max-width:600px;margin:0 auto">
+  <button class="tab-btn active" id="mode-tab-add" onclick="setMode('add',this)">Добавить</button>
+  <button class="tab-btn" id="mode-tab-edit" onclick="setMode('edit',this)">Редактировать</button>
+</div>
+<div id="main-panel" style="max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:0 0 10px 10px;overflow:hidden">
 
   <!-- ДОБАВИТЬ -->
-  <div id="mode-add" style="display:none">
+  <div id="mode-add" style="display:block">
 
-  <!-- ШАГИ 1: выбор рубрики -->
+  <!-- выбор рубрики -->
   <div id="add-section-picker" style="padding:16px;display:flex;flex-direction:column;gap:10px">
-    <div style="display:flex;align-items:center;gap:10px;padding-bottom:8px;border-bottom:1px solid rgba(201,169,110,0.12);margin-bottom:2px">
-      <button onclick="setMode(null)" style="background:none;border:1px solid rgba(201,169,110,0.25);border-radius:6px;color:rgba(201,169,110,0.6);padding:4px 10px;cursor:pointer;font-size:0.78rem;font-family:'Georgia',serif">← Режим</button>
-      <span style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);flex:1;text-align:center">Добавить в рубрику</span>
-    </div>
+    <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);text-align:center;padding-bottom:4px">Выберите рубрику</div>
     <button onclick="selectAddSection('poems')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
       <span style="font-size:1.3rem">📜</span><span style="color:#c9a96e;font-size:1.05rem">Поэзия</span>
     </button>
@@ -304,10 +294,7 @@
 
     <!-- Edit picker -->
     <div id="edit-picker" style="padding:16px;display:flex;flex-direction:column;gap:10px">
-      <div style="display:flex;align-items:center;gap:10px;padding-bottom:8px;border-bottom:1px solid rgba(201,169,110,0.12);margin-bottom:2px">
-        <button onclick="setMode(null)" style="background:none;border:1px solid rgba(201,169,110,0.25);border-radius:6px;color:rgba(201,169,110,0.6);padding:4px 10px;cursor:pointer;font-size:0.78rem;font-family:'Georgia',serif">← Режим</button>
-        <span style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);flex:1;text-align:center">Что редактировать?</span>
-      </div>
+      <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);text-align:center;padding-bottom:4px">Выберите рубрику</div>
       <button onclick="selectEditSection('poems')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
         <span style="font-size:1.3rem">📜</span><span style="color:#c9a96e;font-size:1.05rem">Поэзия</span>
       </button>
@@ -1411,8 +1398,9 @@ var _ed={section:'',file:'',sha:'',rawEntries:[],idx:null};
 var SECFILE={poems:'poems.txt',astrology:'astrology.txt','poetry-en':'poems-en.txt',author:'author.txt',shop:'shop.txt',books:'books.txt'};
 var SECLABEL={poems:'Поэзия',astrology:'Астрология','poetry-en':'Songs EN',author:'Ия Бард',shop:'Товар',books:'Книги'};
 
-function setMode(m){
-  document.getElementById('mode-selector').style.display=m?'none':'flex';
+function setMode(m,btn){
+  document.getElementById('mode-tab-add').classList.toggle('active',m==='add');
+  document.getElementById('mode-tab-edit').classList.toggle('active',m==='edit');
   document.getElementById('mode-add').style.display=m==='add'?'block':'none';
   document.getElementById('mode-edit').style.display=m==='edit'?'block':'none';
   if(m==='add'){
@@ -1639,14 +1627,17 @@ function deleteEditAudio(filename,sha,btn){
 function switchInbox(){
   var panel=document.getElementById('inbox-panel');
   var mainPanel=document.getElementById('main-panel');
+  var tabs=document.querySelector('.tabs');
   if(panel.style.display==='block'){
     panel.style.display='none';
     if(mainPanel)mainPanel.style.display='block';
+    if(tabs)tabs.style.display='';
     document.getElementById('inbox-btn').classList.remove('active');
     return;
   }
   document.getElementById('inbox-btn').classList.add('active');
   if(mainPanel)mainPanel.style.display='none';
+  if(tabs)tabs.style.display='none';
   panel.style.display='block';
   localStorage.setItem('inbox_seen',Date.now());
   document.getElementById('inbox-badge').style.display='none';
@@ -1990,7 +1981,6 @@ function deletePoemCard(btn){
 
 // Init
 (function(){
-  document.getElementById('main-panel').style.display='block';
   var saved=localStorage.getItem('gh_token');
   if(saved){
     document.getElementById('token').value = saved;
