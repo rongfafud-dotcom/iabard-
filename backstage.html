@@ -184,6 +184,9 @@
     <button onclick="selectAddSection('shop')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
       <span style="font-size:1.3rem">🛍️</span><span style="color:#c9a96e;font-size:1.05rem">Товар</span>
     </button>
+    <button onclick="selectAddSection('books')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+      <span style="font-size:1.3rem">📚</span><span style="color:#c9a96e;font-size:1.05rem">Книги</span>
+    </button>
   </div>
 
   <!-- ШАГ 2: форма (скрыта до выбора) -->
@@ -267,6 +270,14 @@
     <textarea id="shop-text" placeholder="Описание (необязательно)" rows="4" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
     <button onclick="addShop()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
     <div id="shop-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
+  </div>
+
+  <div id="add-form-books" style="padding:20px;display:none;flex-direction:column;gap:8px">
+    <input type="text" id="books-title" placeholder="Название" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <input type="url" id="books-url" placeholder="Ссылка (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <textarea id="books-text" placeholder="Описание (необязательно)" rows="4" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
+    <button onclick="addBooks()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
+    <div id="books-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
   </div>
 
   </div><!-- /add-form-wrap -->
@@ -388,11 +399,11 @@ function switchAdd(btn){
 }
 
 function selectAddSection(section){
-  var labels={poems:'Поэзия','poetry-en':'Songs EN',astrology:'Астрология',author:'Ия Бард',shop:'Товар'};
+  var labels={poems:'Поэзия','poetry-en':'Songs EN',astrology:'Астрология',author:'Ия Бард',shop:'Товар',books:'Книги'};
   document.getElementById('add-section-picker').style.display='none';
   document.getElementById('add-form-wrap').style.display='block';
   document.getElementById('add-section-label').textContent=labels[section]||section;
-  ['poems','poetry-en','astrology','author','shop'].forEach(function(s){
+  ['poems','poetry-en','astrology','author','shop','books'].forEach(function(s){
     var f=document.getElementById('add-form-'+s);
     if(f) f.style.display=(s===section)?'flex':'none';
   });
@@ -478,6 +489,40 @@ function addShop(){
     document.getElementById('shop-title').value='';
     document.getElementById('shop-url').value='';
     document.getElementById('shop-text').value='';
+  })
+  .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
+}
+function addBooks(){
+  var token=getToken();
+  if(!token){document.getElementById('books-add-status').textContent='Нет токена';return;}
+  var title=document.getElementById('books-title').value.trim();
+  var url=document.getElementById('books-url').value.trim();
+  var text=document.getElementById('books-text').value.trim();
+  if(!title){document.getElementById('books-add-status').textContent='Введите название';return;}
+  var st=document.getElementById('books-add-status');
+  st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
+  fetch('https://api.github.com/repos/'+REPO+'/contents/books.txt?ref=main',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
+  .then(function(d){
+    var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
+    var newEntry=title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+'\n';
+    var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
+    var encoded=btoa(unescape(encodeURIComponent(updated)));
+    var body={message:'Add book: '+title,content:encoded,branch:'main'};
+    if(d.sha)body.sha=d.sha;
+    return fetch('https://api.github.com/repos/'+REPO+'/contents/books.txt',{
+      method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+  })
+  .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+  .then(function(){
+    st.textContent='✓ Добавлено!';st.style.color='#7bc47b';
+    document.getElementById('books-title').value='';
+    document.getElementById('books-url').value='';
+    document.getElementById('books-text').value='';
   })
   .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
 }
