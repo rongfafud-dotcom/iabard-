@@ -452,7 +452,9 @@
       .tagline-row .social-chip-hero{order:0;margin-top:0;flex-shrink:0}
       /* Новинки + Зодиак: centred single column, cards stay vertical */
       .novinka-list{max-width:560px;margin:0 auto;gap:44px}
-      .novinka-card-full .novinka-video-wide{max-width:560px;width:100%}
+      .novinka-card-full{padding-left:0;padding-right:0}
+      .novinka-card-full .novinka-title,.novinka-card-full .yt-btn-row{padding:0 36px}
+      .novinka-card-full .novinka-video-wide{max-width:100%;width:100%;border-radius:8px;margin-bottom:20px}
 
       /* Desktop: show front + back covers side by side, no flip needed */
       .books-grid{max-width:760px;gap:56px}
@@ -494,6 +496,8 @@
       .social-chip{padding:5px 10px;font-size:0.62rem}
       footer{padding:20px 24px}
       .novinka-card{padding:20px 16px}
+      .novinka-card-full{padding-left:0;padding-right:0}
+      .novinka-card-full .novinka-title,.novinka-card-full .yt-btn-row{padding:0 16px}
       .novinka-poem{font-size:1rem;line-height:1.9}
       .nav-tab{font-size:0.72rem;letter-spacing:0;padding:12px 3px;white-space:nowrap;overflow:hidden}
       .card-bottom{}
@@ -2289,7 +2293,7 @@ function loadPoetryEN(){
       card.dataset.title=title.toLowerCase();
       var titleDiv=document.createElement('div');
       titleDiv.className='novinka-title';titleDiv.textContent=title;
-      card.appendChild(titleDiv);
+      if(title&&title!=='—')card.appendChild(titleDiv);
       if(vid){
         var vw=document.createElement('div');vw.className='novinka-video'+(isShort?' poem-video':' novinka-video-wide');
         var facade=document.createElement('div');
