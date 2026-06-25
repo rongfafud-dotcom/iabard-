@@ -280,8 +280,8 @@
 
   <div id="add-form-books" style="padding:20px;display:none;flex-direction:column;gap:8px">
     <input type="text" id="books-title" placeholder="Название" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-    <input type="url" id="books-url" placeholder="Ссылка (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-    <textarea id="books-text" placeholder="Описание (необязательно)" rows="4" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
+    <input type="url" id="books-url" placeholder="Ссылка BookBaby" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <textarea id="books-text" placeholder="Стихотворение (обратная сторона карточки)" rows="6" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
     <button onclick="addBooks()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
     <div id="books-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
   </div>
@@ -1485,9 +1485,10 @@ function openEditEntry(displayIdx){
   } else {
     var p=parseEditEntry(raw);
     fields.appendChild(inp('edit-f-title',p.title,'Название'));
-    var urlPh=(_ed.section==='shop'||_ed.section==='books')?'Ссылка (необязательно)':'YouTube URL (необязательно)';
+    var urlPh=_ed.section==='books'?'Ссылка BookBaby':(_ed.section==='shop'?'Ссылка (необязательно)':'YouTube URL (необязательно)');
     fields.appendChild(inp('edit-f-url',p.url,urlPh,'url'));
-    if(_ed.section!=='poetry-en') fields.appendChild(ta('edit-f-text',p.text,'Текст (необязательно)',5));
+    var textPh=_ed.section==='books'?'Стихотворение (обратная сторона карточки)':'Текст (необязательно)';
+    if(_ed.section!=='poetry-en') fields.appendChild(ta('edit-f-text',p.text,textPh,8));
   }
   document.getElementById('edit-save-btn').disabled=false;
   document.getElementById('edit-delete-btn').disabled=false;
@@ -1495,10 +1496,12 @@ function openEditEntry(displayIdx){
 }
 
 function parseEditEntry(raw){
-  var lines=raw.split('\n').map(function(l){return l.trim();}).filter(Boolean);
-  var title=lines[0]||'';
-  var url=lines.find(function(l){return /^https?:\/\//.test(l);})||'';
-  var text=lines.filter(function(l,i){return i>0&&l!==url;}).join('\n');
+  var lines=raw.split('\n');
+  var title='',url='',titleIdx=-1,urlIdx=-1;
+  for(var i=0;i<lines.length;i++){if(lines[i].trim()&&titleIdx===-1){title=lines[i].trim();titleIdx=i;break;}}
+  for(var i=0;i<lines.length;i++){if(/^https?:\/\//.test(lines[i].trim())){url=lines[i].trim();urlIdx=i;break;}}
+  var cutAt=Math.max(titleIdx,urlIdx)+1;
+  var text=lines.slice(cutAt).join('\n').trim();
   return{title:title,url:url,text:text};
 }
 
