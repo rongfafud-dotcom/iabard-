@@ -169,6 +169,7 @@
   <div class="tab-btn" onclick="switchAudio(this)">🎵 Аудио</div>
   <div class="tab-btn" onclick="switchYT(this)">🎬 YouTube</div>
   <div class="tab-btn" onclick="switchPoetryEN(this)">🇬🇧 Poetry EN</div>
+  <div class="tab-btn" onclick="switchAstro(this)">♈ Астрология</div>
 </div>
 
 <div class="novinka-panel" id="poem-add-panel" style="border-radius:10px 10px 0 0;border-bottom:none;margin-bottom:0">
@@ -250,6 +251,24 @@
     <span class="yt-count" id="en-count"></span>
   </div>
   <div class="yt-list" id="en-list"><div style="padding:20px;text-align:center;opacity:0.4;font-size:0.85rem">Загрузка…</div></div>
+</div>
+
+<div class="yt-panel" id="astro-panel">
+  <div style="max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:10px;padding:20px;margin-bottom:16px">
+    <div style="font-size:0.75rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,169,110,0.5);margin-bottom:12px">Добавить видео / текст</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <input type="text" id="astro-title" placeholder="Название (например: Овен ♈️)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+      <input type="url" id="astro-url" placeholder="YouTube URL (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+      <textarea id="astro-text" placeholder="Текст стихотворения (необязательно)" rows="5" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
+      <button onclick="addAstro()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
+      <div id="astro-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
+    </div>
+  </div>
+  <div class="yt-search-wrap">
+    <input type="search" id="astro-search" placeholder="Найти…" oninput="filterAstroBack(this.value)" autocomplete="off">
+    <span class="yt-count" id="astro-count"></span>
+  </div>
+  <div class="yt-list" id="astro-list"><div style="padding:20px;text-align:center;opacity:0.4;font-size:0.85rem">Загрузка…</div></div>
 </div>
 
 <div class="inbox-panel" id="inbox-panel">
@@ -361,6 +380,7 @@ function switchFile(file, btn){
   document.getElementById('audio-panel').style.display = 'none';
   document.getElementById('yt-panel').style.display='none';
   document.getElementById('poetry-en-panel').style.display='none';
+  document.getElementById('astro-panel').style.display='none';
   document.getElementById('inbox-panel').style.display = 'none';
   setStatus('Загрузка…');
   loadFile();
@@ -376,6 +396,7 @@ function switchAudio(btn){
   document.getElementById('audio-panel').style.display = 'block';
   document.getElementById('yt-panel').style.display='none';
   document.getElementById('poetry-en-panel').style.display='none';
+  document.getElementById('astro-panel').style.display='none';
   document.getElementById('inbox-panel').style.display = 'none';
   loadAudioList();
 }
@@ -389,6 +410,7 @@ function switchYT(btn){
   document.getElementById('audio-panel').style.display='none';
   document.getElementById('yt-panel').style.display='block';
   document.getElementById('poetry-en-panel').style.display='none';
+  document.getElementById('astro-panel').style.display='none';
   document.getElementById('inbox-panel').style.display='none';
   loadYTList();
 }
@@ -402,6 +424,7 @@ function switchPoetryEN(btn){
   document.getElementById('audio-panel').style.display='none';
   document.getElementById('yt-panel').style.display='none';
   document.getElementById('poetry-en-panel').style.display='block';
+  document.getElementById('astro-panel').style.display='none';
   document.getElementById('inbox-panel').style.display='none';
   loadPoetryENList();
 }
@@ -514,6 +537,143 @@ function deletePoetryEN(idx,btn){
   .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
   .then(function(){loadPoetryENList();})
   .catch(function(e){btn.disabled=false;alert('Ошибка: '+e.message);});
+}
+
+function switchAstro(btn){
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('inbox-btn').classList.remove('active');
+  document.getElementById('poem-add-panel').style.display='none';
+  document.getElementById('poem-list-wrap').style.display='none';
+  document.getElementById('audio-panel').style.display='none';
+  document.getElementById('yt-panel').style.display='none';
+  document.getElementById('poetry-en-panel').style.display='none';
+  document.getElementById('astro-panel').style.display='block';
+  document.getElementById('inbox-panel').style.display='none';
+  loadAstroList();
+}
+
+var _astroEntries=[];
+function loadAstroList(){
+  var token=getToken();
+  var el=document.getElementById('astro-list');
+  if(!token){el.innerHTML='<div style="padding:16px;color:#d47a7a;font-size:0.85rem">Сначала введите токен</div>';return;}
+  el.innerHTML='<div style="padding:20px;text-align:center;opacity:0.4;font-size:0.85rem">Загрузка…</div>';
+  fetch('https://api.github.com/repos/'+REPO+'/contents/astrology.txt?ref=main',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){
+    if(r.status===401){invalidToken();throw new Error('skip');}
+    if(r.status===404){_astroEntries=[];renderAstroList([]);return null;}
+    return r.json();
+  })
+  .then(function(d){
+    if(!d)return;
+    var text=atob(d.content.replace(/\n/g,''));
+    var entries=text.split('===').map(function(e){return e.trim();}).filter(Boolean).reverse();
+    _astroEntries=entries.map(function(raw){
+      var lines=raw.split('\n').map(function(l){return l.trim();}).filter(Boolean);
+      var title=lines[0]||'';
+      var url=lines.find(function(l){return /youtu/.test(l);})||'';
+      var textLines=lines.filter(function(l){return !/youtu/.test(l)&&l!==title;});
+      return{title:title,url:url,text:textLines.join('\n')};
+    });
+    renderAstroList(_astroEntries);
+  })
+  .catch(function(e){if(e.message!=='skip')el.innerHTML='<div style="padding:16px;color:#d47a7a;font-size:0.85rem">Ошибка загрузки</div>';});
+}
+
+function renderAstroList(list){
+  var el=document.getElementById('astro-list');
+  document.getElementById('astro-count').textContent=list.length+' записей';
+  if(!list.length){el.innerHTML='<div style="padding:20px;text-align:center;opacity:0.5;font-size:0.85rem">Нет записей</div>';return;}
+  el.innerHTML='';
+  list.forEach(function(entry,i){
+    var item=document.createElement('div');item.className='yt-item';
+    item.dataset.title=(entry.title||'').toLowerCase();
+    var row=document.createElement('div');row.style.cssText='display:flex;gap:8px;align-items:center';
+    var titleSpan=document.createElement('span');titleSpan.className='yt-item-title';titleSpan.style.flex='1';titleSpan.textContent=entry.title||'(без названия)';
+    var delBtn=document.createElement('button');delBtn.className='yt-item-btn';delBtn.style.cssText='background:rgba(180,60,60,0.15);border:1px solid rgba(180,60,60,0.3);color:#d47a7a';delBtn.textContent='✕';
+    delBtn.onclick=function(){deleteAstro(i,delBtn);};
+    row.appendChild(titleSpan);row.appendChild(delBtn);
+    if(entry.url){var urlDiv=document.createElement('div');urlDiv.style.cssText='font-size:0.75rem;color:rgba(201,169,110,0.5);margin-top:4px;word-break:break-all';urlDiv.textContent=entry.url;item.appendChild(row);item.appendChild(urlDiv);}
+    else{item.appendChild(row);}
+    el.appendChild(item);
+  });
+}
+
+function filterAstroBack(q){
+  q=(q||'').toLowerCase().trim();
+  var items=document.querySelectorAll('#astro-list .yt-item');
+  var shown=0;
+  items.forEach(function(it){var m=!q||it.dataset.title.indexOf(q)!==-1;it.style.display=m?'':'none';if(m)shown++;});
+  document.getElementById('astro-count').textContent=shown+' записей';
+}
+
+function _saveAstroFile(token,entries,message,onSuccess,onError){
+  fetch('https://api.github.com/repos/'+REPO+'/contents/astrology.txt?ref=main',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){return r.status===404?{sha:null,notFound:true}:r.json();})
+  .then(function(d){
+    var content=entries.length?entries.reverse().join('\n\n===\n\n')+'\n\n===\n':'';
+    var encoded=btoa(unescape(encodeURIComponent(content)));
+    var body={message:message,content:encoded,branch:'main'};
+    if(d.sha)body.sha=d.sha;
+    entries.reverse();
+    return fetch('https://api.github.com/repos/'+REPO+'/contents/astrology.txt',{
+      method:'PUT',
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+  })
+  .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+  .then(onSuccess).catch(onError);
+}
+
+function addAstro(){
+  var token=getToken();
+  if(!token){document.getElementById('astro-add-status').textContent='Нет токена';return;}
+  var title=document.getElementById('astro-title').value.trim();
+  var url=document.getElementById('astro-url').value.trim();
+  var text=document.getElementById('astro-text').value.trim();
+  if(!title){document.getElementById('astro-add-status').textContent='Введите название';return;}
+  var st=document.getElementById('astro-add-status');
+  st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
+  fetch('https://api.github.com/repos/'+REPO+'/contents/astrology.txt?ref=main',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
+  .then(function(d){
+    var existing=d.sha?atob(d.content.replace(/\n/g,'')):'';
+    var newEntry=title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+'\n';
+    var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
+    var encoded=btoa(unescape(encodeURIComponent(updated)));
+    var body={message:'Add astrology: '+title,content:encoded,branch:'main'};
+    if(d.sha)body.sha=d.sha;
+    return fetch('https://api.github.com/repos/'+REPO+'/contents/astrology.txt',{
+      method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+  })
+  .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+  .then(function(){
+    st.textContent='✓ Добавлено!';st.style.color='#7bc47b';
+    document.getElementById('astro-title').value='';
+    document.getElementById('astro-url').value='';
+    document.getElementById('astro-text').value='';
+    loadAstroList();
+  })
+  .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
+}
+
+function deleteAstro(idx,btn){
+  if(!confirm('Удалить эту запись?'))return;
+  var token=getToken();if(!token)return;
+  btn.disabled=true;
+  var entries=_astroEntries.map(function(e){return e.title+(e.url?'\n\n'+e.url:'')+(e.text?'\n\n'+e.text:'');}).reverse();
+  entries.splice(_astroEntries.length-1-idx,1);
+  _saveAstroFile(token,entries,'Delete astrology entry',function(){loadAstroList();},function(e){btn.disabled=false;alert('Ошибка: '+e.message);});
 }
 
 var _ytPoems=[];
