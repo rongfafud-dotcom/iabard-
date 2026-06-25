@@ -164,11 +164,28 @@
   </div>
 </div>
 
-<div id="add-panel" style="max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:10px;padding:0 0 4px;overflow:hidden">
+<div id="main-panel" style="max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:10px;overflow:hidden">
+
+  <!-- ВЫБОР РЕЖИМА -->
+  <div id="mode-selector" style="padding:16px;display:flex;flex-direction:column;gap:10px">
+    <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);text-align:center;padding-bottom:4px">Что хотите сделать?</div>
+    <button onclick="setMode('add')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+      <span style="font-size:1.3rem">✏️</span><span style="color:#c9a96e;font-size:1.05rem">Добавить</span>
+    </button>
+    <button onclick="setMode('edit')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+      <span style="font-size:1.3rem">📋</span><span style="color:#c9a96e;font-size:1.05rem">Редактировать</span>
+    </button>
+  </div>
+
+  <!-- ДОБАВИТЬ -->
+  <div id="mode-add" style="display:none">
 
   <!-- ШАГИ 1: выбор рубрики -->
   <div id="add-section-picker" style="padding:16px;display:flex;flex-direction:column;gap:10px">
-    <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);text-align:center;padding-bottom:4px">Выберите рубрику</div>
+    <div style="display:flex;align-items:center;gap:10px;padding-bottom:8px;border-bottom:1px solid rgba(201,169,110,0.12);margin-bottom:2px">
+      <button onclick="setMode(null)" style="background:none;border:1px solid rgba(201,169,110,0.25);border-radius:6px;color:rgba(201,169,110,0.6);padding:4px 10px;cursor:pointer;font-size:0.78rem;font-family:'Georgia',serif">← Режим</button>
+      <span style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);flex:1;text-align:center">Добавить в рубрику</span>
+    </div>
     <button onclick="selectAddSection('poems')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
       <span style="font-size:1.3rem">📜</span><span style="color:#c9a96e;font-size:1.05rem">Поэзия</span>
     </button>
@@ -226,7 +243,6 @@
     <textarea id="poem-add-text" placeholder="Добавить стихотворение" style="width:100%;height:260px;background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none" spellcheck="false" autocorrect="off" autocapitalize="none" autocomplete="off"></textarea>
     <button class="novinka-add-btn" id="poem-add-btn" onclick="addPoem()">Добавить стихотворение</button>
     <div class="novinka-status" id="poem-add-status"></div>
-    <div style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(201,169,110,0.12);font-size:0.7rem;color:rgba(201,169,110,0.4);letter-spacing:1.5px;text-transform:uppercase;text-align:center">Список стихотворений — вкладка «Стихи» ↑</div>
   </div>
 
   <!-- POETRY EN form -->
@@ -281,7 +297,75 @@
   </div>
 
   </div><!-- /add-form-wrap -->
-</div>
+  </div><!-- /mode-add -->
+
+  <!-- РЕДАКТИРОВАТЬ -->
+  <div id="mode-edit" style="display:none">
+
+    <!-- Edit picker -->
+    <div id="edit-picker" style="padding:16px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px;padding-bottom:8px;border-bottom:1px solid rgba(201,169,110,0.12);margin-bottom:2px">
+        <button onclick="setMode(null)" style="background:none;border:1px solid rgba(201,169,110,0.25);border-radius:6px;color:rgba(201,169,110,0.6);padding:4px 10px;cursor:pointer;font-size:0.78rem;font-family:'Georgia',serif">← Режим</button>
+        <span style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);flex:1;text-align:center">Что редактировать?</span>
+      </div>
+      <button onclick="selectEditSection('poems')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+        <span style="font-size:1.3rem">📜</span><span style="color:#c9a96e;font-size:1.05rem">Поэзия</span>
+      </button>
+      <button onclick="selectEditSection('astrology')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+        <span style="font-size:1.3rem">✨</span><span style="color:#c9a96e;font-size:1.05rem">Астрология</span>
+      </button>
+      <button onclick="selectEditSection('poetry-en')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+        <span style="font-size:1.3rem">🎵</span><span style="color:#c9a96e;font-size:1.05rem">Songs EN</span>
+      </button>
+      <button onclick="selectEditSection('author')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+        <span style="font-size:1.3rem">👤</span><span style="color:#c9a96e;font-size:1.05rem">Ия Бард</span>
+      </button>
+      <button onclick="selectEditSection('shop')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+        <span style="font-size:1.3rem">🛍️</span><span style="color:#c9a96e;font-size:1.05rem">Товар</span>
+      </button>
+      <button onclick="selectEditSection('books')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+        <span style="font-size:1.3rem">📚</span><span style="color:#c9a96e;font-size:1.05rem">Книги</span>
+      </button>
+      <button onclick="selectEditSection('audio')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+        <span style="font-size:1.3rem">🎧</span><span style="color:#c9a96e;font-size:1.05rem">Аудио</span>
+      </button>
+    </div>
+
+    <!-- Entry list -->
+    <div id="edit-list-wrap" style="display:none">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(201,169,110,0.15)">
+        <button onclick="backToEditPicker()" style="background:none;border:1px solid rgba(201,169,110,0.3);border-radius:6px;color:rgba(201,169,110,0.7);padding:5px 12px;cursor:pointer;font-size:0.82rem;font-family:'Georgia',serif">← Назад</button>
+        <span id="edit-list-label" style="color:#c9a96e;font-size:0.88rem;letter-spacing:1px;font-family:'Georgia',serif"></span>
+      </div>
+      <div id="edit-list-items"></div>
+    </div>
+
+    <!-- Entry edit form -->
+    <div id="edit-form-wrap" style="display:none">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(201,169,110,0.15)">
+        <button onclick="backToEditList()" style="background:none;border:1px solid rgba(201,169,110,0.3);border-radius:6px;color:rgba(201,169,110,0.7);padding:5px 12px;cursor:pointer;font-size:0.82rem;font-family:'Georgia',serif;flex-shrink:0">← Список</button>
+        <span id="edit-form-label" style="color:#c9a96e;font-size:0.88rem;letter-spacing:1px;font-family:'Georgia',serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+      </div>
+      <div id="edit-fields" style="padding:16px;display:flex;flex-direction:column;gap:8px"></div>
+      <div style="padding:0 16px 16px;display:flex;flex-direction:column;gap:8px">
+        <button id="edit-save-btn" onclick="saveCurrentEdit()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Сохранить</button>
+        <button id="edit-delete-btn" onclick="deleteCurrentEdit()" style="background:transparent;border:1px solid rgba(180,60,60,0.35);border-radius:6px;color:rgba(200,100,100,0.7);padding:10px;cursor:pointer;font-size:0.9rem">Удалить</button>
+        <div id="edit-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
+      </div>
+    </div>
+
+    <!-- Audio list -->
+    <div id="edit-audio-wrap" style="display:none">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(201,169,110,0.15)">
+        <button onclick="backToEditPicker()" style="background:none;border:1px solid rgba(201,169,110,0.3);border-radius:6px;color:rgba(201,169,110,0.7);padding:5px 12px;cursor:pointer;font-size:0.82rem;font-family:'Georgia',serif">← Назад</button>
+        <span style="color:#c9a96e;font-size:0.88rem;letter-spacing:1px;font-family:'Georgia',serif">Аудио</span>
+      </div>
+      <div id="edit-audio-items" style="padding:16px;display:flex;flex-direction:column;gap:10px"></div>
+    </div>
+
+  </div><!-- /mode-edit -->
+
+</div><!-- /main-panel -->
 
 
 
@@ -1322,21 +1406,249 @@ function addPoem(){
 }
 
 
+// ── Edit mode ──────────────────────────────────────────────────────────────
+var _ed={section:'',file:'',sha:'',rawEntries:[],idx:null};
+var SECFILE={poems:'poems.txt',astrology:'astrology.txt','poetry-en':'poems-en.txt',author:'author.txt',shop:'shop.txt',books:'books.txt'};
+var SECLABEL={poems:'Поэзия',astrology:'Астрология','poetry-en':'Songs EN',author:'Ия Бард',shop:'Товар',books:'Книги'};
+
+function setMode(m){
+  document.getElementById('mode-selector').style.display=m?'none':'flex';
+  document.getElementById('mode-add').style.display=m==='add'?'block':'none';
+  document.getElementById('mode-edit').style.display=m==='edit'?'block':'none';
+  if(m==='add'){
+    document.getElementById('add-section-picker').style.display='flex';
+    document.getElementById('add-form-wrap').style.display='none';
+  }
+  if(m==='edit') showEditPanel('picker');
+}
+
+function showEditPanel(which){
+  document.getElementById('edit-picker').style.display=which==='picker'?'flex':'none';
+  document.getElementById('edit-list-wrap').style.display=which==='list'?'block':'none';
+  document.getElementById('edit-form-wrap').style.display=which==='form'?'block':'none';
+  document.getElementById('edit-audio-wrap').style.display=which==='audio'?'block':'none';
+}
+
+function selectEditSection(section){
+  if(section==='audio'){showEditPanel('audio');loadEditAudio();return;}
+  _ed.section=section;_ed.file=SECFILE[section];
+  document.getElementById('edit-list-label').textContent=SECLABEL[section]||section;
+  showEditPanel('list');
+  loadEditList();
+}
+function backToEditPicker(){showEditPanel('picker');}
+function backToEditList(){showEditPanel('list');}
+
+function loadEditList(){
+  var token=getToken();
+  var el=document.getElementById('edit-list-items');
+  if(!token){el.innerHTML='<div style="padding:16px;color:#d47a7a;font-size:0.85rem">Сначала введите токен</div>';return;}
+  el.innerHTML='<div style="padding:20px;text-align:center;opacity:0.4;font-size:0.85rem">Загрузка…</div>';
+  fetch('https://api.github.com/repos/'+REPO+'/contents/'+_ed.file+'?ref=main',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){
+    if(r.status===401){invalidToken();throw new Error('skip');}
+    if(r.status===404){el.innerHTML='<div style="padding:20px;text-align:center;opacity:0.5;font-size:0.85rem">Нет записей</div>';return null;}
+    return r.json();
+  })
+  .then(function(d){
+    if(!d)return;
+    _ed.sha=d.sha;
+    _ed.rawEntries=b64d(d.content.replace(/\n/g,'')).split('===').map(function(e){return e.trim();}).filter(Boolean);
+    renderEditList();
+  })
+  .catch(function(e){if(e.message!=='skip')el.innerHTML='<div style="padding:16px;color:#d47a7a;font-size:0.85rem">Ошибка: '+e.message+'</div>';});
+}
+
+function renderEditList(){
+  var el=document.getElementById('edit-list-items');
+  var displayed=_ed.rawEntries.slice().reverse();
+  if(!displayed.length){el.innerHTML='<div style="padding:20px;text-align:center;opacity:0.5;font-size:0.85rem">Нет записей</div>';return;}
+  el.innerHTML='';
+  displayed.forEach(function(raw,i){
+    var title=raw.split('\n')[0].trim()||'(без названия)';
+    var item=document.createElement('div');item.className='yt-item';item.style.cursor='pointer';
+    item.onmouseover=function(){item.style.background='rgba(201,169,110,0.06)';};
+    item.onmouseout=function(){item.style.background='';};
+    var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:8px';
+    var sp=document.createElement('span');sp.className='yt-item-title';sp.style.flex='1';sp.textContent=title;
+    var ar=document.createElement('span');ar.style.cssText='color:rgba(201,169,110,0.35);font-size:0.7rem';ar.textContent='▶';
+    row.appendChild(sp);row.appendChild(ar);item.appendChild(row);
+    item.onclick=function(){openEditEntry(i);};
+    el.appendChild(item);
+  });
+}
+
+function openEditEntry(displayIdx){
+  _ed.idx=displayIdx;
+  var raw=_ed.rawEntries.slice().reverse()[displayIdx];
+  var title=raw.split('\n')[0].trim()||'(без названия)';
+  document.getElementById('edit-form-label').textContent=title;
+  document.getElementById('edit-status').textContent='';
+  var fields=document.getElementById('edit-fields');
+  fields.innerHTML='';
+  var iStyle='background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:\'Georgia\',serif;outline:none;width:100%';
+  var tStyle='background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:11px 14px;font-family:\'Georgia\',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;width:100%';
+  function inp(id,val,ph,type){var i=document.createElement('input');i.type=type||'text';i.id=id;i.value=val;i.placeholder=ph;i.style.cssText=iStyle;return i;}
+  function ta(id,val,ph,rows){var t=document.createElement('textarea');t.id=id;t.value=val;t.placeholder=ph;t.rows=rows||6;t.style.cssText=tStyle;t.spellcheck=false;return t;}
+  if(_ed.section==='poems'){
+    fields.appendChild(ta('edit-poem-raw',raw,'Текст стихотворения',12));
+  } else {
+    var p=parseEditEntry(raw);
+    fields.appendChild(inp('edit-f-title',p.title,'Название'));
+    var urlPh=(_ed.section==='shop'||_ed.section==='books')?'Ссылка (необязательно)':'YouTube URL (необязательно)';
+    fields.appendChild(inp('edit-f-url',p.url,urlPh,'url'));
+    if(_ed.section!=='poetry-en') fields.appendChild(ta('edit-f-text',p.text,'Текст (необязательно)',5));
+  }
+  document.getElementById('edit-save-btn').disabled=false;
+  document.getElementById('edit-delete-btn').disabled=false;
+  showEditPanel('form');
+}
+
+function parseEditEntry(raw){
+  var lines=raw.split('\n').map(function(l){return l.trim();}).filter(Boolean);
+  var title=lines[0]||'';
+  var url=lines.find(function(l){return /^https?:\/\//.test(l);})||'';
+  var text=lines.filter(function(l,i){return i>0&&l!==url;}).join('\n');
+  return{title:title,url:url,text:text};
+}
+
+function saveCurrentEdit(){
+  var token=getToken();
+  if(!token){document.getElementById('edit-status').textContent='Нет токена';return;}
+  var st=document.getElementById('edit-status');
+  st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
+  document.getElementById('edit-save-btn').disabled=true;
+  document.getElementById('edit-delete-btn').disabled=true;
+  var newRaw;
+  if(_ed.section==='poems'){
+    newRaw=(document.getElementById('edit-poem-raw').value||'').trim();
+  } else {
+    var t=(document.getElementById('edit-f-title').value||'').trim();
+    var u=(document.getElementById('edit-f-url').value||'').trim();
+    var x=document.getElementById('edit-f-text')?(document.getElementById('edit-f-text').value||'').trim():'';
+    if(!t){st.textContent='Введите название';st.style.color='#d47a7a';document.getElementById('edit-save-btn').disabled=false;document.getElementById('edit-delete-btn').disabled=false;return;}
+    newRaw=t+(u?'\n\n'+u:'')+(x?'\n\n'+x:'');
+  }
+  var fileIdx=_ed.rawEntries.length-1-_ed.idx;
+  var newEntries=_ed.rawEntries.slice();
+  newEntries[fileIdx]=newRaw;
+  writeEditFile(token,newEntries,'Edit: '+newRaw.split('\n')[0].trim(),function(){
+    _ed.rawEntries=newEntries;
+    st.textContent='✓ Сохранено!';st.style.color='#7bc47b';
+    document.getElementById('edit-form-label').textContent=newRaw.split('\n')[0].trim()||'(без названия)';
+    document.getElementById('edit-save-btn').disabled=false;
+    document.getElementById('edit-delete-btn').disabled=false;
+  },function(e){
+    st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';
+    document.getElementById('edit-save-btn').disabled=false;
+    document.getElementById('edit-delete-btn').disabled=false;
+  });
+}
+
+function deleteCurrentEdit(){
+  if(!confirm('Удалить эту запись навсегда?'))return;
+  var token=getToken();
+  if(!token){document.getElementById('edit-status').textContent='Нет токена';return;}
+  var st=document.getElementById('edit-status');
+  st.textContent='Удаление…';st.style.color='rgba(201,169,110,0.7)';
+  document.getElementById('edit-save-btn').disabled=true;
+  document.getElementById('edit-delete-btn').disabled=true;
+  var fileIdx=_ed.rawEntries.length-1-_ed.idx;
+  var newEntries=_ed.rawEntries.slice();
+  newEntries.splice(fileIdx,1);
+  writeEditFile(token,newEntries,'Delete entry',function(){
+    _ed.rawEntries=newEntries;
+    showEditPanel('list');
+    renderEditList();
+  },function(e){
+    st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';
+    document.getElementById('edit-save-btn').disabled=false;
+    document.getElementById('edit-delete-btn').disabled=false;
+  });
+}
+
+function writeEditFile(token,entries,message,onSuccess,onError){
+  fetch('https://api.github.com/repos/'+REPO+'/contents/'+_ed.file+'?ref=main',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){return r.status===404?{sha:null}:r.json();})
+  .then(function(d){
+    var content=entries.length?entries.join('\n\n===\n\n')+'\n\n===\n':'';
+    var encoded=b64e(content);
+    var body={message:message,content:encoded,branch:'main'};
+    if(d.sha)body.sha=d.sha;
+    return fetch('https://api.github.com/repos/'+REPO+'/contents/'+_ed.file,{
+      method:'PUT',
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+  })
+  .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
+  .then(function(){onSuccess();})
+  .catch(onError);
+}
+
+function loadEditAudio(){
+  var token=getToken();
+  var el=document.getElementById('edit-audio-items');
+  if(!token){el.innerHTML='<div style="color:#d47a7a;font-size:0.85rem">Сначала введите токен</div>';return;}
+  el.innerHTML='<div style="opacity:0.4;font-size:0.85rem">Загрузка…</div>';
+  fetch('https://api.github.com/repos/'+REPO+'/contents/audio?ref=main',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){
+    if(r.status===401){invalidToken();throw new Error('skip');}
+    if(r.status===404){el.innerHTML='<div style="opacity:0.4;font-size:0.85rem">Нет аудиофайлов</div>';return null;}
+    return r.json();
+  })
+  .then(function(files){
+    if(!files)return;
+    if(!files.length){el.innerHTML='<div style="opacity:0.4;font-size:0.85rem">Нет аудиофайлов</div>';return;}
+    var ts=JSON.parse(localStorage.getItem('audio_ts')||'{}');
+    files.sort(function(a,b){var ta=ts[a.name]||0,tb=ts[b.name]||0;if(ta!==tb)return tb-ta;return a.name.localeCompare(b.name);});
+    el.innerHTML='';
+    files.forEach(function(f){
+      var item=document.createElement('div');item.className='audio-item';
+      var nm=document.createElement('span');nm.className='audio-item-name';nm.textContent=f.name;
+      var audio=document.createElement('audio');audio.controls=true;audio.src=f.download_url;
+      var del=document.createElement('button');del.className='audio-del-btn';del.textContent='✕';
+      del.onclick=function(){deleteEditAudio(f.name,f.sha,del);};
+      item.appendChild(nm);item.appendChild(audio);item.appendChild(del);
+      el.appendChild(item);
+    });
+  })
+  .catch(function(e){if(e.message!=='skip')el.innerHTML='<div style="color:#d47a7a;font-size:0.85rem">Ошибка: '+e.message+'</div>';});
+}
+
+function deleteEditAudio(filename,sha,btn){
+  if(!confirm('Удалить '+filename+'?'))return;
+  var token=getToken();if(!token)return;
+  btn.disabled=true;
+  fetch('https://api.github.com/repos/'+REPO+'/contents/audio/'+encodeURIComponent(filename),{
+    method:'DELETE',
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify({message:'Delete audio: '+filename,sha:sha,branch:'main'})
+  })
+  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);loadEditAudio();})
+  .catch(function(e){btn.disabled=false;alert('Ошибка: '+e.message);});
+}
+// ── End Edit mode ───────────────────────────────────────────────────────────
+
 function switchInbox(){
   var panel=document.getElementById('inbox-panel');
+  var mainPanel=document.getElementById('main-panel');
   if(panel.style.display==='block'){
     panel.style.display='none';
+    if(mainPanel)mainPanel.style.display='block';
     document.getElementById('inbox-btn').classList.remove('active');
     return;
   }
-  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
   document.getElementById('inbox-btn').classList.add('active');
-  document.getElementById('add-panel').style.display='none';
-  document.getElementById('poem-list-wrap').style.display='none';
-  document.getElementById('audio-panel').style.display='none';
-  document.getElementById('yt-panel').style.display='none';
+  if(mainPanel)mainPanel.style.display='none';
   panel.style.display='block';
-  localStorage.setItem('inbox_seen', Date.now());
+  localStorage.setItem('inbox_seen',Date.now());
   document.getElementById('inbox-badge').style.display='none';
   loadInbox();
 }
@@ -1678,9 +1990,8 @@ function deletePoemCard(btn){
 
 // Init
 (function(){
-  document.getElementById('add-panel').style.display='block';
-  document.getElementById('poem-list-wrap').style.display='none';
-  var saved = localStorage.getItem('gh_token');
+  document.getElementById('main-panel').style.display='block';
+  var saved=localStorage.getItem('gh_token');
   if(saved){
     document.getElementById('token').value = saved;
     document.getElementById('token-status').textContent = '✓';
