@@ -2294,23 +2294,6 @@ function loadPoetryEN(){
       var card=document.createElement('div');
       card.className='novinka-card'+(isShort?'':' novinka-card-full');
       card.dataset.title=title.toLowerCase();
-      var titleDiv=document.createElement('div');
-      titleDiv.className='novinka-title';
-      var hasTitle=title&&title.replace(/[^a-zA-Zа-яёА-ЯЁ0-9]/g,'').length>0;
-      if(hasTitle){titleDiv.textContent=title;card.appendChild(titleDiv);}
-      else if(vid){
-        var cacheKey='yt-title-'+vid;
-        var cached=localStorage.getItem(cacheKey);
-        if(cached){titleDiv.textContent=cached;card.appendChild(titleDiv);card.dataset.title=cached.toLowerCase();}
-        else{
-          var oUrl='https://www.youtube.com/oembed?url=https://www.youtube.com/'+(isShort?'shorts/'+vid:'watch?v='+vid)+'&format=json';
-          (function(td,c,ck){
-            fetch(oUrl).then(function(r){return r.json();}).then(function(d){
-              if(d&&d.title){td.textContent=d.title;c.insertBefore(td,c.firstChild);c.dataset.title=d.title.toLowerCase();localStorage.setItem(ck,d.title);}
-            }).catch(function(){});
-          })(titleDiv,card,cacheKey);
-        }
-      }
       if(vid){
         var vw=document.createElement('div');vw.className='novinka-video'+(isShort?' poem-video':' novinka-video-wide');
         var facade=document.createElement('div');
