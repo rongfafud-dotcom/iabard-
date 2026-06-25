@@ -2285,13 +2285,13 @@ function loadPoetryEN(){
       var isShort=/youtube\.com\/shorts\//.test(ytUrl);
       if(!title&&!vid)return;
       var card=document.createElement('div');
-      card.className='novinka-card';
+      card.className='novinka-card'+(isShort?'':' novinka-card-full');
       card.dataset.title=title.toLowerCase();
       var titleDiv=document.createElement('div');
       titleDiv.className='novinka-title';titleDiv.textContent=title;
       card.appendChild(titleDiv);
       if(vid){
-        var vw=document.createElement('div');vw.className='novinka-video'+(isShort?'':' novinka-video-wide');
+        var vw=document.createElement('div');vw.className='novinka-video'+(isShort?' poem-video':' novinka-video-wide');
         var facade=document.createElement('div');
         facade.className='yt-facade';facade.dataset.vid=vid;
         facade.onclick=function(){ytPlay(this);};
