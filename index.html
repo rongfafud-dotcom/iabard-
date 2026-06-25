@@ -258,6 +258,9 @@
     .novinka-list{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:44px}
     .novinka-card{background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.14);
                    border-radius:10px;padding:32px 36px 28px;box-shadow:0 4px 24px rgba(0,0,0,0.35)}
+    .novinka-card-full{padding-left:0;padding-right:0}
+    .novinka-card-full .novinka-title,.novinka-card-full .yt-btn-row{padding:0 36px}
+    .novinka-card-full .novinka-video-wide{width:100%;max-width:100%;border-radius:8px;margin-bottom:20px}
     .novinka-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3vw,2.1rem);font-weight:600;
                     color:var(--gold);text-align:center;margin-bottom:22px;letter-spacing:1px;line-height:1.2}
     .poem-title-main{display:block;line-height:1.2}
@@ -2293,7 +2296,7 @@ function loadPoetryEN(){
       card.dataset.title=title.toLowerCase();
       var titleDiv=document.createElement('div');
       titleDiv.className='novinka-title';titleDiv.textContent=title;
-      if(title&&title!=='—')card.appendChild(titleDiv);
+      if(title&&title.replace(/[^a-zA-Zа-яёА-ЯЁ0-9]/g,'').length>0)card.appendChild(titleDiv);
       if(vid){
         var vw=document.createElement('div');vw.className='novinka-video'+(isShort?' poem-video':' novinka-video-wide');
         var facade=document.createElement('div');
