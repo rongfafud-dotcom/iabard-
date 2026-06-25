@@ -175,7 +175,7 @@
   <!-- section selector -->
   <div style="display:flex;border-bottom:1px solid rgba(201,169,110,0.2)">
     <button class="add-sec-btn active" onclick="switchAddSection('poems',this)" style="flex:1;padding:12px 8px;background:rgba(201,169,110,0.1);border:none;color:#c9a96e;font-family:'Georgia',serif;font-size:0.82rem;letter-spacing:1px;cursor:pointer">Поэзия</button>
-    <button class="add-sec-btn" onclick="switchAddSection('poetry-en',this)" style="flex:1;padding:12px 8px;background:none;border:none;border-left:1px solid rgba(201,169,110,0.2);color:rgba(201,169,110,0.6);font-family:'Georgia',serif;font-size:0.82rem;letter-spacing:1px;cursor:pointer">Poetry EN</button>
+    <button class="add-sec-btn" onclick="switchAddSection('poetry-en',this)" style="flex:1;padding:12px 8px;background:none;border:none;border-left:1px solid rgba(201,169,110,0.2);color:rgba(201,169,110,0.6);font-family:'Georgia',serif;font-size:0.82rem;letter-spacing:1px;cursor:pointer">Songs EN</button>
     <button class="add-sec-btn" onclick="switchAddSection('astrology',this)" style="flex:1;padding:12px 8px;background:none;border:none;border-left:1px solid rgba(201,169,110,0.2);color:rgba(201,169,110,0.6);font-family:'Georgia',serif;font-size:0.82rem;letter-spacing:1px;cursor:pointer">Астрология</button>
   </div>
 
@@ -449,7 +449,7 @@ function loadPoetryENList(){
   })
   .then(function(r){if(r.status===401){invalidToken();throw new Error('skip');}return r.json();})
   .then(function(d){
-    var text=atob(d.content.replace(/\n/g,''));
+    var text=b64d(d.content.replace(/\n/g,''));
     var entries=text.split('===').map(function(e){return e.trim();}).filter(Boolean).reverse();
     _enEntries=entries.map(function(raw){
       var lines=raw.split('\n').map(function(l){return l.trim();}).filter(Boolean);
@@ -501,7 +501,7 @@ function addPoetryEN(){
   })
   .then(function(r){return r.json();})
   .then(function(d){
-    var text=atob(d.content.replace(/\n/g,''));
+    var text=b64d(d.content.replace(/\n/g,''));
     var newEntry=title+'\n\n'+url+'\n';
     var updated=text.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
     var encoded=btoa(unescape(encodeURIComponent(updated)));
@@ -531,7 +531,7 @@ function deletePoetryEN(idx,btn){
   })
   .then(function(r){return r.json();})
   .then(function(d){
-    var text=atob(d.content.replace(/\n/g,''));
+    var text=b64d(d.content.replace(/\n/g,''));
     var entries=text.split('===').map(function(e){return e.trim();}).filter(Boolean).reverse();
     entries.splice(idx,1);
     var updated=entries.length?entries.reverse().join('\n\n===\n\n')+'\n\n===\n':'';
@@ -564,7 +564,7 @@ function loadAstroList(){
   })
   .then(function(d){
     if(!d)return;
-    var text=atob(d.content.replace(/\n/g,''));
+    var text=b64d(d.content.replace(/\n/g,''));
     var entries=text.split('===').map(function(e){return e.trim();}).filter(Boolean).reverse();
     _astroEntries=entries.map(function(raw){
       var lines=raw.split('\n').map(function(l){return l.trim();}).filter(Boolean);
@@ -639,7 +639,7 @@ function addAstro(){
   })
   .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
   .then(function(d){
-    var existing=d.sha?atob(d.content.replace(/\n/g,'')):'';
+    var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
     var newEntry=title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+'\n';
     var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
     var encoded=btoa(unescape(encodeURIComponent(updated)));
@@ -681,7 +681,7 @@ function loadYTList(){
   })
   .then(function(r){if(r.status===401){invalidToken();throw new Error('skip');}return r.json();})
   .then(function(d){
-    var text=atob(d.content.replace(/\n/g,''));
+    var text=b64d(d.content.replace(/\n/g,''));
     var poems=text.split('===').map(function(p){return p.trim();}).filter(Boolean);
     _ytPoems=[];
     poems.forEach(function(raw){
@@ -810,7 +810,7 @@ function saveYTEntry(title,url,audioFile,imageFile,btn,status){
     })
     .then(function(r){return r.json();})
     .then(function(d){
-      var text=atob(d.content.replace(/\n/g,''));
+      var text=b64d(d.content.replace(/\n/g,''));
       var sha=d.sha;
       var sections=text.split('===');
       var found=false;
