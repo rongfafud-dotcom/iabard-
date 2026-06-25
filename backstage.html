@@ -164,13 +164,6 @@
   </div>
 </div>
 
-<div class="tabs">
-  <div class="tab-btn active" onclick="switchAdd(this)">➕ Добавить</div>
-  <div class="tab-btn" onclick="switchPoems(this)">📖 Стихи</div>
-  <div class="tab-btn" onclick="switchAudio(this)">🎵 Аудио</div>
-  <div class="tab-btn" onclick="switchYT(this)">🎬 YouTube</div>
-</div>
-
 <div id="add-panel" style="max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:10px;padding:0 0 4px;overflow:hidden">
 
   <!-- ШАГИ 1: выбор рубрики -->
@@ -189,7 +182,7 @@
       <span style="font-size:1.3rem">👤</span><span style="color:#c9a96e;font-size:1.05rem">Ия Бард</span>
     </button>
     <button onclick="selectAddSection('shop')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="font-size:1.3rem">🛍️</span><span style="color:#c9a96e;font-size:1.05rem">Магазин</span>
+      <span style="font-size:1.3rem">🛍️</span><span style="color:#c9a96e;font-size:1.05rem">Товар</span>
     </button>
   </div>
 
@@ -269,7 +262,7 @@
 
   <!-- МАГАЗИН form -->
   <div id="add-form-shop" style="padding:20px;display:none;flex-direction:column;gap:8px">
-    <input type="text" id="shop-title" placeholder="Название товара" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <input type="text" id="shop-title" placeholder="Название" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
     <input type="url" id="shop-url" placeholder="Ссылка (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
     <textarea id="shop-text" placeholder="Описание (необязательно)" rows="4" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
     <button onclick="addShop()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
@@ -279,37 +272,6 @@
   </div><!-- /add-form-wrap -->
 </div>
 
-<div id="poem-list-wrap" style="max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:10px;overflow:hidden;display:none">
-  <div class="poem-search">
-    <input type="search" id="poem-search" placeholder="Поиск стихотворения…" oninput="filterPoemCards(this.value)" autocomplete="off" spellcheck="false">
-    <span class="poem-search-count" id="poem-search-count"></span>
-  </div>
-  <div id="poem-cards"></div>
-  <div class="bar">
-    <span class="status" id="status"></span>
-  </div>
-</div>
-
-
-<div class="audio-panel" id="audio-panel">
-  <div class="audio-upload-box" id="upload-box">
-    <div class="audio-upload-icon">🎵</div>
-    <div class="audio-upload-text">Перетащи аудиофайл сюда или нажми для выбора<br><small style="opacity:0.6">MP3, OGG, WAV, M4A</small></div>
-    <input type="file" id="audio-file-input" accept=".mp3,.m4a,.wav,.ogg,.aac,.flac,audio/*" style="display:none" onchange="uploadAudio(this.files[0])">
-    <button onclick="document.getElementById('audio-file-input').click()">Выбрать файл</button>
-    <div class="audio-progress" id="audio-progress"></div>
-  </div>
-  <div class="audio-list-title">Загруженные треки</div>
-  <div class="audio-list" id="audio-list"><span style="opacity:0.4;font-size:0.85rem">Загрузка…</span></div>
-</div>
-
-<div class="yt-panel" id="yt-panel">
-  <div class="yt-search-wrap">
-    <input type="search" id="yt-search" placeholder="Найти стихотворение…" oninput="filterYT(this.value)" autocomplete="off">
-    <span class="yt-count" id="yt-count"></span>
-  </div>
-  <div class="yt-list" id="yt-list"><div style="padding:20px;text-align:center;opacity:0.4;font-size:0.85rem">Загрузка…</div></div>
-</div>
 
 
 
@@ -426,7 +388,7 @@ function switchAdd(btn){
 }
 
 function selectAddSection(section){
-  var labels={poems:'Поэзия','poetry-en':'Songs EN',astrology:'Астрология',author:'Ия Бард',shop:'Магазин'};
+  var labels={poems:'Поэзия','poetry-en':'Songs EN',astrology:'Астрология',author:'Ия Бард',shop:'Товар'};
   document.getElementById('add-section-picker').style.display='none';
   document.getElementById('add-form-wrap').style.display='block';
   document.getElementById('add-section-label').textContent=labels[section]||section;
