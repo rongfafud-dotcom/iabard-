@@ -172,12 +172,30 @@
 </div>
 
 <div id="add-panel" style="max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:10px;padding:0 0 4px;overflow:hidden">
-  <!-- section selector -->
-  <div style="display:flex;border-bottom:1px solid rgba(201,169,110,0.2)">
-    <button class="add-sec-btn active" onclick="switchAddSection('poems',this)" style="flex:1;padding:12px 8px;background:rgba(201,169,110,0.1);border:none;color:#c9a96e;font-family:'Georgia',serif;font-size:0.82rem;letter-spacing:1px;cursor:pointer">Поэзия</button>
-    <button class="add-sec-btn" onclick="switchAddSection('poetry-en',this)" style="flex:1;padding:12px 8px;background:none;border:none;border-left:1px solid rgba(201,169,110,0.2);color:rgba(201,169,110,0.6);font-family:'Georgia',serif;font-size:0.82rem;letter-spacing:1px;cursor:pointer">Songs EN</button>
-    <button class="add-sec-btn" onclick="switchAddSection('astrology',this)" style="flex:1;padding:12px 8px;background:none;border:none;border-left:1px solid rgba(201,169,110,0.2);color:rgba(201,169,110,0.6);font-family:'Georgia',serif;font-size:0.82rem;letter-spacing:1px;cursor:pointer">Астрология</button>
+
+  <!-- ШАГИ 1: выбор рубрики -->
+  <div id="add-section-picker" style="padding:16px;display:flex;flex-direction:column;gap:10px">
+    <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);text-align:center;padding-bottom:4px">Выберите рубрику</div>
+    <button onclick="selectAddSection('poems')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+      <span style="font-size:1.3rem">📜</span><span>Добавить в рубрику <b style="color:#c9a96e">Поэзия</b></span>
+    </button>
+    <button onclick="selectAddSection('astrology')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+      <span style="font-size:1.3rem">✨</span><span>Добавить в рубрику <b style="color:#c9a96e">Астрология</b></span>
+    </button>
+    <button onclick="selectAddSection('poetry-en')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+      <span style="font-size:1.3rem">🎵</span><span>Добавить в рубрику <b style="color:#c9a96e">Songs EN</b></span>
+    </button>
+    <button onclick="selectAddSection('author')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+      <span style="font-size:1.3rem">👤</span><span>Добавить в рубрику <b style="color:#c9a96e">Ия Бард</b></span>
+    </button>
   </div>
+
+  <!-- ШАГ 2: форма (скрыта до выбора) -->
+  <div id="add-form-wrap" style="display:none">
+    <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(201,169,110,0.15)">
+      <button onclick="backToSectionPicker()" style="background:none;border:1px solid rgba(201,169,110,0.3);border-radius:6px;color:rgba(201,169,110,0.7);padding:5px 12px;cursor:pointer;font-size:0.82rem;font-family:'Georgia',serif">← Назад</button>
+      <span id="add-section-label" style="color:#c9a96e;font-size:0.88rem;letter-spacing:1px;font-family:'Georgia',serif"></span>
+    </div>
 
   <!-- ПОЭЗИЯ form -->
   <div id="add-form-poems" style="padding:20px;display:flex;flex-direction:column;gap:8px">
@@ -234,6 +252,17 @@
       <div id="astro-list"><div style="opacity:0.4;font-size:0.85rem">Загрузка…</div></div>
     </div>
   </div>
+
+  <!-- ИЯ БАРД form -->
+  <div id="add-form-author" style="padding:20px;display:none;flex-direction:column;gap:8px">
+    <input type="text" id="author-title" placeholder="Название" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <input type="url" id="author-url" placeholder="YouTube URL (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <textarea id="author-text" placeholder="Текст (необязательно)" rows="4" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
+    <button onclick="addAuthor()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
+    <div id="author-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
+  </div>
+
+  </div><!-- /add-form-wrap -->
 </div>
 
 <div id="poem-list-wrap" style="max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:10px;overflow:hidden;display:none">
@@ -382,22 +411,55 @@ function switchAdd(btn){
   if(active) active.click();
 }
 
-function switchAddSection(section, btn){
-  document.querySelectorAll('.add-sec-btn').forEach(function(b){
-    b.style.background='none';
-    b.style.color='rgba(201,169,110,0.6)';
-    b.classList.remove('active');
+function selectAddSection(section){
+  var labels={poems:'Поэзия','poetry-en':'Songs EN',astrology:'Астрология',author:'Ия Бард'};
+  document.getElementById('add-section-picker').style.display='none';
+  document.getElementById('add-form-wrap').style.display='block';
+  document.getElementById('add-section-label').textContent=labels[section]||section;
+  ['poems','poetry-en','astrology','author'].forEach(function(s){
+    var f=document.getElementById('add-form-'+s);
+    if(f) f.style.display=(s===section)?'flex':'none';
   });
-  btn.style.background='rgba(201,169,110,0.1)';
-  btn.style.color='#c9a96e';
-  btn.classList.add('active');
-  document.getElementById('add-form-poems').style.display='none';
-  document.getElementById('add-form-poetry-en').style.display='none';
-  document.getElementById('add-form-astrology').style.display='none';
-  var f=document.getElementById('add-form-'+section);
-  if(f) f.style.display='flex';
   if(section==='poetry-en') loadPoetryENList();
   if(section==='astrology') loadAstroList();
+}
+function backToSectionPicker(){
+  document.getElementById('add-section-picker').style.display='flex';
+  document.getElementById('add-form-wrap').style.display='none';
+}
+function addAuthor(){
+  var token=getToken();
+  if(!token){document.getElementById('author-add-status').textContent='Нет токена';return;}
+  var title=document.getElementById('author-title').value.trim();
+  var url=document.getElementById('author-url').value.trim();
+  var text=document.getElementById('author-text').value.trim();
+  if(!title&&!url&&!text){document.getElementById('author-add-status').textContent='Заполните хотя бы одно поле';return;}
+  var st=document.getElementById('author-add-status');
+  st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
+  fetch('https://api.github.com/repos/'+REPO+'/contents/author.txt?ref=main',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
+  .then(function(d){
+    var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
+    var newEntry=(title?title+'\n':'')+(url?'\n'+url+'\n':'')+(text?'\n'+text+'\n':'');
+    var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
+    var encoded=btoa(unescape(encodeURIComponent(updated)));
+    var body={message:'Add to author section'+(title?': '+title:''),content:encoded,branch:'main'};
+    if(d.sha)body.sha=d.sha;
+    return fetch('https://api.github.com/repos/'+REPO+'/contents/author.txt',{
+      method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+  })
+  .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+  .then(function(){
+    st.textContent='✓ Добавлено!';st.style.color='#7bc47b';
+    document.getElementById('author-title').value='';
+    document.getElementById('author-url').value='';
+    document.getElementById('author-text').value='';
+  })
+  .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
 }
 
 function switchPoems(btn){
