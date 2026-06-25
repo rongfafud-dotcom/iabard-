@@ -168,6 +168,7 @@
   <div class="tab-btn active" onclick="switchFile('poems.txt',this)">📖 Стихи</div>
   <div class="tab-btn" onclick="switchAudio(this)">🎵 Аудио</div>
   <div class="tab-btn" onclick="switchYT(this)">🎬 YouTube</div>
+  <div class="tab-btn" onclick="switchPoetryEN(this)">🇬🇧 Poetry EN</div>
 </div>
 
 <div class="novinka-panel" id="poem-add-panel" style="border-radius:10px 10px 0 0;border-bottom:none;margin-bottom:0">
@@ -232,6 +233,23 @@
     <span class="yt-count" id="yt-count"></span>
   </div>
   <div class="yt-list" id="yt-list"><div style="padding:20px;text-align:center;opacity:0.4;font-size:0.85rem">Загрузка…</div></div>
+</div>
+
+<div class="yt-panel" id="poetry-en-panel">
+  <div style="max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:10px;padding:20px;margin-bottom:16px">
+    <div style="font-size:0.75rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,169,110,0.5);margin-bottom:12px">Добавить видео</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <input type="text" id="en-title" placeholder="Title (English)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+      <input type="url" id="en-url" placeholder="YouTube URL" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+      <button onclick="addPoetryEN()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
+      <div id="en-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
+    </div>
+  </div>
+  <div class="yt-search-wrap">
+    <input type="search" id="en-search" placeholder="Search…" oninput="filterPoetryENBack(this.value)" autocomplete="off">
+    <span class="yt-count" id="en-count"></span>
+  </div>
+  <div class="yt-list" id="en-list"><div style="padding:20px;text-align:center;opacity:0.4;font-size:0.85rem">Загрузка…</div></div>
 </div>
 
 <div class="inbox-panel" id="inbox-panel">
@@ -341,6 +359,8 @@ function switchFile(file, btn){
   document.getElementById('poem-add-panel').style.display = file==='poems.txt'?'block':'none';
   document.getElementById('poem-list-wrap').style.display = '';
   document.getElementById('audio-panel').style.display = 'none';
+  document.getElementById('yt-panel').style.display='none';
+  document.getElementById('poetry-en-panel').style.display='none';
   document.getElementById('inbox-panel').style.display = 'none';
   setStatus('Загрузка…');
   loadFile();
@@ -354,6 +374,8 @@ function switchAudio(btn){
   document.getElementById('poem-add-panel').style.display='none';
   document.getElementById('poem-list-wrap').style.display='none';
   document.getElementById('audio-panel').style.display = 'block';
+  document.getElementById('yt-panel').style.display='none';
+  document.getElementById('poetry-en-panel').style.display='none';
   document.getElementById('inbox-panel').style.display = 'none';
   loadAudioList();
 }
@@ -366,8 +388,132 @@ function switchYT(btn){
   document.getElementById('poem-list-wrap').style.display='none';
   document.getElementById('audio-panel').style.display='none';
   document.getElementById('yt-panel').style.display='block';
+  document.getElementById('poetry-en-panel').style.display='none';
   document.getElementById('inbox-panel').style.display='none';
   loadYTList();
+}
+
+function switchPoetryEN(btn){
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('inbox-btn').classList.remove('active');
+  document.getElementById('poem-add-panel').style.display='none';
+  document.getElementById('poem-list-wrap').style.display='none';
+  document.getElementById('audio-panel').style.display='none';
+  document.getElementById('yt-panel').style.display='none';
+  document.getElementById('poetry-en-panel').style.display='block';
+  document.getElementById('inbox-panel').style.display='none';
+  loadPoetryENList();
+}
+
+var _enEntries=[];
+function loadPoetryENList(){
+  var token=getToken();
+  var el=document.getElementById('en-list');
+  if(!token){el.innerHTML='<div style="padding:16px;color:#d47a7a;font-size:0.85rem">Сначала введите токен</div>';return;}
+  el.innerHTML='<div style="padding:20px;text-align:center;opacity:0.4;font-size:0.85rem">Загрузка…</div>';
+  fetch('https://api.github.com/repos/'+REPO+'/contents/poems-en.txt?ref=main',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){if(r.status===401){invalidToken();throw new Error('skip');}return r.json();})
+  .then(function(d){
+    var text=atob(d.content.replace(/\n/g,''));
+    var entries=text.split('===').map(function(e){return e.trim();}).filter(Boolean).reverse();
+    _enEntries=entries.map(function(raw){
+      var lines=raw.split('\n').map(function(l){return l.trim();}).filter(Boolean);
+      return{title:lines[0]||'',url:lines.find(function(l){return /youtu/.test(l);})||''};
+    });
+    renderPoetryENList(_enEntries);
+  })
+  .catch(function(e){if(e.message!=='skip')el.innerHTML='<div style="padding:16px;color:#d47a7a;font-size:0.85rem">Ошибка загрузки</div>';});
+}
+
+function renderPoetryENList(list){
+  var el=document.getElementById('en-list');
+  document.getElementById('en-count').textContent=list.length+' видео';
+  if(!list.length){el.innerHTML='<div style="padding:20px;text-align:center;opacity:0.5;font-size:0.85rem">Нет видео</div>';return;}
+  el.innerHTML='';
+  list.forEach(function(entry,i){
+    var item=document.createElement('div');
+    item.className='yt-item';
+    item.dataset.title=(entry.title||'').toLowerCase();
+    var row=document.createElement('div');row.style.cssText='display:flex;gap:8px;align-items:center';
+    var titleSpan=document.createElement('span');titleSpan.className='yt-item-title';titleSpan.style.flex='1';titleSpan.textContent=entry.title||'(no title)';
+    var delBtn=document.createElement('button');delBtn.className='yt-item-btn';delBtn.style.background='rgba(180,60,60,0.15)';delBtn.style.border='1px solid rgba(180,60,60,0.3)';delBtn.style.color='#d47a7a';delBtn.textContent='✕';
+    delBtn.onclick=function(){deletePoetryEN(i,delBtn);};
+    row.appendChild(titleSpan);row.appendChild(delBtn);
+    var urlDiv=document.createElement('div');urlDiv.style.cssText='font-size:0.75rem;color:rgba(201,169,110,0.5);margin-top:4px;word-break:break-all';urlDiv.textContent=entry.url;
+    item.appendChild(row);item.appendChild(urlDiv);
+    el.appendChild(item);
+  });
+}
+
+function filterPoetryENBack(q){
+  q=(q||'').toLowerCase().trim();
+  var items=document.querySelectorAll('#en-list .yt-item');
+  var shown=0;
+  items.forEach(function(it){var m=!q||it.dataset.title.indexOf(q)!==-1;it.style.display=m?'':'none';if(m)shown++;});
+  document.getElementById('en-count').textContent=shown+' видео';
+}
+
+function addPoetryEN(){
+  var token=getToken();
+  if(!token){document.getElementById('en-add-status').textContent='Нет токена';return;}
+  var title=document.getElementById('en-title').value.trim();
+  var url=document.getElementById('en-url').value.trim();
+  if(!title||!url){document.getElementById('en-add-status').textContent='Введите название и URL';return;}
+  if(!/youtu/.test(url)){document.getElementById('en-add-status').textContent='Неверный YouTube URL';return;}
+  var st=document.getElementById('en-add-status');
+  st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
+  fetch('https://api.github.com/repos/'+REPO+'/contents/poems-en.txt?ref=main',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){return r.json();})
+  .then(function(d){
+    var text=atob(d.content.replace(/\n/g,''));
+    var newEntry=title+'\n\n'+url+'\n';
+    var updated=text.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
+    var encoded=btoa(unescape(encodeURIComponent(updated)));
+    return fetch('https://api.github.com/repos/'+REPO+'/contents/poems-en.txt',{
+      method:'PUT',
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify({message:'Add EN poem: '+title,content:encoded,sha:d.sha,branch:'main'})
+    });
+  })
+  .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+  .then(function(){
+    st.textContent='✓ Добавлено!';st.style.color='#7bc47b';
+    document.getElementById('en-title').value='';
+    document.getElementById('en-url').value='';
+    loadPoetryENList();
+  })
+  .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
+}
+
+function deletePoetryEN(idx,btn){
+  if(!confirm('Удалить это видео?'))return;
+  var token=getToken();
+  if(!token)return;
+  btn.disabled=true;
+  fetch('https://api.github.com/repos/'+REPO+'/contents/poems-en.txt?ref=main',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){return r.json();})
+  .then(function(d){
+    var text=atob(d.content.replace(/\n/g,''));
+    var entries=text.split('===').map(function(e){return e.trim();}).filter(Boolean).reverse();
+    entries.splice(idx,1);
+    var updated=entries.length?entries.reverse().join('\n\n===\n\n')+'\n\n===\n':'';
+    var encoded=btoa(unescape(encodeURIComponent(updated)));
+    return fetch('https://api.github.com/repos/'+REPO+'/contents/poems-en.txt',{
+      method:'PUT',
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify({message:'Delete EN poem',content:encoded,sha:d.sha,branch:'main'})
+    });
+  })
+  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  .then(function(){loadPoetryENList();})
+  .catch(function(e){btn.disabled=false;alert('Ошибка: '+e.message);});
 }
 
 var _ytPoems=[];

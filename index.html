@@ -2098,11 +2098,10 @@
   <!-- POETRY EN -->
   <div id="poetry-en" class="tab-panel" role="tabpanel" aria-labelledby="tab-creative">
     <div class="poem-search-wrap">
-      <input type="search" id="poetry-en-search" class="poem-search" placeholder="Search poem…" aria-label="Search English poems" autocomplete="off">
+      <input type="search" id="poetry-en-search" class="poem-search" placeholder="Search poem…" aria-label="Search English poems" autocomplete="off" oninput="filterPoetryEN(this.value)">
     </div>
-    <p id="poetry-en-notfound" class="poems-loading" style="display:none">Nothing found</p>
     <div class="novinka-list" id="poetry-en-list">
-      <p class="poems-loading">Coming soon…</p>
+      <p class="poems-loading">Loading…</p>
     </div>
   </div>
 
@@ -2262,6 +2261,71 @@ function goShopItem(itemId){
   },50);
 }
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function ytIdFromUrl(url){
+  var m=url.match(/(?:youtu\.be\/|youtube\.com\/(?:shorts\/|watch\?v=|embed\/))([A-Za-z0-9_\-]{11})/);
+  return m?m[1]:null;
+}
+function loadPoetryEN(){
+  var panel=document.getElementById('poetry-en');
+  if(!panel||panel.dataset.loaded)return;
+  panel.dataset.loaded='1';
+  var list=document.getElementById('poetry-en-list');
+  fetch('poems-en.txt?v='+Math.floor(Date.now()/60000))
+  .then(function(r){if(!r.ok)throw new Error();return r.text();})
+  .then(function(text){
+    var entries=text.split('===').map(function(e){return e.trim();}).filter(Boolean).reverse();
+    if(!entries.length){list.innerHTML='<p class="poems-loading">Coming soon…</p>';return;}
+    list.innerHTML='';
+    entries.forEach(function(raw){
+      var lines=raw.split('\n').map(function(l){return l.trim();}).filter(Boolean);
+      var title=lines[0]||'';
+      var ytUrl=lines.find(function(l){return /youtu/.test(l);})||'';
+      var vid=ytIdFromUrl(ytUrl);
+      if(!title&&!vid)return;
+      var card=document.createElement('div');
+      card.className='novinka-card';
+      card.dataset.title=title.toLowerCase();
+      var titleDiv=document.createElement('div');
+      titleDiv.className='novinka-title';titleDiv.textContent=title;
+      card.appendChild(titleDiv);
+      if(vid){
+        var vw=document.createElement('div');vw.className='novinka-video';
+        var facade=document.createElement('div');
+        facade.className='yt-facade';facade.dataset.vid=vid;
+        facade.onclick=function(){ytPlay(this);};
+        var img=document.createElement('img');
+        img.src='https://img.youtube.com/vi/'+vid+'/hqdefault.jpg';
+        img.alt=title+' — Hypatia Bard';img.loading='lazy';
+        var pb=document.createElement('button');
+        pb.className='yt-play';pb.setAttribute('aria-label','Watch video');pb.textContent='▶';
+        facade.appendChild(img);facade.appendChild(pb);
+        vw.appendChild(facade);card.appendChild(vw);
+        var row=document.createElement('div');row.className='yt-btn-row poem-yt-row';
+        var watchUrl='https://www.youtube.com/watch?v='+vid;
+        var shortsUrl='https://www.youtube.com/shorts/'+vid;
+        var wa=document.createElement('a');
+        wa.href=watchUrl;wa.target='_blank';wa.rel='noopener noreferrer';
+        wa.className='yt-watch-btn';
+        wa.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Watch on YouTube';
+        row.appendChild(wa);
+        var sb=document.createElement('button');
+        sb.className='yt-share-btn';
+        sb.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>Share';
+        sb.onclick=function(){showShareMenu(sb,'https://iabard.com',shortsUrl);};
+        row.appendChild(sb);card.appendChild(row);
+      }
+      list.appendChild(card);
+    });
+  })
+  .catch(function(){list.innerHTML='<p class="poems-loading">Coming soon…</p>';});
+}
+function filterPoetryEN(q){
+  q=(q||'').toLowerCase().trim();
+  document.querySelectorAll('#poetry-en-list .novinka-card').forEach(function(c){
+    c.style.display=(!q||c.dataset.title.indexOf(q)!==-1)?'':'none';
+  });
+}
 function loadPoems(){
   var panel=document.getElementById('poems');
   if(!panel||panel.dataset.loaded)return;
@@ -2407,6 +2471,7 @@ function switchTab(id, btn) {
   });
   // Load content FIRST so page height is stable before scroll
   if(id==='poems')loadPoems();
+  if(id==='poetry-en')loadPoetryEN();
   if(id==='author'){document.querySelectorAll('#carousel-track img').forEach(function(img){if(!img.complete||img.naturalWidth===0){var s=img.src;img.src='';img.src=s;}});}
   // Scroll to panel top (not main-content top) so content lands right below sticky nav
   var stickyNav=document.getElementById('sticky-nav');
