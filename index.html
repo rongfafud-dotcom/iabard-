@@ -2120,12 +2120,12 @@
         <h2 class="shop-cs-title">Shop</h2>
         <p class="shop-cs-sub">Coming Soon</p>
         <div class="shop-cs-divider"></div>
-        <div class="shop-cs-items">
-          <div class="shop-cs-item" id="shop-tree">Woven Essential Tree</div>
-          <div class="shop-cs-item" id="shop-bracelets">Talisman Bracelets</div>
-          <div class="shop-cs-item" id="shop-leela">Leela Floor Game</div>
-          <div class="shop-cs-item" id="shop-oracle">Oracle Eva Luna</div>
-          <div class="shop-cs-item" id="shop-gus">Gus Art Toy</div>
+        <div class="shop-cs-items" id="shop-items-list">
+          <div class="shop-cs-item">Woven Essential Tree</div>
+          <div class="shop-cs-item">Talisman Bracelets</div>
+          <div class="shop-cs-item">Leela Floor Game</div>
+          <div class="shop-cs-item">Oracle Eva Luna</div>
+          <div class="shop-cs-item">Gus Art Toy</div>
         </div>
         <p class="shop-cs-note">Следите за обновлениями</p>
       </div>
@@ -2332,6 +2332,41 @@ function filterPoetryEN(q){
     c.style.display=(!q||c.dataset.title.indexOf(q)!==-1)?'':'none';
   });
 }
+function loadShop(){
+  var panel=document.getElementById('shop');
+  if(!panel||panel.dataset.loaded)return;
+  panel.dataset.loaded='1';
+  var el=document.getElementById('shop-items-list');
+  if(!el)return;
+  fetch('shop.txt?v='+Math.floor(Date.now()/60000))
+  .then(function(r){if(!r.ok)throw new Error();return r.text();})
+  .then(function(text){
+    var entries=text.split('===').map(function(e){return e.trim();}).filter(Boolean);
+    if(!entries.length)return;
+    el.innerHTML='';
+    entries.forEach(function(raw){
+      var lines=raw.split('\n').map(function(l){return l.trim();}).filter(Boolean);
+      var title=lines.find(function(l){return !/^https?:\/\//.test(l);})||'';
+      var url=lines.find(function(l){return /^https?:\/\//.test(l);})||'';
+      var desc=lines.filter(function(l){return l!==title&&l!==url;}).join(' ');
+      if(!title)return;
+      var item=document.createElement('div');
+      item.className='shop-cs-item';
+      if(url){
+        var a=document.createElement('a');
+        a.href=url;a.target='_blank';a.rel='noopener noreferrer';
+        a.style.cssText='color:inherit;text-decoration:underline;text-underline-offset:3px';
+        a.textContent=title;
+        item.appendChild(a);
+      } else {
+        item.textContent=title;
+      }
+      if(desc){var d=document.createElement('div');d.style.cssText='font-size:0.78em;opacity:0.6;margin-top:3px';d.textContent=desc;item.appendChild(d);}
+      el.appendChild(item);
+    });
+  })
+  .catch(function(){});
+}
 function loadPoems(){
   var panel=document.getElementById('poems');
   if(!panel||panel.dataset.loaded)return;
@@ -2478,6 +2513,7 @@ function switchTab(id, btn) {
   // Load content FIRST so page height is stable before scroll
   if(id==='poems')loadPoems();
   if(id==='poetry-en')loadPoetryEN();
+  if(id==='shop')loadShop();
   if(id==='author'){document.querySelectorAll('#carousel-track img').forEach(function(img){if(!img.complete||img.naturalWidth===0){var s=img.src;img.src='';img.src=s;}});}
   // Scroll to panel top (not main-content top) so content lands right below sticky nav
   var stickyNav=document.getElementById('sticky-nav');
