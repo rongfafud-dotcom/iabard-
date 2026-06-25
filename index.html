@@ -2286,7 +2286,7 @@ function loadPoetryEN(){
     list.innerHTML='';
     entries.forEach(function(raw){
       var lines=raw.split('\n').map(function(l){return l.trim();}).filter(Boolean);
-      var title=lines[0]||'';
+      var title=lines.find(function(l){return !/youtu/i.test(l);})||'';
       var ytUrl=lines.find(function(l){return /youtu/.test(l);})||'';
       var vid=ytIdFromUrl(ytUrl);
       var isShort=/youtube\.com\/shorts\//.test(ytUrl);
