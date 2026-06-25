@@ -165,15 +165,22 @@
 </div>
 
 <div class="tabs">
-  <div class="tab-btn active" onclick="switchFile('poems.txt',this)">📖 Стихи</div>
+  <div class="tab-btn active" onclick="switchAdd(this)">➕ Добавить</div>
+  <div class="tab-btn" onclick="switchPoems(this)">📖 Стихи</div>
   <div class="tab-btn" onclick="switchAudio(this)">🎵 Аудио</div>
   <div class="tab-btn" onclick="switchYT(this)">🎬 YouTube</div>
-  <div class="tab-btn" onclick="switchPoetryEN(this)">🇬🇧 Poetry EN</div>
-  <div class="tab-btn" onclick="switchAstro(this)">♈ Астрология</div>
 </div>
 
-<div class="novinka-panel" id="poem-add-panel" style="border-radius:10px 10px 0 0;border-bottom:none;margin-bottom:0">
-  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+<div id="add-panel" style="max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:10px;padding:0 0 4px;overflow:hidden">
+  <!-- section selector -->
+  <div style="display:flex;border-bottom:1px solid rgba(201,169,110,0.2)">
+    <button class="add-sec-btn active" onclick="switchAddSection('poems',this)" style="flex:1;padding:12px 8px;background:rgba(201,169,110,0.1);border:none;color:#c9a96e;font-family:'Georgia',serif;font-size:0.82rem;letter-spacing:1px;cursor:pointer">Поэзия</button>
+    <button class="add-sec-btn" onclick="switchAddSection('poetry-en',this)" style="flex:1;padding:12px 8px;background:none;border:none;border-left:1px solid rgba(201,169,110,0.2);color:rgba(201,169,110,0.6);font-family:'Georgia',serif;font-size:0.82rem;letter-spacing:1px;cursor:pointer">Poetry EN</button>
+    <button class="add-sec-btn" onclick="switchAddSection('astrology',this)" style="flex:1;padding:12px 8px;background:none;border:none;border-left:1px solid rgba(201,169,110,0.2);color:rgba(201,169,110,0.6);font-family:'Georgia',serif;font-size:0.82rem;letter-spacing:1px;cursor:pointer">Астрология</button>
+  </div>
+
+  <!-- ПОЭЗИЯ form -->
+  <div id="add-form-poems" style="padding:20px;display:flex;flex-direction:column;gap:8px">
     <label style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:text;display:flex;align-items:center;gap:8px;transition:border-color 0.2s">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       <input type="url" id="poem-yt-url" placeholder="Добавить ссылку на YouTube"
@@ -197,14 +204,39 @@
       <img id="poem-img-prev-img" style="max-width:100%;max-height:180px;display:block;object-fit:contain;margin:0 auto">
       <button onclick="clearPoemImage()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.65);border:none;border-radius:50%;color:#e8ddd0;width:22px;height:22px;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;line-height:1">✕</button>
     </div>
+    <textarea id="poem-add-text" placeholder="Добавить стихотворение" style="width:100%;height:260px;background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none" spellcheck="false" autocorrect="off" autocapitalize="none" autocomplete="off"></textarea>
+    <button class="novinka-add-btn" id="poem-add-btn" onclick="addPoem()">Добавить стихотворение</button>
+    <div class="novinka-status" id="poem-add-status"></div>
+    <div style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(201,169,110,0.12);font-size:0.7rem;color:rgba(201,169,110,0.4);letter-spacing:1.5px;text-transform:uppercase;text-align:center">Список стихотворений — вкладка «Стихи» ↑</div>
   </div>
-  <textarea id="poem-add-text" placeholder="Добавить стихотворение" style="width:100%;height:260px;background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;margin-bottom:16px" spellcheck="false" autocorrect="off" autocapitalize="none" autocomplete="off"></textarea>
-  <button class="novinka-add-btn" id="poem-add-btn" onclick="addPoem()">Добавить стихотворение</button>
-  <div class="novinka-status" id="poem-add-status"></div>
-  <div style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(201,169,110,0.12);font-size:0.7rem;color:rgba(201,169,110,0.4);letter-spacing:1.5px;text-transform:uppercase;text-align:center">Список стихотворений ↓</div>
+
+  <!-- POETRY EN form -->
+  <div id="add-form-poetry-en" style="padding:20px;display:none;flex-direction:column;gap:8px">
+    <input type="text" id="en-title" placeholder="Title (English)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <input type="url" id="en-url" placeholder="YouTube URL" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <button onclick="addPoetryEN()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
+    <div id="en-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(201,169,110,0.15)">
+      <div style="font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,169,110,0.4);margin-bottom:10px">Загруженные видео</div>
+      <div id="en-list"><div style="opacity:0.4;font-size:0.85rem">Загрузка…</div></div>
+    </div>
+  </div>
+
+  <!-- АСТРОЛОГИЯ form -->
+  <div id="add-form-astrology" style="padding:20px;display:none;flex-direction:column;gap:8px">
+    <input type="text" id="astro-title" placeholder="Название" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <input type="url" id="astro-url" placeholder="YouTube URL (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <textarea id="astro-text" placeholder="Текст стихотворения (необязательно)" rows="4" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
+    <button onclick="addAstro()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
+    <div id="astro-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(201,169,110,0.15)">
+      <div style="font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,169,110,0.4);margin-bottom:10px">Добавленные записи</div>
+      <div id="astro-list"><div style="opacity:0.4;font-size:0.85rem">Загрузка…</div></div>
+    </div>
+  </div>
 </div>
 
-<div id="poem-list-wrap" style="max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:0 0 10px 10px;overflow:hidden">
+<div id="poem-list-wrap" style="max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:10px;overflow:hidden;display:none">
   <div class="poem-search">
     <input type="search" id="poem-search" placeholder="Поиск стихотворения…" oninput="filterPoemCards(this.value)" autocomplete="off" spellcheck="false">
     <span class="poem-search-count" id="poem-search-count"></span>
@@ -236,40 +268,7 @@
   <div class="yt-list" id="yt-list"><div style="padding:20px;text-align:center;opacity:0.4;font-size:0.85rem">Загрузка…</div></div>
 </div>
 
-<div class="yt-panel" id="poetry-en-panel">
-  <div style="max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:10px;padding:20px;margin-bottom:16px">
-    <div style="font-size:0.75rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,169,110,0.5);margin-bottom:12px">Добавить видео</div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <input type="text" id="en-title" placeholder="Title (English)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-      <input type="url" id="en-url" placeholder="YouTube URL" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-      <button onclick="addPoetryEN()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
-      <div id="en-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
-    </div>
-  </div>
-  <div class="yt-search-wrap">
-    <input type="search" id="en-search" placeholder="Search…" oninput="filterPoetryENBack(this.value)" autocomplete="off">
-    <span class="yt-count" id="en-count"></span>
-  </div>
-  <div class="yt-list" id="en-list"><div style="padding:20px;text-align:center;opacity:0.4;font-size:0.85rem">Загрузка…</div></div>
-</div>
 
-<div class="yt-panel" id="astro-panel">
-  <div style="max-width:600px;margin:0 auto;border:1px solid rgba(201,169,110,0.3);border-radius:10px;padding:20px;margin-bottom:16px">
-    <div style="font-size:0.75rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,169,110,0.5);margin-bottom:12px">Добавить видео / текст</div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <input type="text" id="astro-title" placeholder="Название (например: Овен ♈️)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-      <input type="url" id="astro-url" placeholder="YouTube URL (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-      <textarea id="astro-text" placeholder="Текст стихотворения (необязательно)" rows="5" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
-      <button onclick="addAstro()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
-      <div id="astro-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
-    </div>
-  </div>
-  <div class="yt-search-wrap">
-    <input type="search" id="astro-search" placeholder="Найти…" oninput="filterAstroBack(this.value)" autocomplete="off">
-    <span class="yt-count" id="astro-count"></span>
-  </div>
-  <div class="yt-list" id="astro-list"><div style="padding:20px;text-align:center;opacity:0.4;font-size:0.85rem">Загрузка…</div></div>
-</div>
 
 <div class="inbox-panel" id="inbox-panel">
   <div class="inbox-tabs">
@@ -370,20 +369,47 @@ function setStatus(msg, ok){
   el.style.color = ok ? '#7bc47b' : 'rgba(201,169,110,0.7)';
 }
 
-function switchFile(file, btn){
-  currentFile = file;
+function switchAdd(btn){
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
   document.getElementById('inbox-btn').classList.remove('active');
-  document.getElementById('poem-add-panel').style.display = file==='poems.txt'?'block':'none';
-  document.getElementById('poem-list-wrap').style.display = '';
-  document.getElementById('audio-panel').style.display = 'none';
+  document.getElementById('add-panel').style.display='block';
+  document.getElementById('poem-list-wrap').style.display='none';
+  document.getElementById('audio-panel').style.display='none';
   document.getElementById('yt-panel').style.display='none';
-  document.getElementById('poetry-en-panel').style.display='none';
-  document.getElementById('astro-panel').style.display='none';
-  document.getElementById('inbox-panel').style.display = 'none';
-  setStatus('Загрузка…');
-  loadFile();
+  document.getElementById('inbox-panel').style.display='none';
+  var active=document.querySelector('.add-sec-btn.active');
+  if(active) active.click();
+}
+
+function switchAddSection(section, btn){
+  document.querySelectorAll('.add-sec-btn').forEach(function(b){
+    b.style.background='none';
+    b.style.color='rgba(201,169,110,0.6)';
+    b.classList.remove('active');
+  });
+  btn.style.background='rgba(201,169,110,0.1)';
+  btn.style.color='#c9a96e';
+  btn.classList.add('active');
+  document.getElementById('add-form-poems').style.display='none';
+  document.getElementById('add-form-poetry-en').style.display='none';
+  document.getElementById('add-form-astrology').style.display='none';
+  var f=document.getElementById('add-form-'+section);
+  if(f) f.style.display='flex';
+  if(section==='poetry-en') loadPoetryENList();
+  if(section==='astrology') loadAstroList();
+}
+
+function switchPoems(btn){
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('inbox-btn').classList.remove('active');
+  document.getElementById('add-panel').style.display='none';
+  document.getElementById('poem-list-wrap').style.display='';
+  document.getElementById('audio-panel').style.display='none';
+  document.getElementById('yt-panel').style.display='none';
+  document.getElementById('inbox-panel').style.display='none';
+  if(!document.getElementById('poem-cards').children.length) loadFile();
 }
 
 
@@ -391,13 +417,11 @@ function switchAudio(btn){
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
   document.getElementById('inbox-btn').classList.remove('active');
-  document.getElementById('poem-add-panel').style.display='none';
+  document.getElementById('add-panel').style.display='none';
   document.getElementById('poem-list-wrap').style.display='none';
-  document.getElementById('audio-panel').style.display = 'block';
+  document.getElementById('audio-panel').style.display='block';
   document.getElementById('yt-panel').style.display='none';
-  document.getElementById('poetry-en-panel').style.display='none';
-  document.getElementById('astro-panel').style.display='none';
-  document.getElementById('inbox-panel').style.display = 'none';
+  document.getElementById('inbox-panel').style.display='none';
   loadAudioList();
 }
 
@@ -405,29 +429,14 @@ function switchYT(btn){
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
   document.getElementById('inbox-btn').classList.remove('active');
-  document.getElementById('poem-add-panel').style.display='none';
+  document.getElementById('add-panel').style.display='none';
   document.getElementById('poem-list-wrap').style.display='none';
   document.getElementById('audio-panel').style.display='none';
   document.getElementById('yt-panel').style.display='block';
-  document.getElementById('poetry-en-panel').style.display='none';
-  document.getElementById('astro-panel').style.display='none';
   document.getElementById('inbox-panel').style.display='none';
   loadYTList();
 }
 
-function switchPoetryEN(btn){
-  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-  document.getElementById('inbox-btn').classList.remove('active');
-  document.getElementById('poem-add-panel').style.display='none';
-  document.getElementById('poem-list-wrap').style.display='none';
-  document.getElementById('audio-panel').style.display='none';
-  document.getElementById('yt-panel').style.display='none';
-  document.getElementById('poetry-en-panel').style.display='block';
-  document.getElementById('astro-panel').style.display='none';
-  document.getElementById('inbox-panel').style.display='none';
-  loadPoetryENList();
-}
 
 var _enEntries=[];
 function loadPoetryENList(){
@@ -453,7 +462,6 @@ function loadPoetryENList(){
 
 function renderPoetryENList(list){
   var el=document.getElementById('en-list');
-  document.getElementById('en-count').textContent=list.length+' видео';
   if(!list.length){el.innerHTML='<div style="padding:20px;text-align:center;opacity:0.5;font-size:0.85rem">Нет видео</div>';return;}
   el.innerHTML='';
   list.forEach(function(entry,i){
@@ -539,19 +547,6 @@ function deletePoetryEN(idx,btn){
   .catch(function(e){btn.disabled=false;alert('Ошибка: '+e.message);});
 }
 
-function switchAstro(btn){
-  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-  document.getElementById('inbox-btn').classList.remove('active');
-  document.getElementById('poem-add-panel').style.display='none';
-  document.getElementById('poem-list-wrap').style.display='none';
-  document.getElementById('audio-panel').style.display='none';
-  document.getElementById('yt-panel').style.display='none';
-  document.getElementById('poetry-en-panel').style.display='none';
-  document.getElementById('astro-panel').style.display='block';
-  document.getElementById('inbox-panel').style.display='none';
-  loadAstroList();
-}
 
 var _astroEntries=[];
 function loadAstroList(){
@@ -585,7 +580,6 @@ function loadAstroList(){
 
 function renderAstroList(list){
   var el=document.getElementById('astro-list');
-  document.getElementById('astro-count').textContent=list.length+' записей';
   if(!list.length){el.innerHTML='<div style="padding:20px;text-align:center;opacity:0.5;font-size:0.85rem">Нет записей</div>';return;}
   el.innerHTML='';
   list.forEach(function(entry,i){
@@ -1172,9 +1166,10 @@ function switchInbox(){
   }
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
   document.getElementById('inbox-btn').classList.add('active');
-  document.getElementById('poem-add-panel').style.display='none';
+  document.getElementById('add-panel').style.display='none';
   document.getElementById('poem-list-wrap').style.display='none';
   document.getElementById('audio-panel').style.display='none';
+  document.getElementById('yt-panel').style.display='none';
   panel.style.display='block';
   localStorage.setItem('inbox_seen', Date.now());
   document.getElementById('inbox-badge').style.display='none';
@@ -1518,17 +1513,16 @@ function deletePoemCard(btn){
 
 // Init
 (function(){
-  document.getElementById('poem-add-panel').style.display='block';
+  document.getElementById('add-panel').style.display='block';
+  document.getElementById('poem-list-wrap').style.display='none';
   var saved = localStorage.getItem('gh_token');
   if(saved){
     document.getElementById('token').value = saved;
     document.getElementById('token-status').textContent = '✓';
-    loadFile();
   } else {
     document.getElementById('token-body').style.display='block';
     document.getElementById('token-arrow').classList.add('open');
   }
-
 })();
 </script>
 <button id="back-to-top" aria-label="Наверх" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg></button>
