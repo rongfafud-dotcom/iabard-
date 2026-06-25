@@ -2294,6 +2294,7 @@ function loadPoetryEN(){
       var card=document.createElement('div');
       card.className='novinka-card'+(isShort?'':' novinka-card-full');
       card.dataset.title=title.toLowerCase();
+      if(title){var te=document.createElement('div');te.className='novinka-title';te.textContent=title;card.appendChild(te);}
       if(vid){
         var vw=document.createElement('div');vw.className='novinka-video'+(isShort?' poem-video':' novinka-video-wide');
         var facade=document.createElement('div');
