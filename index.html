@@ -722,10 +722,11 @@
 <!-- STICKY NAV -->
 <nav id="sticky-nav" aria-label="Быстрая навигация">
   <div class="snav-wrap">
-    <button class="snav-btn" data-panels="novosti poems">Творчество</button>
+    <button class="snav-btn" data-panels="novosti poems poetry-en">Творчество</button>
     <div class="snav-drop">
       <button onclick="goCreative('poems')">Поэзия</button>
       <button onclick="goCreative('novosti')">Баллада о<br>Зодиаке</button>
+      <button onclick="goCreative('poetry-en')">Poetry EN</button>
     </div>
   </div>
   <div class="snav-wrap">
@@ -769,6 +770,7 @@
         <div class="nav-dropmenu" id="drop-creative">
           <button onclick="goCreative('poems')">Поэзия</button>
           <button onclick="goCreative('novosti')">Баллада о<br>Зодиаке</button>
+          <button onclick="goCreative('poetry-en')">Poetry EN</button>
         </div>
       </div>
       <div class="nav-tab-wrap">
@@ -2090,6 +2092,17 @@
     <p id="poem-notfound" class="poems-loading" style="display:none">Ничего не найдено</p>
     <div class="novinka-list" id="poems-list">
       <p class="poems-loading" id="poems-ver">Загрузка стихов…</p>
+    </div>
+  </div>
+
+  <!-- POETRY EN -->
+  <div id="poetry-en" class="tab-panel" role="tabpanel" aria-labelledby="tab-creative">
+    <div class="poem-search-wrap">
+      <input type="search" id="poetry-en-search" class="poem-search" placeholder="Search poem…" aria-label="Search English poems" autocomplete="off">
+    </div>
+    <p id="poetry-en-notfound" class="poems-loading" style="display:none">Nothing found</p>
+    <div class="novinka-list" id="poetry-en-list">
+      <p class="poems-loading">Coming soon…</p>
     </div>
   </div>
 
