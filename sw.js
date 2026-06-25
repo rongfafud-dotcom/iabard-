@@ -1,7 +1,5 @@
-const CACHE = 'iabard-v4';
+const CACHE = 'iabard-v5';
 const CORE = [
-  '/',
-  '/index.html',
   '/background.webp',
   '/background.jpg',
   '/favicon.svg',
@@ -31,28 +29,26 @@ self.addEventListener('fetch', function(e) {
   var url = new URL(e.request.url);
   if (url.origin !== location.origin) return;
 
-  // Network-first for navigation (HTML pages) and poems.txt
   var isNav = e.request.mode === 'navigate';
-  var isPoems = url.pathname.endsWith('poems.txt');
-  if (isNav || isPoems) {
+  var isTxt = url.pathname.endsWith('.txt');
+
+  // Always fetch HTML and .txt files fresh from network, bypassing all caches
+  if (isNav || isTxt) {
     e.respondWith(
-      fetch(e.request).then(function(res) {
-        if (res && res.ok) {
+      fetch(new Request(e.request, {cache: 'no-store'})).then(function(res) {
+        if (isTxt && res && res.ok) {
           var clone = res.clone();
-          // Cache poems.txt without query string to avoid cache bloat
-          var cacheKey = isPoems ? new Request(url.pathname) : e.request;
-          caches.open(CACHE).then(function(c) { c.put(cacheKey, clone); });
+          caches.open(CACHE).then(function(c) { c.put(new Request(url.pathname), clone); });
         }
         return res;
       }).catch(function() {
-        var fallbackKey = isPoems ? new Request(url.pathname) : e.request;
-        return caches.match(fallbackKey);
+        return caches.match(isTxt ? new Request(url.pathname) : e.request);
       })
     );
     return;
   }
 
-  // Cache-first for images, fonts, scripts — fast repeat loads
+  // Cache-first for images, fonts — fast repeat loads
   e.respondWith(
     caches.match(e.request).then(function(cached) {
       if (cached) return cached;
