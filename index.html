@@ -1312,7 +1312,7 @@
   <div id="author" class="tab-panel" role="tabpanel" aria-labelledby="tab-author">
     <div class="author-section">
 
-      <div id="author-list"></div>
+      <div id="author-list-before"></div>
 
       <div class="carousel" id="author-carousel" aria-label="Фотогалерея — В чём секрет отношений?" style="margin-top:36px">
         <button class="carousel-btn carousel-prev" onclick="carouselMove(-1)" aria-label="Предыдущий слайд">&#8249;</button>
@@ -1322,6 +1322,8 @@
         <button class="carousel-btn carousel-next" onclick="carouselMove(1)" aria-label="Следующий слайд">&#8250;</button>
         <div class="carousel-dots" aria-label="Слайды"></div>
       </div>
+
+      <div id="author-list-after"></div>
 
       <div class="author-poem-card" style="margin-top:36px">
         <!-- Contact Form -->
@@ -1698,14 +1700,16 @@ function loadAuthor(){
   var panel=document.getElementById('author');
   if(!panel||panel.dataset.loaded)return;
   panel.dataset.loaded='1';
-  var list=document.getElementById('author-list');
+  var listBefore=document.getElementById('author-list-before');
+  var listAfter=document.getElementById('author-list-after');
   fetch('author.txt?v='+Math.floor(Date.now()/60000))
   .then(function(r){if(!r.ok)throw new Error();return r.text();})
   .then(function(text){
     var entries=text.split('===').map(function(e){return e.trim();}).filter(Boolean);
     if(!entries.length)return;
-    list.innerHTML='';
+    var afterCarousel=false;
     entries.forEach(function(raw){
+      if(raw.trim()==='[CAROUSEL]'){afterCarousel=true;return;}
       var sections=raw.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
       var header=sections[0]||'';
       var hlines=header.split('\n').map(function(l){return l.trim();}).filter(Boolean);
@@ -1743,7 +1747,7 @@ function loadAuthor(){
         });
         card.appendChild(pe);
       }
-      list.appendChild(card);
+      (afterCarousel?listAfter:listBefore).appendChild(card);
     });
   })
   .catch(function(){});
