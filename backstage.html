@@ -285,8 +285,9 @@
   </div>
 
   <div id="add-form-books" style="padding:20px;display:none;flex-direction:column;gap:8px">
-    <input type="text" id="books-title" placeholder="Название" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <input type="text" id="books-title" placeholder="Название книги" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
     <input type="url" id="books-url" placeholder="Ссылка BookBaby" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <input type="text" id="books-price" placeholder="Цена, например: $22 или $44 (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
     <textarea id="books-text" placeholder="Стихотворение (обратная сторона карточки)" rows="6" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
     <button onclick="addBooks()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
     <div id="books-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
@@ -602,6 +603,7 @@ function addBooks(){
   if(!token){document.getElementById('books-add-status').textContent='Нет токена';return;}
   var title=document.getElementById('books-title').value.trim();
   var url=document.getElementById('books-url').value.trim();
+  var price=document.getElementById('books-price').value.trim();
   var text=document.getElementById('books-text').value.trim();
   if(!title){document.getElementById('books-add-status').textContent='Введите название';return;}
   var st=document.getElementById('books-add-status');
@@ -612,7 +614,7 @@ function addBooks(){
   .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
   .then(function(d){
     var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
-    var newEntry=title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+'\n';
+    var newEntry=title+(url?'\n\n'+url:'')+(price?'\n\nЦена: '+price:'')+(text?'\n\n'+text:'')+'\n';
     var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
     var encoded=btoa(unescape(encodeURIComponent(updated)));
     var body={message:'Add book: '+title,content:encoded,branch:'main'};
@@ -627,6 +629,7 @@ function addBooks(){
     st.textContent='✓ Добавлено!';st.style.color='#7bc47b';
     document.getElementById('books-title').value='';
     document.getElementById('books-url').value='';
+    document.getElementById('books-price').value='';
     document.getElementById('books-text').value='';
   })
   .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
@@ -1620,8 +1623,12 @@ function openEditEntry(displayIdx){
     fields.appendChild(inp('edit-f-title',p.title,'Название'));
     var urlPh=_ed.section==='books'?'Ссылка BookBaby':(_ed.section==='shop'?'Ссылка для покупки (необязательно)':'YouTube URL (необязательно)');
     fields.appendChild(inp('edit-f-url',p.url,urlPh,'url'));
-    var textPh=_ed.section==='books'?'Стихотворение (обратная сторона карточки)':(_ed.section==='shop'?'Описание товара':'Текст (необязательно)');
-    if(_ed.section!=='poetry-en') fields.appendChild(ta('edit-f-text',p.text,textPh,_ed.section==='shop'?4:8));
+    if(_ed.section==='books'||_ed.section==='shop'){
+      var priceVal=p.price||'';
+      fields.appendChild(inp('edit-f-price',priceVal,_ed.section==='books'?'Цена, например: $22':'Цена, например: $45'));
+    }
+    var textPh=_ed.section==='books'?'Стихотворение (обратная сторона карточки)':(_ed.section==='shop'?'Описание товара (RU + EN)':'Текст (необязательно)');
+    if(_ed.section!=='poetry-en') fields.appendChild(ta('edit-f-text',p.text,textPh,_ed.section==='shop'?5:8));
   }
   document.getElementById('edit-save-btn').disabled=false;
   document.getElementById('edit-delete-btn').disabled=false;
@@ -1648,7 +1655,9 @@ function parseEditEntry(raw){
   for(var i=0;i<lines.length;i++){if(/^https?:\/\//.test(lines[i].trim())){url=lines[i].trim();urlIdx=i;break;}}
   var cutAt=Math.max(titleIdx,urlIdx)+1;
   var text=lines.slice(cutAt).join('\n').trim();
-  return{title:title,url:url,text:text};
+  var price='';
+  text=text.replace(/(?:^|\n)Цена:\s*([^\n]*)/,function(_,p){price=p.trim();return '';}).trim();
+  return{title:title,url:url,text:text,price:price};
 }
 
 function saveCurrentEdit(){
@@ -1670,8 +1679,9 @@ function saveCurrentEdit(){
     var t=(document.getElementById('edit-f-title').value||'').trim();
     var u=(document.getElementById('edit-f-url').value||'').trim();
     var x=document.getElementById('edit-f-text')?(document.getElementById('edit-f-text').value||'').trim():'';
+    var priceF=(_ed.section==='books'||_ed.section==='shop')?((document.getElementById('edit-f-price')||{}).value||'').trim():'';
     if(!t){st.textContent='Введите название';st.style.color='#d47a7a';document.getElementById('edit-save-btn').disabled=false;document.getElementById('edit-delete-btn').disabled=false;return;}
-    newRaw=t+(u?'\n\n'+u:'')+(x?'\n\n'+x:'');
+    newRaw=t+(u?'\n\n'+u:'')+(priceF?'\n\nЦена: '+priceF:'')+(x?'\n\n'+x:'');
   }
   var fileIdx=_ed.rawEntries.length-1-_ed.idx;
   var newEntries=_ed.rawEntries.slice();
