@@ -1804,7 +1804,7 @@ function renderEditList(){
   displayed.forEach(function(raw,i){
     var title;
     if(_ed.section==='carousel'){var cp=parseCarouselEntry(raw);title=cp.text.split('\n')[0].trim()||'📸 '+cp.img||'(слайд)';}
-    else title=raw.split('\n')[0].trim()||'(без названия)';
+    else{var _rtl=raw.split('\n').find(function(l){return l.trim()&&!/^#\s/.test(l.trim());});title=(_rtl||'').trim()||'(без названия)';}
     var item=document.createElement('div');item.className='yt-item';item.style.cursor='pointer';
     item.onmouseover=function(){item.style.background='rgba(201,169,110,0.06)';};
     item.onmouseout=function(){item.style.background='';};
@@ -1829,7 +1829,7 @@ function openEditEntry(displayIdx){
   var raw=_ed.rawEntries[_editFileIdx(displayIdx)];
   var title;
   if(_ed.section==='carousel'){var _cp=parseCarouselEntry(raw);title=_cp.text.split('\n')[0].trim()||'📸 '+_cp.img||'Слайд';}
-  else title=raw.split('\n')[0].trim()||'(без названия)';
+  else{var _otl=raw.split('\n').find(function(l){return l.trim()&&!/^#\s/.test(l.trim());});title=(_otl||'').trim()||'(без названия)';}
   document.getElementById('edit-form-label').textContent=title;
   document.getElementById('edit-status').textContent='';
   var fields=document.getElementById('edit-fields');
@@ -1860,6 +1860,7 @@ function openEditEntry(displayIdx){
     }
     var textPh=_ed.section==='books'?'Стихотворение (обратная сторона карточки)':(_ed.section==='shop'?'Описание товара (RU + EN)':'Текст (необязательно)');
     if(_ed.section!=='poetry-en') fields.appendChild(ta('edit-f-text',p.text,textPh,_ed.section==='shop'?5:8));
+    if(_ed.section==='shop') _buildEditShopPhotoUI(fields, p.images||[]);
   }
   document.getElementById('edit-save-btn').disabled=false;
   document.getElementById('edit-delete-btn').disabled=false;
@@ -1880,7 +1881,12 @@ function parseCarouselEntry(raw){
   return{img:img,isTitle:isTitle,text:textLines.join('\n').trim()};
 }
 function parseEditEntry(raw){
-  var lines=raw.split('\n');
+  var images=[];
+  var lines=raw.split('\n').filter(function(l){
+    var m=l.match(/^#\s*image:\s*(.+)$/);
+    if(m){images.push(m[1].trim());return false;}
+    return true;
+  });
   var title='',url='',titleIdx=-1,urlIdx=-1;
   for(var i=0;i<lines.length;i++){if(lines[i].trim()&&titleIdx===-1){title=lines[i].trim();titleIdx=i;break;}}
   for(var i=0;i<lines.length;i++){if(/^https?:\/\//.test(lines[i].trim())){url=lines[i].trim();urlIdx=i;break;}}
@@ -1888,7 +1894,91 @@ function parseEditEntry(raw){
   var text=lines.slice(cutAt).join('\n').trim();
   var price='';
   text=text.replace(/(?:^|\n)Цена:\s*([^\n]*)/,function(_,p){price=p.trim();return '';}).trim();
-  return{title:title,url:url,text:text,price:price};
+  return{title:title,url:url,text:text,price:price,images:images};
+}
+var _edShopImages=[];
+function _buildEditShopPhotoUI(fields,images){
+  _edShopImages=images.slice();
+  var wrap=document.createElement('div');
+  wrap.style.cssText='display:flex;flex-direction:column;gap:6px;padding-top:8px;border-top:1px solid rgba(201,169,110,0.15);margin-top:4px';
+  var hdr=document.createElement('div');
+  hdr.style.cssText='font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,169,110,0.45)';
+  hdr.textContent='Фотографии товара';
+  wrap.appendChild(hdr);
+  var listDiv=document.createElement('div');
+  listDiv.id='edit-shop-photo-list';
+  listDiv.style.cssText='display:flex;flex-wrap:wrap;gap:8px;min-height:4px';
+  wrap.appendChild(listDiv);
+  var fileInp=document.createElement('input');
+  fileInp.type='file';fileInp.id='edit-shop-photo-file';fileInp.accept='image/*';fileInp.style.display='none';
+  fileInp.onchange=function(){if(fileInp.files[0])uploadShopEditImage(fileInp.files[0]);fileInp.value='';};
+  var addBtn=document.createElement('button');
+  addBtn.type='button';
+  addBtn.style.cssText='background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;color:rgba(232,221,208,0.6);font-family:\'Georgia\',serif;font-size:0.88rem;padding:9px 12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;width:100%';
+  addBtn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="opacity:0.7"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>Добавить фото';
+  addBtn.onclick=function(){fileInp.click();};
+  var prog=document.createElement('div');
+  prog.id='edit-shop-photo-prog';
+  prog.style.cssText='font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px';
+  wrap.appendChild(fileInp);wrap.appendChild(addBtn);wrap.appendChild(prog);
+  fields.appendChild(wrap);
+  _refreshEditShopPhotoList();
+}
+function _makeEditShopPhotoItem(path,idx){
+  var item=document.createElement('div');
+  item.style.cssText='position:relative;width:72px;height:72px;flex-shrink:0';
+  var img=document.createElement('img');
+  img.src=path.startsWith('http')?path:(path.startsWith('images/')?path:('images/'+path));
+  img.style.cssText='width:72px;height:72px;object-fit:cover;border-radius:5px;display:block';
+  var rm=document.createElement('button');rm.type='button';
+  rm.style.cssText='position:absolute;top:-6px;right:-6px;background:rgba(0,0,0,0.7);border:none;border-radius:50%;color:#e8ddd0;width:18px;height:18px;cursor:pointer;font-size:0.65rem;display:flex;align-items:center;justify-content:center;line-height:1;padding:0';
+  rm.textContent='✕';
+  rm.onclick=(function(i){return function(){_edShopImages.splice(i,1);_refreshEditShopPhotoList();};})(idx);
+  item.appendChild(img);item.appendChild(rm);
+  return item;
+}
+function _refreshEditShopPhotoList(){
+  var list=document.getElementById('edit-shop-photo-list');
+  if(!list)return;
+  list.innerHTML='';
+  _edShopImages.forEach(function(path,i){list.appendChild(_makeEditShopPhotoItem(path,i));});
+}
+function uploadShopEditImage(file){
+  if(!file)return;
+  var token=getToken();
+  var prog=document.getElementById('edit-shop-photo-prog');
+  if(!token){if(prog){prog.style.display='block';prog.style.color='#d47a7a';prog.textContent='Нет токена';}return;}
+  if(file.size>10*1024*1024){if(prog){prog.style.display='block';prog.style.color='#d47a7a';prog.textContent='Файл больше 10MB';}return;}
+  if(prog){prog.style.display='block';prog.style.color='rgba(201,169,110,0.7)';prog.textContent='Загрузка…';}
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var arr=new Uint8Array(e.target.result);
+    var chunks=[];
+    for(var i=0;i<arr.length;i+=8192)chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));
+    var b64=btoa(chunks.join(''));
+    var ext=file.name.split('.').pop().toLowerCase()||'jpg';
+    var path='images/shop/'+(new Date()).getTime()+'.'+ext;
+    fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+    })
+    .then(function(r){return r.json();})
+    .then(function(ex){
+      var body={message:'Upload shop image',content:b64,branch:'main'};
+      if(ex&&ex.sha&&!ex.message)body.sha=ex.sha;
+      return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{
+        method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
+    })
+    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+    .then(function(){
+      if(prog){prog.style.color='#7bc47b';prog.textContent='✓ Загружено';}
+      _edShopImages.push(path);
+      _refreshEditShopPhotoList();
+    })
+    .catch(function(err){if(prog){prog.style.color='#d47a7a';prog.textContent='Ошибка: '+err.message;}});
+  };
+  reader.readAsArrayBuffer(file);
 }
 
 function saveCurrentEdit(){
@@ -1912,7 +2002,8 @@ function saveCurrentEdit(){
     var x=document.getElementById('edit-f-text')?(document.getElementById('edit-f-text').value||'').trim():'';
     var priceF=(_ed.section==='books'||_ed.section==='shop')?((document.getElementById('edit-f-price')||{}).value||'').trim():'';
     if(!t){st.textContent='Введите название';st.style.color='#d47a7a';document.getElementById('edit-save-btn').disabled=false;document.getElementById('edit-delete-btn').disabled=false;return;}
-    newRaw=t+(u?'\n\n'+u:'')+(priceF?'\n\nЦена: '+priceF:'')+(x?'\n\n'+x:'');
+    var _si=_ed.section==='shop'?_edShopImages:[];
+    newRaw=(_si.length?_si.map(function(p){return '# image: '+p;}).join('\n')+'\n':'')+t+(u?'\n\n'+u:'')+(priceF?'\n\nЦена: '+priceF:'')+(x?'\n\n'+x:'');
   }
   var fileIdx=_editFileIdx(_ed.idx);
   var newEntries=_ed.rawEntries.slice();
