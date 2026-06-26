@@ -647,9 +647,10 @@
     .shop-item-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#c9a96e;letter-spacing:1px;margin-bottom:10px}
     .shop-item-desc{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.97rem;color:rgba(232,221,208,0.65);line-height:1.65;margin-bottom:12px}
     .shop-item-price{font-family:'Raleway',sans-serif;font-size:1rem;font-weight:600;color:#c9a96e;letter-spacing:1px;margin-bottom:16px}
-    .shop-item-btn{display:inline-block;padding:9px 28px;border:1px solid rgba(201,169,110,0.5);border-radius:20px;color:#c9a96e;text-decoration:none;font-family:'Raleway',sans-serif;font-size:0.72rem;letter-spacing:2.5px;text-transform:uppercase;transition:all 0.2s}
-    .shop-item-btn:hover{border-color:#c9a96e;background:rgba(201,169,110,0.1)}
-    .shop-item-soon{display:inline-block;margin-top:4px;font-family:'Raleway',sans-serif;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.35)}
+    .shop-item-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 28px;background:rgba(201,169,110,0.93);border-radius:12px;color:#1e1220;text-decoration:none;font-family:'Raleway',sans-serif;font-size:0.72rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;transition:background 0.2s;border:none}
+    .shop-item-btn:hover{background:rgba(172,128,45,0.97)}
+    .shop-item-btn-price{font-size:0.88rem;font-weight:900;opacity:0.85}
+    .shop-item-soon{display:inline-block;margin-top:4px;padding:8px 20px;background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.2);border-radius:12px;font-family:'Raleway',sans-serif;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45)}
 
     /* СТИХИ — text poems tab */
     .poems-loading{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
@@ -1635,9 +1636,14 @@ function loadShop(){
       if(descParts.length){var dc=document.createElement('div');dc.className='shop-item-desc';dc.textContent=descParts.join(' ');card.appendChild(dc);}
       if(price){var pr=document.createElement('div');pr.className='shop-item-price';pr.textContent=price;card.appendChild(pr);}
       if(url){
-        var btn=document.createElement('a');btn.className='shop-item-btn';btn.href=url;btn.target='_blank';btn.rel='noopener noreferrer';btn.textContent='Купить';card.appendChild(btn);
+        var btn=document.createElement('a');btn.className='shop-item-btn';btn.href=url;btn.target='_blank';btn.rel='noopener noreferrer';
+        var btnTxt=document.createElement('span');btnTxt.textContent='Купить';btn.appendChild(btnTxt);
+        if(price&&price!=='—'){var pr2=document.createElement('span');pr2.className='shop-item-btn-price';pr2.textContent=price;btn.appendChild(pr2);}
+        card.appendChild(btn);
       } else {
-        var soon=document.createElement('span');soon.className='shop-item-soon';soon.textContent='Coming Soon';card.appendChild(soon);
+        var soon=document.createElement('span');soon.className='shop-item-soon';
+        soon.textContent=price&&price!=='—'?price+' · Coming Soon':'Coming Soon';
+        card.appendChild(soon);
       }
       el.appendChild(card);
     });
