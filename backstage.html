@@ -36,8 +36,10 @@
   .audio-item audio{flex:1;min-width:0;height:32px}
   .audio-copy-btn{background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:5px 10px;cursor:pointer;font-size:0.75rem;white-space:nowrap;flex-shrink:0}
   .audio-del-btn{background:rgba(180,60,60,0.12);border:1px solid rgba(180,60,60,0.3);border-radius:5px;color:#d47a7a;padding:5px 9px;cursor:pointer;font-size:0.75rem;flex-shrink:0}
-  .back-btn{display:inline-flex;align-items:center;justify-content:center;padding:8px 16px;background:transparent;border:1px solid rgba(201,169,110,0.3);border-radius:8px;color:rgba(201,169,110,0.7);font-size:0.82rem;letter-spacing:1px;cursor:pointer;text-decoration:none;transition:all 0.2s;width:72px}
-  .back-btn:hover{border-color:#c9a96e;color:#c9a96e}
+  .back-btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:0 14px;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.35);border-radius:8px;color:rgba(201,169,110,0.85);font-size:0.88rem;letter-spacing:0.5px;cursor:pointer;text-decoration:none;transition:all 0.2s;width:72px;height:38px;font-family:'Georgia',serif}
+  .back-btn:hover{border-color:#c9a96e;color:#c9a96e;background:rgba(201,169,110,0.12)}
+  .inner-back-btn{background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.3);border-radius:6px;color:rgba(201,169,110,0.8);padding:7px 14px;cursor:pointer;font-size:0.85rem;font-family:'Georgia',serif;flex-shrink:0;transition:all 0.2s;white-space:nowrap}
+  .inner-back-btn:hover{border-color:#c9a96e;color:#c9a96e;background:rgba(201,169,110,0.12)}
   .top-bar{max-width:600px;margin:0 auto 16px;display:flex;align-items:center}
   .top-bar h1{flex:1;text-align:center;margin:0}
   .inbox-btn{background:transparent;border:1px solid rgba(201,169,110,0.3);border-radius:8px;color:rgba(201,169,110,0.6);padding:0;width:72px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;flex-shrink:0;position:relative}
@@ -142,7 +144,7 @@
 <body>
 
 <div class="top-bar">
-  <a href="index.html" class="back-btn">Сайт</a>
+  <a href="index.html" class="back-btn">← Сайт</a>
   <h1>✦ Редактор ✦</h1>
   <button class="inbox-btn" id="inbox-btn" onclick="switchInbox()" title="Входящие сообщения">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
@@ -194,13 +196,16 @@
     <button onclick="selectAddSection('books')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
       <span style="font-size:1.3rem">📚</span><span style="color:#c9a96e;font-size:1.05rem">Книги</span>
     </button>
+    <button onclick="selectAddSection('carousel')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+      <span style="font-size:1.3rem">🖼️</span><span style="color:#c9a96e;font-size:1.05rem">Карусель (Ия Бард)</span>
+    </button>
   </div>
 
   <!-- ШАГ 2: форма (скрыта до выбора) -->
   <div id="add-form-wrap" style="display:none">
     <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(201,169,110,0.15)">
-      <button onclick="backToSectionPicker()" style="background:none;border:1px solid rgba(201,169,110,0.3);border-radius:6px;color:rgba(201,169,110,0.7);padding:5px 12px;cursor:pointer;font-size:0.82rem;font-family:'Georgia',serif">← Назад</button>
-      <span id="add-section-label" style="color:#c9a96e;font-size:0.88rem;letter-spacing:1px;font-family:'Georgia',serif"></span>
+      <button onclick="backToSectionPicker()" class="inner-back-btn">← Назад</button>
+      <span id="add-section-label" style="color:#c9a96e;font-size:0.95rem;letter-spacing:1px;font-family:'Georgia',serif;font-weight:600"></span>
     </div>
 
   <!-- ПОЭЗИЯ form -->
@@ -286,6 +291,29 @@
     <div id="books-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
   </div>
 
+  <!-- CAROUSEL form -->
+  <div id="add-form-carousel" style="padding:20px;display:none;flex-direction:column;gap:10px">
+    <div id="carousel-img-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+      <span id="carousel-img-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Картинка слайда</span>
+      <input type="file" id="carousel-img-file" accept="image/*" style="display:none" onchange="uploadCarouselImage(this.files[0])">
+      <button type="button" onclick="document.getElementById('carousel-img-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif">Загрузить</button>
+      <button type="button" id="carousel-img-clear" onclick="clearCarouselImage()" style="display:none;background:none;border:none;color:rgba(201,169,110,0.5);cursor:pointer;font-size:0.9rem;padding:2px 4px">✕</button>
+    </div>
+    <input type="hidden" id="carousel-img-path" value="">
+    <div id="carousel-img-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
+    <div id="carousel-img-preview" style="display:none;border-radius:6px;overflow:hidden;position:relative">
+      <img id="carousel-img-prev-img" style="max-width:100%;max-height:160px;display:block;object-fit:cover;margin:0 auto;border-radius:6px">
+    </div>
+    <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.2);border-radius:6px;cursor:pointer;user-select:none">
+      <input type="checkbox" id="carousel-is-title" style="width:16px;height:16px;accent-color:#c9a96e">
+      <span style="font-size:0.88rem;color:rgba(232,221,208,0.8)">Заголовок (крупный текст поверх фото)</span>
+    </label>
+    <textarea id="carousel-text" placeholder="Текст на слайде" rows="5" style="background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:11px 14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;width:100%" spellcheck="false"></textarea>
+    <button onclick="addCarousel()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить слайд</button>
+    <div id="carousel-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
+  </div>
+
   </div><!-- /add-form-wrap -->
   </div><!-- /mode-add -->
 
@@ -313,6 +341,9 @@
       <button onclick="selectEditSection('books')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
         <span style="font-size:1.3rem">📚</span><span style="color:#c9a96e;font-size:1.05rem">Книги</span>
       </button>
+      <button onclick="selectEditSection('carousel')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+        <span style="font-size:1.3rem">🖼️</span><span style="color:#c9a96e;font-size:1.05rem">Карусель (Ия Бард)</span>
+      </button>
       <button onclick="selectEditSection('audio')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
         <span style="font-size:1.3rem">🎧</span><span style="color:#c9a96e;font-size:1.05rem">Аудио</span>
       </button>
@@ -321,8 +352,8 @@
     <!-- Entry list -->
     <div id="edit-list-wrap" style="display:none">
       <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(201,169,110,0.15)">
-        <button onclick="backToEditPicker()" style="background:none;border:1px solid rgba(201,169,110,0.3);border-radius:6px;color:rgba(201,169,110,0.7);padding:5px 12px;cursor:pointer;font-size:0.82rem;font-family:'Georgia',serif">← Назад</button>
-        <span id="edit-list-label" style="color:#c9a96e;font-size:0.88rem;letter-spacing:1px;font-family:'Georgia',serif"></span>
+        <button onclick="backToEditPicker()" class="inner-back-btn">← Назад</button>
+        <span id="edit-list-label" style="color:#c9a96e;font-size:0.95rem;letter-spacing:1px;font-family:'Georgia',serif;font-weight:600"></span>
       </div>
       <div id="edit-list-items"></div>
     </div>
@@ -330,7 +361,7 @@
     <!-- Entry edit form -->
     <div id="edit-form-wrap" style="display:none">
       <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(201,169,110,0.15)">
-        <button onclick="backToEditList()" style="background:none;border:1px solid rgba(201,169,110,0.3);border-radius:6px;color:rgba(201,169,110,0.7);padding:5px 12px;cursor:pointer;font-size:0.82rem;font-family:'Georgia',serif;flex-shrink:0">← Список</button>
+        <button onclick="backToEditList()" class="inner-back-btn">← Список</button>
         <span id="edit-form-label" style="color:#c9a96e;font-size:0.88rem;letter-spacing:1px;font-family:'Georgia',serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
       </div>
       <div id="edit-fields" style="padding:16px;display:flex;flex-direction:column;gap:8px"></div>
@@ -344,8 +375,8 @@
     <!-- Audio list -->
     <div id="edit-audio-wrap" style="display:none">
       <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(201,169,110,0.15)">
-        <button onclick="backToEditPicker()" style="background:none;border:1px solid rgba(201,169,110,0.3);border-radius:6px;color:rgba(201,169,110,0.7);padding:5px 12px;cursor:pointer;font-size:0.82rem;font-family:'Georgia',serif">← Назад</button>
-        <span style="color:#c9a96e;font-size:0.88rem;letter-spacing:1px;font-family:'Georgia',serif">Аудио</span>
+        <button onclick="backToEditPicker()" class="inner-back-btn">← Назад</button>
+        <span style="color:#c9a96e;font-size:0.95rem;letter-spacing:1px;font-family:'Georgia',serif;font-weight:600">Аудио</span>
       </div>
       <div id="edit-audio-items" style="padding:16px;display:flex;flex-direction:column;gap:10px"></div>
     </div>
@@ -470,11 +501,11 @@ function switchAdd(btn){
 }
 
 function selectAddSection(section){
-  var labels={poems:'Поэзия','poetry-en':'Songs EN',astrology:'Астрология',author:'Ия Бард',shop:'Товар',books:'Книги'};
+  var labels={poems:'Поэзия','poetry-en':'Songs EN',astrology:'Астрология',author:'Ия Бард',shop:'Товар',books:'Книги',carousel:'Карусель — Ия Бард'};
   document.getElementById('add-section-picker').style.display='none';
   document.getElementById('add-form-wrap').style.display='block';
   document.getElementById('add-section-label').textContent=labels[section]||section;
-  ['poems','poetry-en','astrology','author','shop','books'].forEach(function(s){
+  ['poems','poetry-en','astrology','author','shop','books','carousel'].forEach(function(s){
     var f=document.getElementById('add-form-'+s);
     if(f) f.style.display=(s===section)?'flex':'none';
   });
@@ -600,6 +631,92 @@ function addBooks(){
 function backToSectionPicker(){
   document.getElementById('add-section-picker').style.display='flex';
   document.getElementById('add-form-wrap').style.display='none';
+}
+function uploadCarouselImage(file){
+  if(!file)return;
+  var token=getToken();
+  if(!token){document.getElementById('carousel-add-status').textContent='Нет токена';return;}
+  if(file.size>10*1024*1024){document.getElementById('carousel-add-status').textContent='Файл больше 10MB';return;}
+  var prog=document.getElementById('carousel-img-progress');
+  prog.style.display='block';prog.style.color='rgba(201,169,110,0.7)';prog.textContent='Загрузка…';
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var arr=new Uint8Array(e.target.result);
+    var chunks=[];
+    for(var i=0;i<arr.length;i+=8192){chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));}
+    var b64=btoa(chunks.join(''));
+    var ext=file.name.split('.').pop().toLowerCase()||'jpg';
+    var path='images/carousel-'+Date.now()+'.'+ext;
+    fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+    })
+    .then(function(r){return r.json();})
+    .then(function(ex){
+      var body={message:'Upload carousel image',content:b64,branch:'main'};
+      if(ex&&ex.sha&&!ex.message)body.sha=ex.sha;
+      return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{
+        method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
+    })
+    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+    .then(function(){
+      prog.style.color='#7bc47b';prog.textContent='✓ Загружено';
+      document.getElementById('carousel-img-path').value=path;
+      document.getElementById('carousel-img-name').textContent=path;
+      document.getElementById('carousel-img-name').style.color='#e8ddd0';
+      document.getElementById('carousel-img-clear').style.display='inline';
+      var prev=document.getElementById('carousel-img-preview');
+      var prevImg=document.getElementById('carousel-img-prev-img');
+      prevImg.src=URL.createObjectURL(file);
+      prev.style.display='block';
+    })
+    .catch(function(err){prog.style.color='#d47a7a';prog.textContent='Ошибка: '+err.message;});
+  };
+  reader.readAsArrayBuffer(file);
+}
+function clearCarouselImage(){
+  document.getElementById('carousel-img-path').value='';
+  document.getElementById('carousel-img-name').textContent='Картинка слайда';
+  document.getElementById('carousel-img-name').style.color='';
+  document.getElementById('carousel-img-clear').style.display='none';
+  document.getElementById('carousel-img-progress').style.display='none';
+  document.getElementById('carousel-img-file').value='';
+  document.getElementById('carousel-img-preview').style.display='none';
+}
+function addCarousel(){
+  var token=getToken();
+  if(!token){document.getElementById('carousel-add-status').textContent='Нет токена';return;}
+  var imgPath=document.getElementById('carousel-img-path').value.trim();
+  var isTitle=document.getElementById('carousel-is-title').checked;
+  var text=document.getElementById('carousel-text').value.trim();
+  if(!imgPath&&!text){document.getElementById('carousel-add-status').textContent='Добавьте картинку или текст';return;}
+  var st=document.getElementById('carousel-add-status');
+  st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
+  fetch('https://api.github.com/repos/'+REPO+'/contents/carousel.txt?ref=main',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
+  .then(function(d){
+    var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
+    var newEntry=(imgPath?imgPath+'\n':'')+(isTitle?'[title]\n':'')+text+'\n';
+    var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
+    var encoded=btoa(unescape(encodeURIComponent(updated)));
+    var body={message:'Add carousel slide',content:encoded,branch:'main'};
+    if(d.sha)body.sha=d.sha;
+    return fetch('https://api.github.com/repos/'+REPO+'/contents/carousel.txt',{
+      method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+  })
+  .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+  .then(function(){
+    st.textContent='✓ Слайд добавлен!';st.style.color='#7bc47b';
+    clearCarouselImage();
+    document.getElementById('carousel-text').value='';
+    document.getElementById('carousel-is-title').checked=false;
+  })
+  .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
 }
 function addAuthor(){
   var token=getToken();
@@ -1395,8 +1512,8 @@ function addPoem(){
 
 // ── Edit mode ──────────────────────────────────────────────────────────────
 var _ed={section:'',file:'',sha:'',rawEntries:[],idx:null};
-var SECFILE={poems:'poems.txt',astrology:'astrology.txt','poetry-en':'poems-en.txt',author:'author.txt',shop:'shop.txt',books:'books.txt'};
-var SECLABEL={poems:'Поэзия',astrology:'Астрология','poetry-en':'Songs EN',author:'Ия Бард',shop:'Товар',books:'Книги'};
+var SECFILE={poems:'poems.txt',astrology:'astrology.txt','poetry-en':'poems-en.txt',author:'author.txt',shop:'shop.txt',books:'books.txt',carousel:'carousel.txt'};
+var SECLABEL={poems:'Поэзия',astrology:'Астрология','poetry-en':'Songs EN',author:'Ия Бард',shop:'Товар',books:'Книги',carousel:'Карусель — Ия Бард'};
 
 function setMode(m,btn){
   document.getElementById('mode-tab-add').classList.toggle('active',m==='add');
@@ -1455,7 +1572,9 @@ function renderEditList(){
   if(!displayed.length){el.innerHTML='<div style="padding:20px;text-align:center;opacity:0.5;font-size:0.85rem">Нет записей</div>';return;}
   el.innerHTML='';
   displayed.forEach(function(raw,i){
-    var title=raw.split('\n')[0].trim()||'(без названия)';
+    var title;
+    if(_ed.section==='carousel'){var cp=parseCarouselEntry(raw);title=cp.text.split('\n')[0].trim()||'📸 '+cp.img||'(слайд)';}
+    else title=raw.split('\n')[0].trim()||'(без названия)';
     var item=document.createElement('div');item.className='yt-item';item.style.cursor='pointer';
     item.onmouseover=function(){item.style.background='rgba(201,169,110,0.06)';};
     item.onmouseout=function(){item.style.background='';};
@@ -1471,7 +1590,9 @@ function renderEditList(){
 function openEditEntry(displayIdx){
   _ed.idx=displayIdx;
   var raw=_ed.rawEntries.slice().reverse()[displayIdx];
-  var title=raw.split('\n')[0].trim()||'(без названия)';
+  var title;
+  if(_ed.section==='carousel'){var _cp=parseCarouselEntry(raw);title=_cp.text.split('\n')[0].trim()||'📸 '+_cp.img||'Слайд';}
+  else title=raw.split('\n')[0].trim()||'(без названия)';
   document.getElementById('edit-form-label').textContent=title;
   document.getElementById('edit-status').textContent='';
   var fields=document.getElementById('edit-fields');
@@ -1482,6 +1603,15 @@ function openEditEntry(displayIdx){
   function ta(id,val,ph,rows){var t=document.createElement('textarea');t.id=id;t.value=val;t.placeholder=ph;t.rows=rows||6;t.style.cssText=tStyle;t.spellcheck=false;return t;}
   if(_ed.section==='poems'){
     fields.appendChild(ta('edit-poem-raw',raw,'Текст стихотворения',12));
+  } else if(_ed.section==='carousel'){
+    var cp=parseCarouselEntry(raw);
+    fields.appendChild(inp('edit-f-img',cp.img,'Путь к картинке (images/carousel-*.jpg)'));
+    var lbl=document.createElement('label');
+    lbl.style.cssText='display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.2);border-radius:6px;cursor:pointer;user-select:none';
+    var cb=document.createElement('input');cb.type='checkbox';cb.id='edit-f-is-title';cb.checked=cp.isTitle;cb.style.cssText='width:16px;height:16px;accent-color:#c9a96e';
+    var lblTxt=document.createElement('span');lblTxt.textContent='Заголовок (крупный текст)';lblTxt.style.cssText='font-size:0.88rem;color:rgba(232,221,208,0.8)';
+    lbl.appendChild(cb);lbl.appendChild(lblTxt);fields.appendChild(lbl);
+    fields.appendChild(ta('edit-f-text',cp.text,'Текст на слайде',6));
   } else {
     var p=parseEditEntry(raw);
     fields.appendChild(inp('edit-f-title',p.title,'Название'));
@@ -1495,6 +1625,19 @@ function openEditEntry(displayIdx){
   showEditPanel('form');
 }
 
+function parseCarouselEntry(raw){
+  var lines=raw.split('\n');
+  var img='';var isTitle=false;var textLines=[];var headerDone=false;
+  lines.forEach(function(l){
+    if(!headerDone){
+      if(/^images\//.test(l.trim())||/^https?:\/\//.test(l.trim())){img=l.trim();return;}
+      if(l.trim()==='[title]'){isTitle=true;headerDone=true;return;}
+      headerDone=true;textLines.push(l);
+    } else {textLines.push(l);}
+  });
+  while(textLines.length&&!textLines[0].trim())textLines.shift();
+  return{img:img,isTitle:isTitle,text:textLines.join('\n').trim()};
+}
 function parseEditEntry(raw){
   var lines=raw.split('\n');
   var title='',url='',titleIdx=-1,urlIdx=-1;
@@ -1515,6 +1658,11 @@ function saveCurrentEdit(){
   var newRaw;
   if(_ed.section==='poems'){
     newRaw=(document.getElementById('edit-poem-raw').value||'').trim();
+  } else if(_ed.section==='carousel'){
+    var img=(document.getElementById('edit-f-img').value||'').trim();
+    var isTitleC=document.getElementById('edit-f-is-title').checked;
+    var txt=(document.getElementById('edit-f-text').value||'').trim();
+    newRaw=(img?img+'\n':'')+(isTitleC?'[title]\n':'')+txt;
   } else {
     var t=(document.getElementById('edit-f-title').value||'').trim();
     var u=(document.getElementById('edit-f-url').value||'').trim();

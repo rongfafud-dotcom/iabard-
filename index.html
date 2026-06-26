@@ -1317,75 +1317,10 @@
       <div class="carousel" id="author-carousel" aria-label="Фотогалерея — В чём секрет отношений?" style="margin-top:36px">
         <button class="carousel-btn carousel-prev" onclick="carouselMove(-1)" aria-label="Предыдущий слайд">&#8249;</button>
         <div class="carousel-track-wrap">
-          <div class="carousel-track" id="carousel-track">
-            <div class="carousel-slide">
-              <img src="images/carousel-1.jpg" alt="В чём секрет отношений?" loading="lazy">
-              <div class="carousel-text">
-                <div class="slide-title">В чём секрет<br>моих отношений?</div>
-              </div>
-            </div>
-            <div class="carousel-slide">
-              <img src="images/carousel-2.jpg" alt="В чём секрет отношений? — 1" loading="lazy">
-              <div class="carousel-text">
-                <div class="stanza">Интересный вопрос на днях поступил:<br>«В чём секрет отношений?» — он не удивил.<br>В миг ответ честный я им дала<br>И решила, что стих написать я должна!</div>
-              </div>
-            </div>
-            <div class="carousel-slide">
-              <img src="images/carousel-3.jpg" alt="В чём секрет отношений? — 2" loading="lazy">
-              <div class="carousel-text">
-                <div class="stanza">В чём секрет отношений между двумя?<br>Чтобы не потерять в отношеньях себя,<br>Нужно жить с собой честно и говорить<br>Обо всём с тем, кого ты выбрал любить!</div>
-              </div>
-            </div>
-            <div class="carousel-slide">
-              <img src="images/carousel-4.jpg" alt="В чём секрет отношений? — 3" loading="lazy">
-              <div class="carousel-text">
-                <div class="stanza">Целиком по-партнёрски то принимать,<br>Что уже у вас есть! Лучше не осуждать<br>Ни себя, ни его — ведь итог все мы знаем:<br>Все с момента рождения «в яму шагаем»…</div>
-              </div>
-            </div>
-            <div class="carousel-slide">
-              <img src="images/carousel-5.jpg" alt="В чём секрет отношений? — 4" loading="lazy">
-              <div class="carousel-text">
-                <div class="stanza">Встречи же происходят и не случайно…<br>Неужели супруга ты выбрал нечаянно<br>Или здесь тебя учат чему-то по жизни?<br>Сам секрет отношений — он в стоицизме!</div>
-              </div>
-            </div>
-            <div class="carousel-slide">
-              <img src="images/carousel-2.jpg" alt="В чём секрет отношений? — 5" loading="lazy">
-              <div class="carousel-text">
-                <div class="stanza">В проживании вместе разных эмоций<br>И в размере твоих личных пропорций...<br>Когда двое желают, то нет же преград!<br>Коль разводятся, то и друг друга винят!</div>
-              </div>
-            </div>
-            <div class="carousel-slide">
-              <img src="images/carousel-3.jpg" alt="В чём секрет отношений? — 6" loading="lazy">
-              <div class="carousel-text">
-                <div class="stanza">Мой секрет в намерении, но не держу<br>Никого рядом силой... В тот миг отпущу,<br>Когда сам человек мой того пожелает!<br>Рада, что он со мной и меня выбирает!</div>
-              </div>
-            </div>
-            <div class="carousel-slide">
-              <img src="images/carousel-4.jpg" alt="В чём секрет отношений? — 7" loading="lazy">
-              <div class="carousel-text">
-                <div class="stanza">Я, конечно, как все, быть могу не права...<br>Здесь история жизни, как есть, но моя!<br>Может, кто-то узрит счастье в другом,<br>А мой мир он таков: я живу за плечом</div>
-              </div>
-            </div>
-            <div class="carousel-slide">
-              <img src="images/carousel-5.jpg" alt="В чём секрет отношений? — 8" loading="lazy">
-              <div class="carousel-text">
-                <div class="stanza">Человека, которого всю жизнь люблю,<br>С кем в союзе едином, тут рядом живу!<br>Вот раскрыла секрет моих отношений!<br>Наше счастье — успех, и то без сомнений!</div>
-              </div>
-            </div>
-          </div>
+          <div class="carousel-track" id="carousel-track"></div>
         </div>
         <button class="carousel-btn carousel-next" onclick="carouselMove(1)" aria-label="Следующий слайд">&#8250;</button>
-        <div class="carousel-dots" aria-label="Слайды">
-          <button class="carousel-dot active" onclick="carouselGo(0)" aria-label="Слайд 1"></button>
-          <button class="carousel-dot" onclick="carouselGo(1)" aria-label="Слайд 2"></button>
-          <button class="carousel-dot" onclick="carouselGo(2)" aria-label="Слайд 3"></button>
-          <button class="carousel-dot" onclick="carouselGo(3)" aria-label="Слайд 4"></button>
-          <button class="carousel-dot" onclick="carouselGo(4)" aria-label="Слайд 5"></button>
-          <button class="carousel-dot" onclick="carouselGo(5)" aria-label="Слайд 6"></button>
-          <button class="carousel-dot" onclick="carouselGo(6)" aria-label="Слайд 7"></button>
-          <button class="carousel-dot" onclick="carouselGo(7)" aria-label="Слайд 8"></button>
-          <button class="carousel-dot" onclick="carouselGo(8)" aria-label="Слайд 9"></button>
-        </div>
+        <div class="carousel-dots" aria-label="Слайды"></div>
       </div>
 
       <div class="author-poem-card" style="margin-top:36px">
@@ -1955,7 +1890,7 @@ function switchTab(id, btn) {
   if(id==='poetry-en')loadPoetryEN();
   if(id==='shop')loadShop();
   if(id==='novosti')loadAstrology();
-  if(id==='author'){loadAuthor();document.querySelectorAll('#carousel-track img').forEach(function(img){if(!img.complete||img.naturalWidth===0){var s=img.src;img.src='';img.src=s;}});}
+  if(id==='author'){loadAuthor();loadCarousel();}
   // Scroll to panel top (not main-content top) so content lands right below sticky nav
   var stickyNav=document.getElementById('sticky-nav');
   var stickyH=stickyNav?stickyNav.offsetHeight:0;
@@ -2066,22 +2001,51 @@ function carouselUpdate(){
   t.style.transform='translateX(-'+(carouselIdx*100)+'%)';
   document.querySelectorAll('#author-carousel .carousel-dot').forEach(function(d,i){d.classList.toggle('active',i===carouselIdx);});
 }
-function carouselMove(dir){var n=document.querySelectorAll('#carousel-track .carousel-slide').length||9;carouselIdx=(carouselIdx+dir+n)%n;carouselUpdate();}
+function carouselMove(dir){var n=document.querySelectorAll('#carousel-track .carousel-slide').length||1;carouselIdx=(carouselIdx+dir+n)%n;carouselUpdate();}
 function carouselGo(idx){carouselIdx=idx;carouselUpdate();}
-(function(){
-  var slides=document.querySelectorAll('#carousel-track .carousel-slide');
-  var dotsEl=document.querySelector('#author-carousel .carousel-dots');
-  if(dotsEl&&slides.length){
-    dotsEl.innerHTML='';
-    Array.from(slides).forEach(function(_,i){
-      var b=document.createElement('button');
-      b.className='carousel-dot'+(i===0?' active':'');
-      b.setAttribute('aria-label','Слайд '+(i+1));
-      b.onclick=function(){carouselGo(i);};
-      dotsEl.appendChild(b);
+function loadCarousel(){
+  var track=document.getElementById('carousel-track');
+  if(!track||track.children.length)return;
+  fetch('carousel.txt?v='+Math.floor(Date.now()/60000))
+  .then(function(r){if(!r.ok)throw new Error();return r.text();})
+  .then(function(text){
+    var dotsEl=document.querySelector('#author-carousel .carousel-dots');
+    var entries=text.split('===').map(function(e){return e.trim();}).filter(Boolean);
+    if(!entries.length)return;
+    track.innerHTML='';if(dotsEl)dotsEl.innerHTML='';
+    entries.forEach(function(raw,slideIdx){
+      var lines=raw.split('\n');
+      var img='';var isTitle=false;var textLines=[];var headerDone=false;
+      lines.forEach(function(l){
+        if(!headerDone){
+          if(/^images\//.test(l.trim())||/^https?:\/\//.test(l.trim())){img=l.trim();return;}
+          if(l.trim()==='[title]'){isTitle=true;headerDone=true;return;}
+          headerDone=true;textLines.push(l);
+        } else {textLines.push(l);}
+      });
+      while(textLines.length&&!textLines[0].trim())textLines.shift();
+      var textContent=textLines.join('\n').trim();
+      var slide=document.createElement('div');slide.className='carousel-slide';
+      if(img){var im=document.createElement('img');im.src=img;im.alt='Ипатия Бард — слайд '+(slideIdx+1);im.loading='lazy';slide.appendChild(im);}
+      if(textContent){
+        var ct=document.createElement('div');ct.className='carousel-text';
+        var div=document.createElement('div');div.className=isTitle?'slide-title':'stanza';
+        div.innerHTML=textContent.split('\n').map(function(l){return esc(l);}).join('<br>\n');
+        ct.appendChild(div);slide.appendChild(ct);
+      }
+      track.appendChild(slide);
+      if(dotsEl){
+        var dot=document.createElement('button');
+        dot.className='carousel-dot'+(slideIdx===0?' active':'');
+        dot.setAttribute('aria-label','Слайд '+(slideIdx+1));
+        dot.onclick=(function(i){return function(){carouselGo(i);};})(slideIdx);
+        dotsEl.appendChild(dot);
+      }
     });
-  }
-})();
+    carouselIdx=0;carouselUpdate();
+  })
+  .catch(function(){});
+}
 (function(){
   var t=document.getElementById('carousel-track');
   if(!t)return;
