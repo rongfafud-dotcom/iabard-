@@ -196,9 +196,6 @@
     <button onclick="selectAddSection('books')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
       <span style="font-size:1.3rem">📚</span><span style="color:#c9a96e;font-size:1.05rem">Книги</span>
     </button>
-    <button onclick="selectAddSection('carousel')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="font-size:1.3rem">🖼️</span><span style="color:#c9a96e;font-size:1.05rem">Карусель (Ия Бард)</span>
-    </button>
   </div>
 
   <!-- ШАГ 2: форма (скрыта до выбора) -->
@@ -276,12 +273,40 @@
     <textarea id="author-text" placeholder="Текст (необязательно)" rows="4" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
     <button onclick="addAuthor()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
     <div id="author-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
+    <!-- CAROUSEL inside Ия Бард -->
+    <div style="margin:12px -20px 0;padding:16px 20px 0;border-top:1px solid rgba(201,169,110,0.18)">
+      <div style="font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);margin-bottom:10px">🖼️ Карусель (слайды)</div>
+      <div id="carousel-img-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px;box-sizing:border-box">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+        <span id="carousel-img-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Картинка слайда</span>
+        <input type="file" id="carousel-img-file" accept="image/*" style="display:none" onchange="uploadCarouselImage(this.files[0])">
+        <button type="button" onclick="document.getElementById('carousel-img-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif">Загрузить</button>
+        <button type="button" id="carousel-img-clear" onclick="clearCarouselImage()" style="display:none;background:none;border:none;color:rgba(201,169,110,0.5);cursor:pointer;font-size:0.9rem;padding:2px 4px">✕</button>
+      </div>
+      <input type="hidden" id="carousel-img-path" value="">
+      <div id="carousel-img-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:2px 0"></div>
+      <div id="carousel-img-preview" style="display:none;border-radius:6px;overflow:hidden;position:relative;margin-top:6px">
+        <img id="carousel-img-prev-img" style="max-width:100%;max-height:160px;display:block;object-fit:cover;margin:0 auto;border-radius:6px">
+      </div>
+      <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.2);border-radius:6px;cursor:pointer;user-select:none;margin-top:8px">
+        <input type="checkbox" id="carousel-is-title" style="width:16px;height:16px;accent-color:#c9a96e">
+        <span style="font-size:0.88rem;color:rgba(232,221,208,0.8)">Заголовок (крупный текст поверх фото)</span>
+      </label>
+      <textarea id="carousel-text" placeholder="Текст на слайде" rows="4" style="background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:11px 14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;width:100%;box-sizing:border-box;margin-top:8px" spellcheck="false"></textarea>
+      <button onclick="addCarousel()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.4);border-radius:6px;color:#c9a96e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600;margin-top:4px">Добавить слайд</button>
+      <div id="carousel-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
+    </div>
   </div>
 
   <!-- МАГАЗИН form -->
   <div id="add-form-shop" style="padding:20px;display:none;flex-direction:column;gap:8px">
     <input type="text" id="shop-title" placeholder="Название товара" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-    <textarea id="shop-images" placeholder="Ссылки на фото (по одной на строку, необязательно)&#10;images/shop/item-1.jpg&#10;images/shop/item-2.jpg" rows="3" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
+    <div id="shop-img-list" style="display:flex;flex-direction:column;gap:6px"></div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <input type="file" id="shop-img-file" accept="image/*" style="display:none" onchange="uploadShopImage(this.files[0]);this.value=''">
+      <button type="button" onclick="document.getElementById('shop-img-file').click()" style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;color:rgba(232,221,208,0.6);font-family:'Georgia',serif;font-size:0.88rem;padding:9px 12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.7"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>Добавить фото</button>
+    </div>
+    <div id="shop-img-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
     <textarea id="shop-text" placeholder="Описание (необязательно)" rows="3" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
     <input type="text" id="shop-price" placeholder="Цена, например: $45 или 3 500 руб (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
     <input type="url" id="shop-url" placeholder="Ссылка для покупки (необязательно — добавить позже)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
@@ -296,29 +321,6 @@
     <textarea id="books-text" placeholder="Стихотворение (обратная сторона карточки)" rows="6" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
     <button onclick="addBooks()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
     <div id="books-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
-  </div>
-
-  <!-- CAROUSEL form -->
-  <div id="add-form-carousel" style="padding:20px;display:none;flex-direction:column;gap:10px">
-    <div id="carousel-img-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-      <span id="carousel-img-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Картинка слайда</span>
-      <input type="file" id="carousel-img-file" accept="image/*" style="display:none" onchange="uploadCarouselImage(this.files[0])">
-      <button type="button" onclick="document.getElementById('carousel-img-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif">Загрузить</button>
-      <button type="button" id="carousel-img-clear" onclick="clearCarouselImage()" style="display:none;background:none;border:none;color:rgba(201,169,110,0.5);cursor:pointer;font-size:0.9rem;padding:2px 4px">✕</button>
-    </div>
-    <input type="hidden" id="carousel-img-path" value="">
-    <div id="carousel-img-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
-    <div id="carousel-img-preview" style="display:none;border-radius:6px;overflow:hidden;position:relative">
-      <img id="carousel-img-prev-img" style="max-width:100%;max-height:160px;display:block;object-fit:cover;margin:0 auto;border-radius:6px">
-    </div>
-    <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.2);border-radius:6px;cursor:pointer;user-select:none">
-      <input type="checkbox" id="carousel-is-title" style="width:16px;height:16px;accent-color:#c9a96e">
-      <span style="font-size:0.88rem;color:rgba(232,221,208,0.8)">Заголовок (крупный текст поверх фото)</span>
-    </label>
-    <textarea id="carousel-text" placeholder="Текст на слайде" rows="5" style="background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:11px 14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;width:100%" spellcheck="false"></textarea>
-    <button onclick="addCarousel()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить слайд</button>
-    <div id="carousel-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
   </div>
 
   </div><!-- /add-form-wrap -->
@@ -347,9 +349,6 @@
       </button>
       <button onclick="selectEditSection('books')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
         <span style="font-size:1.3rem">📚</span><span style="color:#c9a96e;font-size:1.05rem">Книги</span>
-      </button>
-      <button onclick="selectEditSection('carousel')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-        <span style="font-size:1.3rem">🖼️</span><span style="color:#c9a96e;font-size:1.05rem">Карусель (Ия Бард)</span>
       </button>
       <button onclick="selectEditSection('audio')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
         <span style="font-size:1.3rem">🎧</span><span style="color:#c9a96e;font-size:1.05rem">Аудио</span>
@@ -508,11 +507,11 @@ function switchAdd(btn){
 }
 
 function selectAddSection(section){
-  var labels={poems:'Поэзия','poetry-en':'Songs EN',astrology:'Астрология',author:'Ия Бард',shop:'Товар',books:'Книги',carousel:'Карусель — Ия Бард'};
+  var labels={poems:'Поэзия','poetry-en':'Songs EN',astrology:'Астрология',author:'Ия Бард',shop:'Товар',books:'Книги'};
   document.getElementById('add-section-picker').style.display='none';
   document.getElementById('add-form-wrap').style.display='block';
   document.getElementById('add-section-label').textContent=labels[section]||section;
-  ['poems','poetry-en','astrology','author','shop','books','carousel'].forEach(function(s){
+  ['poems','poetry-en','astrology','author','shop','books'].forEach(function(s){
     var f=document.getElementById('add-form-'+s);
     if(f) f.style.display=(s===section)?'flex':'none';
   });
@@ -567,6 +566,57 @@ function clearPoemMp3(){
   document.getElementById('poem-mp3-progress').style.display='none';
   document.getElementById('poem-mp3-file').value='';
 }
+var _shopImages=[];
+function uploadShopImage(file){
+  if(!file)return;
+  var token=getToken();
+  var st=document.getElementById('shop-img-status');
+  if(!token){st.style.display='block';st.style.color='#d47a7a';st.textContent='Нет токена';return;}
+  if(file.size>10*1024*1024){st.style.display='block';st.style.color='#d47a7a';st.textContent='Файл больше 10MB';return;}
+  st.style.display='block';st.style.color='rgba(201,169,110,0.7)';st.textContent='Загрузка…';
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var arr=new Uint8Array(e.target.result);
+    var chunks=[];
+    for(var i=0;i<arr.length;i+=8192)chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));
+    var b64=btoa(chunks.join(''));
+    var ext=file.name.split('.').pop().toLowerCase()||'jpg';
+    var path='images/shop/'+Date.now()+'.'+ext;
+    fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+    })
+    .then(function(r){return r.json();})
+    .then(function(ex){
+      var body={message:'Upload shop image',content:b64,branch:'main'};
+      if(ex&&ex.sha&&!ex.message)body.sha=ex.sha;
+      return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{
+        method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
+    })
+    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+    .then(function(){
+      st.style.color='#7bc47b';st.textContent='✓ Фото загружено';
+      var list=document.getElementById('shop-img-list');
+      var item=document.createElement('div');
+      item.style.cssText='display:flex;align-items:center;gap:8px;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.2);border-radius:6px;padding:6px 10px';
+      var imgEl=document.createElement('img');imgEl.src=URL.createObjectURL(file);
+      imgEl.style.cssText='width:44px;height:44px;object-fit:cover;border-radius:4px;flex-shrink:0';
+      var lbl=document.createElement('span');
+      lbl.style.cssText='flex:1;font-size:0.78rem;color:rgba(232,221,208,0.55);overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
+      lbl.textContent=path;
+      var rm=document.createElement('button');rm.type='button';
+      rm.style.cssText='background:none;border:none;color:rgba(201,169,110,0.45);cursor:pointer;font-size:0.9rem;padding:2px 4px;flex-shrink:0';
+      rm.textContent='✕';
+      rm.onclick=(function(el,p){return function(){_shopImages=_shopImages.filter(function(x){return x!==p;});el.remove();};})(item,path);
+      item.appendChild(imgEl);item.appendChild(lbl);item.appendChild(rm);
+      list.appendChild(item);
+      _shopImages.push(path);
+    })
+    .catch(function(err){st.style.color='#d47a7a';st.textContent='Ошибка: '+err.message;});
+  };
+  reader.readAsArrayBuffer(file);
+}
 function addShop(){
   var token=getToken();
   if(!token){document.getElementById('shop-add-status').textContent='Нет токена';return;}
@@ -574,7 +624,7 @@ function addShop(){
   var url=document.getElementById('shop-url').value.trim();
   var text=document.getElementById('shop-text').value.trim();
   var price=document.getElementById('shop-price').value.trim();
-  var imagesRaw=(document.getElementById('shop-images').value||'').split('\n').map(function(l){return l.trim();}).filter(Boolean);
+  var imagesRaw=_shopImages.slice();
   if(!title){document.getElementById('shop-add-status').textContent='Введите название';return;}
   var st=document.getElementById('shop-add-status');
   st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
@@ -602,7 +652,9 @@ function addShop(){
     document.getElementById('shop-url').value='';
     document.getElementById('shop-text').value='';
     document.getElementById('shop-price').value='';
-    document.getElementById('shop-images').value='';
+    _shopImages=[];
+    document.getElementById('shop-img-list').innerHTML='';
+    document.getElementById('shop-img-status').style.display='none';
   })
   .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
 }
@@ -1609,6 +1661,13 @@ function renderEditList(){
     item.onclick=function(){openEditEntry(i);};
     el.appendChild(item);
   });
+  if(_ed.section==='author'){
+    var carLink=document.createElement('button');
+    carLink.style.cssText='width:100%;margin-top:8px;background:rgba(201,169,110,0.06);border:1px dashed rgba(201,169,110,0.25);border-radius:6px;color:rgba(201,169,110,0.65);font-family:\'Georgia\',serif;font-size:0.85rem;padding:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px';
+    carLink.innerHTML='🖼️ Редактировать слайды карусели →';
+    carLink.onclick=function(){selectEditSection('carousel');};
+    el.appendChild(carLink);
+  }
 }
 
 function openEditEntry(displayIdx){
