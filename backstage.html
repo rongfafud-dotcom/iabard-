@@ -1790,9 +1790,12 @@ function loadEditList(){
   .catch(function(e){if(e.message!=='skip')el.innerHTML='<div style="padding:16px;color:#d47a7a;font-size:0.85rem">Ошибка: '+e.message+'</div>';});
 }
 
+function _editReversed(){return _ed.section!=='shop'&&_ed.section!=='books';}
+function _editDisplayed(){return _editReversed()?_ed.rawEntries.slice().reverse():_ed.rawEntries.slice();}
+function _editFileIdx(displayIdx){return _editReversed()?_ed.rawEntries.length-1-displayIdx:displayIdx;}
 function renderEditList(){
   var el=document.getElementById('edit-list-items');
-  var displayed=_ed.rawEntries.slice().reverse();
+  var displayed=_editDisplayed();
   if(!displayed.length){el.innerHTML='<div style="padding:20px;text-align:center;opacity:0.5;font-size:0.85rem">Нет записей</div>';return;}
   el.innerHTML='';
   displayed.forEach(function(raw,i){
@@ -1820,7 +1823,7 @@ function renderEditList(){
 
 function openEditEntry(displayIdx){
   _ed.idx=displayIdx;
-  var raw=_ed.rawEntries.slice().reverse()[displayIdx];
+  var raw=_ed.rawEntries[_editFileIdx(displayIdx)];
   var title;
   if(_ed.section==='carousel'){var _cp=parseCarouselEntry(raw);title=_cp.text.split('\n')[0].trim()||'📸 '+_cp.img||'Слайд';}
   else title=raw.split('\n')[0].trim()||'(без названия)';
@@ -1908,7 +1911,7 @@ function saveCurrentEdit(){
     if(!t){st.textContent='Введите название';st.style.color='#d47a7a';document.getElementById('edit-save-btn').disabled=false;document.getElementById('edit-delete-btn').disabled=false;return;}
     newRaw=t+(u?'\n\n'+u:'')+(priceF?'\n\nЦена: '+priceF:'')+(x?'\n\n'+x:'');
   }
-  var fileIdx=_ed.rawEntries.length-1-_ed.idx;
+  var fileIdx=_editFileIdx(_ed.idx);
   var newEntries=_ed.rawEntries.slice();
   newEntries[fileIdx]=newRaw;
   writeEditFile(token,newEntries,'Edit: '+newRaw.split('\n')[0].trim(),function(){
@@ -1932,7 +1935,7 @@ function deleteCurrentEdit(){
   st.textContent='Удаление…';st.style.color='rgba(201,169,110,0.7)';
   document.getElementById('edit-save-btn').disabled=true;
   document.getElementById('edit-delete-btn').disabled=true;
-  var fileIdx=_ed.rawEntries.length-1-_ed.idx;
+  var fileIdx=_editFileIdx(_ed.idx);
   var newEntries=_ed.rawEntries.slice();
   newEntries.splice(fileIdx,1);
   writeEditFile(token,newEntries,'Delete entry',function(){
