@@ -243,7 +243,9 @@
   <!-- POETRY EN form -->
   <div id="add-form-poetry-en" style="padding:20px;display:none;flex-direction:column;gap:8px">
     <input type="text" id="en-title" placeholder="Title (English)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-    <input type="url" id="en-url" placeholder="YouTube URL" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <input type="url" id="en-url" placeholder="YouTube URL (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <input type="text" id="en-audio" placeholder="Аудиофайл, например: song.mp3 (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <textarea id="en-text" placeholder="Текст (необязательно)" rows="4" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
     <button onclick="addPoetryEN()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
     <div id="en-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
     <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(201,169,110,0.15)">
@@ -256,6 +258,7 @@
   <div id="add-form-astrology" style="padding:20px;display:none;flex-direction:column;gap:8px">
     <input type="text" id="astro-title" placeholder="Название" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
     <input type="url" id="astro-url" placeholder="YouTube URL (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <input type="text" id="astro-audio" placeholder="Аудиофайл, например: zodiac.mp3 (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
     <textarea id="astro-text" placeholder="Текст стихотворения (необязательно)" rows="4" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
     <button onclick="addAstro()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
     <div id="astro-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
@@ -269,6 +272,7 @@
   <div id="add-form-author" style="padding:20px;display:none;flex-direction:column;gap:8px">
     <input type="text" id="author-title" placeholder="Название" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
     <input type="url" id="author-url" placeholder="YouTube URL (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <input type="text" id="author-audio" placeholder="Аудиофайл, например: poem.mp3 (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
     <textarea id="author-text" placeholder="Текст (необязательно)" rows="4" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
     <button onclick="addAuthor()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
     <div id="author-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
@@ -277,6 +281,7 @@
   <!-- МАГАЗИН form -->
   <div id="add-form-shop" style="padding:20px;display:none;flex-direction:column;gap:8px">
     <input type="text" id="shop-title" placeholder="Название товара" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <textarea id="shop-images" placeholder="Ссылки на фото (по одной на строку, необязательно)&#10;images/shop/item-1.jpg&#10;images/shop/item-2.jpg" rows="3" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
     <textarea id="shop-text" placeholder="Описание (необязательно)" rows="3" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
     <input type="text" id="shop-price" placeholder="Цена, например: $45 или 3 500 руб (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
     <input type="url" id="shop-url" placeholder="Ссылка для покупки (необязательно — добавить позже)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
@@ -569,6 +574,7 @@ function addShop(){
   var url=document.getElementById('shop-url').value.trim();
   var text=document.getElementById('shop-text').value.trim();
   var price=document.getElementById('shop-price').value.trim();
+  var imagesRaw=(document.getElementById('shop-images').value||'').split('\n').map(function(l){return l.trim();}).filter(Boolean);
   if(!title){document.getElementById('shop-add-status').textContent='Введите название';return;}
   var st=document.getElementById('shop-add-status');
   st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
@@ -578,7 +584,8 @@ function addShop(){
   .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
   .then(function(d){
     var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
-    var newEntry=title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+(price?'\n\nЦена: '+price:'')+'\n';
+    var imgLines=imagesRaw.map(function(src){return '# image: '+src;}).join('\n');
+    var newEntry=(imgLines?imgLines+'\n':'')+title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+(price?'\n\nЦена: '+price:'')+'\n';
     var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
     var encoded=btoa(unescape(encodeURIComponent(updated)));
     var body={message:'Add shop item: '+title,content:encoded,branch:'main'};
@@ -595,6 +602,7 @@ function addShop(){
     document.getElementById('shop-url').value='';
     document.getElementById('shop-text').value='';
     document.getElementById('shop-price').value='';
+    document.getElementById('shop-images').value='';
   })
   .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
 }
@@ -729,8 +737,9 @@ function addAuthor(){
   if(!token){document.getElementById('author-add-status').textContent='Нет токена';return;}
   var title=document.getElementById('author-title').value.trim();
   var url=document.getElementById('author-url').value.trim();
+  var audio=(document.getElementById('author-audio').value||'').trim();
   var text=document.getElementById('author-text').value.trim();
-  if(!title&&!url&&!text){document.getElementById('author-add-status').textContent='Заполните хотя бы одно поле';return;}
+  if(!title&&!url&&!audio&&!text){document.getElementById('author-add-status').textContent='Заполните хотя бы одно поле';return;}
   var st=document.getElementById('author-add-status');
   st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
   fetch('https://api.github.com/repos/'+REPO+'/contents/author.txt?ref=main',{
@@ -739,7 +748,7 @@ function addAuthor(){
   .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
   .then(function(d){
     var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
-    var newEntry=(title?title+'\n':'')+(url?'\n'+url+'\n':'')+(text?'\n'+text+'\n':'');
+    var newEntry=(audio?'# audio: '+audio+'\n':'')+(title?title+'\n':'')+(url?'\n'+url+'\n':'')+(text?'\n'+text+'\n':'');
     var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
     var encoded=btoa(unescape(encodeURIComponent(updated)));
     var body={message:'Add to author section'+(title?': '+title:''),content:encoded,branch:'main'};
@@ -754,6 +763,7 @@ function addAuthor(){
     st.textContent='✓ Добавлено!';st.style.color='#7bc47b';
     document.getElementById('author-title').value='';
     document.getElementById('author-url').value='';
+    document.getElementById('author-audio').value='';
     document.getElementById('author-text').value='';
   })
   .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
@@ -851,23 +861,27 @@ function addPoetryEN(){
   if(!token){document.getElementById('en-add-status').textContent='Нет токена';return;}
   var title=document.getElementById('en-title').value.trim();
   var url=document.getElementById('en-url').value.trim();
-  if(!title||!url){document.getElementById('en-add-status').textContent='Введите название и URL';return;}
-  if(!/youtu/.test(url)){document.getElementById('en-add-status').textContent='Неверный YouTube URL';return;}
+  var audio=(document.getElementById('en-audio').value||'').trim();
+  var text=(document.getElementById('en-text').value||'').trim();
+  if(!title){document.getElementById('en-add-status').textContent='Введите название';return;}
+  if(url&&!/youtu/.test(url)){document.getElementById('en-add-status').textContent='Неверный YouTube URL';return;}
   var st=document.getElementById('en-add-status');
   st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
   fetch('https://api.github.com/repos/'+REPO+'/contents/poems-en.txt?ref=main',{
     headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
   })
-  .then(function(r){return r.json();})
+  .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
   .then(function(d){
-    var text=b64d(d.content.replace(/\n/g,''));
-    var newEntry=title+'\n\n'+url+'\n';
-    var updated=text.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
+    var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
+    var newEntry=(audio?'# audio: '+audio+'\n':'')+title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+'\n';
+    var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
     var encoded=btoa(unescape(encodeURIComponent(updated)));
+    var body={message:'Add EN poem: '+title,content:encoded,branch:'main'};
+    if(d.sha)body.sha=d.sha;
     return fetch('https://api.github.com/repos/'+REPO+'/contents/poems-en.txt',{
       method:'PUT',
       headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-      body:JSON.stringify({message:'Add EN poem: '+title,content:encoded,sha:d.sha,branch:'main'})
+      body:JSON.stringify(body)
     });
   })
   .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
@@ -875,6 +889,8 @@ function addPoetryEN(){
     st.textContent='✓ Добавлено!';st.style.color='#7bc47b';
     document.getElementById('en-title').value='';
     document.getElementById('en-url').value='';
+    document.getElementById('en-audio').value='';
+    document.getElementById('en-text').value='';
     loadPoetryENList();
   })
   .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
@@ -989,6 +1005,7 @@ function addAstro(){
   if(!token){document.getElementById('astro-add-status').textContent='Нет токена';return;}
   var title=document.getElementById('astro-title').value.trim();
   var url=document.getElementById('astro-url').value.trim();
+  var audio=(document.getElementById('astro-audio').value||'').trim();
   var text=document.getElementById('astro-text').value.trim();
   if(!title){document.getElementById('astro-add-status').textContent='Введите название';return;}
   var st=document.getElementById('astro-add-status');
@@ -999,7 +1016,7 @@ function addAstro(){
   .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
   .then(function(d){
     var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
-    var newEntry=title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+'\n';
+    var newEntry=(audio?'# audio: '+audio+'\n':'')+title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+'\n';
     var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
     var encoded=btoa(unescape(encodeURIComponent(updated)));
     var body={message:'Add astrology: '+title,content:encoded,branch:'main'};
@@ -1014,6 +1031,7 @@ function addAstro(){
     st.textContent='✓ Добавлено!';st.style.color='#7bc47b';
     document.getElementById('astro-title').value='';
     document.getElementById('astro-url').value='';
+    document.getElementById('astro-audio').value='';
     document.getElementById('astro-text').value='';
     loadAstroList();
   })

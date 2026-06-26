@@ -651,6 +651,17 @@
     .shop-item-btn:hover{background:rgba(172,128,45,0.97)}
     .shop-item-btn-price{font-size:0.88rem;font-weight:900;opacity:0.85}
     .shop-item-soon{display:inline-block;margin-top:4px;padding:8px 20px;background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.2);border-radius:12px;font-family:'Raleway',sans-serif;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45)}
+    .shop-img-car{position:relative;border-radius:10px;overflow:hidden;margin-bottom:16px}
+    .shop-img-car-wrap{overflow:hidden;border-radius:10px}
+    .shop-img-car-track{display:flex;transition:transform 0.35s cubic-bezier(.4,0,.2,1)}
+    .shop-img-car-slide{flex-shrink:0;width:100%;aspect-ratio:1/1}
+    .shop-img-car-slide img{width:100%;height:100%;object-fit:cover;display:block;border-radius:10px}
+    .shop-img-car-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.32);border:1px solid rgba(201,169,110,0.35);border-radius:50%;width:32px;height:32px;color:#c9a96e;font-size:1.3rem;line-height:1;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;padding:0;transition:background 0.2s}
+    .shop-img-car-btn:hover{background:rgba(0,0,0,0.55)}
+    .shop-img-car-prev{left:8px}.shop-img-car-next{right:8px}
+    .shop-img-car-dots{display:flex;justify-content:center;gap:6px;margin-top:8px;margin-bottom:4px}
+    .shop-img-car-dot{width:6px;height:6px;border-radius:50%;background:rgba(201,169,110,0.25);border:none;cursor:pointer;padding:0;transition:background 0.2s}
+    .shop-img-car-dot.active{background:rgba(201,169,110,0.85)}
 
     /* СТИХИ — text poems tab */
     .poems-loading{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
@@ -1558,15 +1569,23 @@ function loadPoetryEN(){
     if(!entries.length){list.innerHTML='<p class="poems-loading">Coming soon…</p>';return;}
     list.innerHTML='';
     entries.forEach(function(raw){
-      var lines=raw.split('\n').map(function(l){return l.trim();}).filter(Boolean);
-      var title=lines.find(function(l){return !/youtu/i.test(l);})||'';
-      var ytUrl=lines.find(function(l){return /youtu/.test(l);})||'';
-      var vid=ytIdFromUrl(ytUrl);
+      var audioMatch=raw.match(/^[ \t]*#\s*audio:\s*(.+)$/m);
+      var audioFile=audioMatch?audioMatch[1].trim():null;
+      var clean=raw.replace(/^[ \t]*#[^\n]*/gm,'').trim();
+      var sections=clean.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
+      var header=sections[0]||'';
+      var hlines=header.split('\n').map(function(l){return l.trim();}).filter(Boolean);
+      var title=hlines.find(function(l){return !/^https?:\/\//.test(l);})||'';
+      var ytUrl=hlines.find(function(l){return /^https?:\/\//.test(l);})||'';
+      var stanzaStart=1;
+      if(!ytUrl&&sections[1]&&/^https?:\/\/\S+$/.test(sections[1].trim())){ytUrl=sections[1].trim();stanzaStart=2;}
+      var stanzas=sections.slice(stanzaStart);
+      var vid=ytUrl?ytIdFromUrl(ytUrl):'';
       var isShort=/youtube\.com\/shorts\//.test(ytUrl);
-      if(!title&&!vid)return;
+      if(!title&&!vid&&!audioFile)return;
       var card=document.createElement('div');
-      card.className='novinka-card'+(isShort?'':' novinka-card-full');
-      card.dataset.title=title.toLowerCase();
+      card.className='novinka-card'+(vid&&!isShort?' novinka-card-full':'');
+      card.dataset.title=(title||'').toLowerCase();
       if(title){var te=document.createElement('div');te.className='novinka-title';te.textContent=title;card.appendChild(te);}
       if(vid){
         var vw=document.createElement('div');vw.className='novinka-video'+(isShort?' poem-video':' novinka-video-wide');
@@ -1580,22 +1599,45 @@ function loadPoetryEN(){
         pb.className='yt-play';pb.setAttribute('aria-label','Watch video');pb.textContent='▶';
         facade.appendChild(img);facade.appendChild(pb);
         vw.appendChild(facade);card.appendChild(vw);
-        var row=document.createElement('div');row.className='yt-btn-row poem-yt-row';
+      }
+      if(audioFile){
+        var aph=document.createElement('div');aph.className='audio-ph';
+        aph.dataset.src='audio/'+encodeURIComponent(audioFile);
+        aph.dataset.label=title||audioFile;
+        card.appendChild(aph);
+      }
+      var actRow=document.createElement('div');actRow.className='poem-actions';
+      if(audioFile){
+        var dl=document.createElement('a');dl.className='poem-dl-btn';
+        dl.href='audio/'+encodeURIComponent(audioFile);dl.download=audioFile;
+        dl.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Download MP3';
+        actRow.appendChild(dl);
+      }
+      var sb=document.createElement('button');sb.className='yt-share-btn';
+      sb.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>Share';
+      var shareUrl=vid?(isShort?'https://www.youtube.com/shorts/'+vid:'https://www.youtube.com/watch?v='+vid):'https://iabard.com';
+      sb.onclick=(function(u){return function(){showShareMenu(sb,'https://iabard.com',u);};})(shareUrl);
+      actRow.appendChild(sb);
+      card.appendChild(actRow);
+      if(vid){
+        var brow=document.createElement('div');brow.className='yt-btn-row poem-yt-row';
         var watchUrl='https://www.youtube.com/watch?v='+vid;
-        var shareUrl=isShort?'https://www.youtube.com/shorts/'+vid:watchUrl;
-        var wa=document.createElement('a');
-        wa.href=watchUrl;wa.target='_blank';wa.rel='noopener noreferrer';
-        wa.className='yt-watch-btn';
+        var wa=document.createElement('a');wa.href=watchUrl;wa.target='_blank';wa.rel='noopener noreferrer';wa.className='yt-watch-btn';
         wa.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Watch on YouTube';
-        row.appendChild(wa);
-        var sb=document.createElement('button');
-        sb.className='yt-share-btn';
-        sb.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>Share';
-        sb.onclick=function(){showShareMenu(sb,'https://iabard.com',shareUrl);};
-        row.appendChild(sb);card.appendChild(row);
+        brow.appendChild(wa);card.appendChild(brow);
+      }
+      if(stanzas.length){
+        var pe=document.createElement('div');pe.className='novinka-poem';
+        stanzas.forEach(function(s){
+          var sd=document.createElement('div');sd.className='stanza';
+          sd.innerHTML=s.split('\n').map(function(l){return esc(l.trim());}).join('<br>\n');
+          pe.appendChild(sd);
+        });
+        card.appendChild(pe);
       }
       list.appendChild(card);
     });
+    initAudioPlayers(list);
   })
   .catch(function(){list.innerHTML='<p class="poems-loading">Coming soon…</p>';});
 }
@@ -1604,6 +1646,38 @@ function filterPoetryEN(q){
   document.querySelectorAll('#poetry-en-list .novinka-card').forEach(function(c){
     c.style.display=(!q||c.dataset.title.indexOf(q)!==-1)?'':'none';
   });
+}
+function buildShopCarousel(images,alt){
+  var wrap=document.createElement('div');wrap.className='shop-img-car';
+  var inner=document.createElement('div');inner.className='shop-img-car-wrap';
+  var track=document.createElement('div');track.className='shop-img-car-track';
+  images.forEach(function(src,i){
+    var s=document.createElement('div');s.className='shop-img-car-slide';
+    var im=document.createElement('img');im.src=src;im.alt=alt+(images.length>1?' '+(i+1):'');im.loading='lazy';
+    s.appendChild(im);track.appendChild(s);
+  });
+  inner.appendChild(track);wrap.appendChild(inner);
+  if(images.length>1){
+    var idx=0;
+    var prev=document.createElement('button');prev.className='shop-img-car-btn shop-img-car-prev';prev.setAttribute('aria-label','Предыдущее фото');prev.innerHTML='&#8249;';
+    var next=document.createElement('button');next.className='shop-img-car-btn shop-img-car-next';next.setAttribute('aria-label','Следующее фото');next.innerHTML='&#8250;';
+    var dotsEl=document.createElement('div');dotsEl.className='shop-img-car-dots';
+    var dbs=[];
+    images.forEach(function(_,i){
+      var d=document.createElement('button');d.className='shop-img-car-dot'+(i===0?' active':'');
+      d.setAttribute('aria-label','Фото '+(i+1));
+      d.onclick=(function(n){return function(){go(n);};})(i);
+      dbs.push(d);dotsEl.appendChild(d);
+    });
+    function go(n){
+      idx=(n+images.length)%images.length;
+      track.style.transform='translateX(-'+idx*100+'%)';
+      dbs.forEach(function(d,i){d.className='shop-img-car-dot'+(i===idx?' active':'');});
+    }
+    prev.onclick=function(){go(idx-1);};next.onclick=function(){go(idx+1);};
+    wrap.appendChild(prev);wrap.appendChild(next);wrap.appendChild(dotsEl);
+  }
+  return wrap;
 }
 function loadShop(){
   var panel=document.getElementById('shop');
@@ -1618,7 +1692,10 @@ function loadShop(){
     if(!entries.length)return;
     el.innerHTML='';
     entries.slice().reverse().forEach(function(raw){
-      var sections=raw.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
+      var imgMatches=raw.match(/^#\s*image:\s*(.+)$/gm)||[];
+      var images=imgMatches.map(function(l){return l.replace(/^#\s*image:\s*/,'').trim();}).filter(Boolean);
+      var clean=raw.replace(/^#[^\n]*/gm,'').trim();
+      var sections=clean.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
       var header=sections[0]||'';
       var hlines=header.split('\n').map(function(l){return l.trim();}).filter(Boolean);
       var title=hlines.find(function(l){return !/^https?:\/\//.test(l);})||'';
@@ -1632,6 +1709,7 @@ function loadShop(){
       });
       if(!title)return;
       var card=document.createElement('div');card.className='shop-item-card';
+      if(images.length)card.appendChild(buildShopCarousel(images,title));
       var nm=document.createElement('div');nm.className='shop-item-name';nm.textContent=title;card.appendChild(nm);
       if(descParts.length){var dc=document.createElement('div');dc.className='shop-item-desc';dc.textContent=descParts.join(' ');card.appendChild(dc);}
       if(price){var pr=document.createElement('div');pr.className='shop-item-price';pr.textContent=price;card.appendChild(pr);}
@@ -1662,18 +1740,20 @@ function loadAstrology(){
     if(!entries.length){list.innerHTML='<p class="poems-loading">Скоро…</p>';return;}
     list.innerHTML='';
     entries.forEach(function(raw){
-      var sections=raw.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
+      var audioMatch=raw.match(/^[ \t]*#\s*audio:\s*(.+)$/m);
+      var audioFile=audioMatch?audioMatch[1].trim():null;
+      var clean=raw.replace(/^[ \t]*#[^\n]*/gm,'').trim();
+      var sections=clean.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
       var header=sections[0]||'';
       var hlines=header.split('\n').map(function(l){return l.trim();}).filter(Boolean);
       var title=hlines.find(function(l){return !/^https?:\/\//.test(l);})||'';
       var url=hlines.find(function(l){return /^https?:\/\//.test(l);})||'';
       var stanzaStart=1;
-      // URL may be in its own paragraph (separated by blank line from title)
       if(!url&&sections[1]&&/^https?:\/\/\S+$/.test(sections[1].trim())){url=sections[1].trim();stanzaStart=2;}
       var stanzas=sections.slice(stanzaStart);
       var vid=url?ytIdFromUrl(url):'';
       var isShort=!!(vid&&/youtube\.com\/shorts\//.test(url));
-      if(!title&&!vid)return;
+      if(!title&&!vid&&!audioFile)return;
       var card=document.createElement('div');
       card.className='novinka-card'+(vid&&!isShort?' novinka-card-full':'');
       if(title){var te=document.createElement('div');te.className='novinka-title';te.textContent=title;card.appendChild(te);}
@@ -1690,6 +1770,31 @@ function loadAstrology(){
         facade.appendChild(img);facade.appendChild(pb);
         vw.appendChild(facade);card.appendChild(vw);
       }
+      if(audioFile){
+        var aph=document.createElement('div');aph.className='audio-ph';
+        aph.dataset.src='audio/'+encodeURIComponent(audioFile);
+        aph.dataset.label=title||audioFile;
+        card.appendChild(aph);
+      }
+      var actRow=document.createElement('div');actRow.className='poem-actions';
+      if(audioFile){
+        var dl=document.createElement('a');dl.className='poem-dl-btn';
+        dl.href='audio/'+encodeURIComponent(audioFile);dl.download=audioFile;
+        dl.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Скачать MP3';
+        actRow.appendChild(dl);
+      }
+      var sb=document.createElement('button');sb.className='yt-share-btn';
+      sb.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>Поделиться';
+      var shareUrl=vid?(isShort?'https://www.youtube.com/shorts/'+vid:'https://www.youtube.com/watch?v='+vid):'https://iabard.com';
+      sb.onclick=(function(u){return function(){showShareMenu(sb,'https://iabard.com',u);};})(shareUrl);
+      actRow.appendChild(sb);card.appendChild(actRow);
+      if(vid){
+        var brow=document.createElement('div');brow.className='yt-btn-row poem-yt-row';
+        var watchUrl='https://www.youtube.com/watch?v='+vid;
+        var wa=document.createElement('a');wa.href=watchUrl;wa.target='_blank';wa.rel='noopener noreferrer';wa.className='yt-watch-btn';
+        wa.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Смотреть на YouTube';
+        brow.appendChild(wa);card.appendChild(brow);
+      }
       if(stanzas.length){
         var pe=document.createElement('div');pe.className='novinka-poem';
         stanzas.forEach(function(s){
@@ -1701,6 +1806,7 @@ function loadAstrology(){
       }
       list.appendChild(card);
     });
+    initAudioPlayers(list);
   })
   .catch(function(){list.innerHTML='<p class="poems-loading">Скоро…</p>';});
 }
@@ -1718,18 +1824,20 @@ function loadAuthor(){
     var afterCarousel=false;
     entries.forEach(function(raw){
       if(raw.trim()==='[CAROUSEL]'){afterCarousel=true;return;}
-      var sections=raw.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
+      var audioMatch=raw.match(/^[ \t]*#\s*audio:\s*(.+)$/m);
+      var audioFile=audioMatch?audioMatch[1].trim():null;
+      var clean=raw.replace(/^[ \t]*#[^\n]*/gm,'').trim();
+      var sections=clean.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
       var header=sections[0]||'';
       var hlines=header.split('\n').map(function(l){return l.trim();}).filter(Boolean);
       var title=hlines.find(function(l){return !/^https?:\/\//.test(l);})||'';
       var url=hlines.find(function(l){return /^https?:\/\//.test(l);})||'';
       var stanzaStart=1;
-      // URL may be in its own paragraph (separated by blank line from title)
       if(!url&&sections[1]&&/^https?:\/\/\S+$/.test(sections[1].trim())){url=sections[1].trim();stanzaStart=2;}
       var stanzas=sections.slice(stanzaStart);
       var vid=url?ytIdFromUrl(url):'';
       var isShort=!!(vid&&/youtube\.com\/shorts\//.test(url));
-      if(!title&&!vid)return;
+      if(!title&&!vid&&!audioFile)return;
       var card=document.createElement('div');
       card.className='novinka-card'+(vid&&!isShort?' novinka-card-full':'');
       if(title){var te=document.createElement('div');te.className='novinka-title';te.textContent=title;card.appendChild(te);}
@@ -1746,6 +1854,31 @@ function loadAuthor(){
         facade.appendChild(img);facade.appendChild(pb);
         vw.appendChild(facade);card.appendChild(vw);
       }
+      if(audioFile){
+        var aph=document.createElement('div');aph.className='audio-ph';
+        aph.dataset.src='audio/'+encodeURIComponent(audioFile);
+        aph.dataset.label=title||audioFile;
+        card.appendChild(aph);
+      }
+      var actRow=document.createElement('div');actRow.className='poem-actions';
+      if(audioFile){
+        var dl=document.createElement('a');dl.className='poem-dl-btn';
+        dl.href='audio/'+encodeURIComponent(audioFile);dl.download=audioFile;
+        dl.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Скачать MP3';
+        actRow.appendChild(dl);
+      }
+      var sb=document.createElement('button');sb.className='yt-share-btn';
+      sb.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>Поделиться';
+      var shareUrl=vid?(isShort?'https://www.youtube.com/shorts/'+vid:'https://www.youtube.com/watch?v='+vid):'https://iabard.com';
+      sb.onclick=(function(u){return function(){showShareMenu(sb,'https://iabard.com',u);};})(shareUrl);
+      actRow.appendChild(sb);card.appendChild(actRow);
+      if(vid){
+        var brow=document.createElement('div');brow.className='yt-btn-row poem-yt-row';
+        var watchUrl='https://www.youtube.com/watch?v='+vid;
+        var wa=document.createElement('a');wa.href=watchUrl;wa.target='_blank';wa.rel='noopener noreferrer';wa.className='yt-watch-btn';
+        wa.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Смотреть на YouTube';
+        brow.appendChild(wa);card.appendChild(brow);
+      }
       if(stanzas.length){
         var pe=document.createElement('div');pe.className='novinka-poem';
         stanzas.forEach(function(s){
@@ -1757,6 +1890,8 @@ function loadAuthor(){
       }
       (afterCarousel?listAfter:listBefore).appendChild(card);
     });
+    initAudioPlayers(listBefore);
+    initAudioPlayers(listAfter);
   })
   .catch(function(){});
 }
