@@ -1408,7 +1408,7 @@
       </div>
       <div class="shop-items-grid" id="shop-items-list">
         <div class="shop-item-card"><div class="shop-item-name">Woven Essential Tree</div><span class="shop-item-soon">Coming Soon</span></div>
-        <div class="shop-item-card"><div class="shop-item-name">Talisman Bracelets</div><span class="shop-item-soon">Coming Soon</span></div>
+        <div class="shop-item-card"><div class="shop-item-name">Charming Bracelets</div><span class="shop-item-soon">Coming Soon</span></div>
         <div class="shop-item-card"><div class="shop-item-name">Leela Floor Game</div><span class="shop-item-soon">Coming Soon</span></div>
         <div class="shop-item-card"><div class="shop-item-name">Oracle Eva Luna</div><span class="shop-item-soon">Coming Soon</span></div>
         <div class="shop-item-card"><div class="shop-item-name">Gus Art Toy</div><span class="shop-item-soon">Coming Soon</span></div>
@@ -1725,15 +1725,19 @@ function loadShop(){
       if(images.length)card.appendChild(buildShopCarousel(images,title));
       var nm=document.createElement('div');nm.className='shop-item-name';nm.textContent=title;card.appendChild(nm);
       if(descParts.length){var dc=document.createElement('div');dc.className='shop-item-desc';dc.textContent=descParts.join(' ');card.appendChild(dc);}
-      if(price){var pr=document.createElement('div');pr.className='shop-item-price';pr.textContent=price;card.appendChild(pr);}
+      var displayPrice=price;
+      if(price&&price!=='—'&&/^\d[\d\s,]*$/.test(price.trim())){displayPrice='$'+price.trim().replace(/[\s,]+/g,'');}
       if(url){
+        var actRow=document.createElement('div');actRow.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px';
+        if(price&&price!=='—'){var pr=document.createElement('div');pr.className='shop-item-price';pr.style.marginBottom='0';pr.textContent=displayPrice;actRow.appendChild(pr);}
         var btn=document.createElement('a');btn.className='shop-item-btn';btn.href=url;btn.target='_blank';btn.rel='noopener noreferrer';
-        var btnTxt=document.createElement('span');btnTxt.textContent='Купить';btn.appendChild(btnTxt);
-        if(price&&price!=='—'){var pr2=document.createElement('span');pr2.className='shop-item-btn-price';pr2.textContent=price;btn.appendChild(pr2);}
-        card.appendChild(btn);
+        btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm0 10c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>Купить';
+        actRow.appendChild(btn);
+        card.appendChild(actRow);
       } else {
+        if(price&&price!=='—'){var prr=document.createElement('div');prr.className='shop-item-price';prr.textContent=displayPrice;card.appendChild(prr);}
         var soon=document.createElement('span');soon.className='shop-item-soon';
-        soon.textContent=price&&price!=='—'?price+' · Coming Soon':'Coming Soon';
+        soon.textContent='Coming Soon';
         card.appendChild(soon);
       }
       el.appendChild(card);
