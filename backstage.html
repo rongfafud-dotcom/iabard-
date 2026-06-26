@@ -636,7 +636,7 @@ function addShop(){
     var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
     var imgLines=imagesRaw.map(function(src){return '# image: '+src;}).join('\n');
     var newEntry=(imgLines?imgLines+'\n':'')+title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+(price?'\n\nЦена: '+price:'')+'\n';
-    var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
+    var updated=existing.trim()?'===\n\n'+newEntry+'\n'+existing.trim()+'\n':'===\n\n'+newEntry+'\n===\n';
     var encoded=btoa(unescape(encodeURIComponent(updated)));
     var body={message:'Add shop item: '+title,content:encoded,branch:'main'};
     if(d.sha)body.sha=d.sha;
