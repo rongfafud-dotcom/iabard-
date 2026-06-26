@@ -240,10 +240,30 @@
   <!-- POETRY EN form -->
   <div id="add-form-poetry-en" style="padding:20px;display:none;flex-direction:column;gap:8px">
     <input type="text" id="en-title" placeholder="Title (English)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-    <input type="url" id="en-url" placeholder="YouTube URL (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-    <input type="text" id="en-audio" placeholder="Аудиофайл, например: song.mp3 (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-    <textarea id="en-text" placeholder="Текст (необязательно)" rows="4" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
-    <button onclick="addPoetryEN()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
+    <label style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:text;display:flex;align-items:center;gap:8px;transition:border-color 0.2s">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      <input type="url" id="en-url" placeholder="Добавить ссылку на YouTube" style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text" onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'" onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
+    </label>
+    <div id="en-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
+      <svg width="13" height="13" viewBox="6 3 8 18" preserveAspectRatio="none" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+      <span id="en-mp3-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.88rem">MP3 файл</span>
+      <input type="hidden" id="en-mp3-input" value="">
+      <input type="file" id="en-mp3-file" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" style="display:none" onchange="uploadEnAudio(this.files[0])">
+      <button type="button" onclick="document.getElementById('en-mp3-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif">Загрузить</button>
+      <button type="button" id="en-mp3-clear" onclick="clearEnMp3()" style="display:none;background:none;border:none;color:rgba(201,169,110,0.5);cursor:pointer;font-size:0.9rem;padding:2px 4px">✕</button>
+    </div>
+    <div id="en-mp3-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
+    <label id="en-img-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:pointer;display:flex;align-items:center;gap:8px;transition:border-color 0.2s" for="en-image-input">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+      <span id="en-img-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Добавить картинку</span>
+      <input type="file" id="en-image-input" accept="image/*" style="display:none" onchange="previewEnImage(this)">
+    </label>
+    <div id="en-img-preview" style="display:none;position:relative;border-radius:6px;overflow:hidden">
+      <img id="en-img-prev-img" style="max-width:100%;max-height:180px;display:block;object-fit:contain;margin:0 auto">
+      <button onclick="clearEnImage()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.65);border:none;border-radius:50%;color:#e8ddd0;width:22px;height:22px;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;line-height:1">✕</button>
+    </div>
+    <textarea id="en-text" placeholder="Текст (необязательно)" rows="4" style="background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:11px 14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;width:100%" spellcheck="false" autocorrect="off"></textarea>
+    <button class="novinka-add-btn" onclick="addPoetryEN()">Добавить</button>
     <div id="en-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
     <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(201,169,110,0.15)">
       <div style="font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,169,110,0.4);margin-bottom:10px">Загруженные видео</div>
@@ -254,10 +274,30 @@
   <!-- АСТРОЛОГИЯ form -->
   <div id="add-form-astrology" style="padding:20px;display:none;flex-direction:column;gap:8px">
     <input type="text" id="astro-title" placeholder="Название" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-    <input type="url" id="astro-url" placeholder="YouTube URL (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-    <input type="text" id="astro-audio" placeholder="Аудиофайл, например: zodiac.mp3 (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-    <textarea id="astro-text" placeholder="Текст стихотворения (необязательно)" rows="4" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
-    <button onclick="addAstro()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
+    <label style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:text;display:flex;align-items:center;gap:8px;transition:border-color 0.2s">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      <input type="url" id="astro-url" placeholder="Добавить ссылку на YouTube" style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text" onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'" onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
+    </label>
+    <div id="astro-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
+      <svg width="13" height="13" viewBox="6 3 8 18" preserveAspectRatio="none" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+      <span id="astro-mp3-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.88rem">MP3 файл</span>
+      <input type="hidden" id="astro-mp3-input" value="">
+      <input type="file" id="astro-mp3-file" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" style="display:none" onchange="uploadAstroAudio(this.files[0])">
+      <button type="button" onclick="document.getElementById('astro-mp3-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif">Загрузить</button>
+      <button type="button" id="astro-mp3-clear" onclick="clearAstroMp3()" style="display:none;background:none;border:none;color:rgba(201,169,110,0.5);cursor:pointer;font-size:0.9rem;padding:2px 4px">✕</button>
+    </div>
+    <div id="astro-mp3-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
+    <label id="astro-img-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:pointer;display:flex;align-items:center;gap:8px;transition:border-color 0.2s" for="astro-image-input">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+      <span id="astro-img-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Добавить картинку</span>
+      <input type="file" id="astro-image-input" accept="image/*" style="display:none" onchange="previewAstroImage(this)">
+    </label>
+    <div id="astro-img-preview" style="display:none;position:relative;border-radius:6px;overflow:hidden">
+      <img id="astro-img-prev-img" style="max-width:100%;max-height:180px;display:block;object-fit:contain;margin:0 auto">
+      <button onclick="clearAstroImage()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.65);border:none;border-radius:50%;color:#e8ddd0;width:22px;height:22px;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;line-height:1">✕</button>
+    </div>
+    <textarea id="astro-text" placeholder="Текст стихотворения (необязательно)" rows="4" style="background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:11px 14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;width:100%" spellcheck="false" autocorrect="off"></textarea>
+    <button class="novinka-add-btn" onclick="addAstro()">Добавить</button>
     <div id="astro-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
     <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(201,169,110,0.15)">
       <div style="font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(201,169,110,0.4);margin-bottom:10px">Добавленные записи</div>
@@ -268,10 +308,30 @@
   <!-- ИЯ БАРД form -->
   <div id="add-form-author" style="padding:20px;display:none;flex-direction:column;gap:8px">
     <input type="text" id="author-title" placeholder="Название" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-    <input type="url" id="author-url" placeholder="YouTube URL (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-    <input type="text" id="author-audio" placeholder="Аудиофайл, например: poem.mp3 (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-    <textarea id="author-text" placeholder="Текст (необязательно)" rows="4" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
-    <button onclick="addAuthor()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
+    <label style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:text;display:flex;align-items:center;gap:8px;transition:border-color 0.2s">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      <input type="url" id="author-url" placeholder="Добавить ссылку на YouTube" style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text" onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'" onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
+    </label>
+    <div id="author-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
+      <svg width="13" height="13" viewBox="6 3 8 18" preserveAspectRatio="none" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+      <span id="author-mp3-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.88rem">MP3 файл</span>
+      <input type="hidden" id="author-mp3-input" value="">
+      <input type="file" id="author-mp3-file" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" style="display:none" onchange="uploadAuthorAudio(this.files[0])">
+      <button type="button" onclick="document.getElementById('author-mp3-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif">Загрузить</button>
+      <button type="button" id="author-mp3-clear" onclick="clearAuthorMp3()" style="display:none;background:none;border:none;color:rgba(201,169,110,0.5);cursor:pointer;font-size:0.9rem;padding:2px 4px">✕</button>
+    </div>
+    <div id="author-mp3-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
+    <label id="author-img-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:pointer;display:flex;align-items:center;gap:8px;transition:border-color 0.2s" for="author-image-input">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+      <span id="author-img-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Добавить картинку</span>
+      <input type="file" id="author-image-input" accept="image/*" style="display:none" onchange="previewAuthorImage(this)">
+    </label>
+    <div id="author-img-preview" style="display:none;position:relative;border-radius:6px;overflow:hidden">
+      <img id="author-img-prev-img" style="max-width:100%;max-height:180px;display:block;object-fit:contain;margin:0 auto">
+      <button onclick="clearAuthorImage()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.65);border:none;border-radius:50%;color:#e8ddd0;width:22px;height:22px;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;line-height:1">✕</button>
+    </div>
+    <textarea id="author-text" placeholder="Текст (необязательно)" rows="4" style="background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:11px 14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;width:100%" spellcheck="false" autocorrect="off"></textarea>
+    <button class="novinka-add-btn" onclick="addAuthor()">Добавить</button>
     <div id="author-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
     <!-- CAROUSEL inside Ия Бард -->
     <div style="margin:12px -20px 0;padding:16px 20px 0;border-top:1px solid rgba(201,169,110,0.18)">
@@ -789,36 +849,41 @@ function addAuthor(){
   if(!token){document.getElementById('author-add-status').textContent='Нет токена';return;}
   var title=document.getElementById('author-title').value.trim();
   var url=document.getElementById('author-url').value.trim();
-  var audio=(document.getElementById('author-audio').value||'').trim();
+  var audio=(document.getElementById('author-mp3-input').value||'').trim();
   var text=document.getElementById('author-text').value.trim();
   if(!title&&!url&&!audio&&!text){document.getElementById('author-add-status').textContent='Заполните хотя бы одно поле';return;}
+  var imageFile=document.getElementById('author-image-input').files[0]||null;
   var st=document.getElementById('author-add-status');
   st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
-  fetch('https://api.github.com/repos/'+REPO+'/contents/author.txt?ref=main',{
-    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
-  })
-  .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
-  .then(function(d){
-    var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
-    var newEntry=(audio?'# audio: '+audio+'\n':'')+(title?title+'\n':'')+(url?'\n'+url+'\n':'')+(text?'\n'+text+'\n':'');
-    var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
-    var encoded=btoa(unescape(encodeURIComponent(updated)));
-    var body={message:'Add to author section'+(title?': '+title:''),content:encoded,branch:'main'};
-    if(d.sha)body.sha=d.sha;
-    return fetch('https://api.github.com/repos/'+REPO+'/contents/author.txt',{
-      method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-      body:JSON.stringify(body)
-    });
-  })
-  .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
-  .then(function(){
-    st.textContent='✓ Добавлено!';st.style.color='#7bc47b';
-    document.getElementById('author-title').value='';
-    document.getElementById('author-url').value='';
-    document.getElementById('author-audio').value='';
-    document.getElementById('author-text').value='';
-  })
-  .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
+  function doSave(imgName){
+    fetch('https://api.github.com/repos/'+REPO+'/contents/author.txt?ref=main',{
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+    })
+    .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
+    .then(function(d){
+      var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
+      var newEntry=(audio?'# audio: '+audio+'\n':'')+(imgName?'# image: '+imgName+'\n':'')+(title?title+'\n':'')+(url?'\n'+url+'\n':'')+(text?'\n'+text+'\n':'');
+      var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
+      var encoded=btoa(unescape(encodeURIComponent(updated)));
+      var body={message:'Add to author section'+(title?': '+title:''),content:encoded,branch:'main'};
+      if(d.sha)body.sha=d.sha;
+      return fetch('https://api.github.com/repos/'+REPO+'/contents/author.txt',{
+        method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
+    })
+    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+    .then(function(){
+      st.textContent='✓ Добавлено!';st.style.color='#7bc47b';
+      document.getElementById('author-title').value='';
+      document.getElementById('author-url').value='';
+      clearAuthorMp3();clearAuthorImage();
+      document.getElementById('author-text').value='';
+    })
+    .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
+  }
+  if(imageFile){st.textContent='Загрузка картинки…';uploadPoemImage(imageFile,function(fn){doSave(fn);},function(e){st.textContent='Ошибка картинки: '+e.message;st.style.color='#d47a7a';});}
+  else{doSave(null);}
 }
 
 function switchPoems(btn){
@@ -908,44 +973,122 @@ function filterPoetryENBack(q){
   document.getElementById('en-count').textContent=shown+' видео';
 }
 
+function uploadEnAudio(f){_uploadAudioSection('en',f);}
+function clearEnMp3(){_clearMp3Section('en');}
+function previewEnImage(i){_previewImgSection('en',i);}
+function clearEnImage(){_clearImgSection('en');}
+function uploadAstroAudio(f){_uploadAudioSection('astro',f);}
+function clearAstroMp3(){_clearMp3Section('astro');}
+function previewAstroImage(i){_previewImgSection('astro',i);}
+function clearAstroImage(){_clearImgSection('astro');}
+function uploadAuthorAudio(f){_uploadAudioSection('author',f);}
+function clearAuthorMp3(){_clearMp3Section('author');}
+function previewAuthorImage(i){_previewImgSection('author',i);}
+function clearAuthorImage(){_clearImgSection('author');}
+function _uploadAudioSection(pfx,file){
+  if(!file)return;
+  var token=getToken();
+  var prog=document.getElementById(pfx+'-mp3-progress');
+  if(!token){prog.style.display='block';prog.textContent='Нет токена';return;}
+  if(file.size>25*1024*1024){prog.style.display='block';prog.textContent='Файл больше 25MB';return;}
+  prog.style.display='block';prog.style.color='rgba(201,169,110,0.7)';prog.textContent='Чтение…';
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var arr=new Uint8Array(e.target.result);
+    var chunks=[];
+    for(var i=0;i<arr.length;i+=8192){chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));}
+    var b64=btoa(chunks.join(''));
+    prog.textContent='Отправка…';
+    var safeName=sanitizeFilename(file.name,'audio');
+    var path='audio/'+safeName;
+    fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+    })
+    .then(function(r){return r.json();})
+    .then(function(ex){
+      var body={message:'Upload audio: '+safeName,content:b64,branch:'main'};
+      if(ex&&ex.sha&&!ex.message)body.sha=ex.sha;
+      return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{
+        method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
+    })
+    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+    .then(function(){
+      prog.style.color='#7bc47b';prog.textContent='✓ Загружено: '+safeName;
+      document.getElementById(pfx+'-mp3-input').value=safeName;
+      document.getElementById(pfx+'-mp3-name').textContent=safeName;
+      document.getElementById(pfx+'-mp3-name').style.color='#e8ddd0';
+      document.getElementById(pfx+'-mp3-clear').style.display='inline';
+    })
+    .catch(function(e){prog.style.color='#d47a7a';prog.textContent='Ошибка: '+e.message;});
+  };
+  reader.readAsArrayBuffer(file);
+}
+function _clearMp3Section(pfx){
+  document.getElementById(pfx+'-mp3-input').value='';
+  document.getElementById(pfx+'-mp3-name').textContent='MP3 файл';
+  document.getElementById(pfx+'-mp3-name').style.color='';
+  document.getElementById(pfx+'-mp3-clear').style.display='none';
+  document.getElementById(pfx+'-mp3-progress').style.display='none';
+  document.getElementById(pfx+'-mp3-file').value='';
+}
+function _previewImgSection(pfx,input){
+  var file=input.files[0];if(!file)return;
+  document.getElementById(pfx+'-img-name').textContent=file.name;
+  document.getElementById(pfx+'-img-prev-img').src=URL.createObjectURL(file);
+  document.getElementById(pfx+'-img-preview').style.display='block';
+  document.getElementById(pfx+'-img-label').style.borderColor='rgba(201,169,110,0.6)';
+}
+function _clearImgSection(pfx){
+  var inp=document.getElementById(pfx+'-image-input');if(inp)inp.value='';
+  var nm=document.getElementById(pfx+'-img-name');if(nm)nm.textContent='Добавить картинку';
+  var pv=document.getElementById(pfx+'-img-preview');if(pv)pv.style.display='none';
+  var lbl=document.getElementById(pfx+'-img-label');if(lbl)lbl.style.borderColor='rgba(201,169,110,0.25)';
+}
 function addPoetryEN(){
   var token=getToken();
   if(!token){document.getElementById('en-add-status').textContent='Нет токена';return;}
   var title=document.getElementById('en-title').value.trim();
   var url=document.getElementById('en-url').value.trim();
-  var audio=(document.getElementById('en-audio').value||'').trim();
+  var audio=(document.getElementById('en-mp3-input').value||'').trim();
   var text=(document.getElementById('en-text').value||'').trim();
   if(!title){document.getElementById('en-add-status').textContent='Введите название';return;}
   if(url&&!/youtu/.test(url)){document.getElementById('en-add-status').textContent='Неверный YouTube URL';return;}
+  var imageFile=document.getElementById('en-image-input').files[0]||null;
   var st=document.getElementById('en-add-status');
   st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
-  fetch('https://api.github.com/repos/'+REPO+'/contents/poems-en.txt?ref=main',{
-    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
-  })
-  .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
-  .then(function(d){
-    var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
-    var newEntry=(audio?'# audio: '+audio+'\n':'')+title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+'\n';
-    var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
-    var encoded=btoa(unescape(encodeURIComponent(updated)));
-    var body={message:'Add EN poem: '+title,content:encoded,branch:'main'};
-    if(d.sha)body.sha=d.sha;
-    return fetch('https://api.github.com/repos/'+REPO+'/contents/poems-en.txt',{
-      method:'PUT',
-      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-      body:JSON.stringify(body)
-    });
-  })
-  .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
-  .then(function(){
-    st.textContent='✓ Добавлено!';st.style.color='#7bc47b';
-    document.getElementById('en-title').value='';
-    document.getElementById('en-url').value='';
-    document.getElementById('en-audio').value='';
-    document.getElementById('en-text').value='';
-    loadPoetryENList();
-  })
-  .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
+  function doSave(imgName){
+    fetch('https://api.github.com/repos/'+REPO+'/contents/poems-en.txt?ref=main',{
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+    })
+    .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
+    .then(function(d){
+      var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
+      var newEntry=(audio?'# audio: '+audio+'\n':'')+(imgName?'# image: '+imgName+'\n':'')+title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+'\n';
+      var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
+      var encoded=btoa(unescape(encodeURIComponent(updated)));
+      var body={message:'Add EN poem: '+title,content:encoded,branch:'main'};
+      if(d.sha)body.sha=d.sha;
+      return fetch('https://api.github.com/repos/'+REPO+'/contents/poems-en.txt',{
+        method:'PUT',
+        headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
+    })
+    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+    .then(function(){
+      st.textContent='✓ Добавлено!';st.style.color='#7bc47b';
+      document.getElementById('en-title').value='';
+      document.getElementById('en-url').value='';
+      clearEnMp3();clearEnImage();
+      document.getElementById('en-text').value='';
+      loadPoetryENList();
+    })
+    .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
+  }
+  if(imageFile){st.textContent='Загрузка картинки…';uploadPoemImage(imageFile,function(fn){doSave(fn);},function(e){st.textContent='Ошибка картинки: '+e.message;st.style.color='#d47a7a';});}
+  else{doSave(null);}
 }
 
 function deletePoetryEN(idx,btn){
@@ -1057,37 +1200,42 @@ function addAstro(){
   if(!token){document.getElementById('astro-add-status').textContent='Нет токена';return;}
   var title=document.getElementById('astro-title').value.trim();
   var url=document.getElementById('astro-url').value.trim();
-  var audio=(document.getElementById('astro-audio').value||'').trim();
+  var audio=(document.getElementById('astro-mp3-input').value||'').trim();
   var text=document.getElementById('astro-text').value.trim();
   if(!title){document.getElementById('astro-add-status').textContent='Введите название';return;}
+  var imageFile=document.getElementById('astro-image-input').files[0]||null;
   var st=document.getElementById('astro-add-status');
   st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
-  fetch('https://api.github.com/repos/'+REPO+'/contents/astrology.txt?ref=main',{
-    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
-  })
-  .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
-  .then(function(d){
-    var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
-    var newEntry=(audio?'# audio: '+audio+'\n':'')+title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+'\n';
-    var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
-    var encoded=btoa(unescape(encodeURIComponent(updated)));
-    var body={message:'Add astrology: '+title,content:encoded,branch:'main'};
-    if(d.sha)body.sha=d.sha;
-    return fetch('https://api.github.com/repos/'+REPO+'/contents/astrology.txt',{
-      method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-      body:JSON.stringify(body)
-    });
-  })
-  .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
-  .then(function(){
-    st.textContent='✓ Добавлено!';st.style.color='#7bc47b';
-    document.getElementById('astro-title').value='';
-    document.getElementById('astro-url').value='';
-    document.getElementById('astro-audio').value='';
-    document.getElementById('astro-text').value='';
-    loadAstroList();
-  })
-  .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
+  function doSave(imgName){
+    fetch('https://api.github.com/repos/'+REPO+'/contents/astrology.txt?ref=main',{
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+    })
+    .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
+    .then(function(d){
+      var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
+      var newEntry=(audio?'# audio: '+audio+'\n':'')+(imgName?'# image: '+imgName+'\n':'')+title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+'\n';
+      var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
+      var encoded=btoa(unescape(encodeURIComponent(updated)));
+      var body={message:'Add astrology: '+title,content:encoded,branch:'main'};
+      if(d.sha)body.sha=d.sha;
+      return fetch('https://api.github.com/repos/'+REPO+'/contents/astrology.txt',{
+        method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
+    })
+    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+    .then(function(){
+      st.textContent='✓ Добавлено!';st.style.color='#7bc47b';
+      document.getElementById('astro-title').value='';
+      document.getElementById('astro-url').value='';
+      clearAstroMp3();clearAstroImage();
+      document.getElementById('astro-text').value='';
+      loadAstroList();
+    })
+    .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
+  }
+  if(imageFile){st.textContent='Загрузка картинки…';uploadPoemImage(imageFile,function(fn){doSave(fn);},function(e){st.textContent='Ошибка картинки: '+e.message;st.style.color='#d47a7a';});}
+  else{doSave(null);}
 }
 
 function deleteAstro(idx,btn){
