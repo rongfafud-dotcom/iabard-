@@ -276,10 +276,11 @@
 
   <!-- МАГАЗИН form -->
   <div id="add-form-shop" style="padding:20px;display:none;flex-direction:column;gap:8px">
-    <input type="text" id="shop-title" placeholder="Название" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-    <input type="url" id="shop-url" placeholder="Ссылка (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
-    <textarea id="shop-text" placeholder="Описание (необязательно)" rows="4" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
-    <button onclick="addShop()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить</button>
+    <input type="text" id="shop-title" placeholder="Название товара" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <textarea id="shop-text" placeholder="Описание (необязательно)" rows="3" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;resize:vertical"></textarea>
+    <input type="text" id="shop-price" placeholder="Цена, например: $45 или 3 500 руб (необязательно)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <input type="url" id="shop-url" placeholder="Ссылка для покупки (необязательно — добавить позже)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
+    <button onclick="addShop()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Добавить товар</button>
     <div id="shop-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
   </div>
 
@@ -566,6 +567,7 @@ function addShop(){
   var title=document.getElementById('shop-title').value.trim();
   var url=document.getElementById('shop-url').value.trim();
   var text=document.getElementById('shop-text').value.trim();
+  var price=document.getElementById('shop-price').value.trim();
   if(!title){document.getElementById('shop-add-status').textContent='Введите название';return;}
   var st=document.getElementById('shop-add-status');
   st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
@@ -575,7 +577,7 @@ function addShop(){
   .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
   .then(function(d){
     var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
-    var newEntry=title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+'\n';
+    var newEntry=title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+(price?'\n\nЦена: '+price:'')+'\n';
     var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
     var encoded=btoa(unescape(encodeURIComponent(updated)));
     var body={message:'Add shop item: '+title,content:encoded,branch:'main'};
@@ -591,6 +593,7 @@ function addShop(){
     document.getElementById('shop-title').value='';
     document.getElementById('shop-url').value='';
     document.getElementById('shop-text').value='';
+    document.getElementById('shop-price').value='';
   })
   .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
 }
@@ -1615,10 +1618,10 @@ function openEditEntry(displayIdx){
   } else {
     var p=parseEditEntry(raw);
     fields.appendChild(inp('edit-f-title',p.title,'Название'));
-    var urlPh=_ed.section==='books'?'Ссылка BookBaby':(_ed.section==='shop'?'Ссылка (необязательно)':'YouTube URL (необязательно)');
+    var urlPh=_ed.section==='books'?'Ссылка BookBaby':(_ed.section==='shop'?'Ссылка для покупки (необязательно)':'YouTube URL (необязательно)');
     fields.appendChild(inp('edit-f-url',p.url,urlPh,'url'));
-    var textPh=_ed.section==='books'?'Стихотворение (обратная сторона карточки)':'Текст (необязательно)';
-    if(_ed.section!=='poetry-en') fields.appendChild(ta('edit-f-text',p.text,textPh,8));
+    var textPh=_ed.section==='books'?'Стихотворение (обратная сторона карточки)':(_ed.section==='shop'?'Описание товара':'Текст (необязательно)');
+    if(_ed.section!=='poetry-en') fields.appendChild(ta('edit-f-text',p.text,textPh,_ed.section==='shop'?4:8));
   }
   document.getElementById('edit-save-btn').disabled=false;
   document.getElementById('edit-delete-btn').disabled=false;

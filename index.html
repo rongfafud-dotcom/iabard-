@@ -637,19 +637,19 @@
     }
 
     /* МАГАЗИН — COMING SOON */
-    .shop-cs{display:flex;align-items:center;justify-content:center;min-height:55vh;padding:20px}
-    .shop-cs-inner{text-align:center;max-width:380px;width:100%}
-    .shop-cs-ornament{font-size:1.5rem;color:var(--gold);opacity:0.40;letter-spacing:10px;margin-bottom:22px}
-    .shop-cs-title{font-family:'Great Vibes',cursive;font-size:3.2rem;color:var(--gold);margin-bottom:4px;line-height:1.2}
-    .shop-cs-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;
-      color:rgba(253,246,238,0.45);letter-spacing:5px;text-transform:uppercase;margin-bottom:32px}
-    .shop-cs-divider{width:56px;height:1px;background:var(--gold);opacity:0.28;margin:0 auto 32px}
-    .shop-cs-items{display:flex;flex-direction:column;gap:10px;margin-bottom:36px}
-    .shop-cs-item{font-family:'Cormorant Garamond',serif;font-size:1.05rem;
-      color:rgba(253,246,238,0.58);border:1px solid rgba(201,169,110,0.14);
-      border-radius:8px;padding:11px 22px;letter-spacing:1.5px}
-    .shop-cs-note{font-family:'Raleway',sans-serif;font-size:0.58rem;letter-spacing:2.5px;
-      text-transform:uppercase;color:rgba(253,246,238,0.30);margin-bottom:22px}
+    .shop-wrap{max-width:520px;margin:0 auto;padding:32px 20px}
+    .shop-head{text-align:center;margin-bottom:32px}
+    .shop-head-ornament{font-size:1.2rem;color:var(--gold);opacity:0.40;letter-spacing:10px;margin-bottom:16px}
+    .shop-head-title{font-family:'Great Vibes',cursive;font-size:3rem;color:var(--gold);line-height:1.2;margin-bottom:6px}
+    .shop-items-grid{display:flex;flex-direction:column;gap:16px}
+    .shop-item-card{background:rgba(201,169,110,0.05);border:1px solid rgba(201,169,110,0.18);border-radius:14px;padding:22px 24px;text-align:center;transition:border-color 0.25s}
+    .shop-item-card:hover{border-color:rgba(201,169,110,0.42)}
+    .shop-item-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#c9a96e;letter-spacing:1px;margin-bottom:10px}
+    .shop-item-desc{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.97rem;color:rgba(232,221,208,0.65);line-height:1.65;margin-bottom:12px}
+    .shop-item-price{font-family:'Raleway',sans-serif;font-size:1rem;font-weight:600;color:#c9a96e;letter-spacing:1px;margin-bottom:16px}
+    .shop-item-btn{display:inline-block;padding:9px 28px;border:1px solid rgba(201,169,110,0.5);border-radius:20px;color:#c9a96e;text-decoration:none;font-family:'Raleway',sans-serif;font-size:0.72rem;letter-spacing:2.5px;text-transform:uppercase;transition:all 0.2s}
+    .shop-item-btn:hover{border-color:#c9a96e;background:rgba(201,169,110,0.1)}
+    .shop-item-soon{display:inline-block;margin-top:4px;font-family:'Raleway',sans-serif;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.35)}
 
     /* СТИХИ — text poems tab */
     .poems-loading{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
@@ -1389,20 +1389,17 @@
 
   <!-- МАГАЗИН -->
   <div id="shop" class="tab-panel" role="tabpanel" aria-labelledby="tab-shop">
-    <div class="shop-cs">
-      <div class="shop-cs-inner">
-        <div class="shop-cs-ornament">✦ ✦ ✦</div>
-        <h2 class="shop-cs-title">Shop</h2>
-        <p class="shop-cs-sub">Coming Soon</p>
-        <div class="shop-cs-divider"></div>
-        <div class="shop-cs-items" id="shop-items-list">
-          <div class="shop-cs-item">Woven Essential Tree</div>
-          <div class="shop-cs-item">Talisman Bracelets</div>
-          <div class="shop-cs-item">Leela Floor Game</div>
-          <div class="shop-cs-item">Oracle Eva Luna</div>
-          <div class="shop-cs-item">Gus Art Toy</div>
-        </div>
-        <p class="shop-cs-note">Следите за обновлениями</p>
+    <div class="shop-wrap">
+      <div class="shop-head">
+        <div class="shop-head-ornament">✦ ✦ ✦</div>
+        <h2 class="shop-head-title">Shop</h2>
+      </div>
+      <div class="shop-items-grid" id="shop-items-list">
+        <div class="shop-item-card"><div class="shop-item-name">Woven Essential Tree</div><span class="shop-item-soon">Coming Soon</span></div>
+        <div class="shop-item-card"><div class="shop-item-name">Talisman Bracelets</div><span class="shop-item-soon">Coming Soon</span></div>
+        <div class="shop-item-card"><div class="shop-item-name">Leela Floor Game</div><span class="shop-item-soon">Coming Soon</span></div>
+        <div class="shop-item-card"><div class="shop-item-name">Oracle Eva Luna</div><span class="shop-item-soon">Coming Soon</span></div>
+        <div class="shop-item-card"><div class="shop-item-name">Gus Art Toy</div><span class="shop-item-soon">Coming Soon</span></div>
       </div>
     </div>
   </div>
@@ -1619,25 +1616,30 @@ function loadShop(){
     var entries=text.split('===').map(function(e){return e.trim();}).filter(Boolean);
     if(!entries.length)return;
     el.innerHTML='';
-    entries.forEach(function(raw){
-      var lines=raw.split('\n').map(function(l){return l.trim();}).filter(Boolean);
-      var title=lines.find(function(l){return !/^https?:\/\//.test(l);})||'';
-      var url=lines.find(function(l){return /^https?:\/\//.test(l);})||'';
-      var desc=lines.filter(function(l){return l!==title&&l!==url;}).join(' ');
+    entries.slice().reverse().forEach(function(raw){
+      var sections=raw.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
+      var header=sections[0]||'';
+      var hlines=header.split('\n').map(function(l){return l.trim();}).filter(Boolean);
+      var title=hlines.find(function(l){return !/^https?:\/\//.test(l);})||'';
+      var url=hlines.find(function(l){return /^https?:\/\//.test(l);})||'';
+      if(!url&&sections[1]&&/^https?:\/\/\S+$/.test(sections[1].trim())){url=sections[1].trim();}
+      var price='';var descParts=[];
+      sections.slice(1).forEach(function(s){
+        if(/^https?:\/\/\S+$/.test(s.trim()))return;
+        if(/^Цена:|^Price:|^\$\d|^€\d|^₽\d/.test(s.trim())){price=s.trim().replace(/^Цена:\s*/,'');return;}
+        descParts.push(s);
+      });
       if(!title)return;
-      var item=document.createElement('div');
-      item.className='shop-cs-item';
+      var card=document.createElement('div');card.className='shop-item-card';
+      var nm=document.createElement('div');nm.className='shop-item-name';nm.textContent=title;card.appendChild(nm);
+      if(descParts.length){var dc=document.createElement('div');dc.className='shop-item-desc';dc.textContent=descParts.join(' ');card.appendChild(dc);}
+      if(price){var pr=document.createElement('div');pr.className='shop-item-price';pr.textContent=price;card.appendChild(pr);}
       if(url){
-        var a=document.createElement('a');
-        a.href=url;a.target='_blank';a.rel='noopener noreferrer';
-        a.style.cssText='color:inherit;text-decoration:underline;text-underline-offset:3px';
-        a.textContent=title;
-        item.appendChild(a);
+        var btn=document.createElement('a');btn.className='shop-item-btn';btn.href=url;btn.target='_blank';btn.rel='noopener noreferrer';btn.textContent='Купить';card.appendChild(btn);
       } else {
-        item.textContent=title;
+        var soon=document.createElement('span');soon.className='shop-item-soon';soon.textContent='Coming Soon';card.appendChild(soon);
       }
-      if(desc){var d=document.createElement('div');d.style.cssText='font-size:0.78em;opacity:0.6;margin-top:3px';d.textContent=desc;item.appendChild(d);}
-      el.appendChild(item);
+      el.appendChild(card);
     });
   })
   .catch(function(){});
