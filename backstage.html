@@ -366,7 +366,7 @@
     <input type="text" id="shop-title" placeholder="Название товара" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
     <div id="shop-img-list" style="display:flex;flex-direction:column;gap:6px"></div>
     <div style="display:flex;align-items:center;gap:8px">
-      <input type="file" id="shop-img-file" accept="image/*" multiple style="display:none" onchange="Array.from(this.files).forEach(function(f){uploadShopImage(f)});this.value=''">
+      <input type="file" id="shop-img-file" accept="image/*" multiple style="display:none" onchange="(function(inp){var fs=Array.from(inp.files);if(!fs.length)return;var b={t:fs.length,ok:0,err:0};fs.forEach(function(f){uploadShopImage(f,b);});inp.value='';})(this)">
       <button type="button" onclick="document.getElementById('shop-img-file').click()" style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;color:rgba(232,221,208,0.6);font-family:'Georgia',serif;font-size:0.88rem;padding:9px 12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.7"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>Добавить фото</button>
     </div>
     <div id="shop-img-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
@@ -630,13 +630,20 @@ function clearPoemMp3(){
   document.getElementById('poem-mp3-file').value='';
 }
 var _shopImages=[];
-function uploadShopImage(file){
+function _shopUploadStatus(st,b,errMsg){
+  var done=(b.ok||0)+(b.err||0);
+  if(done<b.t){st.style.color='rgba(201,169,110,0.7)';st.textContent='Загрузка '+done+' из '+b.t+'…';}
+  else if(b.err){st.style.color='#d47a7a';st.textContent=(b.ok?b.ok+' загружено, ':'')+b.err+' с ошибкой'+(errMsg?': '+errMsg:'');}
+  else{st.style.color='#7bc47b';st.textContent='✓ Загружено '+b.ok+(b.ok===1?' фото':' фото');}
+}
+function uploadShopImage(file,_batch){
   if(!file)return;
   var token=getToken();
   var st=document.getElementById('shop-img-status');
   if(!token){st.style.display='block';st.style.color='#d47a7a';st.textContent='Нет токена';return;}
   if(file.size>10*1024*1024){st.style.display='block';st.style.color='#d47a7a';st.textContent='Файл больше 10MB';return;}
-  st.style.display='block';st.style.color='rgba(201,169,110,0.7)';st.textContent='Загрузка…';
+  st.style.display='block';st.style.color='rgba(201,169,110,0.7)';
+  st.textContent=(_batch&&_batch.t>1)?'Загрузка…':'Загрузка…';
   var reader=new FileReader();
   reader.onload=function(e){
     var arr=new Uint8Array(e.target.result);
@@ -644,7 +651,7 @@ function uploadShopImage(file){
     for(var i=0;i<arr.length;i+=8192)chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));
     var b64=btoa(chunks.join(''));
     var ext=file.name.split('.').pop().toLowerCase()||'jpg';
-    var path='images/shop/'+Date.now()+'.'+ext;
+    var path='images/shop/'+Date.now()+'_'+Math.random().toString(36).slice(2,6)+'.'+ext;
     fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
       headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
     })
@@ -659,7 +666,8 @@ function uploadShopImage(file){
     })
     .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
     .then(function(){
-      st.style.color='#7bc47b';st.textContent='✓ Фото загружено';
+      if(_batch){_batch.ok=(_batch.ok||0)+1;_shopUploadStatus(st,_batch);}
+      else{st.style.color='#7bc47b';st.textContent='✓ Фото загружено';}
       var list=document.getElementById('shop-img-list');
       var item=document.createElement('div');
       item.style.cssText='display:flex;align-items:center;gap:8px;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.2);border-radius:6px;padding:6px 10px';
@@ -676,7 +684,10 @@ function uploadShopImage(file){
       list.appendChild(item);
       _shopImages.push(path);
     })
-    .catch(function(err){st.style.color='#d47a7a';st.textContent='Ошибка: '+err.message;});
+    .catch(function(err){
+      if(_batch){_batch.err=(_batch.err||0)+1;_shopUploadStatus(st,_batch,err.message);}
+      else{st.style.color='#d47a7a';st.textContent='Ошибка: '+err.message;}
+    });
   };
   reader.readAsArrayBuffer(file);
 }
@@ -1893,7 +1904,7 @@ function parseEditEntry(raw){
   var cutAt=Math.max(titleIdx,urlIdx)+1;
   var text=lines.slice(cutAt).join('\n').trim();
   var price='';
-  text=text.replace(/(?:^|\n)Цена:\s*([^\n]*)/,function(_,p){price=p.trim();return '';}).trim();
+  text=text.replace(/(?:^|\n)(?:Цена:|Price:)\s*([^\n]*)/,function(_,p){price=p.trim();return '';}).trim();
   return{title:title,url:url,text:text,price:price,images:images};
 }
 var _edShopImages=[];
@@ -1911,7 +1922,7 @@ function _buildEditShopPhotoUI(fields,images){
   wrap.appendChild(listDiv);
   var fileInp=document.createElement('input');
   fileInp.type='file';fileInp.id='edit-shop-photo-file';fileInp.accept='image/*';fileInp.multiple=true;fileInp.style.display='none';
-  fileInp.onchange=function(){Array.from(fileInp.files).forEach(function(f){uploadShopEditImage(f);});fileInp.value='';};
+  fileInp.onchange=function(){var fs=Array.from(fileInp.files);if(!fs.length)return;var b={t:fs.length,ok:0,err:0};fs.forEach(function(f){uploadShopEditImage(f,b);});fileInp.value='';};
   var addBtn=document.createElement('button');
   addBtn.type='button';
   addBtn.style.cssText='background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;color:rgba(232,221,208,0.6);font-family:\'Georgia\',serif;font-size:0.88rem;padding:9px 12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;width:100%';
@@ -1943,13 +1954,21 @@ function _refreshEditShopPhotoList(){
   list.innerHTML='';
   _edShopImages.forEach(function(path,i){list.appendChild(_makeEditShopPhotoItem(path,i));});
 }
-function uploadShopEditImage(file){
+function _editUploadStatus(prog,b,errMsg){
+  if(!prog)return;
+  var done=(b.ok||0)+(b.err||0);
+  if(done<b.t){prog.style.color='rgba(201,169,110,0.7)';prog.textContent='Загрузка '+done+' из '+b.t+'…';}
+  else if(b.err){prog.style.color='#d47a7a';prog.textContent=(b.ok?b.ok+' загружено, ':'')+b.err+' с ошибкой'+(errMsg?': '+errMsg:'');}
+  else{prog.style.color='#7bc47b';prog.textContent='✓ Загружено '+b.ok+(b.ok===1?' фото':' фото');}
+}
+function uploadShopEditImage(file,_batch){
   if(!file)return;
   var token=getToken();
   var prog=document.getElementById('edit-shop-photo-prog');
   if(!token){if(prog){prog.style.display='block';prog.style.color='#d47a7a';prog.textContent='Нет токена';}return;}
   if(file.size>10*1024*1024){if(prog){prog.style.display='block';prog.style.color='#d47a7a';prog.textContent='Файл больше 10MB';}return;}
   if(prog){prog.style.display='block';prog.style.color='rgba(201,169,110,0.7)';prog.textContent='Загрузка…';}
+  var targetImages=_edShopImages;
   var reader=new FileReader();
   reader.onload=function(e){
     var arr=new Uint8Array(e.target.result);
@@ -1957,7 +1976,7 @@ function uploadShopEditImage(file){
     for(var i=0;i<arr.length;i+=8192)chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));
     var b64=btoa(chunks.join(''));
     var ext=file.name.split('.').pop().toLowerCase()||'jpg';
-    var path='images/shop/'+(new Date()).getTime()+'.'+ext;
+    var path='images/shop/'+(new Date()).getTime()+'_'+Math.random().toString(36).slice(2,6)+'.'+ext;
     fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
       headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
     })
@@ -1972,11 +1991,15 @@ function uploadShopEditImage(file){
     })
     .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
     .then(function(){
-      if(prog){prog.style.color='#7bc47b';prog.textContent='✓ Загружено';}
-      _edShopImages.push(path);
-      _refreshEditShopPhotoList();
+      if(_batch){_batch.ok=(_batch.ok||0)+1;_editUploadStatus(prog,_batch);}
+      else if(prog){prog.style.color='#7bc47b';prog.textContent='✓ Загружено';}
+      targetImages.push(path);
+      if(targetImages===_edShopImages)_refreshEditShopPhotoList();
     })
-    .catch(function(err){if(prog){prog.style.color='#d47a7a';prog.textContent='Ошибка: '+err.message;}});
+    .catch(function(err){
+      if(_batch){_batch.err=(_batch.err||0)+1;_editUploadStatus(prog,_batch,err.message);}
+      else if(prog){prog.style.color='#d47a7a';prog.textContent='Ошибка: '+err.message;}
+    });
   };
   reader.readAsArrayBuffer(file);
 }

@@ -1726,14 +1726,15 @@ function loadShop(){
       var nm=document.createElement('div');nm.className='shop-item-name';nm.textContent=title;card.appendChild(nm);
       if(descParts.length){var dc=document.createElement('div');dc.className='shop-item-desc';descParts.forEach(function(part,i){if(i>0){var sp=document.createElement('div');sp.style.height='0.55em';dc.appendChild(sp);}var p=document.createElement('div');p.textContent=part;dc.appendChild(p);});card.appendChild(dc);}
       var displayPrice=price;
-      if(price&&price!=='—'&&/^\d[\d\s,]*$/.test(price.trim())){displayPrice='$'+price.trim().replace(/[\s,]+/g,'');}
+      if(price&&price!=='—'&&/^\d[\d\s,]*$/.test(price.trim())){var _pn=parseInt(price.trim().replace(/[\s,]+/g,''),10);if(!isNaN(_pn))displayPrice='$'+_pn.toLocaleString('en-US');}
       if(url){
         var actRow=document.createElement('div');actRow.style.cssText='display:flex;align-items:center;justify-content:center;gap:16px;margin-top:4px';
         var btn=document.createElement('a');btn.className='shop-item-btn';btn.href=url;btn.target='_blank';btn.rel='noopener noreferrer';
         var isEtsy=url&&url.indexOf('etsy.com')!==-1;
         if(isEtsy){
-          var priceInBtn=(price&&price!=='—')?'<span style="text-transform:none;font-weight:900;opacity:0.9">'+displayPrice+'</span>':'';
-          btn.innerHTML='<span>Buy</span><span style="font-family:Georgia,\'Times New Roman\',serif;font-weight:700;color:#F1641E;text-transform:none;font-size:1.08em;font-style:normal">Etsy</span>'+priceInBtn;
+          var _bBuy=document.createElement('span');_bBuy.textContent='Buy';btn.appendChild(_bBuy);
+          var _bEtsy=document.createElement('span');_bEtsy.style.cssText='font-family:Georgia,"Times New Roman",serif;font-weight:700;color:#F1641E;text-transform:none;font-size:1.08em;font-style:normal';_bEtsy.textContent='Etsy';btn.appendChild(_bEtsy);
+          if(price&&price!=='—'){var _bPr=document.createElement('span');_bPr.style.cssText='text-transform:none;font-weight:900;opacity:0.9';_bPr.textContent=displayPrice;btn.appendChild(_bPr);}
         } else {
           if(price&&price!=='—'){var pr=document.createElement('div');pr.className='shop-item-price';pr.style.marginBottom='0';pr.textContent=displayPrice;actRow.appendChild(pr);}
           btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm0 10c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>Buy';
@@ -1749,7 +1750,7 @@ function loadShop(){
       el.appendChild(card);
     });
   })
-  .catch(function(){});
+  .catch(function(){if(el)el.innerHTML='<p style="color:rgba(201,169,110,0.35);text-align:center;padding:20px 0;font-size:0.85rem">Не удалось загрузить товары</p>';});
 }
 function loadAstrology(){
   var panel=document.getElementById('novosti');
