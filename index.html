@@ -1724,7 +1724,7 @@ function loadShop(){
       var card=document.createElement('div');card.className='shop-item-card';card.id=cardId;
       if(images.length)card.appendChild(buildShopCarousel(images,title));
       var nm=document.createElement('div');nm.className='shop-item-name';nm.textContent=title;card.appendChild(nm);
-      if(descParts.length){var dc=document.createElement('div');dc.className='shop-item-desc';dc.textContent=descParts.join(' ');card.appendChild(dc);}
+      if(descParts.length){var dc=document.createElement('div');dc.className='shop-item-desc';descParts.forEach(function(part,i){if(i>0){var sp=document.createElement('div');sp.style.height='0.55em';dc.appendChild(sp);}var p=document.createElement('div');p.textContent=part;dc.appendChild(p);});card.appendChild(dc);}
       var displayPrice=price;
       if(price&&price!=='—'&&/^\d[\d\s,]*$/.test(price.trim())){displayPrice='$'+price.trim().replace(/[\s,]+/g,'');}
       if(url){
