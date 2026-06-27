@@ -654,8 +654,8 @@
     .shop-img-car{position:relative;border-radius:10px;overflow:hidden;margin-bottom:16px}
     .shop-img-car-wrap{overflow:hidden;border-radius:10px}
     .shop-img-car-track{display:flex;transition:transform 0.35s cubic-bezier(.4,0,.2,1)}
-    .shop-img-car-slide{flex-shrink:0;width:100%;aspect-ratio:1/1}
-    .shop-img-car-slide img{width:100%;height:100%;object-fit:cover;display:block;border-radius:10px}
+    .shop-img-car-slide{flex-shrink:0;width:100%;padding-top:100%;height:0;position:relative}
+    .shop-img-car-slide img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:10px}
     .shop-img-car-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.32);border:1px solid rgba(201,169,110,0.35);border-radius:50%;width:32px;height:32px;color:#c9a96e;font-size:1.3rem;line-height:1;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;padding:0;transition:background 0.2s}
     .shop-img-car-btn:hover{background:rgba(0,0,0,0.55)}
     .shop-img-car-prev{left:8px}.shop-img-car-next{right:8px}
@@ -1728,10 +1728,11 @@ function loadShop(){
       var displayPrice=price;
       if(price&&price!=='—'&&/^\d[\d\s,]*$/.test(price.trim())){displayPrice='$'+price.trim().replace(/[\s,]+/g,'');}
       if(url){
-        var actRow=document.createElement('div');actRow.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px';
+        var actRow=document.createElement('div');actRow.style.cssText='display:flex;align-items:center;justify-content:center;gap:16px;margin-top:4px';
         if(price&&price!=='—'){var pr=document.createElement('div');pr.className='shop-item-price';pr.style.marginBottom='0';pr.textContent=displayPrice;actRow.appendChild(pr);}
         var btn=document.createElement('a');btn.className='shop-item-btn';btn.href=url;btn.target='_blank';btn.rel='noopener noreferrer';
-        btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm0 10c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>Купить';
+        var isEtsy=url&&url.indexOf('etsy.com')!==-1;
+        btn.innerHTML=isEtsy?'Купить на <span style="font-style:italic;font-weight:900;text-transform:none;color:#F1641E;font-family:Helvetica Neue,Arial,sans-serif;letter-spacing:0">etsy</span>':'<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm0 10c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>Купить';
         actRow.appendChild(btn);
         card.appendChild(actRow);
       } else {
