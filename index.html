@@ -741,9 +741,10 @@
 <!-- STICKY NAV -->
 <nav id="sticky-nav" aria-label="Быстрая навигация">
   <div class="snav-wrap">
-    <button class="snav-btn" data-panels="novosti poems poetry-en">Творчество</button>
+    <button class="snav-btn" data-panels="novosti poems poetry-en tales">Творчество</button>
     <div class="snav-drop">
       <button onclick="goCreative('poems')">Поэзия</button>
+      <button onclick="goCreative('tales')">Сказки</button>
       <button onclick="goCreative('novosti')">Астрология</button>
       <button onclick="goCreative('poetry-en')">Songs EN</button>
     </div>
@@ -788,6 +789,7 @@
         <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-creative')" aria-label="Открыть меню творчества">▾</button>
         <div class="nav-dropmenu" id="drop-creative">
           <button onclick="goCreative('poems')">Поэзия</button>
+          <button onclick="goCreative('tales')">Сказки</button>
           <button onclick="goCreative('novosti')">Астрология</button>
           <button onclick="goCreative('poetry-en')">Songs EN</button>
         </div>
@@ -1396,6 +1398,13 @@
     </div>
     <div class="novinka-list" id="poetry-en-list">
       <p class="poems-loading">Loading…</p>
+    </div>
+  </div>
+
+  <!-- СКАЗКИ -->
+  <div id="tales" class="tab-panel" role="tabpanel" aria-labelledby="tab-creative">
+    <div class="novinka-list" id="tales-list">
+      <p class="poems-loading">Загрузка сказок…</p>
     </div>
   </div>
 
@@ -2052,6 +2061,50 @@ function loadPoems(){
       list.innerHTML='<p class="poems-loading">Не удалось загрузить стихи.</p>';
     });
 }
+function loadTales(){
+  var panel=document.getElementById('tales');
+  if(!panel||panel.dataset.loaded)return;
+  panel.dataset.loaded='1';
+  var list=document.getElementById('tales-list');
+  function renderTales(text){
+    list.innerHTML='';
+    var raw=text.split('===').map(function(p){return p.trim();}).filter(Boolean);
+    if(!raw.length){list.innerHTML='<p class="poems-loading">Скоро здесь будут сказки…</p>';return;}
+    var frag=document.createDocumentFragment();
+    raw.forEach(function(rawTale){
+      var stanzas=rawTale.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
+      var title=stanzas[0]||'';
+      var body=stanzas.slice(1);
+      var card=document.createElement('div');card.className='novinka-card fade-up';
+      var mainT=(title.split('\n')[0]||title).trim();
+      var subT=null;
+      var tlines=title.split('\n').map(function(l){return l.trim();}).filter(Boolean);
+      if(tlines.length>=2&&tlines[1].charAt(0)==='('){subT=tlines.slice(1).join(' ');}
+      var h='<div class="novinka-title"><span class="poem-title-main">'+esc(mainT)+'</span>'+
+        (subT?'<span class="poem-subtitle">'+esc(subT)+'</span>':'')+
+        '<span class="poem-subtitle" style="color:rgba(201,169,110,0.55);font-size:0.7em;letter-spacing:2px;text-transform:uppercase">Сказка</span>'+
+        '</div>';
+      h+='<hr class="poem-divider">';
+      h+='<div class="novinka-poem">';
+      body.forEach(function(s){
+        h+='<div class="stanza">'+s.split('\n').map(function(l){return esc(l.trim());}).join('<br>\n')+'</div>';
+      });
+      h+='</div>';
+      card.innerHTML=h;
+      frag.appendChild(card);
+      if(typeof fadeObserver!=='undefined')fadeObserver.observe(card);
+    });
+    list.appendChild(frag);
+  }
+  list.innerHTML='<p class="poems-loading">Загрузка…</p>';
+  fetch('tales.txt?v='+Math.floor(Date.now()/60000))
+    .then(function(r){return r.ok?r.text():Promise.reject(r.status);})
+    .then(renderTales)
+    .catch(function(){
+      delete panel.dataset.loaded;
+      list.innerHTML='<p class="poems-loading">Не удалось загрузить сказки.</p>';
+    });
+}
 function switchTab(id, btn) {
   closeDrop();
   document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
@@ -2071,6 +2124,7 @@ function switchTab(id, btn) {
   // Load content FIRST so page height is stable before scroll
   if(id==='poems')loadPoems();
   if(id==='poetry-en')loadPoetryEN();
+  if(id==='tales')loadTales();
   if(id==='shop')loadShop();
   if(id==='novosti')loadAstrology();
   if(id==='author'){loadAuthor();loadCarousel();}

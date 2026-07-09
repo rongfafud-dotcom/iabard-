@@ -184,6 +184,9 @@
     <button onclick="selectAddSection('poems')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
       <span style="font-size:1.3rem">📜</span><span style="color:#c9a96e;font-size:1.05rem">Поэзия</span>
     </button>
+    <button onclick="selectAddSection('tales')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+      <span style="font-size:1.3rem">✨</span><span style="color:#c9a96e;font-size:1.05rem">Сказки</span>
+    </button>
     <button onclick="selectAddSection('astrology')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
       <span style="font-size:1.3rem">✨</span><span style="color:#c9a96e;font-size:1.05rem">Астрология</span>
     </button>
@@ -238,6 +241,13 @@
     <textarea id="poem-add-text" placeholder="Добавить стихотворение" style="width:100%;height:260px;background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none" spellcheck="false" autocorrect="off" autocapitalize="none" autocomplete="off"></textarea>
     <button class="novinka-add-btn" id="poem-add-btn" onclick="addPoem()">Добавить стихотворение</button>
     <div class="novinka-status" id="poem-add-status"></div>
+  </div>
+
+  <!-- СКАЗКИ form -->
+  <div id="add-form-tales" style="padding:20px;display:none;flex-direction:column;gap:8px">
+    <textarea id="tale-add-text" placeholder="Добавить сказку (название на первой строке, затем пустая строка, затем текст)" style="width:100%;height:320px;background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none" spellcheck="false" autocorrect="off" autocapitalize="none" autocomplete="off"></textarea>
+    <button class="novinka-add-btn" id="tale-add-btn" onclick="addTale()">Добавить сказку</button>
+    <div class="novinka-status" id="tale-add-status"></div>
   </div>
 
   <!-- POETRY EN form -->
@@ -397,6 +407,9 @@
       <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);text-align:center;padding-bottom:4px">Выберите рубрику</div>
       <button onclick="selectEditSection('poems')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
         <span style="font-size:1.3rem">📜</span><span style="color:#c9a96e;font-size:1.05rem">Поэзия</span>
+      </button>
+      <button onclick="selectEditSection('tales')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+        <span style="font-size:1.3rem">✨</span><span style="color:#c9a96e;font-size:1.05rem">Сказки</span>
       </button>
       <button onclick="selectEditSection('astrology')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
         <span style="font-size:1.3rem">✨</span><span style="color:#c9a96e;font-size:1.05rem">Астрология</span>
@@ -570,11 +583,11 @@ function switchAdd(btn){
 }
 
 function selectAddSection(section){
-  var labels={poems:'Поэзия','poetry-en':'Songs EN',astrology:'Астрология',author:'Ия Бард',shop:'Товар',books:'Книги'};
+  var labels={poems:'Поэзия',tales:'Сказки','poetry-en':'Songs EN',astrology:'Астрология',author:'Ия Бард',shop:'Товар',books:'Книги'};
   document.getElementById('add-section-picker').style.display='none';
   document.getElementById('add-form-wrap').style.display='block';
   document.getElementById('add-section-label').textContent=labels[section]||section;
-  ['poems','poetry-en','astrology','author','shop','books'].forEach(function(s){
+  ['poems','tales','poetry-en','astrology','author','shop','books'].forEach(function(s){
     var f=document.getElementById('add-form-'+s);
     if(f) f.style.display=(s===section)?'flex':'none';
   });
@@ -1748,10 +1761,36 @@ function addPoem(){
 }
 
 
+function addTale(){
+  var token=getToken();
+  if(!token){document.getElementById('tale-add-status').textContent='Нет токена';return;}
+  var text=document.getElementById('tale-add-text').value.trim();
+  if(!text){document.getElementById('tale-add-status').textContent='Введите текст сказки';return;}
+  var btn=document.getElementById('tale-add-btn');
+  btn.disabled=true;
+  document.getElementById('tale-add-status').textContent='Сохранение…';
+  var API='https://api.github.com/repos/'+REPO+'/contents/';
+  fetch(API+'tales.txt?ref=main',{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      var existing=d.content?atob(d.content.replace(/\n/g,'')):'';
+      var newContent=existing.trimEnd()+'\n\n===\n\n'+text+'\n\n===\n';
+      var encoded=btoa(unescape(encodeURIComponent(newContent)));
+      return fetch(API+'tales.txt',{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+        body:JSON.stringify({message:'Add tale: '+text.split('\n')[0].slice(0,60),content:encoded,sha:d.sha,branch:'main'})});
+    })
+    .then(function(r){
+      btn.disabled=false;
+      if(r.ok){document.getElementById('tale-add-text').value='';document.getElementById('tale-add-status').textContent='✓ Сказка добавлена';}
+      else{return r.json().then(function(e){throw new Error(e.message||r.status);});}
+    })
+    .catch(function(e){btn.disabled=false;document.getElementById('tale-add-status').textContent='Ошибка: '+e.message;});
+}
+
 // ── Edit mode ──────────────────────────────────────────────────────────────
 var _ed={section:'',file:'',sha:'',rawEntries:[],idx:null};
-var SECFILE={poems:'poems.txt',astrology:'astrology.txt','poetry-en':'poems-en.txt',author:'author.txt',shop:'shop.txt',books:'books.txt',carousel:'carousel.txt'};
-var SECLABEL={poems:'Поэзия',astrology:'Астрология','poetry-en':'Songs EN',author:'Ия Бард',shop:'Товар',books:'Книги',carousel:'Карусель — Ия Бард'};
+var SECFILE={poems:'poems.txt',tales:'tales.txt',astrology:'astrology.txt','poetry-en':'poems-en.txt',author:'author.txt',shop:'shop.txt',books:'books.txt',carousel:'carousel.txt'};
+var SECLABEL={poems:'Поэзия',tales:'Сказки',astrology:'Астрология','poetry-en':'Songs EN',author:'Ия Бард',shop:'Товар',books:'Книги',carousel:'Карусель — Ия Бард'};
 
 function setMode(m,btn){
   document.getElementById('mode-tab-add').classList.toggle('active',m==='add');
@@ -1849,8 +1888,8 @@ function openEditEntry(displayIdx){
   var tStyle='background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:11px 14px;font-family:\'Georgia\',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;width:100%';
   function inp(id,val,ph,type){var i=document.createElement('input');i.type=type||'text';i.id=id;i.value=val;i.placeholder=ph;i.style.cssText=iStyle;return i;}
   function ta(id,val,ph,rows){var t=document.createElement('textarea');t.id=id;t.value=val;t.placeholder=ph;t.rows=rows||6;t.style.cssText=tStyle;t.spellcheck=false;return t;}
-  if(_ed.section==='poems'){
-    fields.appendChild(ta('edit-poem-raw',raw,'Текст стихотворения',12));
+  if(_ed.section==='poems'||_ed.section==='tales'){
+    fields.appendChild(ta('edit-poem-raw',raw,_ed.section==='tales'?'Текст сказки':'Текст стихотворения',14));
   } else if(_ed.section==='carousel'){
     var cp=parseCarouselEntry(raw);
     fields.appendChild(inp('edit-f-img',cp.img,'Путь к картинке (images/carousel-*.jpg)'));
@@ -2012,7 +2051,7 @@ function saveCurrentEdit(){
   document.getElementById('edit-save-btn').disabled=true;
   document.getElementById('edit-delete-btn').disabled=true;
   var newRaw;
-  if(_ed.section==='poems'){
+  if(_ed.section==='poems'||_ed.section==='tales'){
     newRaw=(document.getElementById('edit-poem-raw').value||'').trim();
   } else if(_ed.section==='carousel'){
     var img=(document.getElementById('edit-f-img').value||'').trim();
