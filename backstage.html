@@ -130,8 +130,13 @@
   .yt-search-wrap input{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.2);border-radius:6px;padding:7px 12px;color:#e8ddd0;outline:none;font-family:'Georgia',serif}
   .yt-count{font-size:0.72rem;color:rgba(201,169,110,0.4);white-space:nowrap}
   .yt-list{border:1px solid rgba(201,169,110,0.3);border-radius:0 0 10px 10px;overflow:hidden}
-  .yt-item{padding:12px 16px;border-bottom:1px solid rgba(201,169,110,0.1)}
+  .yt-item{padding:12px 16px;border-bottom:1px solid rgba(201,169,110,0.1);transition:border-top 0.1s,border-bottom 0.1s}
   .yt-item:last-child{border-bottom:none}
+  .yt-item.drag-over-above{border-top:2px solid #c9a96e !important}
+  .yt-item.drag-over-below{border-bottom:2px solid #c9a96e !important}
+  .yt-item.is-dragging{opacity:0.35}
+  .drag-grip{color:rgba(201,169,110,0.3);cursor:grab;flex-shrink:0;display:flex;align-items:center;padding:0 8px 0 0;touch-action:none;user-select:none}
+  .drag-grip:active{cursor:grabbing;color:rgba(201,169,110,0.7)}
   .yt-item-title{font-size:0.88rem;color:rgba(201,169,110,0.85);margin-bottom:8px}
   .yt-item-row{display:flex;gap:8px;align-items:center}
   .yt-item-input{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.2);border-radius:6px;padding:7px 10px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;min-width:0}
@@ -463,6 +468,10 @@
         <span id="edit-list-label" style="color:#c9a96e;font-size:0.95rem;letter-spacing:1px;font-family:'Georgia',serif;font-weight:600"></span>
       </div>
       <div id="edit-list-items"></div>
+      <div id="edit-order-save-wrap" style="display:none;padding:10px 16px;border-top:1px solid rgba(201,169,110,0.15)">
+        <button id="edit-order-save-btn" onclick="saveEditOrder()" class="novinka-add-btn" style="width:100%">Сохранить порядок</button>
+        <div id="edit-order-save-status" class="novinka-status"></div>
+      </div>
     </div>
 
     <!-- Entry edit form -->
@@ -2010,23 +2019,100 @@ function loadEditList(){
 function _editReversed(){return _ed.section!=='shop'&&_ed.section!=='books';}
 function _editDisplayed(){return _editReversed()?_ed.rawEntries.slice().reverse():_ed.rawEntries.slice();}
 function _editFileIdx(displayIdx){return _editReversed()?_ed.rawEntries.length-1-displayIdx:displayIdx;}
+var _drag={from:-1,on:false,touchTimer:null,touchItem:null};
 function renderEditList(){
   var el=document.getElementById('edit-list-items');
   var displayed=_editDisplayed();
+  document.getElementById('edit-order-save-wrap').style.display='none';
+  document.getElementById('edit-order-save-status').textContent='';
+  document.getElementById('edit-order-save-btn').disabled=false;
   if(!displayed.length){el.innerHTML='<div style="padding:20px;text-align:center;opacity:0.5;font-size:0.85rem">Нет записей</div>';return;}
   el.innerHTML='';
   displayed.forEach(function(raw,i){
     var title;
     if(_ed.section==='carousel'){var cp=parseCarouselEntry(raw);title=cp.text.split('\n')[0].trim()||'📸 '+cp.img||'(слайд)';}
     else{var _rtl=raw.split('\n').find(function(l){return l.trim()&&!/^#\s/.test(l.trim());});title=(_rtl||'').trim()||'(без названия)';}
-    var item=document.createElement('div');item.className='yt-item';item.style.cursor='pointer';
-    item.onmouseover=function(){item.style.background='rgba(201,169,110,0.06)';};
+    var item=document.createElement('div');item.className='yt-item';
+    item.setAttribute('data-di',i);item.setAttribute('draggable','true');
+    item.onmouseover=function(){if(!_drag.on)item.style.background='rgba(201,169,110,0.06)';};
     item.onmouseout=function(){item.style.background='';};
+    // grip handle
+    var grip=document.createElement('span');grip.className='drag-grip';
+    grip.title='Перетащить для смены порядка';
+    grip.innerHTML='<svg width="10" height="14" viewBox="0 0 10 14" fill="currentColor"><circle cx="2.5" cy="2" r="1.5"/><circle cx="7.5" cy="2" r="1.5"/><circle cx="2.5" cy="7" r="1.5"/><circle cx="7.5" cy="7" r="1.5"/><circle cx="2.5" cy="12" r="1.5"/><circle cx="7.5" cy="12" r="1.5"/></svg>';
     var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:8px';
     var sp=document.createElement('span');sp.className='yt-item-title';sp.style.flex='1';sp.textContent=title;
     var ar=document.createElement('span');ar.style.cssText='color:rgba(201,169,110,0.35);font-size:0.7rem';ar.textContent='▶';
-    row.appendChild(sp);row.appendChild(ar);item.appendChild(row);
-    item.onclick=function(){openEditEntry(i);};
+    row.appendChild(grip);row.appendChild(sp);row.appendChild(ar);item.appendChild(row);
+    // click to edit (desktop; touch handled in touchend)
+    (function(capturedI){
+      item.addEventListener('click',function(){if(!_drag.on)openEditEntry(capturedI);});
+    })(i);
+    // desktop drag events
+    item.addEventListener('dragstart',function(e){
+      _drag.from=parseInt(item.getAttribute('data-di'));
+      e.dataTransfer.effectAllowed='move';
+      setTimeout(function(){item.classList.add('is-dragging');},0);
+    });
+    item.addEventListener('dragend',function(){
+      item.classList.remove('is-dragging');
+      el.querySelectorAll('.drag-over-above,.drag-over-below').forEach(function(x){x.classList.remove('drag-over-above','drag-over-below');});
+    });
+    item.addEventListener('dragover',function(e){
+      e.preventDefault();e.dataTransfer.dropEffect='move';
+      el.querySelectorAll('.drag-over-above,.drag-over-below').forEach(function(x){x.classList.remove('drag-over-above','drag-over-below');});
+      var toDi=parseInt(item.getAttribute('data-di'));
+      if(_drag.from===toDi)return;
+      item.classList.add(toDi<_drag.from?'drag-over-above':'drag-over-below');
+    });
+    item.addEventListener('dragleave',function(){
+      item.classList.remove('drag-over-above','drag-over-below');
+    });
+    item.addEventListener('drop',function(e){
+      e.preventDefault();
+      el.querySelectorAll('.drag-over-above,.drag-over-below').forEach(function(x){x.classList.remove('drag-over-above','drag-over-below');});
+      var toDi=parseInt(item.getAttribute('data-di'));
+      if(_drag.from!==-1&&_drag.from!==toDi)_reorderDisplayed(_drag.from,toDi);
+      _drag.from=-1;
+    });
+    // touch long-press drag
+    item.addEventListener('touchstart',function(e){
+      _drag.touchItem=item;
+      _drag.from=parseInt(item.getAttribute('data-di'));
+      _drag.on=false;
+      _drag.touchTimer=setTimeout(function(){
+        _drag.on=true;
+        item.classList.add('is-dragging');
+        if(navigator.vibrate)navigator.vibrate(40);
+      },350);
+    },{passive:true});
+    item.addEventListener('touchmove',function(e){
+      if(!_drag.on){clearTimeout(_drag.touchTimer);_drag.touchTimer=null;return;}
+      e.preventDefault();
+      var touch=e.touches[0];
+      el.querySelectorAll('.drag-over-above,.drag-over-below').forEach(function(x){x.classList.remove('drag-over-above','drag-over-below');});
+      var target=document.elementFromPoint(touch.clientX,touch.clientY);
+      while(target&&target.getAttribute&&!target.getAttribute('data-di'))target=target.parentElement;
+      if(target&&target.getAttribute){
+        var toDi=parseInt(target.getAttribute('data-di'));
+        if(!isNaN(toDi)&&toDi!==_drag.from)target.classList.add(toDi<_drag.from?'drag-over-above':'drag-over-below');
+      }
+    },{passive:false});
+    item.addEventListener('touchend',function(e){
+      clearTimeout(_drag.touchTimer);_drag.touchTimer=null;
+      el.querySelectorAll('.drag-over-above,.drag-over-below').forEach(function(x){x.classList.remove('drag-over-above','drag-over-below');});
+      if(!_drag.on){_drag.on=false;openEditEntry(i);return;}
+      var touch=e.changedTouches[0];
+      var target=document.elementFromPoint(touch.clientX,touch.clientY);
+      while(target&&target.getAttribute&&!target.getAttribute('data-di'))target=target.parentElement;
+      if(target&&target.getAttribute){
+        var toDi=parseInt(target.getAttribute('data-di'));
+        if(!isNaN(toDi)&&toDi!==_drag.from)_reorderDisplayed(_drag.from,toDi);
+      }
+      _drag.on=false;_drag.from=-1;
+      if(_drag.touchItem)_drag.touchItem.classList.remove('is-dragging');
+      _drag.touchItem=null;
+    });
     el.appendChild(item);
   });
   if(_ed.section==='author'){
@@ -2036,6 +2122,28 @@ function renderEditList(){
     carLink.onclick=function(){selectEditSection('carousel');};
     el.appendChild(carLink);
   }
+}
+function _reorderDisplayed(fromDi,toDi){
+  if(fromDi===toDi)return;
+  var disp=_editDisplayed();
+  var moved=disp.splice(fromDi,1)[0];
+  disp.splice(toDi,0,moved);
+  _ed.rawEntries=_editReversed()?disp.slice().reverse():disp.slice();
+  renderEditList();
+  document.getElementById('edit-order-save-wrap').style.display='block';
+}
+function saveEditOrder(){
+  var token=getToken();
+  var st=document.getElementById('edit-order-save-status');
+  var btn=document.getElementById('edit-order-save-btn');
+  if(!token){st.textContent='Нет токена';st.style.color='#d47a7a';return;}
+  btn.disabled=true;st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
+  writeEditFile(token,_ed.rawEntries,'Reorder '+(_ed.section||'entries'),function(){
+    st.textContent='✓ Порядок сохранён!';st.style.color='#7bc47b';
+    setTimeout(function(){document.getElementById('edit-order-save-wrap').style.display='none';st.textContent='';btn.disabled=false;},2000);
+  },function(e){
+    btn.disabled=false;st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';
+  });
 }
 
 function openEditEntry(displayIdx){
