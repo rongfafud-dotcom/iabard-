@@ -559,17 +559,18 @@
     .contact-honeypot{display:none}
 
     /* DROPDOWN NAVIGATION */
-    .nav-tab-wrap{flex:1;min-width:0;position:relative;display:flex;align-items:stretch}
-    .nav-tab-wrap .nav-tab{flex:1;text-align:center}
-    /* ▾ chevron — absolute so it doesn't push the tab text off-center */
-    .nav-drop-btn{position:absolute;right:0;top:0;bottom:0;width:18px;padding:0;
+    .nav-tab-wrap{flex:1;min-width:0;position:relative;display:flex;justify-content:center;align-items:stretch}
+    .nav-tab-wrap .nav-tab{flex:0 1 auto}
+    /* ▾ chevron — flex sibling, right next to word */
+    .nav-drop-btn{flex-shrink:0;width:22px;padding:0;
       background:none;border:none;border-bottom:1px solid rgba(201,169,110,0.20);
       cursor:pointer;color:rgba(255,255,255,0.80);
       font-size:1.4rem;line-height:1;
       display:flex;align-items:center;justify-content:center;
       transition:color 0.2s,border-bottom-color 0.2s}
     .nav-drop-btn:hover,.nav-drop-btn.drop-open{color:var(--gold);border-bottom-color:var(--gold)}
-    .nav-tab-wrap--nodrop .nav-tab{margin-right:0}
+    /* phantom counterbalance for the Ия Бард wrap (no chevron) keeps text centres symmetric */
+    .nav-tab-wrap--nodrop .nav-tab{margin-right:22px}
     /* Transparent dropdown — same typography as nav */
     /* ── Единый стиль дропдаунов (hero + sticky) ── */
     .nav-dropmenu,.snav-drop{
@@ -2077,8 +2078,18 @@ function loadTales(){
     raw.forEach(function(rawTale){
       var stanzas=rawTale.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
       var title=stanzas[0]||'';
-      var body=stanzas.slice(1);
-      var card=document.createElement('div');card.className='novinka-card fade-up';
+      var audioFile='';var imageFile='';var ytUrl='';
+      var body=stanzas.slice(1).filter(function(s){
+        if(/^#\s*audio:\s*/i.test(s)){audioFile=s.replace(/^#\s*audio:\s*/i,'').trim();return false;}
+        if(/^#\s*image:\s*/i.test(s)){imageFile=s.replace(/^#\s*image:\s*/i,'').trim();return false;}
+        if(/^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\//i.test(s)){ytUrl=s.trim();return false;}
+        return true;
+      });
+      var vid=ytUrl?(ytUrl.match(/[?&]v=([\w-]{11})/)||ytUrl.match(/youtu\.be\/([\w-]{11})/)||ytUrl.match(/shorts\/([\w-]{11})/)):null;
+      var vidId=vid?vid[1]:'';
+      var isShort=!!(ytUrl&&/youtube\.com\/shorts\//.test(ytUrl));
+      var card=document.createElement('div');
+      card.className='novinka-card'+(vidId&&!isShort?' novinka-card-full':'')+' fade-up';
       var mainT=(title.split('\n')[0]||title).trim();
       var subT=null;
       var tlines=title.split('\n').map(function(l){return l.trim();}).filter(Boolean);
@@ -2088,6 +2099,12 @@ function loadTales(){
         '<span class="poem-subtitle" style="color:rgba(201,169,110,0.55);font-size:0.7em;letter-spacing:2px;text-transform:uppercase">Сказка</span>'+
         '</div>';
       h+='<hr class="poem-divider">';
+      if(imageFile&&!vidId){h+='<div class="poem-image"><img src="images/'+esc(imageFile)+'" alt="'+esc(mainT)+'" loading="lazy" style="max-width:100%;border-radius:6px;display:block;margin:0 auto 20px"></div>';}
+      if(vidId){
+        if(isShort){h+='<div style="display:flex;justify-content:center;margin-bottom:20px"><iframe width="315" height="560" src="https://www.youtube.com/embed/'+esc(vidId)+'" frameborder="0" allowfullscreen loading="lazy" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" style="border-radius:8px;max-width:100%"></iframe></div>';}
+        else{h+='<div class="novinka-video-wide" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-bottom:20px"><iframe style="position:absolute;top:0;left:0;width:100%;height:100%" src="https://www.youtube.com/embed/'+esc(vidId)+'" frameborder="0" allowfullscreen loading="lazy" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div>';}
+      }
+      if(audioFile){h+='<div style="margin-bottom:16px"><audio controls src="audio/'+esc(audioFile)+'" style="width:100%;accent-color:var(--gold)"></audio></div>';}
       h+='<div class="novinka-poem">';
       body.forEach(function(s){
         h+='<div class="stanza">'+s.split('\n').map(function(l){return esc(l.trim());}).join('<br>\n')+'</div>';
@@ -2095,9 +2112,13 @@ function loadTales(){
       h+='</div>';
       card.innerHTML=h;
       frag.appendChild(card);
-      if(typeof fadeObserver!=='undefined')fadeObserver.observe(card);
     });
     list.appendChild(frag);
+    requestAnimationFrame(function(){
+      list.querySelectorAll('.novinka-card.fade-up').forEach(function(c){
+        if(typeof fadeObserver!=='undefined')fadeObserver.observe(c);
+      });
+    });
   }
   list.innerHTML='<p class="poems-loading">Загрузка…</p>';
   fetch('tales.txt?v='+Math.floor(Date.now()/60000))
