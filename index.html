@@ -571,6 +571,8 @@
     .nav-drop-btn:hover,.nav-drop-btn.drop-open{color:var(--gold);border-bottom-color:var(--gold)}
     /* phantom counterbalance for the Ия Бард wrap (no chevron) keeps text centres symmetric */
     .nav-tab-wrap--nodrop .nav-tab{margin-right:22px}
+    /* Творчество cell slightly wider → shifts Книги/Shop/Ия Бард right */
+    .nav-tab-wrap:first-child{flex:1.15}
     /* Transparent dropdown — same typography as nav */
     /* ── Единый стиль дропдаунов (hero + sticky) ── */
     .nav-dropmenu,.snav-drop{
@@ -748,9 +750,9 @@
     <button class="snav-btn" data-panels="novosti poems poetry-en tales">Творчество</button>
     <div class="snav-drop">
       <button onclick="goCreative('poems')">Поэзия</button>
-      <button onclick="goCreative('tales')">Сказки</button>
       <button onclick="goCreative('novosti')">Астрология</button>
       <button onclick="goCreative('poetry-en')">Songs EN</button>
+      <button onclick="goCreative('tales')">Сказки</button>
     </div>
   </div>
   <div class="snav-wrap">
@@ -793,9 +795,9 @@
         <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-creative')" aria-label="Открыть меню творчества">▾</button>
         <div class="nav-dropmenu" id="drop-creative">
           <button onclick="goCreative('poems')">Поэзия</button>
-          <button onclick="goCreative('tales')">Сказки</button>
           <button onclick="goCreative('novosti')">Астрология</button>
           <button onclick="goCreative('poetry-en')">Songs EN</button>
+          <button onclick="goCreative('tales')">Сказки</button>
         </div>
       </div>
       <div class="nav-tab-wrap">
@@ -2115,8 +2117,10 @@ function loadTales(){
     });
     list.appendChild(frag);
     requestAnimationFrame(function(){
+      var inVP=function(el){var r=el.getBoundingClientRect();return r.top<window.innerHeight&&r.bottom>0;};
       list.querySelectorAll('.novinka-card.fade-up').forEach(function(c){
-        if(typeof fadeObserver!=='undefined')fadeObserver.observe(c);
+        if(inVP(c)){c.classList.add('visible');}
+        else if(typeof fadeObserver!=='undefined'){fadeObserver.observe(c);}
       });
     });
   }
