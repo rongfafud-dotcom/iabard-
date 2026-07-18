@@ -494,7 +494,7 @@
       .card{padding:36px 16px 4px;min-height:100svh;background-position:50% 18%}
       .tab-panel{padding:20px 16px 32px}
       .name{margin-bottom:2px}.name-sub{margin-bottom:4px}
-      .nav-tabs{margin-bottom:6px;width:calc(100% + 32px);max-width:none}
+      .nav-tabs{margin-bottom:6px}
       .hero-tagline{font-size:1.05rem;margin-top:8px}
       .social-chip{padding:5px 10px;font-size:0.62rem}
       footer{padding:20px 24px}
@@ -559,18 +559,17 @@
     .contact-honeypot{display:none}
 
     /* DROPDOWN NAVIGATION */
-    .nav-tab-wrap{flex:1;min-width:0;position:relative;display:flex;justify-content:center;align-items:stretch}
-    .nav-tab-wrap .nav-tab{flex:0 1 auto}
-    /* ▾ chevron — flex sibling, right next to word */
-    .nav-drop-btn{flex-shrink:0;width:22px;padding:0;
+    .nav-tab-wrap{flex:1;min-width:0;position:relative;display:flex;align-items:stretch}
+    .nav-tab-wrap .nav-tab{flex:1;text-align:center}
+    /* ▾ chevron — absolute so it doesn't push the tab text off-center */
+    .nav-drop-btn{position:absolute;right:0;top:0;bottom:0;width:18px;padding:0;
       background:none;border:none;border-bottom:1px solid rgba(201,169,110,0.20);
       cursor:pointer;color:rgba(255,255,255,0.80);
       font-size:1.4rem;line-height:1;
       display:flex;align-items:center;justify-content:center;
       transition:color 0.2s,border-bottom-color 0.2s}
     .nav-drop-btn:hover,.nav-drop-btn.drop-open{color:var(--gold);border-bottom-color:var(--gold)}
-    /* phantom counterbalance for the Кто я wrap (no chevron) keeps text centres symmetric */
-    .nav-tab-wrap--nodrop .nav-tab{margin-right:22px}
+    .nav-tab-wrap--nodrop .nav-tab{margin-right:0}
     /* Transparent dropdown — same typography as nav */
     /* ── Единый стиль дропдаунов (hero + sticky) ── */
     .nav-dropmenu,.snav-drop{
