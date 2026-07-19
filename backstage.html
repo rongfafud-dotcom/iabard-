@@ -2043,7 +2043,24 @@ function renderEditList(){
     var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:8px';
     var sp=document.createElement('span');sp.className='yt-item-title';sp.style.flex='1';sp.textContent=title;
     var ar=document.createElement('span');ar.style.cssText='color:rgba(201,169,110,0.35);font-size:0.7rem';ar.textContent='▶';
-    row.appendChild(grip);row.appendChild(sp);row.appendChild(ar);item.appendChild(row);
+    // up/down arrow buttons
+    var upBtn=document.createElement('button');
+    upBtn.type='button';upBtn.textContent='▲';
+    upBtn.title='Вверх';
+    upBtn.style.cssText='background:none;border:none;color:rgba(201,169,110,0.45);font-size:0.85rem;cursor:pointer;padding:2px 5px;line-height:1;flex-shrink:0;transition:color 0.15s';
+    upBtn.onmouseover=function(){upBtn.style.color='#c9a96e';};upBtn.onmouseout=function(){upBtn.style.color='rgba(201,169,110,0.45)';};
+    var dnBtn=document.createElement('button');
+    dnBtn.type='button';dnBtn.textContent='▼';
+    dnBtn.title='Вниз';
+    dnBtn.style.cssText='background:none;border:none;color:rgba(201,169,110,0.45);font-size:0.85rem;cursor:pointer;padding:2px 5px;line-height:1;flex-shrink:0;transition:color 0.15s';
+    dnBtn.onmouseover=function(){dnBtn.style.color='#c9a96e';};dnBtn.onmouseout=function(){dnBtn.style.color='rgba(201,169,110,0.45)';};
+    (function(ci){
+      upBtn.addEventListener('click',function(e){e.stopPropagation();if(ci>0)_reorderDisplayed(ci,ci-1);});
+      dnBtn.addEventListener('click',function(e){e.stopPropagation();if(ci<displayed.length-1)_reorderDisplayed(ci,ci+1);});
+    })(i);
+    if(i===0)upBtn.style.opacity='0.2';
+    if(i===displayed.length-1)dnBtn.style.opacity='0.2';
+    row.appendChild(grip);row.appendChild(sp);row.appendChild(upBtn);row.appendChild(dnBtn);row.appendChild(ar);item.appendChild(row);
     // click to edit (desktop; touch handled in touchend)
     (function(capturedI){
       item.addEventListener('click',function(){if(!_drag.on)openEditEntry(capturedI);});
