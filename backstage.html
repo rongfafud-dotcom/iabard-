@@ -207,9 +207,6 @@
     <button onclick="selectAddSection('author')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
       <span style="font-size:1.3rem">👤</span><span style="color:#c9a96e;font-size:1.05rem">Ия Бард</span>
     </button>
-    <button onclick="setMode('edit');selectEditSection('audio')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="font-size:1.3rem">🎧</span><span style="color:#c9a96e;font-size:1.05rem">Аудио</span>
-    </button>
   </div>
 
   <!-- ШАГ 2: форма (скрыта до выбора) -->
@@ -2060,6 +2057,11 @@ function renderEditList(){
     (function(ci){
       upBtn.addEventListener('click',function(e){e.stopPropagation();if(ci>0)_reorderDisplayed(ci,ci-1);});
       dnBtn.addEventListener('click',function(e){e.stopPropagation();if(ci<displayed.length-1)_reorderDisplayed(ci,ci+1);});
+      // prevent touch events from bubbling to the item's touchend handler (which would open the editor)
+      [upBtn,dnBtn].forEach(function(btn){
+        btn.addEventListener('touchstart',function(e){e.stopPropagation();},{passive:true});
+        btn.addEventListener('touchend',function(e){e.stopPropagation();},{passive:true});
+      });
     })(i);
     if(i===0)upBtn.style.opacity='0.2';
     if(i===displayed.length-1)dnBtn.style.opacity='0.2';
