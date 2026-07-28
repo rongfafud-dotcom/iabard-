@@ -677,7 +677,7 @@ function uploadPoemAudio(files){
       .then(function(){
         if(idx===0){
           document.getElementById('poem-mp3-input').value=firstSafe;
-          document.getElementById('poem-mp3-name').textContent=firstSafe;
+          document.getElementById('poem-mp3-name').textContent=total>1?firstSafe+' +'+(total-1)+' ещё':firstSafe;
           document.getElementById('poem-mp3-name').style.color='#e8ddd0';
           document.getElementById('poem-mp3-clear').style.display='inline';
         }
@@ -1111,7 +1111,7 @@ function _uploadAudioSection(pfx,files){
       .then(function(){
         if(idx===0){
           document.getElementById(pfx+'-mp3-input').value=firstSafe;
-          document.getElementById(pfx+'-mp3-name').textContent=firstSafe;
+          document.getElementById(pfx+'-mp3-name').textContent=total>1?firstSafe+' +'+(total-1)+' ещё':firstSafe;
           document.getElementById(pfx+'-mp3-name').style.color='#e8ddd0';
           document.getElementById(pfx+'-mp3-clear').style.display='inline';
         }
@@ -1881,7 +1881,7 @@ function uploadTaleAudio(files){
       .then(function(){
         if(idx===0){
           document.getElementById('tale-mp3-input').value=firstSafe;
-          document.getElementById('tale-mp3-name').textContent=firstSafe;
+          document.getElementById('tale-mp3-name').textContent=total>1?firstSafe+' +'+(total-1)+' ещё':firstSafe;
           document.getElementById('tale-mp3-name').style.color='#e8ddd0';
           document.getElementById('tale-mp3-clear').style.display='inline';
         }
