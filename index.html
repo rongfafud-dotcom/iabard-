@@ -2074,7 +2074,7 @@ function loadTales(){
   var list=document.getElementById('tales-list');
   function renderTales(text){
     list.innerHTML='';
-    var raw=text.split('===').map(function(p){return p.trim();}).filter(Boolean);
+    var raw=text.split('===').map(function(p){return p.trim();}).filter(Boolean).reverse();
     if(!raw.length){list.innerHTML='<p class="poems-loading">Скоро здесь будут сказки…</p>';return;}
     var frag=document.createDocumentFragment();
     raw.forEach(function(rawTale){
