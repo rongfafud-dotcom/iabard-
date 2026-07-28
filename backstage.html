@@ -2164,6 +2164,7 @@ function renderEditList(){
       _drag.touchItem=item;
       _drag.from=parseInt(item.getAttribute('data-di'));
       _drag.on=false;
+      _drag.touchStartY=e.touches[0].clientY;
       _drag.touchTimer=setTimeout(function(){
         _drag.on=true;
         item.classList.add('is-dragging');
@@ -2185,7 +2186,7 @@ function renderEditList(){
     item.addEventListener('touchend',function(e){
       clearTimeout(_drag.touchTimer);_drag.touchTimer=null;
       el.querySelectorAll('.drag-over-above,.drag-over-below').forEach(function(x){x.classList.remove('drag-over-above','drag-over-below');});
-      if(!_drag.on){_drag.on=false;openEditEntry(i);return;}
+      if(!_drag.on){_drag.on=false;if(Math.abs(e.changedTouches[0].clientY-(_drag.touchStartY||0))<10)openEditEntry(i);return;}
       var touch=e.changedTouches[0];
       var target=document.elementFromPoint(touch.clientX,touch.clientY);
       while(target&&target.getAttribute&&!target.getAttribute('data-di'))target=target.parentElement;
