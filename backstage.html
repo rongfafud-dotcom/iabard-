@@ -1972,7 +1972,7 @@ function saveTaleEntry(taleText,audioFilename,imageFilename){
   .then(function(data){
     var sha=data.sha;
     var content=b64d(data.content.replace(/\n/g,''));
-    content=content.trimEnd()+'\n\n===\n\n'+finalTale+'\n\n===\n';
+    content=content.trimEnd().replace(/===\s*$/,'').trimEnd()+'\n\n===\n\n'+finalTale+'\n\n===\n';
     var encoded=b64e(content);
     return fetch(API+'tales.txt',{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Add tale: '+title,content:encoded,sha:sha,branch:'main'})});
   })
