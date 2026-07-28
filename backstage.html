@@ -229,7 +229,7 @@
       <svg width="13" height="13" viewBox="6 3 8 18" preserveAspectRatio="none" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
       <span id="poem-mp3-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.88rem">MP3 файл</span>
       <input type="hidden" id="poem-mp3-input" value="">
-      <input type="file" id="poem-mp3-file" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" style="display:none" onchange="uploadPoemAudio(this.files[0])">
+      <input type="file" id="poem-mp3-file" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" multiple style="display:none" onchange="uploadPoemAudio(this.files)">
       <button type="button" onclick="document.getElementById('poem-mp3-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif">Загрузить</button>
       <button type="button" id="poem-mp3-clear" onclick="clearPoemMp3()" style="display:none;background:none;border:none;color:rgba(201,169,110,0.5);cursor:pointer;font-size:0.9rem;padding:2px 4px">✕</button>
     </div>
@@ -261,7 +261,7 @@
       <svg width="13" height="13" viewBox="6 3 8 18" preserveAspectRatio="none" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
       <span id="tale-mp3-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.88rem">MP3 файл</span>
       <input type="hidden" id="tale-mp3-input" value="">
-      <input type="file" id="tale-mp3-file" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" style="display:none" onchange="uploadTaleAudio(this.files[0])">
+      <input type="file" id="tale-mp3-file" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" multiple style="display:none" onchange="uploadTaleAudio(this.files)">
       <button type="button" onclick="document.getElementById('tale-mp3-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif">Загрузить</button>
       <button type="button" id="tale-mp3-clear" onclick="clearTaleMp3()" style="display:none;background:none;border:none;color:rgba(201,169,110,0.5);cursor:pointer;font-size:0.9rem;padding:2px 4px">✕</button>
     </div>
@@ -291,7 +291,7 @@
       <svg width="13" height="13" viewBox="6 3 8 18" preserveAspectRatio="none" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
       <span id="en-mp3-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.88rem">MP3 файл</span>
       <input type="hidden" id="en-mp3-input" value="">
-      <input type="file" id="en-mp3-file" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" style="display:none" onchange="uploadEnAudio(this.files[0])">
+      <input type="file" id="en-mp3-file" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" multiple style="display:none" onchange="uploadEnAudio(this.files)">
       <button type="button" onclick="document.getElementById('en-mp3-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif">Загрузить</button>
       <button type="button" id="en-mp3-clear" onclick="clearEnMp3()" style="display:none;background:none;border:none;color:rgba(201,169,110,0.5);cursor:pointer;font-size:0.9rem;padding:2px 4px">✕</button>
     </div>
@@ -325,7 +325,7 @@
       <svg width="13" height="13" viewBox="6 3 8 18" preserveAspectRatio="none" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
       <span id="astro-mp3-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.88rem">MP3 файл</span>
       <input type="hidden" id="astro-mp3-input" value="">
-      <input type="file" id="astro-mp3-file" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" style="display:none" onchange="uploadAstroAudio(this.files[0])">
+      <input type="file" id="astro-mp3-file" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" multiple style="display:none" onchange="uploadAstroAudio(this.files)">
       <button type="button" onclick="document.getElementById('astro-mp3-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif">Загрузить</button>
       <button type="button" id="astro-mp3-clear" onclick="clearAstroMp3()" style="display:none;background:none;border:none;color:rgba(201,169,110,0.5);cursor:pointer;font-size:0.9rem;padding:2px 4px">✕</button>
     </div>
@@ -359,7 +359,7 @@
       <svg width="13" height="13" viewBox="6 3 8 18" preserveAspectRatio="none" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
       <span id="author-mp3-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.88rem">MP3 файл</span>
       <input type="hidden" id="author-mp3-input" value="">
-      <input type="file" id="author-mp3-file" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" style="display:none" onchange="uploadAuthorAudio(this.files[0])">
+      <input type="file" id="author-mp3-file" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" multiple style="display:none" onchange="uploadAuthorAudio(this.files)">
       <button type="button" onclick="document.getElementById('author-mp3-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif">Загрузить</button>
       <button type="button" id="author-mp3-clear" onclick="clearAuthorMp3()" style="display:none;background:none;border:none;color:rgba(201,169,110,0.5);cursor:pointer;font-size:0.9rem;padding:2px 4px">✕</button>
     </div>
@@ -493,6 +493,11 @@
       <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(201,169,110,0.15)">
         <button onclick="backToEditPicker()" class="inner-back-btn">← Назад</button>
         <span style="color:#c9a96e;font-size:0.95rem;letter-spacing:1px;font-family:'Georgia',serif;font-weight:600">Аудио</span>
+      </div>
+      <div style="padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(201,169,110,0.1)">
+        <input type="file" id="edit-audio-file" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" multiple style="display:none" onchange="uploadEditAudioMulti(this.files)">
+        <button type="button" onclick="document.getElementById('edit-audio-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:6px 14px;cursor:pointer;font-size:0.82rem;font-family:'Georgia',serif">+ Загрузить MP3</button>
+        <div id="edit-audio-prog" style="font-size:0.8rem;color:rgba(201,169,110,0.7);display:none;flex:1"></div>
       </div>
       <div id="edit-audio-items" style="padding:16px;display:flex;flex-direction:column;gap:10px"></div>
     </div>
@@ -628,45 +633,61 @@ function selectAddSection(section){
   if(section==='poetry-en') loadPoetryENList();
   if(section==='astrology') loadAstroList();
 }
-function uploadPoemAudio(file){
-  if(!file)return;
+function uploadPoemAudio(files){
+  if(!files||!files.length)return;
   var token=getToken();
-  if(!token){document.getElementById('poem-mp3-progress').textContent='Нет токена';document.getElementById('poem-mp3-progress').style.display='block';return;}
-  if(file.size>25*1024*1024){document.getElementById('poem-mp3-progress').textContent='Файл больше 25MB';document.getElementById('poem-mp3-progress').style.display='block';return;}
   var prog=document.getElementById('poem-mp3-progress');
-  prog.style.display='block';prog.style.color='rgba(201,169,110,0.7)';prog.textContent='Чтение…';
-  var reader=new FileReader();
-  reader.onload=function(e){
-    var arr=new Uint8Array(e.target.result);
-    var chunks=[];
-    for(var i=0;i<arr.length;i+=8192){chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));}
-    var b64=btoa(chunks.join(''));
-    prog.textContent='Отправка…';
-    var safeName=sanitizeFilename(file.name,'audio');
-    var path='audio/'+safeName;
-    fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
-      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
-    })
-    .then(function(r){return r.json();})
-    .then(function(ex){
-      var body={message:'Upload audio: '+safeName,content:b64,branch:'main'};
-      if(ex&&ex.sha&&!ex.message)body.sha=ex.sha;
-      return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{
-        method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-        body:JSON.stringify(body)
-      });
-    })
-    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
-    .then(function(){
-      prog.style.color='#7bc47b';prog.textContent='✓ Загружено: '+safeName;
-      document.getElementById('poem-mp3-input').value=safeName;
-      document.getElementById('poem-mp3-name').textContent=safeName;
-      document.getElementById('poem-mp3-name').style.color='#e8ddd0';
-      document.getElementById('poem-mp3-clear').style.display='inline';
-    })
-    .catch(function(e){prog.style.color='#d47a7a';prog.textContent='Ошибка: '+e.message;});
-  };
-  reader.readAsArrayBuffer(file);
+  if(!token){prog.textContent='Нет токена';prog.style.display='block';return;}
+  var fileArr=Array.prototype.slice.call(files);
+  var total=fileArr.length;
+  var firstSafe=null;
+  prog.style.display='block';prog.style.color='rgba(201,169,110,0.7)';
+  prog.textContent=total>1?'[1/'+total+'] Загрузка…':'Загрузка…';
+  function uploadOne(idx){
+    if(idx>=total){
+      prog.style.color='#7bc47b';
+      prog.textContent=total>1?'✓ Загружено: '+total+' файла':'✓ Загружено: '+firstSafe;
+      return;
+    }
+    var file=fileArr[idx];
+    if(file.size>25*1024*1024){prog.style.color='#d47a7a';prog.textContent='Файл '+file.name+' больше 25MB';uploadOne(idx+1);return;}
+    if(total>1)prog.textContent='['+(idx+1)+'/'+total+'] '+file.name+'…';
+    var reader=new FileReader();
+    reader.onload=function(e){
+      var arr=new Uint8Array(e.target.result);
+      var chunks=[];
+      for(var i=0;i<arr.length;i+=8192){chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));}
+      var b64=btoa(chunks.join(''));
+      var safeName=sanitizeFilename(file.name,'audio');
+      if(idx===0)firstSafe=safeName;
+      var path='audio/'+safeName;
+      fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
+        headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+      })
+      .then(function(r){return r.json();})
+      .then(function(ex){
+        var body={message:'Upload audio: '+safeName,content:b64,branch:'main'};
+        if(ex&&ex.sha&&!ex.message)body.sha=ex.sha;
+        return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{
+          method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+          body:JSON.stringify(body)
+        });
+      })
+      .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+      .then(function(){
+        if(idx===0){
+          document.getElementById('poem-mp3-input').value=firstSafe;
+          document.getElementById('poem-mp3-name').textContent=firstSafe;
+          document.getElementById('poem-mp3-name').style.color='#e8ddd0';
+          document.getElementById('poem-mp3-clear').style.display='inline';
+        }
+        uploadOne(idx+1);
+      })
+      .catch(function(e){prog.style.color='#d47a7a';prog.textContent='Ошибка: '+e.message;uploadOne(idx+1);});
+    };
+    reader.readAsArrayBuffer(file);
+  }
+  uploadOne(0);
 }
 function clearPoemMp3(){
   document.getElementById('poem-mp3-input').value='';
@@ -1046,45 +1067,61 @@ function uploadAuthorAudio(f){_uploadAudioSection('author',f);}
 function clearAuthorMp3(){_clearMp3Section('author');}
 function previewAuthorImage(i){_previewImgSection('author',i);}
 function clearAuthorImage(){_clearImgSection('author');}
-function _uploadAudioSection(pfx,file){
-  if(!file)return;
+function _uploadAudioSection(pfx,files){
+  if(!files||!files.length)return;
   var token=getToken();
   var prog=document.getElementById(pfx+'-mp3-progress');
   if(!token){prog.style.display='block';prog.textContent='Нет токена';return;}
-  if(file.size>25*1024*1024){prog.style.display='block';prog.textContent='Файл больше 25MB';return;}
-  prog.style.display='block';prog.style.color='rgba(201,169,110,0.7)';prog.textContent='Чтение…';
-  var reader=new FileReader();
-  reader.onload=function(e){
-    var arr=new Uint8Array(e.target.result);
-    var chunks=[];
-    for(var i=0;i<arr.length;i+=8192){chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));}
-    var b64=btoa(chunks.join(''));
-    prog.textContent='Отправка…';
-    var safeName=sanitizeFilename(file.name,'audio');
-    var path='audio/'+safeName;
-    fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
-      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
-    })
-    .then(function(r){return r.json();})
-    .then(function(ex){
-      var body={message:'Upload audio: '+safeName,content:b64,branch:'main'};
-      if(ex&&ex.sha&&!ex.message)body.sha=ex.sha;
-      return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{
-        method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-        body:JSON.stringify(body)
-      });
-    })
-    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
-    .then(function(){
-      prog.style.color='#7bc47b';prog.textContent='✓ Загружено: '+safeName;
-      document.getElementById(pfx+'-mp3-input').value=safeName;
-      document.getElementById(pfx+'-mp3-name').textContent=safeName;
-      document.getElementById(pfx+'-mp3-name').style.color='#e8ddd0';
-      document.getElementById(pfx+'-mp3-clear').style.display='inline';
-    })
-    .catch(function(e){prog.style.color='#d47a7a';prog.textContent='Ошибка: '+e.message;});
-  };
-  reader.readAsArrayBuffer(file);
+  var fileArr=Array.prototype.slice.call(files);
+  var total=fileArr.length;
+  var firstSafe=null;
+  prog.style.display='block';prog.style.color='rgba(201,169,110,0.7)';
+  prog.textContent=total>1?'[1/'+total+'] Загрузка…':'Загрузка…';
+  function uploadOne(idx){
+    if(idx>=total){
+      prog.style.color='#7bc47b';
+      prog.textContent=total>1?'✓ Загружено: '+total+' файла':'✓ Загружено: '+firstSafe;
+      return;
+    }
+    var file=fileArr[idx];
+    if(file.size>25*1024*1024){prog.style.color='#d47a7a';prog.textContent='Файл '+file.name+' больше 25MB';uploadOne(idx+1);return;}
+    if(total>1)prog.textContent='['+(idx+1)+'/'+total+'] '+file.name+'…';
+    var reader=new FileReader();
+    reader.onload=function(e){
+      var arr=new Uint8Array(e.target.result);
+      var chunks=[];
+      for(var i=0;i<arr.length;i+=8192){chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));}
+      var b64=btoa(chunks.join(''));
+      var safeName=sanitizeFilename(file.name,'audio');
+      if(idx===0)firstSafe=safeName;
+      var path='audio/'+safeName;
+      fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
+        headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+      })
+      .then(function(r){return r.json();})
+      .then(function(ex){
+        var body={message:'Upload audio: '+safeName,content:b64,branch:'main'};
+        if(ex&&ex.sha&&!ex.message)body.sha=ex.sha;
+        return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{
+          method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+          body:JSON.stringify(body)
+        });
+      })
+      .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+      .then(function(){
+        if(idx===0){
+          document.getElementById(pfx+'-mp3-input').value=firstSafe;
+          document.getElementById(pfx+'-mp3-name').textContent=firstSafe;
+          document.getElementById(pfx+'-mp3-name').style.color='#e8ddd0';
+          document.getElementById(pfx+'-mp3-clear').style.display='inline';
+        }
+        uploadOne(idx+1);
+      })
+      .catch(function(e){prog.style.color='#d47a7a';prog.textContent='Ошибка: '+e.message;uploadOne(idx+1);});
+    };
+    reader.readAsArrayBuffer(file);
+  }
+  uploadOne(0);
 }
 function _clearMp3Section(pfx){
   document.getElementById(pfx+'-mp3-input').value='';
@@ -1800,45 +1837,61 @@ function setTaleAddStatus(msg,ok){
   s.textContent=msg;
   s.style.color=ok?'#7bc47b':'rgba(201,169,110,0.8)';
 }
-function uploadTaleAudio(file){
-  if(!file)return;
+function uploadTaleAudio(files){
+  if(!files||!files.length)return;
   var token=getToken();
-  if(!token){document.getElementById('tale-mp3-progress').textContent='Нет токена';document.getElementById('tale-mp3-progress').style.display='block';return;}
-  if(file.size>25*1024*1024){document.getElementById('tale-mp3-progress').textContent='Файл больше 25MB';document.getElementById('tale-mp3-progress').style.display='block';return;}
   var prog=document.getElementById('tale-mp3-progress');
-  prog.style.display='block';prog.style.color='rgba(201,169,110,0.7)';prog.textContent='Чтение…';
-  var reader=new FileReader();
-  reader.onload=function(e){
-    var arr=new Uint8Array(e.target.result);
-    var chunks=[];
-    for(var i=0;i<arr.length;i+=8192){chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));}
-    var b64=btoa(chunks.join(''));
-    prog.textContent='Отправка…';
-    var safeName=sanitizeFilename(file.name,'audio');
-    var path='audio/'+safeName;
-    fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
-      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
-    })
-    .then(function(r){return r.json();})
-    .then(function(ex){
-      var body={message:'Upload audio: '+safeName,content:b64,branch:'main'};
-      if(ex&&ex.sha&&!ex.message)body.sha=ex.sha;
-      return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{
-        method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-        body:JSON.stringify(body)
-      });
-    })
-    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
-    .then(function(){
-      prog.style.color='#7bc47b';prog.textContent='✓ Загружено: '+safeName;
-      document.getElementById('tale-mp3-input').value=safeName;
-      document.getElementById('tale-mp3-name').textContent=safeName;
-      document.getElementById('tale-mp3-name').style.color='#e8ddd0';
-      document.getElementById('tale-mp3-clear').style.display='inline';
-    })
-    .catch(function(e){prog.style.color='#d47a7a';prog.textContent='Ошибка: '+e.message;});
-  };
-  reader.readAsArrayBuffer(file);
+  if(!token){prog.textContent='Нет токена';prog.style.display='block';return;}
+  var fileArr=Array.prototype.slice.call(files);
+  var total=fileArr.length;
+  var firstSafe=null;
+  prog.style.display='block';prog.style.color='rgba(201,169,110,0.7)';
+  prog.textContent=total>1?'[1/'+total+'] Загрузка…':'Загрузка…';
+  function uploadOne(idx){
+    if(idx>=total){
+      prog.style.color='#7bc47b';
+      prog.textContent=total>1?'✓ Загружено: '+total+' файла':'✓ Загружено: '+firstSafe;
+      return;
+    }
+    var file=fileArr[idx];
+    if(file.size>25*1024*1024){prog.style.color='#d47a7a';prog.textContent='Файл '+file.name+' больше 25MB';uploadOne(idx+1);return;}
+    if(total>1)prog.textContent='['+(idx+1)+'/'+total+'] '+file.name+'…';
+    var reader=new FileReader();
+    reader.onload=function(e){
+      var arr=new Uint8Array(e.target.result);
+      var chunks=[];
+      for(var i=0;i<arr.length;i+=8192){chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));}
+      var b64=btoa(chunks.join(''));
+      var safeName=sanitizeFilename(file.name,'audio');
+      if(idx===0)firstSafe=safeName;
+      var path='audio/'+safeName;
+      fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
+        headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+      })
+      .then(function(r){return r.json();})
+      .then(function(ex){
+        var body={message:'Upload audio: '+safeName,content:b64,branch:'main'};
+        if(ex&&ex.sha&&!ex.message)body.sha=ex.sha;
+        return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{
+          method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+          body:JSON.stringify(body)
+        });
+      })
+      .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+      .then(function(){
+        if(idx===0){
+          document.getElementById('tale-mp3-input').value=firstSafe;
+          document.getElementById('tale-mp3-name').textContent=firstSafe;
+          document.getElementById('tale-mp3-name').style.color='#e8ddd0';
+          document.getElementById('tale-mp3-clear').style.display='inline';
+        }
+        uploadOne(idx+1);
+      })
+      .catch(function(e){prog.style.color='#d47a7a';prog.textContent='Ошибка: '+e.message;uploadOne(idx+1);});
+    };
+    reader.readAsArrayBuffer(file);
+  }
+  uploadOne(0);
 }
 function clearTaleMp3(){
   document.getElementById('tale-mp3-input').value='';
@@ -2463,6 +2516,54 @@ function deleteEditAudio(filename,sha,btn){
   })
   .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);loadEditAudio();})
   .catch(function(e){btn.disabled=false;alert('Ошибка: '+e.message);});
+}
+function uploadEditAudioMulti(files){
+  if(!files||!files.length)return;
+  var token=getToken();
+  var prog=document.getElementById('edit-audio-prog');
+  if(!token){prog.textContent='Нет токена';prog.style.display='block';prog.style.color='#d47a7a';return;}
+  var fileArr=Array.prototype.slice.call(files);
+  var total=fileArr.length;
+  prog.style.display='block';prog.style.color='rgba(201,169,110,0.7)';
+  prog.textContent='[1/'+total+'] Загрузка…';
+  function uploadOne(idx){
+    if(idx>=total){
+      prog.style.color='#7bc47b';
+      prog.textContent='✓ Загружено: '+total+(total===1?' файл':total<=4?' файла':' файлов');
+      document.getElementById('edit-audio-file').value='';
+      loadEditAudio();return;
+    }
+    var file=fileArr[idx];
+    if(file.size>25*1024*1024){prog.style.color='#d47a7a';prog.textContent='Файл '+file.name+' больше 25MB';uploadOne(idx+1);return;}
+    prog.style.color='rgba(201,169,110,0.7)';
+    prog.textContent='['+(idx+1)+'/'+total+'] '+file.name+'…';
+    var reader=new FileReader();
+    reader.onload=function(e){
+      var arr=new Uint8Array(e.target.result);
+      var chunks=[];
+      for(var i=0;i<arr.length;i+=8192){chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));}
+      var b64=btoa(chunks.join(''));
+      var safeName=sanitizeFilename(file.name,'audio');
+      var path='audio/'+safeName;
+      fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
+        headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+      })
+      .then(function(r){return r.json();})
+      .then(function(ex){
+        var body={message:'Upload audio: '+safeName,content:b64,branch:'main'};
+        if(ex&&ex.sha&&!ex.message)body.sha=ex.sha;
+        return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{
+          method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+          body:JSON.stringify(body)
+        });
+      })
+      .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+      .then(function(){uploadOne(idx+1);})
+      .catch(function(e){prog.style.color='#d47a7a';prog.textContent='Ошибка: '+e.message;uploadOne(idx+1);});
+    };
+    reader.readAsArrayBuffer(file);
+  }
+  uploadOne(0);
 }
 // ── End Edit mode ───────────────────────────────────────────────────────────
 
