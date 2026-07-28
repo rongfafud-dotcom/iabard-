@@ -680,6 +680,8 @@ function uploadPoemAudio(files){
           document.getElementById('poem-mp3-name').textContent=total>1?firstSafe+' +'+(total-1)+' ещё':firstSafe;
           document.getElementById('poem-mp3-name').style.color='#e8ddd0';
           document.getElementById('poem-mp3-clear').style.display='inline';
+        } else {
+          document.getElementById('poem-mp3-input').value+='\n'+safeName;
         }
         uploadOne(idx+1);
       })
@@ -944,7 +946,8 @@ function addAuthor(){
     .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
     .then(function(d){
       var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
-      var newEntry=(audio?'# audio: '+audio+'\n':'')+(imgName?'# image: '+imgName+'\n':'')+(title?title+'\n':'')+(url?'\n'+url+'\n':'')+(text?'\n'+text+'\n':'');
+      var audioLines=audio?audio.split('\n').filter(Boolean).map(function(f){return '# audio: '+f.trim()+'\n';}).join(''):'';
+      var newEntry=(audioLines)+(imgName?'# image: '+imgName+'\n':'')+(title?title+'\n':'')+(url?'\n'+url+'\n':'')+(text?'\n'+text+'\n':'');
       var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
       var encoded=btoa(unescape(encodeURIComponent(updated)));
       var body={message:'Add to author section'+(title?': '+title:''),content:encoded,branch:'main'};
@@ -1114,6 +1117,8 @@ function _uploadAudioSection(pfx,files){
           document.getElementById(pfx+'-mp3-name').textContent=total>1?firstSafe+' +'+(total-1)+' ещё':firstSafe;
           document.getElementById(pfx+'-mp3-name').style.color='#e8ddd0';
           document.getElementById(pfx+'-mp3-clear').style.display='inline';
+        } else {
+          document.getElementById(pfx+'-mp3-input').value+='\n'+safeName;
         }
         uploadOne(idx+1);
       })
@@ -1163,7 +1168,8 @@ function addPoetryEN(){
     .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
     .then(function(d){
       var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
-      var newEntry=(audio?'# audio: '+audio+'\n':'')+(imgName?'# image: '+imgName+'\n':'')+title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+'\n';
+      var audioLines=audio?audio.split('\n').filter(Boolean).map(function(f){return '# audio: '+f.trim()+'\n';}).join(''):'';
+      var newEntry=(audioLines)+(imgName?'# image: '+imgName+'\n':'')+title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+'\n';
       var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
       var encoded=btoa(unescape(encodeURIComponent(updated)));
       var body={message:'Add EN poem: '+title,content:encoded,branch:'main'};
@@ -1311,7 +1317,8 @@ function addAstro(){
     .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
     .then(function(d){
       var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
-      var newEntry=(audio?'# audio: '+audio+'\n':'')+(imgName?'# image: '+imgName+'\n':'')+title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+'\n';
+      var audioLines=audio?audio.split('\n').filter(Boolean).map(function(f){return '# audio: '+f.trim()+'\n';}).join(''):'';
+      var newEntry=(audioLines)+(imgName?'# image: '+imgName+'\n':'')+title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+'\n';
       var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
       var encoded=btoa(unescape(encodeURIComponent(updated)));
       var body={message:'Add astrology: '+title,content:encoded,branch:'main'};
@@ -1728,7 +1735,7 @@ function savePoemEntry(poemText, audioFilename, imageFilename){
   while(restLines.length && restLines[0].trim()==='') restLines.shift();
   var rest=restLines.join('\n').trimEnd();
   var extras='';
-  if(audioFilename) extras+='\n\n# audio: '+audioFilename;
+  if(audioFilename){audioFilename.split('\n').forEach(function(f){f=f.trim();if(f)extras+='\n\n# audio: '+f;});}
   if(imageFilename) extras+='\n\n# image: '+imageFilename;
   if(ytUrl) extras+='\n\n'+ytUrl;
   // (subtitle) stays in same stanza as title; everything else gets blank-line separator
@@ -1884,6 +1891,8 @@ function uploadTaleAudio(files){
           document.getElementById('tale-mp3-name').textContent=total>1?firstSafe+' +'+(total-1)+' ещё':firstSafe;
           document.getElementById('tale-mp3-name').style.color='#e8ddd0';
           document.getElementById('tale-mp3-clear').style.display='inline';
+        } else {
+          document.getElementById('tale-mp3-input').value+='\n'+safeName;
         }
         uploadOne(idx+1);
       })
@@ -1962,7 +1971,7 @@ function saveTaleEntry(taleText,audioFilename,imageFilename){
   while(restLines.length && restLines[0].trim()==='') restLines.shift();
   var rest=restLines.join('\n').trimEnd();
   var extras='';
-  if(audioFilename) extras+='\n\n# audio: '+audioFilename;
+  if(audioFilename){audioFilename.split('\n').forEach(function(f){f=f.trim();if(f)extras+='\n\n# audio: '+f;});}
   if(imageFilename) extras+='\n\n# image: '+imageFilename;
   if(ytUrl) extras+='\n\n'+ytUrl;
   var sep=rest&&rest.charAt(0)==='('?'\n':'\n\n';
