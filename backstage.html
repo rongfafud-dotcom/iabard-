@@ -924,6 +924,47 @@ function _makeTile(sec,clickFn){
   b.onclick=function(){clickFn(sec.id);};
   return b;
 }
+function _makeReorderTile(sec,idx,total,clickFn){
+  var wrap=document.createElement('div');wrap.style.cssText='display:flex;align-items:stretch;gap:4px;width:100%';
+  var b=document.createElement('button');b.style.cssText=_tileCss+';flex:1';
+  b.innerHTML=_secTileHtml(sec.emoji,sec.label);
+  b.onmouseover=function(){this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)';};
+  b.onmouseout=function(){this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)';};
+  b.onclick=function(){clickFn(sec.id);};
+  var arrows=document.createElement('div');arrows.style.cssText='display:flex;flex-direction:column;gap:2px';
+  var upBtn=document.createElement('button');upBtn.textContent='↑';
+  upBtn.style.cssText='background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.25);border-radius:4px;color:#c9a96e;cursor:pointer;font-size:1rem;padding:4px 10px;flex:1';
+  upBtn.disabled=idx===0;if(idx===0)upBtn.style.opacity='0.3';
+  (function(_i){upBtn.onclick=function(e){e.stopPropagation();moveSection(_i,-1);};})(idx);
+  var dnBtn=document.createElement('button');dnBtn.textContent='↓';
+  dnBtn.style.cssText='background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.25);border-radius:4px;color:#c9a96e;cursor:pointer;font-size:1rem;padding:4px 10px;flex:1';
+  dnBtn.disabled=idx===total-1;if(idx===total-1)dnBtn.style.opacity='0.3';
+  (function(_i){dnBtn.onclick=function(e){e.stopPropagation();moveSection(_i,+1);};})(idx);
+  arrows.appendChild(upBtn);arrows.appendChild(dnBtn);
+  wrap.appendChild(b);wrap.appendChild(arrows);return wrap;
+}
+function _rebuildSecTiles(){
+  var addTiles=document.getElementById('custom-sec-add-tiles');
+  var editTiles=document.getElementById('custom-sec-edit-tiles');
+  if(addTiles)addTiles.innerHTML='';if(editTiles)editTiles.innerHTML='';
+  _customSecs.forEach(function(sec,idx){
+    if(addTiles)addTiles.appendChild(_makeTile(sec,selectAddSection));
+    if(editTiles)editTiles.appendChild(_makeReorderTile(sec,idx,_customSecs.length,selectEditSection));
+  });
+}
+function moveSection(idx,delta){
+  var ni=idx+delta;if(ni<0||ni>=_customSecs.length)return;
+  var tmp=_customSecs[idx];_customSecs[idx]=_customSecs[ni];_customSecs[ni]=tmp;
+  var token=getToken();if(!token)return;
+  var body={message:'Reorder sections',content:btoa(unescape(encodeURIComponent(JSON.stringify(_customSecs,null,2)))),branch:'main'};
+  if(_customSecsSha)body.sha=_customSecsSha;
+  fetch('https://api.github.com/repos/'+REPO+'/contents/sections.json',{
+    method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  }).then(function(r){return r.ok?r.json():Promise.reject();})
+  .then(function(d){_customSecsSha=d.content.sha;_rebuildSecTiles();})
+  .catch(function(){});
+}
 function loadCustomSectionsBackstage(){
   var token=getToken();if(!token)return;
   fetch('https://api.github.com/repos/'+REPO+'/contents/sections.json?ref=main',{
@@ -935,13 +976,8 @@ function loadCustomSectionsBackstage(){
     var secs;try{secs=JSON.parse(b64d(d.content.replace(/\n/g,'')));}catch(e){return;}
     if(!Array.isArray(secs))return;
     _customSecs=secs;_customSecsSha=d.sha;
-    secs.forEach(function(sec){
-      SECFILE[sec.id]=sec.file;SECLABEL[sec.id]=sec.label;
-      var addTiles=document.getElementById('custom-sec-add-tiles');
-      var editTiles=document.getElementById('custom-sec-edit-tiles');
-      if(addTiles)addTiles.appendChild(_makeTile(sec,selectAddSection));
-      if(editTiles)editTiles.appendChild(_makeTile(sec,selectEditSection));
-    });
+    secs.forEach(function(sec){SECFILE[sec.id]=sec.file;SECLABEL[sec.id]=sec.label;});
+    _rebuildSecTiles();
   })
   .catch(function(){});
 }
@@ -991,10 +1027,7 @@ function createSection(){
   .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
   .then(function(){
     st.textContent='✓ Рубрика создана!';st.style.color='#7bc47b';
-    var addTiles=document.getElementById('custom-sec-add-tiles');
-    var editTiles=document.getElementById('custom-sec-edit-tiles');
-    if(addTiles)addTiles.appendChild(_makeTile(sec,selectAddSection));
-    if(editTiles)editTiles.appendChild(_makeTile(sec,selectEditSection));
+    _rebuildSecTiles();
     setTimeout(cancelCreateSection,1500);
   })
   .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});

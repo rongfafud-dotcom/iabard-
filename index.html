@@ -800,7 +800,7 @@
     <p class="name-sub">Hypatia Bard / Ипа́тия Бард</p>
     <div class="nav-tabs" role="tablist" aria-label="Разделы сайта">
       <div class="nav-tab-wrap">
-        <button class="nav-tab active" role="tab" aria-selected="true" id="tab-creative" onclick="switchTab('poems',this)">Творчество</button>
+        <button class="nav-tab" role="tab" aria-selected="false" id="tab-creative" onclick="switchTab('poems',this)">Творчество</button>
         <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-creative')" aria-label="Открыть меню творчества">▾</button>
         <div class="nav-dropmenu" id="drop-creative">
           <button onclick="goCreative('poems')">Поэзия</button>
@@ -810,7 +810,7 @@
         </div>
       </div>
       <div class="nav-tab-wrap">
-        <button class="nav-tab" role="tab" aria-selected="false" aria-controls="books" id="tab-books" onclick="switchTab('books',this)">Книги</button>
+        <button class="nav-tab active" role="tab" aria-selected="true" aria-controls="books" id="tab-books" onclick="switchTab('books',this)">Книги</button>
         <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-books')" aria-label="Список книг">▾</button>
         <div class="nav-dropmenu" id="drop-books">
           <button onclick="goBook('book-soavtor')">Соавтор жизни</button>
@@ -861,7 +861,7 @@
   </div>
 
   <!-- КНИГИ -->
-  <div id="books" class="tab-panel" role="tabpanel" aria-labelledby="tab-books">
+  <div id="books" class="tab-panel active" role="tabpanel" aria-labelledby="tab-books">
     <div class="books-grid">
 
       <div class="flip-card" id="book-soavtor" onclick="this.classList.toggle('flipped')">
@@ -1396,7 +1396,7 @@
 
 
   <!-- СТИХИ -->
-  <div id="poems" class="tab-panel active" role="tabpanel" aria-labelledby="tab-creative">
+  <div id="poems" class="tab-panel" role="tabpanel" aria-labelledby="tab-creative">
     <div class="poem-search-wrap">
       <input type="search" id="poem-search" class="poem-search" placeholder="Найти стихотворение…" aria-label="Поиск стихотворений" autocomplete="off">
     </div>
@@ -1602,7 +1602,10 @@ function loadCustomSections(){
           b.textContent=sec.label;
           var _tabId=cfg.tabId,_sid=sec.id;
           b.onclick=function(){closeDrop();switchTab(_sid,document.getElementById(_tabId));};
-          dropMain.appendChild(b);
+          var _existCs=dropMain.querySelectorAll('[data-csid]');
+          var _lastCs=_existCs.length?_existCs[_existCs.length-1]:null;
+          var _ref=_lastCs?_lastCs.nextSibling:(dropMain.children[1]||null);
+          if(_ref){dropMain.insertBefore(b,_ref);}else{dropMain.appendChild(b);}
         }
         // Sticky nav: find the snav-wrap by its data-panels key, add to its drop + update data-panels
         var snavWrap=document.querySelector('#sticky-nav .snav-btn[data-panels*="'+cfg.snavKey+'"]');
@@ -1614,7 +1617,10 @@ function loadCustomSections(){
             var sb=document.createElement('button');sb.setAttribute('data-csid',sec.id);
             sb.textContent=sec.label;
             (function(_tabId2,_sid2){sb.onclick=function(){switchTab(_sid2,document.getElementById(_tabId2));};})(_tabId=cfg.tabId,sec.id);
-            snavDrop.appendChild(sb);
+            var _sExistCs=snavDrop.querySelectorAll('[data-csid]');
+            var _sLastCs=_sExistCs.length?_sExistCs[_sExistCs.length-1]:null;
+            var _sRef=_sLastCs?_sLastCs.nextSibling:(snavDrop.children[1]||null);
+            if(_sRef){snavDrop.insertBefore(sb,_sRef);}else{snavDrop.appendChild(sb);}
           }
         }
       } else {
@@ -2228,9 +2234,8 @@ history.scrollRestoration = 'manual';
 window.addEventListener('load', function(){
   window.scrollTo(0,0);
   loadCustomSections();
-  loadPoems();
   document.querySelectorAll('#sticky-nav .snav-btn').forEach(function(b){
-    b.classList.toggle('s-active',(b.dataset.panels||'').split(' ').indexOf('poems')!==-1);
+    b.classList.toggle('s-active',(b.dataset.panels||'').split(' ').indexOf('books')!==-1);
   });
 });
 
