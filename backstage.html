@@ -91,7 +91,7 @@
   .inbox-tab-btn.active{color:#c9a96e;border-bottom-color:#c9a96e}
   .inbox-tab-btn:hover{color:rgba(201,169,110,0.8)}
   #poem-yt-url::placeholder,#poem-add-text::placeholder,#poem-mp3-input::placeholder,
-  #en-url::placeholder,#en-text::placeholder,#en-title::placeholder,
+  #en-url::placeholder,#en-text::placeholder,
   #astro-url::placeholder,#astro-text::placeholder,#astro-title::placeholder,
   #author-url::placeholder,#author-text::placeholder,#author-title::placeholder{color:rgba(232,221,208,0.5)}
   .inbox-close-btn{float:right;background:transparent;border:1px solid rgba(100,180,100,0.3);border-radius:5px;color:rgba(120,200,120,0.65);padding:5px 12px;cursor:pointer;font-size:0.72rem;transition:all 0.2s}
@@ -282,7 +282,6 @@
 
   <!-- POETRY EN form -->
   <div id="add-form-poetry-en" style="padding:20px;display:none;flex-direction:column;gap:8px">
-    <input type="text" id="en-title" placeholder="Title (English)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none">
     <label style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:text;display:flex;align-items:center;gap:8px;transition:border-color 0.2s">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       <input type="url" id="en-url" placeholder="Добавить ссылку на YouTube" style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text" onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'" onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
@@ -305,7 +304,7 @@
       <img id="en-img-prev-img" style="max-width:100%;max-height:180px;display:block;object-fit:contain;margin:0 auto">
       <button onclick="clearEnImage()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.65);border:none;border-radius:50%;color:#e8ddd0;width:22px;height:22px;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;line-height:1">✕</button>
     </div>
-    <textarea id="en-text" placeholder="Текст (необязательно)" rows="4" style="background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:11px 14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;width:100%" spellcheck="false" autocorrect="off"></textarea>
+    <textarea id="en-text" placeholder="Title / Text" rows="4" style="background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:11px 14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;width:100%" spellcheck="false" autocorrect="off"></textarea>
     <button class="novinka-add-btn" onclick="addPoetryEN()">Добавить</button>
     <div id="en-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
     <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(201,169,110,0.15)">
@@ -1152,11 +1151,11 @@ function _clearImgSection(pfx){
 function addPoetryEN(){
   var token=getToken();
   if(!token){document.getElementById('en-add-status').textContent='Нет токена';return;}
-  var title=document.getElementById('en-title').value.trim();
   var url=document.getElementById('en-url').value.trim();
   var audio=(document.getElementById('en-mp3-input').value||'').trim();
   var text=(document.getElementById('en-text').value||'').trim();
-  if(!title){document.getElementById('en-add-status').textContent='Введите название';return;}
+  var title=text.split('\n')[0].trim()||'EN poem';
+  if(!text&&!url){document.getElementById('en-add-status').textContent='Введите текст или ссылку';return;}
   if(url&&!/youtu/.test(url)){document.getElementById('en-add-status').textContent='Неверный YouTube URL';return;}
   var imageFile=document.getElementById('en-image-input').files[0]||null;
   var st=document.getElementById('en-add-status');
@@ -1169,7 +1168,7 @@ function addPoetryEN(){
     .then(function(d){
       var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
       var audioLines=audio?audio.split('\n').filter(Boolean).map(function(f){return '# audio: '+f.trim()+'\n';}).join(''):'';
-      var newEntry=(audioLines)+(imgName?'# image: '+imgName+'\n':'')+title+(url?'\n\n'+url:'')+(text?'\n\n'+text:'')+'\n';
+      var newEntry=(audioLines)+(imgName?'# image: '+imgName+'\n':'')+text+(url?'\n\n'+url:'')+'\n';
       var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
       var encoded=btoa(unescape(encodeURIComponent(updated)));
       var body={message:'Add EN poem: '+title,content:encoded,branch:'main'};
@@ -1183,7 +1182,6 @@ function addPoetryEN(){
     .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
     .then(function(){
       st.textContent='✓ Добавлено!';st.style.color='#7bc47b';
-      document.getElementById('en-title').value='';
       document.getElementById('en-url').value='';
       clearEnMp3();clearEnImage();
       document.getElementById('en-text').value='';
