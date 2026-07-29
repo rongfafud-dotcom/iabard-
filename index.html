@@ -542,6 +542,15 @@
     .contact-input.warn{border-color:rgba(212,122,122,0.6)}
     .poem-image{text-align:center;margin:0 0 24px}
     .poem-image img{max-width:100%;border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,0.35)}
+    .poem-img-carousel{position:relative;border-radius:10px;overflow:hidden;margin-bottom:20px;background:#0e0a0e;touch-action:pan-y}
+    .poem-img-carousel-track{display:flex;transition:transform 0.32s cubic-bezier(.4,0,.2,1)}
+    .poem-img-carousel-track img{min-width:100%;width:100%;display:block;object-fit:cover}
+    .pic-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.45);border:none;color:#fff;width:34px;height:34px;border-radius:50%;font-size:1.3rem;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;transition:background 0.15s}
+    .pic-btn:hover{background:rgba(0,0,0,0.7)}
+    .pic-btn.prev{left:8px}.pic-btn.next{right:8px}
+    .pic-dots{position:absolute;bottom:8px;left:0;right:0;display:flex;justify-content:center;gap:5px;pointer-events:none}
+    .pic-dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.45);display:inline-block;transition:background 0.2s}
+    .pic-dots span.on{background:#fff}
     .poem-video{max-width:100%;aspect-ratio:9/16;margin-bottom:20px}
     .poem-yt-row{margin:20px 0 24px}
     .poem-divider{border:none;border-top:1px solid rgba(201,169,110,0.18);margin:28px 0 24px}
@@ -1923,8 +1932,7 @@ function loadPoems(){
     var offset=0;
     function buildCard(rawPoem){
       var audioFiles=[];var _aRe=/^[ \t]*#\s*audio:\s*(.+)$/mg;var _aM;while((_aM=_aRe.exec(rawPoem))!==null)audioFiles.push(_aM[1].trim());
-      var imageMatch=rawPoem.match(/^[ \t]*#\s*image:\s*(.+)$/m);
-      var imageFile=imageMatch?imageMatch[1].trim():null;
+      var imageFiles=[];var _iRe=/^[ \t]*#\s*image:\s*(.+)$/mg;var _iM2;while((_iM2=_iRe.exec(rawPoem))!==null)imageFiles.push(_iM2[1].trim());
       var ytMatch=rawPoem.match(/^[ \t]*#\s*youtube:\s*(.+)$/mi);
       var ytUrl=ytMatch?ytMatch[1].trim():null;
       var poem=rawPoem.replace(/[ \t]*#\s+[^\n]*/g,'').trim();
@@ -1958,10 +1966,8 @@ function loadPoems(){
       if(ytUrl&&!/^https?:\/\//i.test(ytUrl))ytUrl=null;
       var vid=ytUrl?extractVideoId(ytUrl):null;
       var h='';
-      if(imageFile){
-        var imgSrc=/^https?:\/\//i.test(imageFile)?imageFile:'images/'+encodeURIComponent(imageFile);
-        h+='<div class="poem-image"><img src="'+esc(imgSrc)+'" alt="'+esc(mainT||'иллюстрация')+'" loading="lazy"></div>';
-      }
+      if(imageFiles.length===1){var imgSrc0=/^https?:\/\//i.test(imageFiles[0])?imageFiles[0]:'images/'+encodeURIComponent(imageFiles[0]);h+='<div class="poem-image"><img src="'+esc(imgSrc0)+'" alt="'+esc(mainT||'иллюстрация')+'" loading="lazy"></div>';}
+      else if(imageFiles.length>1){h+='<div class="poem-img-carousel"><div class="poem-img-carousel-track">';imageFiles.forEach(function(f){var s=/^https?:\/\//i.test(f)?f:'images/'+encodeURIComponent(f);h+='<img src="'+esc(s)+'" alt="'+esc(mainT||'')+'" loading="lazy">';});h+='</div><button class="pic-btn prev">&#8249;</button><button class="pic-btn next">&#8250;</button><div class="pic-dots">';imageFiles.forEach(function(_,di){h+='<span'+(di===0?' class="on"':'')+'>&#x200B;</span>';});h+='</div></div>';}
       if(vid){
         h+='<div class="novinka-video poem-video"><div class="yt-facade" data-vid="'+esc(vid)+'" onclick="ytPlay(this)"><img src="https://img.youtube.com/vi/'+esc(vid)+'/hqdefault.jpg" alt="'+esc(mainT||'видео')+'" loading="lazy"><button class="yt-play" aria-label="Смотреть видео">&#9654;</button></div></div>';
       }
@@ -1997,7 +2003,7 @@ function loadPoems(){
       }
       offset=end;
       list.appendChild(frag);
-      initAudioPlayers(list);
+      initAudioPlayers(list);initPoemCarousels(list);
       if(offset<raw.length){
         var btn=document.createElement('button');
         btn.className='poems-load-more';
@@ -2016,7 +2022,7 @@ function loadPoems(){
         if(typeof fadeObserver!=='undefined')fadeObserver.observe(c);
       }
       list.appendChild(frag);
-      initAudioPlayers(list);
+      initAudioPlayers(list);initPoemCarousels(list);
     };
     renderBatch();
   }
@@ -2454,6 +2460,21 @@ if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
 })();
 
 // Custom audio player
+function initPoemCarousels(root){
+  root.querySelectorAll('.poem-img-carousel').forEach(function(car){
+    if(car._init)return;car._init=true;
+    var track=car.querySelector('.poem-img-carousel-track');
+    var imgs=track.querySelectorAll('img');
+    var dots=car.querySelectorAll('.pic-dots span');
+    var n=imgs.length;var cur=0;
+    function go(i){cur=(i+n)%n;track.style.transform='translateX(-'+cur*100+'%)';dots.forEach(function(d,j){d.classList.toggle('on',j===cur);});}
+    car.querySelector('.prev').addEventListener('click',function(e){e.stopPropagation();go(cur-1);});
+    car.querySelector('.next').addEventListener('click',function(e){e.stopPropagation();go(cur+1);});
+    var tx=0;
+    track.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;},{passive:true});
+    track.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40)go(cur+(dx<0?1:-1));},{passive:true});
+  });
+}
 var AP_PLAY='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
 var AP_PAUSE='<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
 function initAudioPlayers(container){
