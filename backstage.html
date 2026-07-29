@@ -222,21 +222,6 @@
     <div id="create-sec-form" style="display:none;flex-direction:column;gap:8px;padding:4px 0">
       <input type="text" id="create-sec-name" placeholder="Название рубрики" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;font-size:1rem;width:100%;box-sizing:border-box">
       <input type="text" id="create-sec-emoji" placeholder="Эмодзи для бэкстейджа (напр. 🎨)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;font-size:1rem;width:100%;box-sizing:border-box">
-      <div style="display:flex;flex-direction:column;gap:6px;padding:4px 0">
-        <div style="font-size:0.75rem;color:rgba(201,169,110,0.55);letter-spacing:1px;text-transform:uppercase">Расположение на сайте</div>
-        <label style="display:flex;align-items:center;gap:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:0.9rem;cursor:pointer">
-          <input type="radio" name="create-sec-nav" value="creative" checked style="accent-color:#c9a96e"> Подраздел «Творчество»
-        </label>
-        <label style="display:flex;align-items:center;gap:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:0.9rem;cursor:pointer">
-          <input type="radio" name="create-sec-nav" value="books" style="accent-color:#c9a96e"> Подраздел «Книги»
-        </label>
-        <label style="display:flex;align-items:center;gap:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:0.9rem;cursor:pointer">
-          <input type="radio" name="create-sec-nav" value="shop" style="accent-color:#c9a96e"> Подраздел «Shop»
-        </label>
-        <label style="display:flex;align-items:center;gap:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:0.9rem;cursor:pointer">
-          <input type="radio" name="create-sec-nav" value="tab" style="accent-color:#c9a96e"> Отдельная вкладка
-        </label>
-      </div>
       <div style="display:flex;gap:8px">
         <button onclick="createSection()" class="novinka-add-btn" style="flex:1">Создать</button>
         <button onclick="cancelCreateSection()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.2);border-radius:6px;color:rgba(232,221,208,0.6);padding:9px 16px;cursor:pointer;font-family:'Georgia',serif;font-size:0.88rem;flex-shrink:0">Отмена</button>
@@ -982,7 +967,7 @@ function _makeReorderTile(sec,idx,total,clickFn){
   // grip handle
   var grip=document.createElement('span');
   grip.innerHTML='<svg width="10" height="14" viewBox="0 0 10 14" fill="currentColor" style="opacity:0.4"><circle cx="2.5" cy="2" r="1.5"/><circle cx="7.5" cy="2" r="1.5"/><circle cx="2.5" cy="7" r="1.5"/><circle cx="7.5" cy="7" r="1.5"/><circle cx="2.5" cy="12" r="1.5"/><circle cx="7.5" cy="12" r="1.5"/></svg>';
-  grip.style.cssText='flex-shrink:0;cursor:grab;line-height:0;margin-right:4px';
+  grip.style.cssText='flex-shrink:0;cursor:grab;line-height:0;margin-right:4px;touch-action:none';
   b.appendChild(grip);
   var inner=document.createElement('span');inner.style.cssText='display:flex;align-items:center;gap:12px;flex:1';
   inner.innerHTML=_secTileHtml(sec.emoji,sec.label);
@@ -1019,35 +1004,36 @@ function _makeReorderTile(sec,idx,total,clickFn){
     if(_secDrag.from!==-1&&_secDrag.from!==idx)moveSection(_secDrag.from,idx);
     _secDrag.from=-1;
   });
-  // touch long-press drag
-  var _st={timer:null,on:false,startY:0};
-  b.addEventListener('touchstart',function(e){
-    _st.startY=e.touches[0].clientY;_st.on=false;
-    _st.timer=setTimeout(function(){_st.on=true;_secDrag.from=idx;_secDrag.dragging=true;b.style.opacity='0.4';if(navigator.vibrate)navigator.vibrate(40);},350);
-  },{passive:true});
-  b.addEventListener('touchmove',function(e){
-    if(!_st.on){clearTimeout(_st.timer);_st.timer=null;return;}
+  // Mobile: touch the grip handle to immediately start drag (no long-press timer)
+  var _mDrag={on:false};
+  grip.addEventListener('click',function(e){e.stopPropagation();});
+  grip.addEventListener('touchstart',function(e){
+    e.preventDefault();
+    _mDrag.on=true;_secDrag.from=idx;_secDrag.dragging=true;
+    b.style.opacity='0.4';
+    if(navigator.vibrate)navigator.vibrate(30);
+  },{passive:false});
+  function _secClearBorders(){document.querySelectorAll('[data-secidx]').forEach(function(el){el.style.borderTopColor='rgba(201,169,110,0.25)';el.style.borderBottomColor='rgba(201,169,110,0.25)';});}
+  grip.addEventListener('touchmove',function(e){
+    if(!_mDrag.on)return;
     e.preventDefault();
     var touch=e.touches[0];
-    document.querySelectorAll('[data-secidx]').forEach(function(el){el.style.borderTopColor='rgba(201,169,110,0.25)';el.style.borderBottomColor='rgba(201,169,110,0.25)';});
+    _secClearBorders();
     var tgt=document.elementFromPoint(touch.clientX,touch.clientY);
     while(tgt&&!tgt.getAttribute('data-secidx'))tgt=tgt.parentElement;
-    if(tgt&&tgt.getAttribute('data-secidx')){
-      var rect2=tgt.getBoundingClientRect();
-      if(touch.clientY>rect2.top+rect2.height/2)tgt.style.borderBottomColor='#c9a96e';
-      else tgt.style.borderTopColor='#c9a96e';
-    }
+    if(tgt){var r=tgt.getBoundingClientRect();if(touch.clientY>r.top+r.height/2)tgt.style.borderBottomColor='#c9a96e';else tgt.style.borderTopColor='#c9a96e';}
   },{passive:false});
-  b.addEventListener('touchend',function(e){
-    clearTimeout(_st.timer);_st.timer=null;
-    document.querySelectorAll('[data-secidx]').forEach(function(el){el.style.borderTopColor='rgba(201,169,110,0.25)';el.style.borderBottomColor='rgba(201,169,110,0.25)';});
-    if(!_st.on){_st.on=false;if(Math.abs(e.changedTouches[0].clientY-_st.startY)<10)clickFn(sec.id);return;}
+  function _secTouchDone(e){
+    _secClearBorders();
+    if(!_mDrag.on){_mDrag.on=false;return;}
     var touch=e.changedTouches[0];
     var tgt=document.elementFromPoint(touch.clientX,touch.clientY);
     while(tgt&&!tgt.getAttribute('data-secidx'))tgt=tgt.parentElement;
     if(tgt){var toIdx=parseInt(tgt.getAttribute('data-secidx'));if(!isNaN(toIdx)&&toIdx!==_secDrag.from)moveSection(_secDrag.from,toIdx);}
-    b.style.opacity='';_st.on=false;_secDrag.from=-1;_secDrag.dragging=false;
-  });
+    b.style.opacity='';_mDrag.on=false;_secDrag.from=-1;_secDrag.dragging=false;
+  }
+  grip.addEventListener('touchend',_secTouchDone);
+  grip.addEventListener('touchcancel',_secTouchDone);
   return b;
 }
 function _rebuildSecTiles(){
@@ -1100,8 +1086,6 @@ function cancelCreateSection(){
   document.getElementById('create-sec-name').value='';
   document.getElementById('create-sec-emoji').value='';
   document.getElementById('create-sec-status').textContent='';
-  var def=document.querySelector('input[name="create-sec-nav"][value="creative"]');
-  if(def)def.checked=true;
 }
 function createSection(){
   var token=getToken();
@@ -1112,8 +1096,7 @@ function createSection(){
   if(!name){st.textContent='Введите название';return;}
   var id='section-'+name.toLowerCase().replace(/[^a-zа-яёa-z0-9]/gi,'-').replace(/-+/g,'-').replace(/^-|-$/g,'').substring(0,40)+'--'+Date.now().toString(36);
   var file='section-'+id+'.txt';
-  var navRadio=document.querySelector('input[name="create-sec-nav"]:checked');
-  var sec={id:id,label:name,emoji:emoji,file:file,nav:navRadio?navRadio.value:'creative'};
+  var sec={id:id,label:name,emoji:emoji,file:file,nav:'creative'};
   st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
   var newSecs=_customSecs.concat([sec]);
   var body={message:'Create section: '+name,content:btoa(unescape(encodeURIComponent(JSON.stringify(newSecs,null,2)))),branch:'main'};
