@@ -186,20 +186,8 @@
   <!-- выбор рубрики -->
   <div id="add-section-picker" style="padding:16px;display:flex;flex-direction:column;gap:10px">
     <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);text-align:center;padding-bottom:4px">Выберите рубрику</div>
-    <button onclick="selectAddSection('poems')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="font-size:1.3rem">📜</span><span style="color:#c9a96e;font-size:1.05rem">Поэзия</span>
-    </button>
-    <button onclick="selectAddSection('astrology')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="font-size:1.3rem">✨</span><span style="color:#c9a96e;font-size:1.05rem">Зодиак</span>
-    </button>
-    <button onclick="selectAddSection('poetry-en')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="font-size:1.3rem">🎵</span><span style="color:#c9a96e;font-size:1.05rem">Songs EN</span>
-    </button>
-    <button onclick="selectAddSection('tales')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="font-size:1.3rem">✨</span><span style="color:#c9a96e;font-size:1.05rem">Сказки</span>
-    </button>
-    <button onclick="selectAddSection('shop')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="font-size:1.3rem">🛍️</span><span style="color:#c9a96e;font-size:1.05rem">Товар</span>
+    <button onclick="showAddCreative()" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px;justify-content:space-between" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+      <span style="display:flex;align-items:center;gap:12px"><span style="font-size:1.3rem">🎨</span><span style="color:#c9a96e;font-size:1.05rem">Творчество</span></span><span style="color:rgba(201,169,110,0.5);font-size:1rem">›</span>
     </button>
     <button onclick="selectAddSection('books')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
       <span style="font-size:1.3rem">📚</span><span style="color:#c9a96e;font-size:1.05rem">Книги</span>
@@ -207,7 +195,30 @@
     <button onclick="selectAddSection('author')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
       <span style="font-size:1.3rem">👤</span><span style="color:#c9a96e;font-size:1.05rem">Ия Бард</span>
     </button>
+    <button onclick="selectAddSection('shop')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+      <span style="font-size:1.3rem">🛍️</span><span style="color:#c9a96e;font-size:1.05rem">Товар</span>
+    </button>
+  </div>
+
+  <!-- Творчество sub-picker (add) -->
+  <div id="add-creative-picker" style="padding:16px;display:none;flex-direction:column;gap:10px">
+    <div style="display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid rgba(201,169,110,0.15);margin-bottom:2px">
+      <button onclick="backToAddPicker()" class="inner-back-btn">← Назад</button>
+      <span style="color:#c9a96e;font-size:0.95rem;letter-spacing:1px;font-family:'Georgia',serif;font-weight:600">Творчество</span>
+    </div>
+    <button onclick="selectAddSection('poems')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+      <span style="font-size:1.3rem">📜</span><span style="color:#c9a96e;font-size:1.05rem">Поэзия</span>
+    </button>
     <div id="custom-sec-add-tiles"></div>
+    <button onclick="selectAddSection('tales')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+      <span style="font-size:1.3rem">✨</span><span style="color:#c9a96e;font-size:1.05rem">Сказки</span>
+    </button>
+    <button onclick="selectAddSection('astrology')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+      <span style="font-size:1.3rem">✨</span><span style="color:#c9a96e;font-size:1.05rem">Зодиак</span>
+    </button>
+    <button onclick="selectAddSection('poetry-en')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+      <span style="font-size:1.3rem">🎵</span><span style="color:#c9a96e;font-size:1.05rem">Songs EN</span>
+    </button>
     <div id="create-sec-form" style="display:none;flex-direction:column;gap:8px;padding:4px 0">
       <input type="text" id="create-sec-name" placeholder="Название рубрики" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;font-size:1rem;width:100%;box-sizing:border-box">
       <input type="text" id="create-sec-emoji" placeholder="Эмодзи для бэкстейджа (напр. 🎨)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;font-size:1rem;width:100%;box-sizing:border-box">
@@ -491,20 +502,8 @@
     <!-- Edit picker -->
     <div id="edit-picker" style="padding:16px;display:flex;flex-direction:column;gap:10px">
       <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);text-align:center;padding-bottom:4px">Выберите рубрику</div>
-      <button onclick="selectEditSection('poems')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-        <span style="font-size:1.3rem">📜</span><span style="color:#c9a96e;font-size:1.05rem">Поэзия</span>
-      </button>
-      <button onclick="selectEditSection('astrology')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-        <span style="font-size:1.3rem">✨</span><span style="color:#c9a96e;font-size:1.05rem">Зодиак</span>
-      </button>
-      <button onclick="selectEditSection('poetry-en')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-        <span style="font-size:1.3rem">🎵</span><span style="color:#c9a96e;font-size:1.05rem">Songs EN</span>
-      </button>
-      <button onclick="selectEditSection('tales')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-        <span style="font-size:1.3rem">✨</span><span style="color:#c9a96e;font-size:1.05rem">Сказки</span>
-      </button>
-      <button onclick="selectEditSection('shop')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-        <span style="font-size:1.3rem">🛍️</span><span style="color:#c9a96e;font-size:1.05rem">Товар</span>
+      <button onclick="showEditCreative()" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px;justify-content:space-between" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+        <span style="display:flex;align-items:center;gap:12px"><span style="font-size:1.3rem">🎨</span><span style="color:#c9a96e;font-size:1.05rem">Творчество</span></span><span style="color:rgba(201,169,110,0.5);font-size:1rem">›</span>
       </button>
       <button onclick="selectEditSection('books')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
         <span style="font-size:1.3rem">📚</span><span style="color:#c9a96e;font-size:1.05rem">Книги</span>
@@ -515,7 +514,27 @@
       <button onclick="selectEditSection('audio')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
         <span style="font-size:1.3rem">🎧</span><span style="color:#c9a96e;font-size:1.05rem">Аудио</span>
       </button>
+    </div>
+
+    <!-- Творчество sub-picker (edit) -->
+    <div id="edit-creative-picker" style="padding:16px;display:none;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid rgba(201,169,110,0.15);margin-bottom:2px">
+        <button onclick="backFromEditCreative()" class="inner-back-btn">← Назад</button>
+        <span style="color:#c9a96e;font-size:0.95rem;letter-spacing:1px;font-family:'Georgia',serif;font-weight:600">Творчество</span>
+      </div>
+      <button onclick="selectEditSection('poems')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+        <span style="font-size:1.3rem">📜</span><span style="color:#c9a96e;font-size:1.05rem">Поэзия</span>
+      </button>
       <div id="custom-sec-edit-tiles"></div>
+      <button onclick="selectEditSection('tales')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+        <span style="font-size:1.3rem">✨</span><span style="color:#c9a96e;font-size:1.05rem">Сказки</span>
+      </button>
+      <button onclick="selectEditSection('astrology')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+        <span style="font-size:1.3rem">✨</span><span style="color:#c9a96e;font-size:1.05rem">Зодиак</span>
+      </button>
+      <button onclick="selectEditSection('poetry-en')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+        <span style="font-size:1.3rem">🎵</span><span style="color:#c9a96e;font-size:1.05rem">Songs EN</span>
+      </button>
     </div>
 
     <!-- Entry list -->
@@ -682,6 +701,7 @@ function switchAdd(btn){
 function selectAddSection(section){
   var labels={poems:'Поэзия',tales:'Сказки','poetry-en':'Songs EN',astrology:'Зодиак',author:'Ия Бард',shop:'Товар',books:'Книги'};
   document.getElementById('add-section-picker').style.display='none';
+  document.getElementById('add-creative-picker').style.display='none';
   document.getElementById('add-form-wrap').style.display='block';
   var cs=_customSecs.find(function(s){return s.id===section;});
   document.getElementById('add-section-label').textContent=labels[section]||(cs?cs.label:section);
@@ -905,12 +925,37 @@ function addBooks(){
   .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
 }
 function backToSectionPicker(){
-  document.getElementById('add-section-picker').style.display='flex';
   document.getElementById('add-form-wrap').style.display='none';
+  if(_addNavFrom==='creative'){
+    document.getElementById('add-creative-picker').style.display='flex';
+  }else{
+    document.getElementById('add-section-picker').style.display='flex';
+  }
 }
 
 // ─── CUSTOM SECTIONS ────────────────────────────────────────────────────────
 var _customSecs=[];var _customSecsSha=null;var _curCustomSec=null;
+var _addNavFrom='main';var _editNavFrom='main';
+function showAddCreative(){
+  document.getElementById('add-section-picker').style.display='none';
+  document.getElementById('add-creative-picker').style.display='flex';
+  _addNavFrom='creative';
+}
+function backToAddPicker(){
+  document.getElementById('add-creative-picker').style.display='none';
+  document.getElementById('add-section-picker').style.display='flex';
+  _addNavFrom='main';
+}
+function showEditCreative(){
+  document.getElementById('edit-picker').style.display='none';
+  document.getElementById('edit-creative-picker').style.display='flex';
+  _editNavFrom='creative';
+}
+function backFromEditCreative(){
+  document.getElementById('edit-creative-picker').style.display='none';
+  document.getElementById('edit-picker').style.display='flex';
+  _editNavFrom='main';
+}
 function _secTileHtml(emoji,label){
   return '<span style="font-size:1.3rem">'+(emoji||'📁')+'</span><span style="color:#c9a96e;font-size:1.05rem">'+label+'</span>';
 }
@@ -2307,16 +2352,20 @@ function setMode(m,btn){
   document.getElementById('mode-edit').style.display=m==='edit'?'block':'none';
   if(m==='add'){
     document.getElementById('add-section-picker').style.display='flex';
+    document.getElementById('add-creative-picker').style.display='none';
     document.getElementById('add-form-wrap').style.display='none';
+    _addNavFrom='main';
   }
   if(m==='edit') showEditPanel('picker');
 }
 
 function showEditPanel(which){
   document.getElementById('edit-picker').style.display=which==='picker'?'flex':'none';
+  document.getElementById('edit-creative-picker').style.display='none';
   document.getElementById('edit-list-wrap').style.display=which==='list'?'block':'none';
   document.getElementById('edit-form-wrap').style.display=which==='form'?'block':'none';
   document.getElementById('edit-audio-wrap').style.display=which==='audio'?'block':'none';
+  if(which==='picker')_editNavFrom='main';
 }
 
 function selectEditSection(section){
@@ -2326,7 +2375,14 @@ function selectEditSection(section){
   showEditPanel('list');
   loadEditList();
 }
-function backToEditPicker(){showEditPanel('picker');}
+function backToEditPicker(){
+  if(_editNavFrom==='creative'){
+    showEditPanel('none');
+    document.getElementById('edit-creative-picker').style.display='flex';
+  }else{
+    showEditPanel('picker');
+  }
+}
 function backToEditList(){showEditPanel('list');}
 
 function loadEditList(){
