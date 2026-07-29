@@ -2237,13 +2237,15 @@ function carouselMove(dir){var n=document.querySelectorAll('#carousel-track .car
 function carouselGo(idx){carouselIdx=idx;carouselUpdate();}
 function loadCarousel(){
   var track=document.getElementById('carousel-track');
-  if(!track||track.children.length)return;
+  if(!track||track.dataset.loaded)return;
   fetch('carousel.txt?v='+Math.floor(Date.now()/60000))
   .then(function(r){if(!r.ok)throw new Error();return r.text();})
   .then(function(text){
     var dotsEl=document.querySelector('#author-carousel .carousel-dots');
     var entries=text.split('===').map(function(e){return e.trim();}).filter(Boolean);
+    track.dataset.loaded='1';
     if(!entries.length){var ac=document.getElementById('author-carousel');if(ac)ac.style.display='none';return;}
+    var ac2=document.getElementById('author-carousel');if(ac2)ac2.style.display='';
     track.innerHTML='';if(dotsEl)dotsEl.innerHTML='';
     entries.forEach(function(raw,slideIdx){
       var lines=raw.split('\n');
