@@ -961,19 +961,20 @@ function _makeTile(sec,clickFn){
 var _secDrag={from:-1,dragging:false};
 function _makeReorderTile(sec,idx,total,clickFn){
   var b=document.createElement('button');
-  b.style.cssText=_tileCss;
+  b.style.cssText=_tileCss+'user-select:none;-webkit-user-select:none';
   b.setAttribute('draggable','true');
   b.setAttribute('data-secidx',String(idx));
-  // grip handle
+  // grip handle (visual; desktop drag starts here, mobile uses full-tile long-press)
   var grip=document.createElement('span');
   grip.innerHTML='<svg width="10" height="14" viewBox="0 0 10 14" fill="currentColor" style="opacity:0.4"><circle cx="2.5" cy="2" r="1.5"/><circle cx="7.5" cy="2" r="1.5"/><circle cx="2.5" cy="7" r="1.5"/><circle cx="7.5" cy="7" r="1.5"/><circle cx="2.5" cy="12" r="1.5"/><circle cx="7.5" cy="12" r="1.5"/></svg>';
-  grip.style.cssText='flex-shrink:0;cursor:grab;line-height:0;margin-right:4px;touch-action:none';
+  grip.style.cssText='flex-shrink:0;cursor:grab;line-height:0;margin-right:4px';
   b.appendChild(grip);
   var inner=document.createElement('span');inner.style.cssText='display:flex;align-items:center;gap:12px;flex:1';
   inner.innerHTML=_secTileHtml(sec.emoji,sec.label);
   b.appendChild(inner);
   b.onmouseover=function(){if(!_secDrag.dragging){b.style.borderColor='rgba(201,169,110,0.6)';b.style.background='rgba(201,169,110,0.12)';}};
   b.onmouseout=function(){if(!_secDrag.dragging){b.style.borderColor='rgba(201,169,110,0.25)';b.style.background='rgba(201,169,110,0.07)';}};
+  // onclick fires on desktop mouse clicks; touch taps are handled in touchend below
   b.onclick=function(){if(!_secDrag.dragging)clickFn(sec.id);};
   b.addEventListener('dragstart',function(e){
     _secDrag.from=idx;_secDrag.dragging=true;
@@ -1004,36 +1005,43 @@ function _makeReorderTile(sec,idx,total,clickFn){
     if(_secDrag.from!==-1&&_secDrag.from!==idx)moveSection(_secDrag.from,idx);
     _secDrag.from=-1;
   });
-  // Mobile: touch the grip handle to immediately start drag (no long-press timer)
-  var _mDrag={on:false};
-  grip.addEventListener('click',function(e){e.stopPropagation();});
-  grip.addEventListener('touchstart',function(e){
-    e.preventDefault();
-    _mDrag.on=true;_secDrag.from=idx;_secDrag.dragging=true;
-    b.style.opacity='0.4';
-    if(navigator.vibrate)navigator.vibrate(30);
-  },{passive:false});
+  // Mobile: long-press anywhere on tile (400ms). e.preventDefault() in touchstart
+  // blocks browser text-selection UI from the very first touch.
+  // Cancel only on significant movement (>8px) so small tremors don't abort.
+  var _mDrag={on:false,timer:null,startX:0,startY:0,moved:false};
   function _secClearBorders(){document.querySelectorAll('[data-secidx]').forEach(function(el){el.style.borderTopColor='rgba(201,169,110,0.25)';el.style.borderBottomColor='rgba(201,169,110,0.25)';});}
-  grip.addEventListener('touchmove',function(e){
-    if(!_mDrag.on)return;
-    e.preventDefault();
-    var touch=e.touches[0];
-    _secClearBorders();
-    var tgt=document.elementFromPoint(touch.clientX,touch.clientY);
-    while(tgt&&!tgt.getAttribute('data-secidx'))tgt=tgt.parentElement;
-    if(tgt){var r=tgt.getBoundingClientRect();if(touch.clientY>r.top+r.height/2)tgt.style.borderBottomColor='#c9a96e';else tgt.style.borderTopColor='#c9a96e';}
+  b.addEventListener('touchstart',function(e){
+    e.preventDefault(); // blocks text-selection and browser long-press menu
+    var t=e.touches[0];_mDrag.startX=t.clientX;_mDrag.startY=t.clientY;_mDrag.on=false;_mDrag.moved=false;
+    _mDrag.timer=setTimeout(function(){
+      _mDrag.on=true;_secDrag.from=idx;_secDrag.dragging=true;
+      b.style.opacity='0.5';if(navigator.vibrate)navigator.vibrate(40);
+    },400);
   },{passive:false});
-  function _secTouchDone(e){
+  b.addEventListener('touchmove',function(e){
+    var t=e.touches[0];
+    var dx=t.clientX-_mDrag.startX,dy=t.clientY-_mDrag.startY;
+    if(Math.abs(dx)>8||Math.abs(dy)>8)_mDrag.moved=true;
+    if(!_mDrag.on){if(_mDrag.moved){clearTimeout(_mDrag.timer);_mDrag.timer=null;}return;}
+    e.preventDefault(); // block scroll while actively dragging
     _secClearBorders();
-    if(!_mDrag.on){_mDrag.on=false;return;}
-    var touch=e.changedTouches[0];
-    var tgt=document.elementFromPoint(touch.clientX,touch.clientY);
+    var tgt=document.elementFromPoint(t.clientX,t.clientY);
+    while(tgt&&!tgt.getAttribute('data-secidx'))tgt=tgt.parentElement;
+    if(tgt){var r=tgt.getBoundingClientRect();if(t.clientY>r.top+r.height/2)tgt.style.borderBottomColor='#c9a96e';else tgt.style.borderTopColor='#c9a96e';}
+  },{passive:false});
+  b.addEventListener('touchend',function(e){
+    clearTimeout(_mDrag.timer);_mDrag.timer=null;_secClearBorders();
+    if(!_mDrag.on){if(!_mDrag.moved)clickFn(sec.id);_mDrag.on=false;return;}
+    var t=e.changedTouches[0];
+    var tgt=document.elementFromPoint(t.clientX,t.clientY);
     while(tgt&&!tgt.getAttribute('data-secidx'))tgt=tgt.parentElement;
     if(tgt){var toIdx=parseInt(tgt.getAttribute('data-secidx'));if(!isNaN(toIdx)&&toIdx!==_secDrag.from)moveSection(_secDrag.from,toIdx);}
     b.style.opacity='';_mDrag.on=false;_secDrag.from=-1;_secDrag.dragging=false;
-  }
-  grip.addEventListener('touchend',_secTouchDone);
-  grip.addEventListener('touchcancel',_secTouchDone);
+  });
+  b.addEventListener('touchcancel',function(){
+    clearTimeout(_mDrag.timer);_mDrag.timer=null;_secClearBorders();
+    b.style.opacity='';_mDrag.on=false;_secDrag.from=-1;_secDrag.dragging=false;
+  });
   return b;
 }
 function _rebuildSecTiles(){
