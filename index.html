@@ -2244,7 +2244,7 @@ function loadCarousel(){
   .then(function(text){
     var dotsEl=document.querySelector('#author-carousel .carousel-dots');
     var entries=text.split('===').map(function(e){return e.trim();}).filter(Boolean);
-    if(!entries.length)return;
+    if(!entries.length){var ac=document.getElementById('author-carousel');if(ac)ac.style.display='none';return;}
     track.innerHTML='';if(dotsEl)dotsEl.innerHTML='';
     entries.forEach(function(raw,slideIdx){
       var lines=raw.split('\n');
