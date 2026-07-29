@@ -207,6 +207,19 @@
     <button onclick="selectAddSection('author')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
       <span style="font-size:1.3rem">👤</span><span style="color:#c9a96e;font-size:1.05rem">Ия Бард</span>
     </button>
+    <div id="custom-sec-add-tiles"></div>
+    <div id="create-sec-form" style="display:none;flex-direction:column;gap:8px;padding:4px 0">
+      <input type="text" id="create-sec-name" placeholder="Название рубрики" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;font-size:1rem;width:100%;box-sizing:border-box">
+      <input type="text" id="create-sec-emoji" placeholder="Эмодзи (необязательно, напр. 🎨)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;font-size:1rem;width:100%;box-sizing:border-box">
+      <div style="display:flex;gap:8px">
+        <button onclick="createSection()" class="novinka-add-btn" style="flex:1">Создать</button>
+        <button onclick="cancelCreateSection()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.2);border-radius:6px;color:rgba(232,221,208,0.6);padding:9px 16px;cursor:pointer;font-family:'Georgia',serif;font-size:0.88rem;flex-shrink:0">Отмена</button>
+      </div>
+      <div id="create-sec-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
+    </div>
+    <button onclick="showCreateSection()" id="btn-create-section" style="background:rgba(201,169,110,0.04);border:1px dashed rgba(201,169,110,0.35);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:14px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.09)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.35)';this.style.background='rgba(201,169,110,0.04)'">
+      <span style="font-size:1.3rem">＋</span><span style="color:rgba(201,169,110,0.7);font-size:0.95rem">Создать рубрику</span>
+    </button>
   </div>
 
   <!-- ШАГ 2: форма (скрыта до выбора) -->
@@ -425,6 +438,35 @@
     <div id="books-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
   </div>
 
+  <!-- GENERIC CUSTOM SECTION form -->
+  <div id="add-form-custom" style="padding:20px;display:none;flex-direction:column;gap:8px">
+    <label style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:text;display:flex;align-items:center;gap:8px;transition:border-color 0.2s">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      <input type="url" id="custom-yt-url" placeholder="Добавить ссылку на YouTube" style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text" onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'" onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
+    </label>
+    <div id="custom-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
+      <svg width="13" height="13" viewBox="6 3 8 18" preserveAspectRatio="none" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+      <span id="custom-mp3-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.88rem">MP3 файл</span>
+      <input type="hidden" id="custom-mp3-input" value="">
+      <input type="file" id="custom-mp3-file" accept=".mp3,.m4a,.wav,.ogg,.aac,audio/*" multiple style="display:none" onchange="uploadCustomAudio(this.files)">
+      <button type="button" onclick="document.getElementById('custom-mp3-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif">Загрузить</button>
+      <button type="button" id="custom-mp3-clear" onclick="clearCustomMp3()" style="display:none;background:none;border:none;color:rgba(201,169,110,0.5);cursor:pointer;font-size:0.9rem;padding:2px 4px">✕</button>
+    </div>
+    <div id="custom-mp3-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
+    <label id="custom-img-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:pointer;display:flex;align-items:center;gap:8px;transition:border-color 0.2s" for="custom-image-input">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+      <span id="custom-img-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Добавить картинку</span>
+      <input type="file" id="custom-image-input" accept="image/*" style="display:none" onchange="previewCustomImage(this)">
+    </label>
+    <div id="custom-img-preview" style="display:none;position:relative;border-radius:6px;overflow:hidden">
+      <img id="custom-img-prev-img" style="max-width:100%;max-height:180px;display:block;object-fit:contain;margin:0 auto">
+      <button onclick="clearCustomImage()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.65);border:none;border-radius:50%;color:#e8ddd0;width:22px;height:22px;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;line-height:1">✕</button>
+    </div>
+    <textarea id="custom-text" placeholder="Название / Текст (первая строка — название)" rows="4" style="background:#0a060a;color:#e8ddd0;border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:11px 14px;font-family:'Georgia',serif;font-size:0.92rem;line-height:1.7;resize:vertical;outline:none;width:100%" spellcheck="false" autocorrect="off"></textarea>
+    <button class="novinka-add-btn" onclick="addCustomEntry()">Добавить</button>
+    <div id="custom-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
+  </div>
+
   </div><!-- /add-form-wrap -->
   </div><!-- /mode-add -->
 
@@ -458,6 +500,7 @@
       <button onclick="selectEditSection('audio')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
         <span style="font-size:1.3rem">🎧</span><span style="color:#c9a96e;font-size:1.05rem">Аудио</span>
       </button>
+      <div id="custom-sec-edit-tiles"></div>
     </div>
 
     <!-- Entry list -->
@@ -583,6 +626,7 @@ function saveToken(){
   document.getElementById('token-status').textContent = '✓';
   document.getElementById('token-body').style.display='none';
   document.getElementById('token-arrow').classList.remove('open');
+  loadCustomSectionsBackstage();
   loadFile();
 }
 
@@ -624,11 +668,19 @@ function selectAddSection(section){
   var labels={poems:'Поэзия',tales:'Сказки и мифы','poetry-en':'Songs EN',astrology:'Астрология',author:'Ия Бард',shop:'Товар',books:'Книги'};
   document.getElementById('add-section-picker').style.display='none';
   document.getElementById('add-form-wrap').style.display='block';
-  document.getElementById('add-section-label').textContent=labels[section]||section;
-  ['poems','tales','poetry-en','astrology','author','shop','books'].forEach(function(s){
+  var cs=_customSecs.find(function(s){return s.id===section;});
+  document.getElementById('add-section-label').textContent=labels[section]||(cs?cs.label:section);
+  ['poems','tales','poetry-en','astrology','author','shop','books','custom'].forEach(function(s){
     var f=document.getElementById('add-form-'+s);
-    if(f) f.style.display=(s===section)?'flex':'none';
+    if(f) f.style.display='none';
   });
+  if(cs){
+    _curCustomSec=cs;
+    document.getElementById('add-form-custom').style.display='flex';
+    return;
+  }
+  var f2=document.getElementById('add-form-'+section);
+  if(f2) f2.style.display='flex';
   if(section==='poetry-en') loadPoetryENList();
   if(section==='astrology') loadAstroList();
 }
@@ -841,6 +893,178 @@ function backToSectionPicker(){
   document.getElementById('add-section-picker').style.display='flex';
   document.getElementById('add-form-wrap').style.display='none';
 }
+
+// ─── CUSTOM SECTIONS ────────────────────────────────────────────────────────
+var _customSecs=[];var _customSecsSha=null;var _curCustomSec=null;
+function _secTileHtml(emoji,label){
+  return '<span style="font-size:1.3rem">'+(emoji||'📁')+'</span><span style="color:#c9a96e;font-size:1.05rem">'+label+'</span>';
+}
+var _tileCss='background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:\'Georgia\',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px;width:100%';
+function _makeTile(sec,clickFn){
+  var b=document.createElement('button');
+  b.style.cssText=_tileCss;
+  b.innerHTML=_secTileHtml(sec.emoji,sec.label);
+  b.onmouseover=function(){this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)';};
+  b.onmouseout=function(){this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)';};
+  b.onclick=function(){clickFn(sec.id);};
+  return b;
+}
+function loadCustomSectionsBackstage(){
+  var token=getToken();if(!token)return;
+  fetch('https://api.github.com/repos/'+REPO+'/contents/sections.json?ref=main',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){return r.status===404?null:r.json();})
+  .then(function(d){
+    if(!d)return;
+    var secs;try{secs=JSON.parse(b64d(d.content.replace(/\n/g,'')));}catch(e){return;}
+    if(!Array.isArray(secs))return;
+    _customSecs=secs;_customSecsSha=d.sha;
+    secs.forEach(function(sec){
+      SECFILE[sec.id]=sec.file;SECLABEL[sec.id]=sec.label;
+      var addTiles=document.getElementById('custom-sec-add-tiles');
+      var editTiles=document.getElementById('custom-sec-edit-tiles');
+      if(addTiles)addTiles.appendChild(_makeTile(sec,selectAddSection));
+      if(editTiles)editTiles.appendChild(_makeTile(sec,selectEditSection));
+    });
+  })
+  .catch(function(){});
+}
+function showCreateSection(){
+  document.getElementById('create-sec-form').style.display='flex';
+  document.getElementById('btn-create-section').style.display='none';
+  document.getElementById('create-sec-name').focus();
+}
+function cancelCreateSection(){
+  document.getElementById('create-sec-form').style.display='none';
+  document.getElementById('btn-create-section').style.display='flex';
+  document.getElementById('create-sec-name').value='';
+  document.getElementById('create-sec-emoji').value='';
+  document.getElementById('create-sec-status').textContent='';
+}
+function createSection(){
+  var token=getToken();
+  var st=document.getElementById('create-sec-status');
+  if(!token){st.textContent='Нет токена';return;}
+  var name=document.getElementById('create-sec-name').value.trim();
+  var emoji=document.getElementById('create-sec-emoji').value.trim()||'📁';
+  if(!name){st.textContent='Введите название';return;}
+  var id='section-'+name.toLowerCase().replace(/[^a-zа-яёa-z0-9]/gi,'-').replace(/-+/g,'-').replace(/^-|-$/g,'').substring(0,40)+'--'+Date.now().toString(36);
+  var file='section-'+id+'.txt';
+  var sec={id:id,label:name,emoji:emoji,file:file};
+  st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
+  var newSecs=_customSecs.concat([sec]);
+  var body={message:'Create section: '+name,content:btoa(unescape(encodeURIComponent(JSON.stringify(newSecs,null,2)))),branch:'main'};
+  if(_customSecsSha)body.sha=_customSecsSha;
+  fetch('https://api.github.com/repos/'+REPO+'/contents/sections.json',{
+    method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  })
+  .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+  .then(function(d){
+    _customSecsSha=d.content.sha;_customSecs=newSecs;
+    SECFILE[sec.id]=sec.file;SECLABEL[sec.id]=sec.label;
+    var emptyBody={message:'Init section file: '+sec.file,content:btoa('===\n'),branch:'main'};
+    return fetch('https://api.github.com/repos/'+REPO+'/contents/'+sec.file,{
+      method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify(emptyBody)
+    });
+  })
+  .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+  .then(function(){
+    st.textContent='✓ Рубрика создана!';st.style.color='#7bc47b';
+    var addTiles=document.getElementById('custom-sec-add-tiles');
+    var editTiles=document.getElementById('custom-sec-edit-tiles');
+    if(addTiles)addTiles.appendChild(_makeTile(sec,selectAddSection));
+    if(editTiles)editTiles.appendChild(_makeTile(sec,selectEditSection));
+    setTimeout(cancelCreateSection,1500);
+  })
+  .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
+}
+// Custom section content add
+function uploadCustomAudio(files){
+  if(!files||!files.length)return;
+  var token=getToken();
+  var prog=document.getElementById('custom-mp3-progress');
+  if(!token){prog.textContent='Нет токена';prog.style.display='block';return;}
+  var fileArr=Array.prototype.slice.call(files);var total=fileArr.length;var firstSafe=null;
+  prog.style.display='block';prog.style.color='rgba(201,169,110,0.7)';
+  prog.textContent=total>1?'[1/'+total+'] Загрузка…':'Загрузка…';
+  function uploadOne(idx){
+    if(idx>=total){prog.style.color='#7bc47b';prog.textContent=total>1?'✓ Загружено: '+total+' файла':'✓ Загружено: '+firstSafe;return;}
+    var file=fileArr[idx];
+    if(file.size>25*1024*1024){prog.style.color='#d47a7a';prog.textContent='Файл '+file.name+' больше 25MB';uploadOne(idx+1);return;}
+    if(total>1)prog.textContent='['+(idx+1)+'/'+total+'] '+file.name+'…';
+    var reader=new FileReader();
+    reader.onload=function(e){
+      var arr=new Uint8Array(e.target.result);var chunks=[];
+      for(var i=0;i<arr.length;i+=8192)chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));
+      var b64=btoa(chunks.join(''));var safeName=sanitizeFilename(file.name,'audio');
+      if(idx===0)firstSafe=safeName;
+      var path='audio/'+safeName;
+      fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})
+      .then(function(r){return r.json();})
+      .then(function(ex){
+        var b={message:'Upload audio: '+safeName,content:b64,branch:'main'};if(ex&&ex.sha&&!ex.message)b.sha=ex.sha;
+        return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(b)});
+      })
+      .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+      .then(function(){
+        if(idx===0){document.getElementById('custom-mp3-input').value=firstSafe;document.getElementById('custom-mp3-name').textContent=total>1?firstSafe+' +'+(total-1)+' ещё':firstSafe;document.getElementById('custom-mp3-name').style.color='#e8ddd0';document.getElementById('custom-mp3-clear').style.display='inline';}
+        else{document.getElementById('custom-mp3-input').value+='\n'+safeName;}
+        uploadOne(idx+1);
+      })
+      .catch(function(e){prog.style.color='#d47a7a';prog.textContent='Ошибка: '+e.message;uploadOne(idx+1);});
+    };
+    reader.readAsArrayBuffer(file);
+  }
+  uploadOne(0);
+}
+function clearCustomMp3(){document.getElementById('custom-mp3-input').value='';document.getElementById('custom-mp3-name').textContent='MP3 файл';document.getElementById('custom-mp3-name').style.color='';document.getElementById('custom-mp3-clear').style.display='none';document.getElementById('custom-mp3-progress').style.display='none';}
+function previewCustomImage(inp){
+  var file=inp.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){document.getElementById('custom-img-prev-img').src=e.target.result;document.getElementById('custom-img-preview').style.display='block';document.getElementById('custom-img-name').textContent=file.name;};
+  reader.readAsDataURL(file);
+}
+function clearCustomImage(){document.getElementById('custom-image-input').value='';document.getElementById('custom-img-prev-img').src='';document.getElementById('custom-img-preview').style.display='none';document.getElementById('custom-img-name').textContent='Добавить картинку';}
+function addCustomEntry(){
+  var token=getToken();
+  var st=document.getElementById('custom-add-status');
+  if(!token){st.textContent='Нет токена';return;}
+  if(!_curCustomSec){st.textContent='Рубрика не выбрана';return;}
+  var url=document.getElementById('custom-yt-url').value.trim();
+  var audio=(document.getElementById('custom-mp3-input').value||'').trim();
+  var text=(document.getElementById('custom-text').value||'').trim();
+  var title=text.split('\n')[0].trim()||'Запись';
+  if(!text&&!url){st.textContent='Введите текст или ссылку';return;}
+  if(url&&!/youtu/.test(url)){st.textContent='Неверный YouTube URL';return;}
+  var imageFile=document.getElementById('custom-image-input').files[0]||null;
+  st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
+  function doSave(imgName){
+    var audioLines=audio?audio.split('\n').filter(Boolean).map(function(f){return '# audio: '+f.trim()+'\n';}).join(''):'';
+    fetch('https://api.github.com/repos/'+REPO+'/contents/'+_curCustomSec.file+'?ref=main',{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}})
+    .then(function(r){return r.status===404?{sha:null,content:btoa('')}:r.json();})
+    .then(function(d){
+      var existing=d.sha?b64d(d.content.replace(/\n/g,'')):'';
+      var newEntry=audioLines+(imgName?'# image: '+imgName+'\n':'')+text+(url?'\n\n'+url:'')+'\n';
+      var updated=existing.trimEnd()+'\n\n===\n\n'+newEntry+'\n===\n';
+      var body={message:'Add to '+_curCustomSec.label+': '+title,content:btoa(unescape(encodeURIComponent(updated))),branch:'main'};
+      if(d.sha)body.sha=d.sha;
+      return fetch('https://api.github.com/repos/'+REPO+'/contents/'+_curCustomSec.file,{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+    })
+    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+    .then(function(){
+      st.textContent='✓ Добавлено!';st.style.color='#7bc47b';
+      document.getElementById('custom-yt-url').value='';document.getElementById('custom-text').value='';
+      clearCustomMp3();clearCustomImage();
+    })
+    .catch(function(e){st.textContent='Ошибка: '+e.message;st.style.color='#d47a7a';});
+  }
+  if(imageFile){st.textContent='Загрузка картинки…';uploadPoemImage(imageFile,function(fn){doSave(fn);},function(e){st.textContent='Ошибка картинки: '+e.message;st.style.color='#d47a7a';});}
+  else{doSave(null);}
+}
+
 function uploadCarouselImage(file){
   if(!file)return;
   var token=getToken();
@@ -2936,6 +3160,7 @@ function deletePoemCard(btn){
   if(saved){
     document.getElementById('token').value = saved;
     document.getElementById('token-status').textContent = '✓';
+    loadCustomSectionsBackstage();
   } else {
     document.getElementById('token-body').style.display='block';
     document.getElementById('token-arrow').classList.add('open');

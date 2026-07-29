@@ -1573,6 +1573,63 @@ function goCreative(panelId){
   closeDrop();
   switchTab(panelId,document.getElementById('tab-creative'));
 }
+var _customSecs=[];
+function loadCustomSections(){
+  fetch('sections.json?v='+Math.floor(Date.now()/60000))
+  .then(function(r){return r.ok?r.json():[];})
+  .then(function(secs){
+    if(!Array.isArray(secs)||!secs.length)return;
+    _customSecs=secs;
+    var dropMain=document.getElementById('drop-creative');
+    var dropSticky=document.querySelector('#sticky-nav .snav-drop');
+    var snavBtn=document.querySelector('#sticky-nav .snav-btn[data-panels]');
+    var wrap=document.getElementById('main-content');
+    secs.forEach(function(sec){
+      if(!document.getElementById(sec.id)){
+        var p=document.createElement('div');
+        p.id=sec.id;p.className='tab-panel';
+        p.setAttribute('role','tabpanel');p.setAttribute('aria-labelledby','tab-creative');
+        wrap.appendChild(p);
+      }
+      if(dropMain&&!dropMain.querySelector('[data-csid="'+sec.id+'"]')){
+        var b=document.createElement('button');b.setAttribute('data-csid',sec.id);
+        b.textContent=(sec.emoji?sec.emoji+' ':'')+sec.label;
+        b.onclick=function(){goCreative(sec.id);};
+        dropMain.appendChild(b);
+      }
+      if(dropSticky&&!dropSticky.querySelector('[data-csid="'+sec.id+'"]')){
+        var b2=document.createElement('button');b2.setAttribute('data-csid',sec.id);
+        b2.textContent=(sec.emoji?sec.emoji+' ':'')+sec.label;
+        b2.onclick=function(){goCreative(sec.id);};
+        dropSticky.appendChild(b2);
+      }
+      if(snavBtn){
+        var panels=(snavBtn.dataset.panels||'').split(' ');
+        if(panels.indexOf(sec.id)===-1)snavBtn.dataset.panels=panels.concat(sec.id).join(' ').trim();
+      }
+    });
+  })
+  .catch(function(){});
+}
+function loadCustomSectionContent(sec){
+  var panel=document.getElementById(sec.id);
+  if(!panel||panel.dataset.loaded)return;
+  panel.dataset.loaded='1';
+  panel.innerHTML='<p class="poems-loading">Загрузка…</p>';
+  fetch(sec.file+'?v='+Math.floor(Date.now()/60000))
+  .then(function(r){return r.ok?r.text():'';})
+  .then(function(text){
+    var entries=text.split('===').map(function(e){return e.trim();}).filter(Boolean).reverse();
+    var list=document.createElement('div');list.className='novinka-list';
+    entries.forEach(function(e){
+      var card=buildCard(e);list.appendChild(card);
+      if(typeof fadeObserver!=='undefined')fadeObserver.observe(card);
+    });
+    panel.innerHTML='';panel.appendChild(list);
+    initAudioPlayers(panel);initPoemCarousels(panel);
+  })
+  .catch(function(){panel.innerHTML='';});
+}
 function goShopItem(itemId){
   closeDrop();
   switchTab('shop',document.getElementById('tab-shop'));
@@ -2123,6 +2180,7 @@ function switchTab(id, btn) {
   if(id==='shop')loadShop();
   if(id==='novosti')loadAstrology();
   if(id==='author'){loadAuthor();loadCarousel();}
+  var _cs=_customSecs.find(function(s){return s.id===id;});if(_cs)loadCustomSectionContent(_cs);
   // Scroll to panel top (not main-content top) so content lands right below sticky nav
   var stickyNav=document.getElementById('sticky-nav');
   var stickyH=stickyNav?stickyNav.offsetHeight:0;
@@ -2137,6 +2195,7 @@ function switchTab(id, btn) {
 history.scrollRestoration = 'manual';
 window.addEventListener('load', function(){
   window.scrollTo(0,0);
+  loadCustomSections();
   loadPoems();
   document.querySelectorAll('#sticky-nav .snav-btn').forEach(function(b){
     b.classList.toggle('s-active',(b.dataset.panels||'').split(' ').indexOf('poems')!==-1);
