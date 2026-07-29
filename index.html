@@ -1965,13 +1965,12 @@ function loadPoems(){
       }
       if(ytUrl&&!/^https?:\/\//i.test(ytUrl))ytUrl=null;
       var vid=ytUrl?extractVideoId(ytUrl):null;
-      var h='';
+      var h=titleHtml;
       if(imageFiles.length===1){var imgSrc0=/^https?:\/\//i.test(imageFiles[0])?imageFiles[0]:'images/'+encodeURIComponent(imageFiles[0]);h+='<div class="poem-image"><img src="'+esc(imgSrc0)+'" alt="'+esc(mainT||'иллюстрация')+'" loading="lazy"></div>';}
       else if(imageFiles.length>1){h+='<div class="poem-img-carousel"><div class="poem-img-carousel-track">';imageFiles.forEach(function(f){var s=/^https?:\/\//i.test(f)?f:'images/'+encodeURIComponent(f);h+='<img src="'+esc(s)+'" alt="'+esc(mainT||'')+'" loading="lazy">';});h+='</div><button class="pic-btn prev">&#8249;</button><button class="pic-btn next">&#8250;</button><div class="pic-dots">';imageFiles.forEach(function(_,di){h+='<span'+(di===0?' class="on"':'')+'>&#x200B;</span>';});h+='</div></div>';}
       if(vid){
         h+='<div class="novinka-video poem-video"><div class="yt-facade" data-vid="'+esc(vid)+'" onclick="ytPlay(this)"><img src="https://img.youtube.com/vi/'+esc(vid)+'/hqdefault.jpg" alt="'+esc(mainT||'видео')+'" loading="lazy"><button class="yt-play" aria-label="Смотреть видео">&#9654;</button></div></div>';
       }
-      h+=titleHtml;
       audioFiles.forEach(function(audioFile){h+='<div class="audio-ph" data-src="audio/'+encodeURIComponent(audioFile)+'" data-label="'+esc(mainT||'стихотворение')+'"></div>';});
       var safeT=esc(mainT||'Стихотворение');
       h+='<div class="poem-actions">';
