@@ -1582,8 +1582,12 @@ var _CS_NAV={
 function loadCustomSections(){
   fetch('sections.json?v='+Math.floor(Date.now()/60000))
   .then(function(r){return r.ok?r.json():[];})
-  .then(function(secs){
-    if(!Array.isArray(secs)||!secs.length)return;
+  .then(function(data){
+    var secs;
+    if(Array.isArray(data)){secs=data;}
+    else if(data&&Array.isArray(data.sections)){secs=data.sections;}
+    else{return;}
+    if(!secs.length)return;
     _customSecs=secs;
     var wrap=document.getElementById('main-content');
     secs.forEach(function(sec){

@@ -499,6 +499,9 @@
       <button onclick="selectEditSection('audio')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
         <span style="font-size:1.3rem">🎧</span><span style="color:#c9a96e;font-size:1.05rem">Аудио</span>
       </button>
+      <button onclick="selectEditSection('shop')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
+        <span style="font-size:1.3rem">🛍️</span><span style="color:#c9a96e;font-size:1.05rem">Товар</span>
+      </button>
     </div>
 
     <!-- Творчество sub-picker (edit) -->
@@ -507,19 +510,7 @@
         <button onclick="backFromEditCreative()" class="inner-back-btn">← Назад</button>
         <span style="color:#c9a96e;font-size:0.95rem;letter-spacing:1px;font-family:'Georgia',serif;font-weight:600">Творчество</span>
       </div>
-      <button onclick="selectEditSection('poems')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-        <span style="font-size:1.3rem">📜</span><span style="color:#c9a96e;font-size:1.05rem">Поэзия</span>
-      </button>
-      <div id="custom-sec-edit-tiles"></div>
-      <button onclick="selectEditSection('tales')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-        <span style="font-size:1.3rem">✨</span><span style="color:#c9a96e;font-size:1.05rem">Сказки</span>
-      </button>
-      <button onclick="selectEditSection('astrology')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-        <span style="font-size:1.3rem">✨</span><span style="color:#c9a96e;font-size:1.05rem">Зодиак</span>
-      </button>
-      <button onclick="selectEditSection('poetry-en')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-        <span style="font-size:1.3rem">🎵</span><span style="color:#c9a96e;font-size:1.05rem">Songs EN</span>
-      </button>
+      <div id="custom-sec-edit-tiles" style="display:flex;flex-direction:column;gap:10px"></div>
     </div>
 
     <!-- Entry list -->
@@ -923,7 +914,14 @@ function backToSectionPicker(){
 }
 
 // ─── CUSTOM SECTIONS ────────────────────────────────────────────────────────
+var _FIXED_CREATIVE_SECS=[
+  {id:'poems',label:'Поэзия',emoji:'📜',fixed:true},
+  {id:'tales',label:'Сказки',emoji:'✨',fixed:true},
+  {id:'astrology',label:'Зодиак',emoji:'✨',fixed:true},
+  {id:'poetry-en',label:'Songs EN',emoji:'🎵',fixed:true}
+];
 var _customSecs=[];var _customSecsSha=null;var _curCustomSec=null;
+var _creativeOrder=null;
 var _addNavFrom='main';var _editNavFrom='main';
 function showAddCreative(){
   document.getElementById('add-section-picker').style.display='none';
@@ -961,7 +959,7 @@ function _makeTile(sec,clickFn){
 var _secDrag={from:-1,dragging:false};
 function _makeReorderTile(sec,idx,total,clickFn){
   var b=document.createElement('button');
-  b.style.cssText=_tileCss+'user-select:none;-webkit-user-select:none';
+  b.style.cssText=_tileCss+';user-select:none;-webkit-user-select:none';
   b.setAttribute('draggable','true');
   b.setAttribute('data-secidx',String(idx));
   // grip handle (visual; desktop drag starts here, mobile uses full-tile long-press)
@@ -1044,21 +1042,40 @@ function _makeReorderTile(sec,idx,total,clickFn){
   });
   return b;
 }
+function _getCreativeList(){
+  if(!_creativeOrder){return _FIXED_CREATIVE_SECS.concat(_customSecs);}
+  var all={};
+  _FIXED_CREATIVE_SECS.forEach(function(s){all[s.id]=s;});
+  _customSecs.forEach(function(s){all[s.id]=s;});
+  var seen={};var result=[];
+  _creativeOrder.forEach(function(id){if(all[id]){result.push(all[id]);seen[id]=true;}});
+  _FIXED_CREATIVE_SECS.forEach(function(s){if(!seen[s.id]){result.push(s);seen[s.id]=true;}});
+  _customSecs.forEach(function(s){if(!seen[s.id]){result.push(s);seen[s.id]=true;}});
+  return result;
+}
 function _rebuildSecTiles(){
   var addTiles=document.getElementById('custom-sec-add-tiles');
   var editTiles=document.getElementById('custom-sec-edit-tiles');
-  if(addTiles)addTiles.innerHTML='';if(editTiles)editTiles.innerHTML='';
-  _customSecs.forEach(function(sec,idx){
-    if(addTiles)addTiles.appendChild(_makeTile(sec,selectAddSection));
-    if(editTiles)editTiles.appendChild(_makeReorderTile(sec,idx,_customSecs.length,selectEditSection));
-  });
+  if(addTiles){
+    addTiles.innerHTML='';
+    _customSecs.forEach(function(sec){addTiles.appendChild(_makeTile(sec,selectAddSection));});
+  }
+  if(editTiles){
+    editTiles.innerHTML='';
+    var list=_getCreativeList();
+    list.forEach(function(sec,idx){editTiles.appendChild(_makeReorderTile(sec,idx,list.length,selectEditSection));});
+  }
 }
 function moveSection(fromIdx,toIdx){
-  if(fromIdx===toIdx||fromIdx<0||toIdx<0||fromIdx>=_customSecs.length||toIdx>=_customSecs.length)return;
-  var moved=_customSecs.splice(fromIdx,1)[0];
-  _customSecs.splice(toIdx,0,moved);
+  var list=_getCreativeList();
+  if(fromIdx===toIdx||fromIdx<0||toIdx<0||fromIdx>=list.length||toIdx>=list.length)return;
+  var order=list.map(function(s){return s.id;});
+  var moved=order.splice(fromIdx,1)[0];
+  order.splice(toIdx,0,moved);
+  _creativeOrder=order;
   var token=getToken();if(!token)return;
-  var body={message:'Reorder sections',content:btoa(unescape(encodeURIComponent(JSON.stringify(_customSecs,null,2)))),branch:'main'};
+  var saveData={creativeOrder:_creativeOrder,sections:_customSecs};
+  var body={message:'Reorder sections',content:btoa(unescape(encodeURIComponent(JSON.stringify(saveData,null,2)))),branch:'main'};
   if(_customSecsSha)body.sha=_customSecsSha;
   fetch('https://api.github.com/repos/'+REPO+'/contents/sections.json',{
     method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
@@ -1075,8 +1092,11 @@ function loadCustomSectionsBackstage(){
   .then(function(r){return r.status===404?null:r.json();})
   .then(function(d){
     if(!d)return;
-    var secs;try{secs=JSON.parse(b64d(d.content.replace(/\n/g,'')));}catch(e){return;}
-    if(!Array.isArray(secs))return;
+    var parsed;try{parsed=JSON.parse(b64d(d.content.replace(/\n/g,'')));}catch(e){return;}
+    var secs;
+    if(Array.isArray(parsed)){secs=parsed;_creativeOrder=null;}
+    else if(parsed&&Array.isArray(parsed.sections)){secs=parsed.sections;_creativeOrder=parsed.creativeOrder||null;}
+    else return;
     _customSecs=secs;_customSecsSha=d.sha;
     secs.forEach(function(sec){SECFILE[sec.id]=sec.file;SECLABEL[sec.id]=sec.label;});
     _rebuildSecTiles();
@@ -1107,7 +1127,8 @@ function createSection(){
   var sec={id:id,label:name,emoji:emoji,file:file,nav:'creative'};
   st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
   var newSecs=_customSecs.concat([sec]);
-  var body={message:'Create section: '+name,content:btoa(unescape(encodeURIComponent(JSON.stringify(newSecs,null,2)))),branch:'main'};
+  var saveData={creativeOrder:_creativeOrder,sections:newSecs};
+  var body={message:'Create section: '+name,content:btoa(unescape(encodeURIComponent(JSON.stringify(saveData,null,2)))),branch:'main'};
   if(_customSecsSha)body.sha=_customSecsSha;
   fetch('https://api.github.com/repos/'+REPO+'/contents/sections.json',{
     method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
