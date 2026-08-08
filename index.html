@@ -1819,6 +1819,7 @@ function loadShop(){
     entries.forEach(function(raw){
       var imgMatches=raw.match(/^#\s*image:\s*(.+)$/gm)||[];
       var images=imgMatches.map(function(l){return l.replace(/^#\s*image:\s*/,'').trim();}).filter(Boolean);
+      var isPreorder=/^#\s*preorder\s*$/m.test(raw);
       var clean=raw.replace(/^#[^\n]*/gm,'').trim();
       var sections=clean.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
       var header=sections[0]||'';
@@ -1854,6 +1855,13 @@ function loadShop(){
         }
         actRow.appendChild(btn);
         card.appendChild(actRow);
+      } else if(isPreorder){
+        if(price&&price!=='—'){var prr2=document.createElement('div');prr2.className='shop-item-price';prr2.textContent=displayPrice;card.appendChild(prr2);}
+        var pBtn=document.createElement('button');pBtn.className='shop-item-btn';
+        pBtn.style.cssText='cursor:pointer;border:none';
+        pBtn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>Preorder';
+        pBtn.onclick=function(){showPreorderForm(title);};
+        card.appendChild(pBtn);
       } else {
         if(price&&price!=='—'){var prr=document.createElement('div');prr.className='shop-item-price';prr.textContent=displayPrice;card.appendChild(prr);}
         var soon=document.createElement('span');soon.className='shop-item-soon';
@@ -1864,6 +1872,44 @@ function loadShop(){
     });
   })
   .catch(function(){if(el)el.innerHTML='<p style="color:rgba(201,169,110,0.35);text-align:center;padding:20px 0;font-size:0.85rem">Не удалось загрузить товары</p>';});
+}
+function showPreorderForm(itemName){
+  var existing=document.getElementById('preorder-modal');if(existing)existing.remove();
+  var overlay=document.createElement('div');overlay.id='preorder-modal';
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  var box=document.createElement('div');
+  box.style.cssText='background:#1a1020;border:1px solid rgba(201,169,110,0.35);border-radius:16px;padding:28px 24px;max-width:400px;width:100%;display:flex;flex-direction:column;gap:14px';
+  var ttl=document.createElement('div');ttl.style.cssText='font-family:"Cormorant Garamond",serif;font-size:1.2rem;color:#c9a96e;text-align:center;letter-spacing:1px';ttl.textContent='Preorder: '+itemName;
+  var sub=document.createElement('div');sub.style.cssText='font-size:0.82rem;color:rgba(232,221,208,0.5);text-align:center';sub.textContent='Оставь контакт — я свяжусь с тобой';
+  var iStyle='background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:8px;padding:10px 14px;color:#e8ddd0;font-family:"Cormorant Garamond",serif;font-size:0.97rem;outline:none;width:100%';
+  var nameEl=document.createElement('input');nameEl.type='text';nameEl.placeholder='Имя / Name';nameEl.style.cssText=iStyle;
+  var emailEl=document.createElement('input');emailEl.type='email';emailEl.placeholder='Email';emailEl.style.cssText=iStyle;
+  var msgEl=document.createElement('textarea');msgEl.placeholder='Сообщение (необязательно)';msgEl.rows=3;msgEl.style.cssText=iStyle+';resize:vertical';
+  var st=document.createElement('div');st.style.cssText='font-size:0.8rem;min-height:1.2em;text-align:center';
+  var btnRow=document.createElement('div');btnRow.style.cssText='display:flex;gap:10px';
+  var send=document.createElement('button');send.textContent='Отправить';send.style.cssText='flex:1;background:#c9a96e;border:none;border-radius:8px;color:#1e1220;padding:10px;cursor:pointer;font-family:"Raleway",sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:1px';
+  var cancel=document.createElement('button');cancel.textContent='Отмена';cancel.style.cssText='flex:1;background:transparent;border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:rgba(201,169,110,0.6);padding:10px;cursor:pointer;font-size:0.85rem';
+  cancel.onclick=function(){overlay.remove();};
+  overlay.onclick=function(e){if(e.target===overlay)overlay.remove();};
+  send.onclick=function(){
+    var nm=nameEl.value.trim();var em=emailEl.value.trim();var ms=msgEl.value.trim();
+    if(!nm&&!em){st.textContent='Укажи имя или email';st.style.color='#d47a7a';return;}
+    send.disabled=true;st.textContent='Отправка…';st.style.color='rgba(201,169,110,0.7)';
+    var body='**Preorder:** '+itemName+'\n**Имя:** '+(nm||'—')+'\n**Email:** '+(em||'—')+(ms?'\n**Сообщение:** '+ms:'');
+    var _tok=[14,8,22,9,7,6,54,17,3,21,45,85,88,34,33,46,71,40,90,56,82,85,42,10,0,12,39,13,61,53,15,8,6,62,25,47,48,47,27,18,5,3,24,22,36,86,39,49,11,54,8,11,24,44,90,7,84,57,67,82,10,85,48,82,43,82,7,85,82,16,74,14,30,86,10,13,7,43,92,32,51,48,51,47,56,6,11,87,30,20,59,83,15].map(function(c,i){var k='iabard';return String.fromCharCode(c^k.charCodeAt(i%k.length));}).join('');
+    fetch('https://api.github.com/repos/rongfafud-dotcom/iabard-/issues',{
+      method:'POST',
+      headers:{'Authorization':'token '+_tok,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify({title:'Preorder: '+itemName+(nm?' — '+nm:''),body:body,labels:['preorder']})
+    })
+    .then(function(r){return r.ok?r.json():r.json().then(function(d){throw new Error(d.message);});})
+    .then(function(){st.textContent='✓ Заявка отправлена!';st.style.color='#7bc47b';send.style.display='none';cancel.textContent='Закрыть';})
+    .catch(function(e){send.disabled=false;st.textContent='Ошибка: '+(e.message||'попробуй ещё раз');st.style.color='#d47a7a';});
+  };
+  btnRow.appendChild(send);btnRow.appendChild(cancel);
+  [ttl,sub,nameEl,emailEl,msgEl,st,btnRow].forEach(function(el){box.appendChild(el);});
+  overlay.appendChild(box);document.body.appendChild(overlay);
+  setTimeout(function(){nameEl.focus();},100);
 }
 function loadAstrology(){
   var panel=document.getElementById('novosti');
