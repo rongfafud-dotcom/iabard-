@@ -2164,7 +2164,6 @@ function loadTales(){
       if(tlines.length>=2&&tlines[1].charAt(0)==='('){subT=tlines.slice(1).join(' ');}
       var h='<div class="novinka-title"><span class="poem-title-main">'+esc(mainT)+'</span>'+
         (subT?'<span class="poem-subtitle">'+esc(subT)+'</span>':'')+
-        '<span class="poem-subtitle" style="color:rgba(201,169,110,0.55);font-size:0.7em;letter-spacing:2px;text-transform:uppercase">Сказка</span>'+
         '</div>';
       h+='<hr class="poem-divider">';
       if(imageFile&&!vidId){h+='<div class="poem-image"><img src="images/'+esc(imageFile)+'" alt="'+esc(mainT)+'" loading="lazy" style="max-width:100%;border-radius:6px;display:block;margin:0 auto 20px"></div>';}
