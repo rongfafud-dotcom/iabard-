@@ -43,6 +43,8 @@ Eva Luna Oracle — cards for inner dialogue, helping you hear the voice of intu
 
 Gus Art Toy
 # preorder
+# image: images/shop/gus-1.jpeg
+# image: images/shop/gus-2.jpeg
 
 Gus Art Toy — a one-of-a-kind handmade art toy.
 
@@ -53,8 +55,8 @@ Gus Art Toy — a one-of-a-kind handmade art toy.
 Eva Soul Deck
 # preorder
 
-Eva Soul Deck — a deck of messages born from the living pulse of life itself. Each card holds a word that finds you at exactly the right moment — a whisper from the soul to the soul.
+Eva Soul Deck — messages from soul to soul. Each card finds you at the right moment.
 
-Колода Ева Соул — послания, рождённые из живого пульса самой жизни. Каждая карта несёт слово, которое находит тебя в нужный момент — шёпот от души к душе.
+Колода Ева Соул — послания от души к душе. Каждая карта находит тебя в нужный момент.
 
 ===
