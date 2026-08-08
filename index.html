@@ -1684,6 +1684,7 @@ function goShopItem(itemId){
   setTimeout(tryScroll,100);
 }
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function escLink(s){return String(s).split(/(https?:\/\/[^\s<>"]+)/).map(function(p,i){return i%2===1?'<a href="'+esc(p)+'" target="_blank" rel="noopener noreferrer" style="color:#c9a96e;text-decoration:underline;word-break:break-all">'+esc(p)+'</a>':esc(p);}).join('');}
 
 function ytIdFromUrl(url){
   var m=url.match(/(?:youtu\.be\/|youtube\.com\/(?:shorts\/|watch\?v=|embed\/))([A-Za-z0-9_\-]{11})/);
@@ -1754,7 +1755,7 @@ function loadPoetryEN(){
         var pe=document.createElement('div');pe.className='novinka-poem';
         stanzas.forEach(function(s){
           var sd=document.createElement('div');sd.className='stanza';
-          sd.innerHTML=s.split('\n').map(function(l){return esc(l.trim());}).join('<br>\n');
+          sd.innerHTML=s.split('\n').map(function(l){return escLink(l.trim());}).join('<br>\n');
           pe.appendChild(sd);
         });
         card.appendChild(pe);
@@ -1927,7 +1928,7 @@ function loadAstrology(){
         var pe=document.createElement('div');pe.className='novinka-poem';
         stanzas.forEach(function(s){
           var sd=document.createElement('div');sd.className='stanza';
-          sd.innerHTML=s.split('\n').map(function(l){return esc(l.trim());}).join('<br>\n');
+          sd.innerHTML=s.split('\n').map(function(l){return escLink(l.trim());}).join('<br>\n');
           pe.appendChild(sd);
         });
         card.appendChild(pe);
@@ -2003,7 +2004,7 @@ function loadAuthor(){
         var pe=document.createElement('div');pe.className='novinka-poem';
         stanzas.forEach(function(s){
           var sd=document.createElement('div');sd.className='stanza';
-          sd.innerHTML=s.split('\n').map(function(l){return esc(l.trim());}).join('<br>\n');
+          sd.innerHTML=s.split('\n').map(function(l){return escLink(l.trim());}).join('<br>\n');
           pe.appendChild(sd);
         });
         card.appendChild(pe);
@@ -2068,7 +2069,7 @@ function buildCard(rawPoem){
   h+='<hr class="poem-divider">';
   h+='<div class="novinka-poem">';
   body.forEach(function(s){
-    h+='<div class="stanza">'+s.split('\n').map(function(l){return esc(l.trim());}).join('<br>\n')+'</div>';
+    h+='<div class="stanza">'+s.split('\n').map(function(l){return escLink(l.trim());}).join('<br>\n')+'</div>';
   });
   h+='</div>';
   card.dataset.search=(mainT+' '+(titleHashTag||'')+' '+body.join(' ')).toLowerCase();
@@ -2174,7 +2175,7 @@ function loadTales(){
       audioFiles.forEach(function(audioFile){h+='<div style="margin-bottom:16px"><audio controls src="audio/'+esc(audioFile)+'" style="width:100%;accent-color:var(--gold)"></audio></div>';});
       h+='<div class="novinka-poem">';
       body.forEach(function(s){
-        h+='<div class="stanza">'+s.split('\n').map(function(l){return esc(l.trim());}).join('<br>\n')+'</div>';
+        h+='<div class="stanza">'+s.split('\n').map(function(l){return escLink(l.trim());}).join('<br>\n')+'</div>';
       });
       h+='</div>';
       card.innerHTML=h;
