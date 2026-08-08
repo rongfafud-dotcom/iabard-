@@ -34,6 +34,7 @@ Leela Floor Game — a self-discovery journey for family and spiritual practice.
 
 Oracle Eva Luna
 # preorder
+# image: images/shop/oracle-eva-luna.jpeg
 
 Eva Luna Oracle — cards for inner dialogue, helping you hear the voice of intuition.
 
