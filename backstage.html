@@ -536,6 +536,12 @@
       <div style="padding:0 16px 16px;display:flex;flex-direction:column;gap:8px">
         <button id="edit-save-btn" onclick="saveCurrentEdit()" style="background:#c9a96e;border:none;border-radius:6px;color:#0e0a0e;padding:10px;cursor:pointer;font-size:0.9rem;font-weight:600">Сохранить</button>
         <button id="edit-delete-btn" onclick="deleteCurrentEdit()" style="background:transparent;border:1px solid rgba(180,60,60,0.35);border-radius:6px;color:rgba(200,100,100,0.7);padding:10px;cursor:pointer;font-size:0.9rem">Удалить</button>
+        <button id="edit-move-btn" onclick="showMovePicker()" style="display:none;background:transparent;border:1px solid rgba(201,169,110,0.3);border-radius:6px;color:rgba(201,169,110,0.7);padding:10px;cursor:pointer;font-size:0.9rem">Перенести в раздел</button>
+        <div id="edit-move-picker" style="display:none;flex-direction:column;gap:6px;background:rgba(201,169,110,0.05);border:1px solid rgba(201,169,110,0.2);border-radius:8px;padding:12px">
+          <div style="font-size:0.7rem;letter-spacing:2px;color:rgba(201,169,110,0.45);text-align:center;text-transform:uppercase;padding-bottom:4px">Перенести в</div>
+          <div id="edit-move-targets" style="display:flex;flex-direction:column;gap:6px"></div>
+          <button onclick="hideMovePicker()" style="background:transparent;border:none;color:rgba(201,169,110,0.4);font-size:0.82rem;cursor:pointer;padding:4px;margin-top:2px">Отмена</button>
+        </div>
         <div id="edit-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
       </div>
     </div>
@@ -2653,6 +2659,8 @@ function openEditEntry(displayIdx){
   }
   document.getElementById('edit-save-btn').disabled=false;
   document.getElementById('edit-delete-btn').disabled=false;
+  var _mb=document.getElementById('edit-move-btn');if(_mb)_mb.style.display=_isCreativeSec(_ed.section)?'block':'none';
+  document.getElementById('edit-move-picker').style.display='none';
   showEditPanel('form');
 }
 
@@ -2845,6 +2853,70 @@ function deleteCurrentEdit(){
     document.getElementById('edit-save-btn').disabled=false;
     document.getElementById('edit-delete-btn').disabled=false;
   });
+}
+
+function _isCreativeSec(id){
+  return _FIXED_CREATIVE_SECS.some(function(s){return s.id===id;})||_customSecs.some(function(s){return s.id===id;});
+}
+function showMovePicker(){
+  var picker=document.getElementById('edit-move-picker');
+  var targets=document.getElementById('edit-move-targets');
+  targets.innerHTML='';
+  var list=_FIXED_CREATIVE_SECS.map(function(s){return {id:s.id,label:SECLABEL[s.id]||s.label};});
+  _customSecs.forEach(function(s){list.push({id:s.id,label:SECLABEL[s.id]||s.label});});
+  list.forEach(function(sec){
+    if(sec.id===_ed.section)return;
+    var btn=document.createElement('button');
+    btn.textContent=sec.label;
+    btn.style.cssText='background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.2);border-radius:6px;color:#e8ddd0;font-family:\'Georgia\',serif;font-size:0.88rem;padding:8px 14px;cursor:pointer;text-align:left;width:100%';
+    btn.onmouseover=function(){this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)';};
+    btn.onmouseout=function(){this.style.borderColor='rgba(201,169,110,0.2)';this.style.background='rgba(201,169,110,0.07)';};
+    btn.onclick=function(){moveEntryToSection(sec.id,sec.label);};
+    targets.appendChild(btn);
+  });
+  picker.style.display='flex';
+  document.getElementById('edit-move-btn').style.display='none';
+}
+function hideMovePicker(){
+  document.getElementById('edit-move-picker').style.display='none';
+  var btn=document.getElementById('edit-move-btn');
+  if(btn&&_isCreativeSec(_ed.section))btn.style.display='block';
+}
+function moveEntryToSection(targetId,targetLabel){
+  var token=getToken();
+  var st=document.getElementById('edit-status');
+  if(!token){st.textContent='Нет токена';return;}
+  var fileIdx=_editFileIdx(_ed.idx);
+  var entryRaw=_ed.rawEntries[fileIdx];
+  st.textContent='Перенос…';st.style.color='rgba(201,169,110,0.7)';
+  var newEntries=_ed.rawEntries.slice();newEntries.splice(fileIdx,1);
+  var targetFile=SECFILE[targetId];
+  writeEditFile(token,newEntries,'Move: remove from '+_ed.section,function(){
+    _ed.rawEntries=newEntries;
+    fetch('https://api.github.com/repos/'+REPO+'/contents/'+targetFile+'?ref=main',{
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+    })
+    .then(function(r){return r.status===404?{sha:null,content:''}:r.json();})
+    .then(function(d){
+      var existing=d.content?b64d(d.content.replace(/\n/g,'')):'';
+      var tEntries=existing.split('===').map(function(s){return s.trim();}).filter(Boolean);
+      tEntries.push(entryRaw.trim());
+      var newContent=tEntries.join('\n\n===\n\n')+'\n\n===\n';
+      var body={message:'Move: add to '+targetId,content:b64e(newContent),branch:'main'};
+      if(d.sha)body.sha=d.sha;
+      return fetch('https://api.github.com/repos/'+REPO+'/contents/'+targetFile,{
+        method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
+    })
+    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
+    .then(function(){
+      st.textContent='✓ Перенесено в «'+(targetLabel||targetId)+'»';st.style.color='#7bc47b';
+      document.getElementById('edit-move-picker').style.display='none';
+      setTimeout(function(){backToEditList();},1500);
+    })
+    .catch(function(e){st.textContent='Ошибка: '+(e&&e.message?e.message:'');st.style.color='#d47a7a';});
+  },function(e){st.textContent='Ошибка: '+(e&&e.message?e.message:'');st.style.color='#d47a7a';});
 }
 
 function writeEditFile(token,entries,message,onSuccess,onError){
