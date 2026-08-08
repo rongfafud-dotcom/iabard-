@@ -783,6 +783,7 @@
     <div class="snav-drop">
       <button onclick="goShopItem('shop-woven')">Woven Essential Tree</button>
       <button onclick="goShopItem('shop-charming')">Charming Bracelets</button>
+      <button onclick="goShopItem('shop-eva')">Eva Soul Deck</button>
       <button onclick="goShopItem('shop-leela')">Leela Floor Game</button>
       <button onclick="goShopItem('shop-oracle')">Oracle Eva Luna</button>
       <button onclick="goShopItem('shop-gus')">Gus Art Toy</button>
@@ -830,6 +831,7 @@
         <div class="nav-dropmenu" id="drop-shop">
           <button onclick="goShopItem('shop-woven')">Woven Essential Tree</button>
           <button onclick="goShopItem('shop-charming')">Charming Bracelets</button>
+          <button onclick="goShopItem('shop-eva')">Eva Soul Deck</button>
           <button onclick="goShopItem('shop-leela')">Leela Floor Game</button>
           <button onclick="goShopItem('shop-oracle')">Oracle Eva Luna</button>
           <button onclick="goShopItem('shop-gus')">Gus Art Toy</button>
@@ -1870,6 +1872,11 @@ function loadShop(){
       }
       el.appendChild(card);
     });
+    var navItems=[];
+    Array.from(el.children).forEach(function(c){if(c.id&&c.id.startsWith('shop-')){var nm=c.querySelector('.shop-item-name');if(nm)navItems.push({id:c.id,title:nm.textContent});}});
+    function _fillShopDrop(container){container.innerHTML='';navItems.forEach(function(item){var b=document.createElement('button');b.textContent=item.title;b.onclick=function(){goShopItem(item.id);};container.appendChild(b);});}
+    var mainDrop=document.getElementById('drop-shop');if(mainDrop)_fillShopDrop(mainDrop);
+    var snavBtn=document.querySelector('#sticky-nav .snav-btn[data-panels="shop"]');if(snavBtn){var sd=snavBtn.parentElement.querySelector('.snav-drop');if(sd)_fillShopDrop(sd);}
   })
   .catch(function(){if(el)el.innerHTML='<p style="color:rgba(201,169,110,0.35);text-align:center;padding:20px 0;font-size:0.85rem">Не удалось загрузить товары</p>';});
 }
