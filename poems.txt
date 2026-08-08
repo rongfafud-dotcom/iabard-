@@ -10114,6 +10114,8 @@ Web: https://syntx.ai/welcome/rn3sDS0k
 
 Bot: https://t.me/syntxaibot?start=aff_1463197064
 
+# audio: syntx-ai.mp3
+
 https://youtube.com/shorts/3avJTQjO4xI?si=DcHEcwAePOyniqdl
 
 ===
