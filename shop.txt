@@ -43,7 +43,7 @@ Leela Floor Game — a self-discovery journey for family and spiritual practice.
 
 Oracle Eva Luna
 # preorder
-# image: images/shop/oracle-eva-luna.jpeg
+# image: images/shop/oracle-luna-2.jpeg
 
 Eva Luna Oracle — cards for inner dialogue, helping you hear the voice of intuition.
 
@@ -53,8 +53,8 @@ Eva Luna Oracle — cards for inner dialogue, helping you hear the voice of intu
 
 Gus Art Toy
 # preorder
-# image: images/shop/gus-1.jpeg
-# image: images/shop/gus-2.jpeg
+# image: images/shop/gus-a.jpeg
+# image: images/shop/gus-b.jpeg
 
 Gus Art Toy — a one-of-a-kind handmade art toy.
 
