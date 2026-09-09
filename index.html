@@ -1686,6 +1686,7 @@ function goShopItem(itemId){
   setTimeout(tryScroll,100);
 }
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function audioExtLabel(f){var m=String(f).match(/\.([a-z0-9]+)$/i);return m?m[1].toUpperCase():'AUDIO';}
 function escLink(s){return String(s).split(/(https?:\/\/[^\s<>"]+)/).map(function(p,i){return i%2===1?'<a href="'+esc(p)+'" target="_blank" rel="noopener noreferrer" style="color:#c9a96e;text-decoration:underline;word-break:break-all">'+esc(p)+'</a>':esc(p);}).join('');}
 
 function ytIdFromUrl(url){
@@ -1739,7 +1740,7 @@ function loadPoetryEN(){
       }
       audioFiles.forEach(function(af){var aph=document.createElement('div');aph.className='audio-ph';aph.dataset.src='audio/'+encodeURIComponent(af);aph.dataset.label=title||af;card.appendChild(aph);});
       var actRow=document.createElement('div');actRow.className='poem-actions';
-      audioFiles.forEach(function(af){var dl=document.createElement('a');dl.className='poem-dl-btn';dl.href='audio/'+encodeURIComponent(af);dl.download=af;dl.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Download MP3';actRow.appendChild(dl);});
+      audioFiles.forEach(function(af){var dl=document.createElement('a');dl.className='poem-dl-btn';dl.href='audio/'+encodeURIComponent(af);dl.download=af;dl.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Download '+audioExtLabel(af);actRow.appendChild(dl);});
       var sb=document.createElement('button');sb.className='yt-share-btn';
       sb.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>Share';
       var shareUrl=vid?(isShort?'https://www.youtube.com/shorts/'+vid:'https://www.youtube.com/watch?v='+vid):'https://iabard.com';
@@ -1964,7 +1965,7 @@ function loadAstrology(){
       }
       audioFiles.forEach(function(af){var aph=document.createElement('div');aph.className='audio-ph';aph.dataset.src='audio/'+encodeURIComponent(af);aph.dataset.label=title||af;card.appendChild(aph);});
       var actRow=document.createElement('div');actRow.className='poem-actions';
-      audioFiles.forEach(function(af){var dl=document.createElement('a');dl.className='poem-dl-btn';dl.href='audio/'+encodeURIComponent(af);dl.download=af;dl.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Скачать MP3';actRow.appendChild(dl);});
+      audioFiles.forEach(function(af){var dl=document.createElement('a');dl.className='poem-dl-btn';dl.href='audio/'+encodeURIComponent(af);dl.download=af;dl.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Скачать '+audioExtLabel(af);actRow.appendChild(dl);});
       var sb=document.createElement('button');sb.className='yt-share-btn';
       sb.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>Поделиться';
       var shareUrl=vid?(isShort?'https://www.youtube.com/shorts/'+vid:'https://www.youtube.com/watch?v='+vid):'https://iabard.com';
@@ -2040,7 +2041,7 @@ function loadAuthor(){
       }
       audioFiles.forEach(function(af){var aph=document.createElement('div');aph.className='audio-ph';aph.dataset.src='audio/'+encodeURIComponent(af);aph.dataset.label=title||af;card.appendChild(aph);});
       var actRow=document.createElement('div');actRow.className='poem-actions';
-      audioFiles.forEach(function(af){var dl=document.createElement('a');dl.className='poem-dl-btn';dl.href='audio/'+encodeURIComponent(af);dl.download=af;dl.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Скачать MP3';actRow.appendChild(dl);});
+      audioFiles.forEach(function(af){var dl=document.createElement('a');dl.className='poem-dl-btn';dl.href='audio/'+encodeURIComponent(af);dl.download=af;dl.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Скачать '+audioExtLabel(af);actRow.appendChild(dl);});
       var sb=document.createElement('button');sb.className='yt-share-btn';
       sb.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>Поделиться';
       var shareUrl=vid?(isShort?'https://www.youtube.com/shorts/'+vid:'https://www.youtube.com/watch?v='+vid):'https://iabard.com';
@@ -2115,7 +2116,7 @@ function buildCard(rawPoem){
   audioFiles.forEach(function(audioFile){h+='<div class="audio-ph" data-src="audio/'+encodeURIComponent(audioFile)+'" data-label="'+esc(mainT||'стихотворение')+'"></div>';});
   var safeT=esc(mainT||'Стихотворение');
   h+='<div class="poem-actions">';
-  audioFiles.forEach(function(audioFile){h+='<a href="audio/'+encodeURIComponent(audioFile)+'" download="'+esc(audioFile)+'" class="poem-dl-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Скачать MP3</a>';});
+  audioFiles.forEach(function(audioFile){h+='<a href="audio/'+encodeURIComponent(audioFile)+'" download="'+esc(audioFile)+'" class="poem-dl-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Скачать '+audioExtLabel(audioFile)+'</a>';});
   h+='<button class="yt-share-btn" data-title="'+safeT+'" onclick="poemShare(this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>Поделиться</button>';
   h+='</div>';
   if(vid){
