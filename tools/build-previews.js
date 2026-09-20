@@ -312,12 +312,24 @@ async function main() {
   }
 
   fs.writeFileSync(path.join(OUT, 'index.json'), JSON.stringify(manifest, null, 1), 'utf8');
+  // Sitemap: the site itself is one URL, so without these the 400+ works are
+  // invisible to search engines.
+  const today = new Date().toISOString().slice(0, 10);
+  const urls = ['  <url>\n    <loc>' + SITE + '/</loc>\n    <lastmod>' + today +
+                '</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>']
+    .concat(manifest.map(e =>
+      '  <url>\n    <loc>' + SITE + '/p/' + e.anchor + '.html</loc>\n    <lastmod>' + today +
+      '</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>'));
+  fs.writeFileSync(path.join(ROOT, 'sitemap.xml'),
+    '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    urls.join('\n') + '\n</urlset>\n', 'utf8');
+  console.log('Sitemap: ' + urls.length + ' URLs');
+
   feed.sort((x, y) => (y.w - x.w) || (x.i - y.i));
   fs.writeFileSync(path.join(OUT, 'feed.json'), JSON.stringify(feed), 'utf8');
   console.log('Feed: ' + feed.length + ' entries, newest first');
 
   if (latest) {
-    fs.writeFileSync(path.join(OUT, 'latest.json'), JSON.stringify(latest, null, 1), 'utf8');
     console.log('Newest entry: ' + latest.title + '  (' + latest.section + ')');
   } else {
     console.log('Newest entry: unknown (no git history) — nav falls back to Поэзия');

@@ -206,19 +206,7 @@
       <button onclick="backToAddPicker()" class="inner-back-btn">← Назад</button>
       <span style="color:#c9a96e;font-size:0.95rem;letter-spacing:1px;font-family:'Georgia',serif;font-weight:600">Творчество</span>
     </div>
-    <button onclick="selectAddSection('poems')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="font-size:1.3rem">📜</span><span style="color:#c9a96e;font-size:1.05rem">Поэзия</span>
-    </button>
-    <div id="custom-sec-add-tiles"></div>
-    <button onclick="selectAddSection('tales')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="font-size:1.3rem">✨</span><span style="color:#c9a96e;font-size:1.05rem">Сказки</span>
-    </button>
-    <button onclick="selectAddSection('astrology')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="font-size:1.3rem">✨</span><span style="color:#c9a96e;font-size:1.05rem">Зодиак</span>
-    </button>
-    <button onclick="selectAddSection('poetry-en')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="font-size:1.3rem">🎵</span><span style="color:#c9a96e;font-size:1.05rem">Songs EN</span>
-    </button>
+    <div id="custom-sec-add-tiles" style="display:flex;flex-direction:column;gap:10px"></div>
     <div id="create-sec-form" style="display:none;flex-direction:column;gap:8px;padding:4px 0">
       <input type="text" id="create-sec-name" placeholder="Название рубрики" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;font-size:1rem;width:100%;box-sizing:border-box">
       <input type="text" id="create-sec-emoji" placeholder="Эмодзи для бэкстейджа (напр. 🎨)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;font-size:1rem;width:100%;box-sizing:border-box">
@@ -1064,7 +1052,8 @@ function _rebuildSecTiles(){
   var editTiles=document.getElementById('custom-sec-edit-tiles');
   if(addTiles){
     addTiles.innerHTML='';
-    _customSecs.forEach(function(sec){addTiles.appendChild(_makeTile(sec,selectAddSection));});
+    // Same list and same order as the edit picker, so both agree with the site
+    _getCreativeList().forEach(function(sec){addTiles.appendChild(_makeTile(sec,selectAddSection));});
   }
   if(editTiles){
     editTiles.innerHTML='';
@@ -2888,35 +2877,47 @@ function moveEntryToSection(targetId,targetLabel){
   if(!token){st.textContent='Нет токена';return;}
   var fileIdx=_editFileIdx(_ed.idx);
   var entryRaw=_ed.rawEntries[fileIdx];
+  var targetFile=SECFILE[targetId];
+  if(!targetFile){st.textContent='Не найден файл раздела';st.style.color='#d47a7a';return;}
   st.textContent='Перенос…';st.style.color='rgba(201,169,110,0.7)';
   var newEntries=_ed.rawEntries.slice();newEntries.splice(fileIdx,1);
-  var targetFile=SECFILE[targetId];
-  writeEditFile(token,newEntries,'Move: remove from '+_ed.section,function(){
-    _ed.rawEntries=newEntries;
-    fetch('https://api.github.com/repos/'+REPO+'/contents/'+targetFile+'?ref=main',{
-      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
-    })
-    .then(function(r){return r.status===404?{sha:null,content:''}:r.json();})
-    .then(function(d){
-      var existing=d.content?b64d(d.content.replace(/\n/g,'')):'';
-      var tEntries=existing.split('===').map(function(s){return s.trim();}).filter(Boolean);
-      tEntries.push(entryRaw.trim());
-      var newContent=tEntries.join('\n\n===\n\n')+'\n\n===\n';
-      var body={message:'Move: add to '+targetId,content:b64e(newContent),branch:'main'};
-      if(d.sha)body.sha=d.sha;
-      return fetch('https://api.github.com/repos/'+REPO+'/contents/'+targetFile,{
-        method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-        body:JSON.stringify(body)
-      });
-    })
-    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
-    .then(function(){
+
+  // Add to the target FIRST, remove from the source only once that succeeded.
+  // The other way round loses the entry outright if the second step fails;
+  // this way the worst case is a visible duplicate.
+  fetch('https://api.github.com/repos/'+REPO+'/contents/'+targetFile+'?ref=main',{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(r){return r.status===404?{sha:null,content:''}:r.json();})
+  .then(function(d){
+    var existing=d.content?b64d(d.content.replace(/\n/g,'')):'';
+    var tEntries=existing.split('===').map(function(s){return s.trim();}).filter(Boolean);
+    tEntries.push(entryRaw.trim());
+    var newContent=tEntries.join('\n\n===\n\n')+'\n\n===\n';
+    var body={message:'Move: add to '+targetId,content:b64e(newContent),branch:'main'};
+    if(d.sha)body.sha=d.sha;
+    return fetch('https://api.github.com/repos/'+REPO+'/contents/'+targetFile,{
+      method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+  })
+  .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message||'HTTP '+r.status);});return r.json();})
+  .then(function(){
+    writeEditFile(token,newEntries,'Move: remove from '+_ed.section,function(){
+      _ed.rawEntries=newEntries;
       st.textContent='✓ Перенесено в «'+(targetLabel||targetId)+'»';st.style.color='#7bc47b';
       document.getElementById('edit-move-picker').style.display='none';
       setTimeout(function(){backToEditList();},1500);
-    })
-    .catch(function(e){st.textContent='Ошибка: '+(e&&e.message?e.message:'');st.style.color='#d47a7a';});
-  },function(e){st.textContent='Ошибка: '+(e&&e.message?e.message:'');st.style.color='#d47a7a';});
+    },function(e){
+      // Copied, but the original is still there — say so plainly.
+      st.textContent='Добавлено в «'+(targetLabel||targetId)+'», но не удалось убрать из «'+(SECLABEL[_ed.section]||_ed.section)+'». Удалите вручную.';
+      st.style.color='#d4a77a';
+    });
+  })
+  .catch(function(e){
+    st.textContent='Не перенесено: '+(e&&e.message?e.message:'ошибка')+'. Произведение на месте.';
+    st.style.color='#d47a7a';
+  });
 }
 
 function writeEditFile(token,entries,message,onSuccess,onError){
@@ -3391,6 +3392,9 @@ function deletePoemCard(btn){
 
 // Init
 (function(){
+  // Section tiles are rendered from JS now, so draw the fixed ones up front;
+  // the custom ones join them once a token loads sections.json.
+  _rebuildSecTiles();
   var saved=localStorage.getItem('gh_token');
   if(saved){
     document.getElementById('token').value = saved;

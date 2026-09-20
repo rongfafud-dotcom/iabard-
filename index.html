@@ -760,10 +760,10 @@
   <div class="snav-wrap">
     <button class="snav-btn" data-panels="novosti poems poetry-en tales">Творчество</button>
     <div class="snav-drop">
-      <button onclick="goCreative('poems')">Поэзия</button>
-      <button onclick="goCreative('tales')">Сказки</button>
-      <button onclick="goCreative('novosti')">Зодиак</button>
-      <button onclick="goCreative('poetry-en')">Songs EN</button>
+      <button data-secid="poems" onclick="goCreative('poems')">Поэзия</button>
+      <button data-secid="tales" onclick="goCreative('tales')">Сказки</button>
+      <button data-secid="novosti" onclick="goCreative('novosti')">Зодиак</button>
+      <button data-secid="poetry-en" onclick="goCreative('poetry-en')">Songs EN</button>
     </div>
   </div>
   <div class="snav-wrap">
@@ -806,10 +806,10 @@
         <button class="nav-tab" role="tab" aria-selected="false" id="tab-creative" onclick="switchTab('feed',this)">Творчество</button>
         <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-creative')" aria-label="Открыть меню творчества">▾</button>
         <div class="nav-dropmenu" id="drop-creative">
-          <button onclick="goCreative('poems')">Поэзия</button>
-          <button onclick="goCreative('tales')">Сказки</button>
-          <button onclick="goCreative('novosti')">Зодиак</button>
-          <button onclick="goCreative('poetry-en')">Songs EN</button>
+          <button data-secid="poems" onclick="goCreative('poems')">Поэзия</button>
+          <button data-secid="tales" onclick="goCreative('tales')">Сказки</button>
+          <button data-secid="novosti" onclick="goCreative('novosti')">Зодиак</button>
+          <button data-secid="poetry-en" onclick="goCreative('poetry-en')">Songs EN</button>
         </div>
       </div>
       <div class="nav-tab-wrap">
@@ -1590,15 +1590,47 @@ var _CS_NAV={
   books:   {drop:'drop-books',   tabId:'tab-books',   snavKey:'books'},
   shop:    {drop:'drop-shop',    tabId:'tab-shop',    snavKey:'shop'}
 };
+var _creativeOrder=null;
+// Backstage calls Зодиак "astrology"; this site's panel is "novosti".
+var _SECID_ALIAS={astrology:'novosti',novosti:'novosti'};
+function _canonSecId(id){return _SECID_ALIAS[id]||id;}
+/**
+ * Reorder the Творчество dropdowns to match the order saved in sections.json.
+ * Without this the site keeps its markup order and ignores the drag-and-drop
+ * reordering done in backstage.
+ */
+function _applyCreativeOrder(){
+  if(!_creativeOrder||!_creativeOrder.length)return;
+  var rank={};
+  _creativeOrder.forEach(function(id,i){rank[_canonSecId(id)]=i;});
+  ['drop-creative','__snav'].forEach(function(which){
+    var box=which==='drop-creative'
+      ? document.getElementById('drop-creative')
+      : (function(){var b=document.querySelector('#sticky-nav .snav-btn[data-panels*="poems"]');
+                    return b?b.parentNode.querySelector('.snav-drop'):null;})();
+    if(!box)return;
+    var btns=[].slice.call(box.querySelectorAll('button'));
+    btns.sort(function(a,b){
+      var ai=rank[_canonSecId(a.dataset.secid||a.dataset.csid||'')];
+      var bi=rank[_canonSecId(b.dataset.secid||b.dataset.csid||'')];
+      if(ai===undefined&&bi===undefined)return 0;
+      if(ai===undefined)return 1;   // unknown entries keep to the end
+      if(bi===undefined)return -1;
+      return ai-bi;
+    });
+    btns.forEach(function(x){box.appendChild(x);});
+  });
+}
 function loadCustomSections(){
   fetch('sections.json?v='+Math.floor(Date.now()/60000))
   .then(function(r){return r.ok?r.json():[];})
   .then(function(data){
-    var secs;
+    var secs,order=null;
     if(Array.isArray(data)){secs=data;}
-    else if(data&&Array.isArray(data.sections)){secs=data.sections;}
+    else if(data&&Array.isArray(data.sections)){secs=data.sections;order=data.creativeOrder||null;}
     else{return;}
     if(!secs.length)return;
+    _creativeOrder=order;
     _customSecs=secs;
     var wrap=document.getElementById('main-content');
     secs.forEach(function(sec){
@@ -1661,6 +1693,7 @@ function loadCustomSections(){
         }
       }
     });
+    _applyCreativeOrder();
   })
   .catch(function(){});
 }
