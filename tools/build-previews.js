@@ -316,6 +316,13 @@ async function main() {
   console.log('  with video thumbnail: ' + withImg);
   console.log('  fallback image:       ' + (manifest.length - withImg));
   Object.keys(variants).sort().forEach(k => console.log('    ' + k + ': ' + variants[k]));
+  fs.writeFileSync(path.join(OUT, 'build-info.json'), JSON.stringify({
+    generated: new Date().toISOString(),
+    entries: manifest.length,
+    withVideo: withImg,
+    thumbnails: variants,
+    newest: latest ? {title: latest.title, section: latest.section, anchor: latest.anchor} : null
+  }, null, 1), 'utf8');
 }
 
 main().catch(err => { console.error(err); process.exit(1); });

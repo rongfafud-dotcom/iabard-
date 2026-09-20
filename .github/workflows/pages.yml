@@ -44,3 +44,8 @@ jobs:
           path: .
       - id: deployment
         uses: actions/deploy-pages@v4
+
+      # Printed last so it survives the artifact file listing in the log tail
+      - name: Preview build summary
+        if: always()
+        run: cat p/build-info.json
