@@ -508,8 +508,18 @@
     }
 
     /* SCROLL ANIMATIONS */
-    .fade-up{opacity:0;transform:translateY(28px);transition:opacity 0.6s ease,transform 0.6s ease}
+    .fade-up{opacity:0;transform:translateY(28px);
+      transition:opacity 0.75s cubic-bezier(.16,1,.3,1),transform 0.75s cubic-bezier(.16,1,.3,1)}
     .fade-up.visible{opacity:1;transform:translateY(0)}
+    /* Per-block reveal. Whole cards run 1500-2800px tall, so animating the
+       card only ever showed one entrance per poem; its parts arriving in turn
+       is what reads as movement while scrolling. */
+    .reveal{opacity:0;transform:translateY(22px);
+      transition:opacity 0.75s cubic-bezier(.16,1,.3,1),transform 0.75s cubic-bezier(.16,1,.3,1)}
+    .reveal.shown{opacity:1;transform:none}
+    @media(prefers-reduced-motion:reduce){
+      .fade-up,.reveal{opacity:1!important;transform:none!important;transition:none!important}
+    }
 
     /* BACK TO TOP */
     #back-to-top{position:fixed;bottom:80px;right:20px;width:44px;height:44px;border-radius:50%;
@@ -1724,7 +1734,7 @@ function loadCustomSectionContent(sec){
       if(typeof fadeObserver!=='undefined')fadeObserver.observe(card);
     });
     panel.innerHTML='';panel.appendChild(list);
-    initAudioPlayers(panel);initPoemCarousels(panel);
+    initAudioPlayers(panel);initPoemCarousels(panel);_revealCards(panel);
   })
   .catch(function(){panel.innerHTML='';});
 }
@@ -1849,7 +1859,7 @@ function loadFeed(){
       }
       offset=end;
       list.appendChild(frag);
-      initAudioPlayers(list);initPoemCarousels(list);
+      initAudioPlayers(list);initPoemCarousels(list);_revealCards(list);
       if(offset<items.length){
         var btn=document.createElement('button');
         btn.className='poems-load-more';
@@ -1992,7 +2002,7 @@ function loadPoetryEN(){
       }
       list.appendChild(card);
     });
-    initAudioPlayers(list);
+    initAudioPlayers(list);_revealCards(list);
   })
   .catch(function(){list.innerHTML='<p class="poems-loading">Coming soon…</p>';});
 }
@@ -2227,7 +2237,7 @@ function loadAstrology(){
       }
       list.appendChild(card);
     });
-    initAudioPlayers(list);
+    initAudioPlayers(list);_revealCards(list);
   })
   .catch(function(){list.innerHTML='<p class="poems-loading">Скоро…</p>';});
 }
@@ -2314,8 +2324,8 @@ function loadAuthor(){
       }
       (afterCarousel?listAfter:listBefore).appendChild(card);
     });
-    initAudioPlayers(listBefore);
-    initAudioPlayers(listAfter);
+    initAudioPlayers(listBefore);_revealCards(listBefore);
+    initAudioPlayers(listAfter);_revealCards(listAfter);
   })
   .catch(function(){});
 }
@@ -2411,7 +2421,7 @@ function loadPoems(){
       }
       offset=end;
       list.appendChild(frag);
-      initAudioPlayers(list);initPoemCarousels(list);
+      initAudioPlayers(list);initPoemCarousels(list);_revealCards(list);
       if(offset<raw.length){
         var btn=document.createElement('button');
         btn.className='poems-load-more';
@@ -2430,7 +2440,7 @@ function loadPoems(){
         if(typeof fadeObserver!=='undefined')fadeObserver.observe(c);
       }
       list.appendChild(frag);
-      initAudioPlayers(list);initPoemCarousels(list);
+      initAudioPlayers(list);initPoemCarousels(list);_revealCards(list);
     };
     renderBatch();
   }
@@ -2497,13 +2507,8 @@ function loadTales(){
       frag.appendChild(card);
     });
     list.appendChild(frag);
-    requestAnimationFrame(function(){
-      var inVP=function(el){var r=el.getBoundingClientRect();return r.top<window.innerHeight&&r.bottom>0;};
-      list.querySelectorAll('.novinka-card.fade-up').forEach(function(c){
-        if(inVP(c)){c.classList.add('visible');}
-        else if(typeof fadeObserver!=='undefined'){fadeObserver.observe(c);}
-      });
-    });
+    initAudioPlayers(list);
+    _revealCards(list);
   }
   list.innerHTML='<p class="poems-loading">Загрузка…</p>';
   fetch('tales.txt?v='+Math.floor(Date.now()/60000))
@@ -2583,6 +2588,41 @@ function showShareMenu(anchor, url, shortsUrl) {
  * button, and Telegram sends its comment box as a separate message — pasting
  * the link yourself is the only way to get one message with your own words.
  */
+/**
+ * Reveal a card's parts in turn as they reach the reader, rather than the
+ * card as a whole. Cards are two to three screens tall, so a single card-level
+ * fade is over before the poem even starts.
+ */
+var _revealObserver = ('IntersectionObserver' in window) ? new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){e.target.classList.add('shown');_revealObserver.unobserve(e.target);}
+  });
+}, {threshold: 0, rootMargin: '0px 0px -8% 0px'}) : null;
+
+function _revealCards(box){
+  if(!box)return;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  box.querySelectorAll('.novinka-card').forEach(function(card){
+    if(card.dataset.revealed)return;
+    card.dataset.revealed='1';
+    // the card itself no longer animates; its blocks do
+    card.classList.remove('fade-up');card.classList.add('visible');
+    var blocks=[];
+    Array.prototype.forEach.call(card.children,function(ch){
+      if(ch.classList.contains('novinka-poem')){
+        // stanzas arrive one by one as the poem is read
+        Array.prototype.push.apply(blocks,Array.prototype.slice.call(ch.children));
+      } else { blocks.push(ch); }
+    });
+    blocks.forEach(function(el,i){
+      if(reduce||!_revealObserver){el.classList.add('reveal','shown');return;}
+      el.classList.add('reveal');
+      // a light stagger, capped so a long poem never queues a visible wait
+      el.style.transitionDelay=Math.min(i,4)*55+'ms';
+      _revealObserver.observe(el);
+    });
+  });
+}
 function copyCardLink(btn){
   var url=cardShareUrl(btn);
   var label=btn.innerHTML;
