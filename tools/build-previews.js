@@ -47,37 +47,65 @@ function ytId(url) {
 
 
 /**
- * Pick the largest YouTube thumbnail that actually exists.
- * hqdefault is always present; maxresdefault only for HD sources, and a
- * missing one means no preview image at all — so probe, and on any network
- * trouble fall back to the size that is guaranteed to be there.
+ * Read a JPEG's real pixel size from its SOF marker, so og:image:width/height
+ * never has to be guessed per variant.
  */
-function headOk(url) {
+function jpegSize(buf) {
+  if (buf.length < 4 || buf[0] !== 0xFF || buf[1] !== 0xD8) return null;
+  let i = 2;
+  while (i < buf.length - 9) {
+    if (buf[i] !== 0xFF) { i++; continue; }
+    const m = buf[i + 1];
+    if (m === 0xD8 || m === 0x01 || (m >= 0xD0 && m <= 0xD7)) { i += 2; continue; }
+    const len = buf.readUInt16BE(i + 2);
+    if (m >= 0xC0 && m <= 0xCF && m !== 0xC4 && m !== 0xC8 && m !== 0xCC) {
+      return {h: buf.readUInt16BE(i + 5), w: buf.readUInt16BE(i + 7)};
+    }
+    i += 2 + len;
+  }
+  return null;
+}
+
+/** Fetch just enough of an image to read its header. */
+function probeImage(url) {
   return new Promise(resolve => {
     let done = false;
     const finish = v => { if (!done) { done = true; resolve(v); } };
     try {
-      const req = https.request(url, {method: 'HEAD', timeout: 6000}, res => {
-        res.resume();
-        finish(res.statusCode === 200);
+      const req = https.get(url, {timeout: 8000}, res => {
+        if (res.statusCode !== 200) { res.resume(); return finish(null); }
+        const chunks = []; let got = 0;
+        res.on('data', d => {
+          chunks.push(d); got += d.length;
+          if (got >= 65536) { res.destroy(); }
+        });
+        const done_ = () => finish(jpegSize(Buffer.concat(chunks)));
+        res.on('end', done_);
+        res.on('close', done_);
+        res.on('error', () => finish(null));
       });
-      req.on('error', () => finish(false));
-      req.on('timeout', () => { req.destroy(); finish(false); });
-      req.end();
-    } catch (e) { finish(false); }
+      req.on('error', () => finish(null));
+      req.on('timeout', () => { req.destroy(); finish(null); });
+    } catch (e) { finish(null); }
   });
 }
 
-async function bestThumb(id) {
-  const tries = [
-    {name: 'maxresdefault', w: 1280, h: 720},
-    {name: 'sddefault', w: 640, h: 480},
-  ];
-  for (const t of tries) {
-    const url = 'https://img.youtube.com/vi/' + id + '/' + t.name + '.jpg';
-    if (await headOk(url)) return {image: url, imgW: t.w, imgH: t.h};
+/**
+ * Choose a thumbnail. For a vertical Short, maxresdefault is a 16:9 frame with
+ * the clip letterboxed between blurred copies of itself; oardefault keeps the
+ * original aspect, so try that first. hqdefault always exists and ends the
+ * chain, and any network trouble lands there too.
+ */
+async function bestThumb(id, isShort) {
+  const names = isShort
+    ? ['oardefault', 'maxresdefault', 'sddefault']
+    : ['maxresdefault', 'sddefault'];
+  for (const n of names) {
+    const url = 'https://i.ytimg.com/vi/' + id + '/' + n + '.jpg';
+    const size = await probeImage(url);
+    if (size && size.w > 0 && size.h > 0) return {image: url, imgW: size.w, imgH: size.h};
   }
-  return {image: 'https://img.youtube.com/vi/' + id + '/hqdefault.jpg', imgW: 480, imgH: 360};
+  return {image: 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg', imgW: 480, imgH: 360};
 }
 
 
@@ -161,7 +189,8 @@ function parseEntry(raw, style) {
   let desc = descSrc.split('\n').map(l => l.trim()).filter(Boolean).join(' ');
   if (desc.length > 180) desc = desc.slice(0, 177).replace(/\s+\S*$/, '') + '…';
 
-  return {title, desc, yt: ytId(yt), image: images[0] || null, hasAudio: audio.length > 0};
+  return {title, desc, yt: ytId(yt), isShort: /youtube\.com\/shorts\//.test(yt || ''),
+          image: images[0] || null, hasAudio: audio.length > 0};
 }
 
 function page(a) {
@@ -234,6 +263,7 @@ async function main() {
   const used = Object.create(null);
   const manifest = [];
   let latest = null;
+  const variants = Object.create(null);
 
   for (const src of sources) {
     const code = src.code || PANEL_CODE[src.panel] || slugify(src.panel, 20);
@@ -249,8 +279,11 @@ async function main() {
 
       let image = SITE + '/background.jpg', imgW = 864, imgH = 1536;
       if (e.yt) {
-        const t = await bestThumb(e.yt);
+        const t = await bestThumb(e.yt, e.isShort);
         image = t.image; imgW = t.imgW; imgH = t.imgH;
+        const vn = (image.match(/\/([a-z0-9]+)\.jpg$/) || [, '?'])[1];
+        const key = vn + ' ' + imgW + 'x' + imgH;
+        variants[key] = (variants[key] || 0) + 1;
       } else if (e.image) {
         image = SITE + '/images/' + encodeURIComponent(e.image);
         imgW = 1200; imgH = 1200;
@@ -282,6 +315,7 @@ async function main() {
   const withImg = manifest.filter(x => x.yt).length;
   console.log('  with video thumbnail: ' + withImg);
   console.log('  fallback image:       ' + (manifest.length - withImg));
+  Object.keys(variants).sort().forEach(k => console.log('    ' + k + ': ' + variants[k]));
 }
 
 main().catch(err => { console.error(err); process.exit(1); });
