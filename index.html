@@ -1922,6 +1922,11 @@ function loadPoetryEN(){
       var stanzaStart=1;
       if(!ytUrl&&sections[1]&&/^https?:\/\/\S+$/.test(sections[1].trim())){ytUrl=sections[1].trim();stanzaStart=2;}
       var stanzas=sections.slice(stanzaStart);
+      if(!ytUrl){
+        // A bare YouTube link may sit anywhere, commonly at the end
+        var _yi=stanzas.findIndex(function(x){return /^https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)\S*$/.test(x.trim());});
+        if(_yi!==-1){ytUrl=stanzas[_yi].trim();stanzas=stanzas.slice(0,_yi).concat(stanzas.slice(_yi+1));}
+      }
       var vid=ytUrl?ytIdFromUrl(ytUrl):'';
       var isShort=/youtube\.com\/shorts\//.test(ytUrl);
       if(!title&&!vid&&!audioFiles.length&&!imageFile)return;
@@ -2149,6 +2154,11 @@ function loadAstrology(){
       var stanzaStart=1;
       if(!url&&sections[1]&&/^https?:\/\/\S+$/.test(sections[1].trim())){url=sections[1].trim();stanzaStart=2;}
       var stanzas=sections.slice(stanzaStart);
+      if(!url){
+        // A bare YouTube link may sit anywhere, commonly at the end
+        var _yi=stanzas.findIndex(function(x){return /^https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)\S*$/.test(x.trim());});
+        if(_yi!==-1){url=stanzas[_yi].trim();stanzas=stanzas.slice(0,_yi).concat(stanzas.slice(_yi+1));}
+      }
       var vid=url?ytIdFromUrl(url):'';
       var isShort=!!(vid&&/youtube\.com\/shorts\//.test(url));
       if(!title&&!vid&&!audioFiles.length&&!imageFile)return;
@@ -2226,6 +2236,11 @@ function loadAuthor(){
       var stanzaStart=1;
       if(!url&&sections[1]&&/^https?:\/\/\S+$/.test(sections[1].trim())){url=sections[1].trim();stanzaStart=2;}
       var stanzas=sections.slice(stanzaStart);
+      if(!url){
+        // A bare YouTube link may sit anywhere, commonly at the end
+        var _yi=stanzas.findIndex(function(x){return /^https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)\S*$/.test(x.trim());});
+        if(_yi!==-1){url=stanzas[_yi].trim();stanzas=stanzas.slice(0,_yi).concat(stanzas.slice(_yi+1));}
+      }
       var vid=url?ytIdFromUrl(url):'';
       var isShort=!!(vid&&/youtube\.com\/shorts\//.test(url));
       if(!title&&!vid&&!audioFiles.length&&!imageFile)return;
@@ -2522,13 +2537,12 @@ window.addEventListener('hashchange', openFromHash);
 function showShareMenu(anchor, url, shortsUrl) {
   var existing = document.querySelector('.share-menu');
   if (existing) { existing.remove(); if (existing._anchor === anchor) return; }
-  var title = 'Ипатия Бард — стихи и духовная поэзия';
   var enc = encodeURIComponent, menu = document.createElement('div');
   menu.className = 'share-menu'; menu._anchor = anchor;
   menu.innerHTML =
     '<a href="'+shortsUrl+'" target="_blank" rel="noopener noreferrer">Сохранить в YouTube</a>' +
-    '<a href="https://t.me/share/url?url='+enc(url)+'&text='+enc(title)+'" target="_blank" rel="noopener noreferrer">Telegram</a>' +
-    '<a href="https://wa.me/?text='+enc(title+' '+url)+'" target="_blank" rel="noopener noreferrer">WhatsApp</a>' +
+    '<a href="https://t.me/share/url?url='+enc(url)+'" target="_blank" rel="noopener noreferrer">Telegram</a>' +
+    '<a href="https://wa.me/?text='+enc(url)+'" target="_blank" rel="noopener noreferrer">WhatsApp</a>' +
     '<a href="https://vk.com/share.php?url='+enc(url)+'" target="_blank" rel="noopener noreferrer">ВКонтакте</a>' +
     '<button onclick="navigator.clipboard.writeText('+JSON.stringify(url)+').then(function(){this.textContent=\'Скопировано ✓\'}.bind(this))">Копировать ссылку</button>';
   anchor.insertAdjacentElement('afterend', menu);
@@ -2537,18 +2551,19 @@ function showShareMenu(anchor, url, shortsUrl) {
   }, 0);
 }
 function poemShare(btn) {
-  var poemTitle = btn.dataset.title || 'Ипатия Бард';
   var url = cardShareUrl(btn);
-  var text = '«' + poemTitle + '» — Ипатия Бард';
-  if (navigator.share) { navigator.share({ url: url, title: text }); return; }
+  // Send the bare link: the /p/ page's preview card supplies the title,
+  // description and image. Passing them as message text as well made the
+  // name appear twice and pushed the sender's own comment between them.
+  if (navigator.share) { navigator.share({ url: url }); return; }
   var existing = document.querySelector('.share-menu');
   if (existing) { existing.remove(); if (existing._anchor === btn) return; }
   var enc = encodeURIComponent, menu = document.createElement('div');
   menu.className = 'share-menu'; menu._anchor = btn;
   menu.innerHTML =
-    '<a href="https://t.me/share/url?url='+enc(url)+'&text='+enc(text)+'" target="_blank" rel="noopener noreferrer">Telegram</a>' +
-    '<a href="https://wa.me/?text='+enc(text+' '+url)+'" target="_blank" rel="noopener noreferrer">WhatsApp</a>' +
-    '<a href="https://vk.com/share.php?url='+enc(url)+'&title='+enc(text)+'" target="_blank" rel="noopener noreferrer">ВКонтакте</a>' +
+    '<a href="https://t.me/share/url?url='+enc(url)+'" target="_blank" rel="noopener noreferrer">Telegram</a>' +
+    '<a href="https://wa.me/?text='+enc(url)+'" target="_blank" rel="noopener noreferrer">WhatsApp</a>' +
+    '<a href="https://vk.com/share.php?url='+enc(url)+'" target="_blank" rel="noopener noreferrer">ВКонтакте</a>' +
     '<button onclick="navigator.clipboard.writeText('+JSON.stringify(url)+').then(function(){this.textContent=\'Скопировано ✓\'}.bind(this))">Копировать ссылку</button>';
   btn.insertAdjacentElement('afterend', menu);
   setTimeout(function() {
