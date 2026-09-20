@@ -723,6 +723,14 @@
     /* ▾ flex sibling — consistent gap from text regardless of text length */
     .snav-wrap:not(.snav-wrap--nodrop) .snav-btn{display:flex;align-items:center;justify-content:center}
     .snav-wrap:not(.snav-wrap--nodrop) .snav-btn::after{content:'▾';font-size:0.6em;color:var(--gold);opacity:0.75;margin-left:5px;pointer-events:none;flex-shrink:0}
+    /* Where a real arrow button exists, the label carries no pseudo arrow:
+       tapping the word navigates, tapping the arrow opens the list — as in
+       the main nav, where these are two separate buttons. */
+    .snav-wrap.has-arrow .snav-btn::after{content:none}
+    .snav-drop-btn{flex-shrink:0;width:24px;padding:0;background:none;border:none;
+      border-bottom:2px solid transparent;color:var(--gold);opacity:0.75;
+      font-size:0.75rem;line-height:1;cursor:pointer;transition:color 0.2s,border-color 0.2s}
+    .snav-drop-btn:hover,.snav-drop-btn.open{opacity:1;border-bottom-color:var(--gold)}
     .snav-wrap{position:relative;display:flex;align-items:stretch;flex:1;max-width:200px;justify-content:center}
     .snav-drop{position:absolute;top:100%;left:50%;transform:translateX(-50%);
       margin-top:2px;display:none}
@@ -780,7 +788,7 @@
 <!-- STICKY NAV -->
 <nav id="sticky-nav" aria-label="Быстрая навигация">
   <div class="snav-wrap">
-    <button class="snav-btn" data-panels="novosti poems poetry-en tales">Творчество</button>
+    <button class="snav-btn" data-panels="feed novosti poems poetry-en tales">Творчество</button>
     <div class="snav-drop">
       <button data-secid="poems" onclick="goCreative('poems')">Поэзия</button>
       <button data-secid="tales" onclick="goCreative('tales')">Сказки</button>
@@ -1879,8 +1887,10 @@ function loadFeed(){
   });
 }
 
+var _panelScrollRun=0;
 function _scrollToAnchor(el){
   _pauseReveal(3400);
+  _panelScrollRun++;   // stop switchTab still aiming at the panel top
   var last=null,n=0;
   (function step(){
     var nav=document.getElementById('sticky-nav');
@@ -2551,13 +2561,24 @@ function switchTab(id, btn) {
   // Scroll to panel top (not main-content top) so content lands right below sticky nav
   var stickyNav=document.getElementById('sticky-nav');
   var stickyH=stickyNav?stickyNav.offsetHeight:0;
-  requestAnimationFrame(function(){
+  // Panels that fetch their content are empty at this point, so a single
+  // scroll lands on a height that is about to change — Творчество ended up
+  // 2200px past its own top. Re-aim until the position stops moving.
+  var _tries=0,_lastY=null;
+  var _myRun=++_panelScrollRun;
+  (function settle(){
+    // a jump to an entry takes over from here
+    if(_myRun!==_panelScrollRun)return;
     var scrollEl=panel;
     if(id==='books'){var fc=panel.querySelector('[id^="book-"]');if(fc)scrollEl=fc;}
     var absY=0,el=scrollEl;
     while(el){absY+=el.offsetTop;el=el.offsetParent;}
-    window.scrollTo({top:Math.max(0,absY-stickyH),behavior:'smooth'});
-  });
+    var y=Math.max(0,absY-stickyH);
+    window.scrollTo({top:y,behavior:_tries===0?'smooth':'auto'});
+    if(_tries<8&&(_lastY===null||Math.abs(y-_lastY)>4)){
+      _lastY=y;_tries++;setTimeout(settle,220);
+    }
+  })();
 }
 history.scrollRestoration = 'manual';
 window.addEventListener('load', function(){
@@ -2937,23 +2958,43 @@ if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
       w.addEventListener('mouseleave',function(){t=setTimeout(function(){w.classList.remove('snav-open');},350);});
     }
 
-    // Button click: navigate on desktop, toggle dropdown on mobile
+    // The label always navigates, on every device — the main nav behaves the
+    // same way, and on a phone this button used to only open the list.
     var btn=w.querySelector('.snav-btn');
+    var drop0=w.querySelector('.snav-drop');
+    function goSection(){
+      var panels=(btn.dataset.panels||'').split(' ');
+      closeAll();
+      if(panels.indexOf('books')!==-1){goBook();}
+      else if(panels.indexOf('shop')!==-1){switchTab('shop',document.getElementById('tab-shop'));}
+      else if(panels.indexOf('feed')!==-1||panels.indexOf('novosti')!==-1){
+        switchTab('feed',document.getElementById('tab-creative'));
+      }
+    }
     if(btn)btn.addEventListener('click',function(e){
       e.stopPropagation();
-      if(isHoverDevice){
-        var panels=(btn.dataset.panels||'').split(' ');
-        if(panels.indexOf('books')!==-1){closeAll();goBook();}
-        else if(panels.indexOf('novosti')!==-1){closeAll();switchTab('feed',document.getElementById('tab-creative'));}
-        else if(panels.indexOf('shop')!==-1){closeAll();switchTab('shop',document.getElementById('tab-shop'));}
-      } else {
-        if(w.classList.contains('snav-open')){
-          clearTimeout(t);w.classList.remove('snav-open');
-        } else {
-          closeAll();clearTimeout(t);w.classList.add('snav-open');
-        }
-      }
+      goSection();
     });
+
+    // Give the wrap its own arrow button for the dropdown
+    if(btn&&drop0&&drop0.querySelector('button')){
+      var arrow=document.createElement('button');
+      arrow.className='snav-drop-btn';
+      arrow.type='button';
+      arrow.textContent='\u25BE';
+      arrow.setAttribute('aria-label','Открыть список раздела');
+      arrow.setAttribute('aria-expanded','false');
+      arrow.addEventListener('click',function(e){
+        e.stopPropagation();
+        var open=w.classList.contains('snav-open');
+        closeAll();clearTimeout(t);
+        if(!open)w.classList.add('snav-open');
+        arrow.classList.toggle('open',!open);
+        arrow.setAttribute('aria-expanded',String(!open));
+      });
+      btn.insertAdjacentElement('afterend',arrow);
+      w.classList.add('has-arrow');
+    }
 
     // Item click: close immediately
     var drop=w.querySelector('.snav-drop');
