@@ -14,6 +14,7 @@
  */
 const fs = require('fs');
 const https = require('https');
+const {execFileSync} = require('child_process');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -77,6 +78,22 @@ async function bestThumb(id) {
     if (await headOk(url)) return {image: url, imgW: t.w, imgH: t.h};
   }
   return {image: 'https://img.youtube.com/vi/' + id + '/hqdefault.jpg', imgW: 480, imgH: 360};
+}
+
+
+/**
+ * When was this entry added? Uses git history: -S finds the commit that
+ * introduced the title line. Returns 0 when history is unavailable (a
+ * shallow clone, or no git at all), so callers can degrade quietly.
+ */
+function addedAt(file, titleLine) {
+  if (!titleLine) return 0;
+  try {
+    const out = execFileSync('git',
+      ['log', '-1', '--format=%ct', '-S', titleLine, '--', file],
+      {cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore']}).trim();
+    return out ? parseInt(out, 10) || 0 : 0;
+  } catch (e) { return 0; }
 }
 
 function esc(s) {
@@ -194,10 +211,10 @@ a{color:#c9a96e}
 
 async function main() {
   const sources = [
-    {file: 'poems.txt', panel: 'poems', style: 'first', lang: 'ru', locale: 'ru_RU'},
-    {file: 'tales.txt', panel: 'tales', style: 'first', lang: 'ru', locale: 'ru_RU'},
-    {file: 'poems-en.txt', panel: 'poetry-en', style: 'hlines', lang: 'en', locale: 'en_US'},
-    {file: 'astrology.txt', panel: 'novosti', style: 'hlines', lang: 'ru', locale: 'ru_RU'},
+    {file: 'poems.txt', panel: 'poems', sectionLabel: 'Поэзия', style: 'first', lang: 'ru', locale: 'ru_RU'},
+    {file: 'tales.txt', panel: 'tales', sectionLabel: 'Сказки', style: 'first', lang: 'ru', locale: 'ru_RU'},
+    {file: 'poems-en.txt', panel: 'poetry-en', sectionLabel: 'Songs EN', style: 'hlines', lang: 'en', locale: 'en_US'},
+    {file: 'astrology.txt', panel: 'novosti', sectionLabel: 'Зодиак', style: 'hlines', lang: 'ru', locale: 'ru_RU'},
   ];
 
   const secFile = path.join(ROOT, 'sections.json');
@@ -207,7 +224,7 @@ async function main() {
     secs.forEach(s => {
       if (!s.file) return;
       sources.push({file: s.file, panel: s.id, code: slugify(s.label, 20),
-                    style: 'first', lang: 'ru', locale: 'ru_RU'});
+                    sectionLabel: s.label, style: 'first', lang: 'ru', locale: 'ru_RU'});
     });
   }
 
@@ -216,9 +233,12 @@ async function main() {
 
   const used = Object.create(null);
   const manifest = [];
+  let latest = null;
 
   for (const src of sources) {
     const code = src.code || PANEL_CODE[src.panel] || slugify(src.panel, 20);
+    // readEntries() is newest-first, so index 0 is this section's newest entry
+    let isSectionNewest = true;
     for (const raw of readEntries(src.file)) {
       const e = parseEntry(raw, src.style);
       if (!e) continue;
@@ -240,10 +260,24 @@ async function main() {
         page({anchor, title: e.title, desc: e.desc || 'Ипатия Бард — стихи и духовная поэзия',
               image, imgW, imgH, lang: src.lang, locale: src.locale}), 'utf8');
       manifest.push({anchor, title: e.title, yt: e.yt || null, image});
+
+      if (isSectionNewest) {
+        isSectionNewest = false;
+        const when = addedAt(src.file, e.title);
+        if (when && (!latest || when > latest.when)) {
+          latest = {when, anchor, panel: src.panel, title: e.title, section: src.sectionLabel || src.panel};
+        }
+      }
     }
   }
 
   fs.writeFileSync(path.join(OUT, 'index.json'), JSON.stringify(manifest, null, 1), 'utf8');
+  if (latest) {
+    fs.writeFileSync(path.join(OUT, 'latest.json'), JSON.stringify(latest, null, 1), 'utf8');
+    console.log('Newest entry: ' + latest.title + '  (' + latest.section + ')');
+  } else {
+    console.log('Newest entry: unknown (no git history) — nav falls back to Поэзия');
+  }
   console.log('Generated ' + manifest.length + ' preview pages in /p');
   const withImg = manifest.filter(x => x.yt).length;
   console.log('  with video thumbnail: ' + withImg);

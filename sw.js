@@ -1,4 +1,4 @@
-const CACHE = 'iabard-v5';
+const CACHE = 'iabard-v6';
 const CORE = [
   '/background.webp',
   '/background.jpg',
@@ -30,9 +30,11 @@ self.addEventListener('fetch', function(e) {
   if (url.origin !== location.origin) return;
 
   var isNav = e.request.mode === 'navigate';
-  var isTxt = url.pathname.endsWith('.txt');
+  // Content lives in .txt and .json (sections.json, p/latest.json). Cache-first
+  // would pin them, so a newly published entry would not show up.
+  var isTxt = url.pathname.endsWith('.txt') || url.pathname.endsWith('.json');
 
-  // Always fetch HTML and .txt files fresh from network, bypassing all caches
+  // Always fetch HTML and content data fresh from network, bypassing all caches
   if (isNav || isTxt) {
     e.respondWith(
       fetch(new Request(e.request, {cache: 'no-store'})).then(function(res) {

@@ -31,7 +31,7 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
   <link rel="manifest" href="/manifest.json"/>
   <link rel="preload" as="image" href="background.webp" type="image/webp">
-  <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').then(function(r){r.update();});}</script>
+  <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').then(function(r){if(r&&r.update)r.update();}).catch(function(){});}</script>
   <meta name="theme-color" content="#5c3d55"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -803,7 +803,7 @@
     <p class="name-sub">Hypatia Bard / Ипа́тия Бард</p>
     <div class="nav-tabs" role="tablist" aria-label="Разделы сайта">
       <div class="nav-tab-wrap">
-        <button class="nav-tab" role="tab" aria-selected="false" id="tab-creative" onclick="switchTab('poems',this)">Творчество</button>
+        <button class="nav-tab" role="tab" aria-selected="false" id="tab-creative" onclick="goLatestCreative()">Творчество</button>
         <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-creative')" aria-label="Открыть меню творчества">▾</button>
         <div class="nav-dropmenu" id="drop-creative">
           <button onclick="goCreative('poems')">Поэзия</button>
@@ -1734,6 +1734,24 @@ function _tabBtnFor(panelId){
   var cs=(_customSecs||[]).find(function(x){return x.id===panelId;});
   var m={creative:'tab-creative',books:'tab-books',shop:'tab-shop'};
   return document.getElementById(m[(cs&&cs.nav)||'creative']||'tab-creative');
+}
+var _latestEntry=null;
+function goLatestCreative(){
+  closeDrop();
+  function fallback(){switchTab('poems',document.getElementById('tab-creative'));}
+  function open(l){
+    if(!l||!l.anchor){fallback();return;}
+    var target='#'+l.anchor;
+    // setting the hash fires hashchange -> openFromHash; call it directly
+    // when the hash already matches, since no event would fire then
+    if(location.hash===target){openFromHash();}
+    else{location.hash=target;}
+  }
+  if(_latestEntry){open(_latestEntry);return;}
+  fetch('p/latest.json?v='+Math.floor(Date.now()/60000))
+    .then(function(r){return r.ok?r.json():null;})
+    .then(function(l){_latestEntry=l;open(l);})
+    .catch(fallback);
 }
 function _scrollToAnchor(el){
   var last=null,n=0;
@@ -2682,7 +2700,7 @@ if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
       if(isHoverDevice){
         var panels=(btn.dataset.panels||'').split(' ');
         if(panels.indexOf('books')!==-1){closeAll();goBook();}
-        else if(panels.indexOf('novosti')!==-1){closeAll();goCreative('novosti');}
+        else if(panels.indexOf('novosti')!==-1){closeAll();goLatestCreative();}
         else if(panels.indexOf('shop')!==-1){closeAll();switchTab('shop',document.getElementById('tab-shop'));}
       } else {
         if(w.classList.contains('snav-open')){
