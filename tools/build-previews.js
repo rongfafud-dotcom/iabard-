@@ -13,6 +13,7 @@
  * index.html; verify-previews.js checks that against a real browser.
  */
 const fs = require('fs');
+const https = require('https');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -41,6 +42,41 @@ const PANEL_CODE = {poems: 'poems', tales: 'tales', 'poetry-en': 'en', novosti: 
 function ytId(url) {
   const m = String(url || '').match(/(?:youtu\.be\/|youtube\.com\/(?:shorts\/|watch\?v=|embed\/))([A-Za-z0-9_-]{11})/);
   return m ? m[1] : null;
+}
+
+
+/**
+ * Pick the largest YouTube thumbnail that actually exists.
+ * hqdefault is always present; maxresdefault only for HD sources, and a
+ * missing one means no preview image at all — so probe, and on any network
+ * trouble fall back to the size that is guaranteed to be there.
+ */
+function headOk(url) {
+  return new Promise(resolve => {
+    let done = false;
+    const finish = v => { if (!done) { done = true; resolve(v); } };
+    try {
+      const req = https.request(url, {method: 'HEAD', timeout: 6000}, res => {
+        res.resume();
+        finish(res.statusCode === 200);
+      });
+      req.on('error', () => finish(false));
+      req.on('timeout', () => { req.destroy(); finish(false); });
+      req.end();
+    } catch (e) { finish(false); }
+  });
+}
+
+async function bestThumb(id) {
+  const tries = [
+    {name: 'maxresdefault', w: 1280, h: 720},
+    {name: 'sddefault', w: 640, h: 480},
+  ];
+  for (const t of tries) {
+    const url = 'https://img.youtube.com/vi/' + id + '/' + t.name + '.jpg';
+    if (await headOk(url)) return {image: url, imgW: t.w, imgH: t.h};
+  }
+  return {image: 'https://img.youtube.com/vi/' + id + '/hqdefault.jpg', imgW: 480, imgH: 360};
 }
 
 function esc(s) {
@@ -156,7 +192,7 @@ a{color:#c9a96e}
 `;
 }
 
-function main() {
+async function main() {
   const sources = [
     {file: 'poems.txt', panel: 'poems', style: 'first', lang: 'ru', locale: 'ru_RU'},
     {file: 'tales.txt', panel: 'tales', style: 'first', lang: 'ru', locale: 'ru_RU'},
@@ -181,11 +217,11 @@ function main() {
   const used = Object.create(null);
   const manifest = [];
 
-  sources.forEach(src => {
+  for (const src of sources) {
     const code = src.code || PANEL_CODE[src.panel] || slugify(src.panel, 20);
-    readEntries(src.file).forEach(raw => {
+    for (const raw of readEntries(src.file)) {
       const e = parseEntry(raw, src.style);
-      if (!e) return;
+      if (!e) continue;
       const base = code + '--' + slugify(e.title);
       let anchor = base, n = 2;
       while (used[anchor]) anchor = base + '-' + (n++);
@@ -193,9 +229,8 @@ function main() {
 
       let image = SITE + '/background.jpg', imgW = 864, imgH = 1536;
       if (e.yt) {
-        // hqdefault always exists; maxresdefault is missing on some uploads
-        image = 'https://img.youtube.com/vi/' + e.yt + '/hqdefault.jpg';
-        imgW = 480; imgH = 360;
+        const t = await bestThumb(e.yt);
+        image = t.image; imgW = t.imgW; imgH = t.imgH;
       } else if (e.image) {
         image = SITE + '/images/' + encodeURIComponent(e.image);
         imgW = 1200; imgH = 1200;
@@ -204,9 +239,9 @@ function main() {
       fs.writeFileSync(path.join(OUT, anchor + '.html'),
         page({anchor, title: e.title, desc: e.desc || 'Ипатия Бард — стихи и духовная поэзия',
               image, imgW, imgH, lang: src.lang, locale: src.locale}), 'utf8');
-      manifest.push({anchor, title: e.title, yt: e.yt || null});
-    });
-  });
+      manifest.push({anchor, title: e.title, yt: e.yt || null, image});
+    }
+  }
 
   fs.writeFileSync(path.join(OUT, 'index.json'), JSON.stringify(manifest, null, 1), 'utf8');
   console.log('Generated ' + manifest.length + ' preview pages in /p');
@@ -215,4 +250,4 @@ function main() {
   console.log('  fallback image:       ' + (manifest.length - withImg));
 }
 
-main();
+main().catch(err => { console.error(err); process.exit(1); });
