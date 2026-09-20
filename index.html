@@ -1690,13 +1690,34 @@ function goShopItem(itemId){
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function audioExtLabel(f){var m=String(f).match(/\.([a-z0-9]+)$/i);return m?m[1].toUpperCase():'AUDIO';}
 var _usedAnchors={};
-function slugify(s){
+function slugify(s,max){
+  max=max||28;
   var M={'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'e','ж':'zh','з':'z','и':'i','й':'y','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h','ц':'c','ч':'ch','ш':'sh','щ':'sch','ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya'};
-  return String(s||'').toLowerCase().split('').map(function(c){return M[c]!==undefined?M[c]:c;}).join('')
-    .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60)||'item';
+  var out=String(s||'').toLowerCase().split('').map(function(c){return M[c]!==undefined?M[c]:c;}).join('')
+    .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  if(out.length>max){
+    out=out.slice(0,max);
+    var i=out.lastIndexOf('-');
+    if(i>=10){out=out.slice(0,i);}
+    out=out.replace(/-+$/,'');
+    out=out.replace(/-[a-z0-9]{1,2}$/,'');
+  }
+  return out||'item';
+}
+var _PANEL_CODE={poems:'poems',tales:'tales','poetry-en':'en',novosti:'zodiac',author:'author',shop:'shop'};
+function _panelCode(panelId){
+  if(_PANEL_CODE[panelId])return _PANEL_CODE[panelId];
+  var cs=(_customSecs||[]).find(function(x){return x.id===panelId;});
+  return slugify(cs?cs.label:panelId,20);
+}
+function _panelFromCode(code){
+  for(var k in _PANEL_CODE){if(_PANEL_CODE[k]===code)return k;}
+  var cs=(_customSecs||[]).find(function(x){return slugify(x.label,20)===code;});
+  if(cs)return cs.id;
+  return document.getElementById(code)?code:null;
 }
 function _setCardId(card,panelId,title){
-  var base=panelId+'--'+slugify(title),id=base,n=2;
+  var base=_panelCode(panelId)+'--'+slugify(title),id=base,n=2;
   while(_usedAnchors[id]){id=base+'-'+(n++);}
   _usedAnchors[id]=1;card.id=id;return id;
 }
@@ -1728,10 +1749,11 @@ function _scrollToAnchor(el){
 function openFromHash(){
   var h=decodeURIComponent((location.hash||'').replace(/^#/,''));
   if(!h||h.lastIndexOf('--')<1)return;
-  var panelId=h.slice(0,h.lastIndexOf('--'));
+  var code=h.slice(0,h.lastIndexOf('--'));
   var waits=0;
   (function waitPanel(){
-    if(!document.getElementById(panelId)){
+    var panelId=_panelFromCode(code);
+    if(!panelId||!document.getElementById(panelId)){
       if(++waits<40){setTimeout(waitPanel,120);}
       return;
     }
