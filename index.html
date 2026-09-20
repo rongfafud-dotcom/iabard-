@@ -803,7 +803,7 @@
     <p class="name-sub">Hypatia Bard / Ипа́тия Бард</p>
     <div class="nav-tabs" role="tablist" aria-label="Разделы сайта">
       <div class="nav-tab-wrap">
-        <button class="nav-tab" role="tab" aria-selected="false" id="tab-creative" onclick="goLatestCreative()">Творчество</button>
+        <button class="nav-tab" role="tab" aria-selected="false" id="tab-creative" onclick="switchTab('feed',this)">Творчество</button>
         <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-creative')" aria-label="Открыть меню творчества">▾</button>
         <div class="nav-dropmenu" id="drop-creative">
           <button onclick="goCreative('poems')">Поэзия</button>
@@ -1400,6 +1400,13 @@
 
 
   <!-- СТИХИ -->
+  <!-- ТВОРЧЕСТВО — все разделы, от нового к старому -->
+  <div id="feed" class="tab-panel" role="tabpanel" aria-labelledby="tab-creative">
+    <div class="novinka-list" id="feed-list">
+      <p class="poems-loading">Загрузка…</p>
+    </div>
+  </div>
+
   <div id="poems" class="tab-panel" role="tabpanel" aria-labelledby="tab-creative">
     <div class="poem-search-wrap">
       <input type="search" id="poem-search" class="poem-search" placeholder="Найти стихотворение…" aria-label="Поиск стихотворений" autocomplete="off">
@@ -1724,9 +1731,11 @@ function _setCardId(card,panelId,title){
 function _siteBase(){return location.origin+location.pathname.replace(/index\.html$/,'');}
 function cardShareUrl(el){
   var c=el&&el.closest?el.closest('.novinka-card, .shop-item-card'):null;
+  if(!c)return _siteBase();
+  var a=c.dataset.canonical||c.id;
   // /p/<anchor>.html carries this entry's own preview tags; a #fragment
   // never reaches the server, so a bare anchor can't produce a preview.
-  return (c&&c.id)?_siteBase()+'p/'+c.id+'.html':_siteBase();
+  return a?_siteBase()+'p/'+a+'.html':_siteBase();
 }
 function _tabBtnFor(panelId){
   var d=document.getElementById('tab-'+panelId);
@@ -1735,24 +1744,84 @@ function _tabBtnFor(panelId){
   var m={creative:'tab-creative',books:'tab-books',shop:'tab-shop'};
   return document.getElementById(m[(cs&&cs.nav)||'creative']||'tab-creative');
 }
-var _latestEntry=null;
-function goLatestCreative(){
-  closeDrop();
-  function fallback(){switchTab('poems',document.getElementById('tab-creative'));}
-  function open(l){
-    if(!l||!l.anchor){fallback();return;}
-    var target='#'+l.anchor;
-    // setting the hash fires hashchange -> openFromHash; call it directly
-    // when the hash already matches, since no event would fire then
-    if(location.hash===target){openFromHash();}
-    else{location.hash=target;}
-  }
-  if(_latestEntry){open(_latestEntry);return;}
-  fetch('p/latest.json?v='+Math.floor(Date.now()/60000))
-    .then(function(r){return r.ok?r.json():null;})
-    .then(function(l){_latestEntry=l;open(l);})
-    .catch(fallback);
+/**
+ * Творчество: every creative section merged into one list, newest first.
+ * p/feed.json carries the order (computed from git history at build time);
+ * the entry text itself still comes from the same .txt files the sections use.
+ */
+function loadFeed(){
+  var panel=document.getElementById('feed');
+  if(!panel||panel.dataset.loaded)return;
+  panel.dataset.loaded='1';
+  var list=document.getElementById('feed-list');
+  var v=Math.floor(Date.now()/60000);
+
+  fetch('p/feed.json?v='+v)
+  .then(function(r){if(!r.ok)throw new Error('feed');return r.json();})
+  .then(function(feed){
+    var files={};
+    feed.forEach(function(e){files[e.f]=1;});
+    var names=Object.keys(files);
+    return Promise.all(names.map(function(f){
+      return fetch(encodeURI(f)+'?v='+v)
+        .then(function(r){return r.ok?r.text():'';})
+        .catch(function(){return '';});
+    })).then(function(texts){
+      var parsed={};
+      names.forEach(function(f,i){
+        parsed[f]=texts[i].split('===').map(function(x){return x.trim();})
+                          .filter(Boolean).reverse();
+      });
+      return {feed:feed,parsed:parsed};
+    });
+  })
+  .then(function(d){
+    // Resolve each feed row to its raw text. Index is the fast path; if the
+    // file changed since the build, fall back to matching on the title so a
+    // stale index can never render the wrong poem.
+    var items=[];
+    d.feed.forEach(function(e){
+      var arr=d.parsed[e.f]; if(!arr||!arr.length)return;
+      var raw=arr[e.i];
+      if(!raw||raw.indexOf(e.t)===-1){
+        raw=arr.find(function(x){return x.indexOf(e.t)!==-1;});
+      }
+      if(raw)items.push({raw:raw,anchor:e.a,panel:e.p});
+    });
+    if(!items.length){list.innerHTML='<p class="poems-loading">Пока пусто…</p>';return;}
+
+    list.innerHTML='';
+    var PAGE=5,offset=0;
+    function removeBtn(){var b=list.querySelector('.poems-load-more');if(b)b.remove();}
+    function renderBatch(){
+      removeBtn();
+      var end=Math.min(offset+PAGE,items.length);
+      var frag=document.createDocumentFragment();
+      for(var i=offset;i<end;i++){
+        var c=buildCard(items[i].raw,'feed',items[i].anchor);
+        frag.appendChild(c);
+        if(typeof fadeObserver!=='undefined')fadeObserver.observe(c);
+      }
+      offset=end;
+      list.appendChild(frag);
+      initAudioPlayers(list);initPoemCarousels(list);
+      if(offset<items.length){
+        var btn=document.createElement('button');
+        btn.className='poems-load-more';
+        btn.textContent='Загрузить следующие '+Math.min(PAGE,items.length-offset);
+        btn.onclick=renderBatch;
+        list.appendChild(btn);
+      }
+    }
+    renderBatch();
+  })
+  .catch(function(){
+    // No feed data — send the reader to Поэзия rather than an empty page
+    panel.dataset.loaded='';
+    switchTab('poems',document.getElementById('tab-creative'));
+  });
 }
+
 function _scrollToAnchor(el){
   var last=null,n=0;
   (function step(){
@@ -2176,7 +2245,7 @@ function loadAuthor(){
   })
   .catch(function(){});
 }
-function buildCard(rawPoem,panelId){
+function buildCard(rawPoem,panelId,canonicalAnchor){
   var audioFiles=[];var _aRe=/^[ \t]*#\s*audio:\s*(.+)$/mg;var _aM;while((_aM=_aRe.exec(rawPoem))!==null)audioFiles.push(_aM[1].trim());
   var imageFiles=[];var _iRe=/^[ \t]*#\s*image:\s*(.+)$/mg;var _iM2;while((_iM2=_iRe.exec(rawPoem))!==null)imageFiles.push(_iM2[1].trim());
   var ytMatch=rawPoem.match(/^[ \t]*#\s*youtube:\s*(.+)$/mi);
@@ -2195,6 +2264,8 @@ function buildCard(rawPoem,panelId){
   var hashM=mainT.match(/((?:\s+#\S+)+)$/);
   if(hashM){titleHashTag=hashM[1].trim();mainT=mainT.slice(0,mainT.length-hashM[1].length).trim();}
   _setCardId(card,panelId||'poems',mainT);
+  // feed cards are copies; share the canonical entry, not the feed copy
+  if(canonicalAnchor)card.dataset.canonical=canonicalAnchor;
   if(!titleHashTag && body.length && /^(?:#\S+\s*)+$/.test(body[0])){
     titleHashTag=body[0].trim();body=body.slice(1);
   }
@@ -2384,6 +2455,7 @@ function switchTab(id, btn) {
     b.classList.toggle('s-active',(b.dataset.panels||'').split(' ').indexOf(id)!==-1);
   });
   // Load content FIRST so page height is stable before scroll
+  if(id==='feed')loadFeed();
   if(id==='poems')loadPoems();
   if(id==='poetry-en')loadPoetryEN();
   if(id==='tales')loadTales();
@@ -2700,7 +2772,7 @@ if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
       if(isHoverDevice){
         var panels=(btn.dataset.panels||'').split(' ');
         if(panels.indexOf('books')!==-1){closeAll();goBook();}
-        else if(panels.indexOf('novosti')!==-1){closeAll();goLatestCreative();}
+        else if(panels.indexOf('novosti')!==-1){closeAll();switchTab('feed',document.getElementById('tab-creative'));}
         else if(panels.indexOf('shop')!==-1){closeAll();switchTab('shop',document.getElementById('tab-shop'));}
       } else {
         if(w.classList.contains('snav-open')){

@@ -264,12 +264,15 @@ async function main() {
   const manifest = [];
   let latest = null;
   const variants = Object.create(null);
+  const feed = [];
 
   for (const src of sources) {
     const code = src.code || PANEL_CODE[src.panel] || slugify(src.panel, 20);
     // readEntries() is newest-first, so index 0 is this section's newest entry
     let isSectionNewest = true;
+    let idx = -1;
     for (const raw of readEntries(src.file)) {
+      idx++;
       const e = parseEntry(raw, src.style);
       if (!e) continue;
       const base = code + '--' + slugify(e.title);
@@ -294,9 +297,13 @@ async function main() {
               image, imgW, imgH, lang: src.lang, locale: src.locale}), 'utf8');
       manifest.push({anchor, title: e.title, yt: e.yt || null, image});
 
+      const when = addedAt(src.file, e.title);
+      // idx is the position in the newest-first list, so it breaks ties
+      // within one commit: a lower idx was appended later, i.e. is newer.
+      feed.push({a: anchor, f: src.file, i: idx, t: e.title, w: when,
+                 p: src.panel, s: src.sectionLabel || src.panel});
       if (isSectionNewest) {
         isSectionNewest = false;
-        const when = addedAt(src.file, e.title);
         if (when && (!latest || when > latest.when)) {
           latest = {when, anchor, panel: src.panel, title: e.title, section: src.sectionLabel || src.panel};
         }
@@ -305,6 +312,10 @@ async function main() {
   }
 
   fs.writeFileSync(path.join(OUT, 'index.json'), JSON.stringify(manifest, null, 1), 'utf8');
+  feed.sort((x, y) => (y.w - x.w) || (x.i - y.i));
+  fs.writeFileSync(path.join(OUT, 'feed.json'), JSON.stringify(feed), 'utf8');
+  console.log('Feed: ' + feed.length + ' entries, newest first');
+
   if (latest) {
     fs.writeFileSync(path.join(OUT, 'latest.json'), JSON.stringify(latest, null, 1), 'utf8');
     console.log('Newest entry: ' + latest.title + '  (' + latest.section + ')');
