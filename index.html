@@ -1582,6 +1582,7 @@ function toggleDrop(e,dropId){
 }
 function goBook(bookId){
   closeDrop();
+  if(typeof _pauseReveal==='function')_pauseReveal(1600);
   document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');t.setAttribute('aria-selected','false');});
   var panel=document.getElementById('books');
@@ -1740,6 +1741,7 @@ function loadCustomSectionContent(sec){
 }
 function goShopItem(itemId){
   closeDrop();
+  if(typeof _pauseReveal==='function')_pauseReveal(1600);
   switchTab('shop',document.getElementById('tab-shop'));
   var tries=0;
   function tryScroll(){
@@ -1878,6 +1880,7 @@ function loadFeed(){
 }
 
 function _scrollToAnchor(el){
+  _pauseReveal(3400);
   var last=null,n=0;
   (function step(){
     var nav=document.getElementById('sticky-nav');
@@ -2521,6 +2524,7 @@ function loadTales(){
 }
 function switchTab(id, btn) {
   closeDrop();
+  if(typeof _pauseReveal==='function')_pauseReveal(1400);
   document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
   document.querySelectorAll('.nav-tab').forEach(function(t) {
     t.classList.remove('active');
@@ -2593,8 +2597,32 @@ function showShareMenu(anchor, url, shortsUrl) {
  * card as a whole. Cards are two to three screens tall, so a single card-level
  * fade is over before the poem even starts.
  */
+/**
+ * Jumping to a book or an entry scrolls the page past everything in between,
+ * and the observer would mark all of it revealed — so nothing was left to
+ * animate afterwards. Hold the observers while a programmatic scroll runs,
+ * then reveal only what actually ended up on screen.
+ */
+var _revealPaused=false,_revealResume=null;
+function _pauseReveal(ms){
+  _revealPaused=true;
+  clearTimeout(_revealResume);
+  _revealResume=setTimeout(function(){
+    _revealPaused=false;
+    var h=window.innerHeight;
+    document.querySelectorAll('.reveal:not(.shown)').forEach(function(el){
+      var r=el.getBoundingClientRect();
+      if(r.top<h*0.92&&r.bottom>0)el.classList.add('shown');
+    });
+    document.querySelectorAll('.fade-up:not(.visible)').forEach(function(el){
+      var r=el.getBoundingClientRect();
+      if(r.top<h*0.92&&r.bottom>0)el.classList.add('visible');
+    });
+  }, ms||1200);
+}
 var _revealObserver = ('IntersectionObserver' in window) ? new IntersectionObserver(function(entries){
   entries.forEach(function(e){
+    if(_revealPaused)return;
     if(e.isIntersecting){e.target.classList.add('shown');_revealObserver.unobserve(e.target);}
   });
 }, {threshold: 0, rootMargin: '0px 0px -8% 0px'}) : null;
@@ -2784,6 +2812,7 @@ document.querySelectorAll('.flip-card').forEach(function(card){
 // Scroll fade-in animations
 var fadeObserver = new IntersectionObserver(function(entries) {
   entries.forEach(function(e) {
+    if (_revealPaused) return;
     if (e.isIntersecting) { e.target.classList.add('visible'); fadeObserver.unobserve(e.target); }
   });
 }, {threshold: 0.08, rootMargin: '0px 0px -30px 0px'});
