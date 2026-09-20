@@ -1724,7 +1724,9 @@ function _setCardId(card,panelId,title){
 function _siteBase(){return location.origin+location.pathname.replace(/index\.html$/,'');}
 function cardShareUrl(el){
   var c=el&&el.closest?el.closest('.novinka-card, .shop-item-card'):null;
-  return (c&&c.id)?_siteBase()+'#'+c.id:_siteBase();
+  // /p/<anchor>.html carries this entry's own preview tags; a #fragment
+  // never reaches the server, so a bare anchor can't produce a preview.
+  return (c&&c.id)?_siteBase()+'p/'+c.id+'.html':_siteBase();
 }
 function _tabBtnFor(panelId){
   var d=document.getElementById('tab-'+panelId);

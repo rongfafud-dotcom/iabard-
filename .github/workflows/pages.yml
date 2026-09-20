@@ -31,6 +31,13 @@ jobs:
           git config user.name "GitHub Actions"
           git push origin HEAD:gh-pages --force
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate link-preview pages
+        run: node tools/build-previews.js
+
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
