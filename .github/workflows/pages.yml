@@ -38,6 +38,31 @@ jobs:
       - name: Generate link-preview pages
         run: node tools/build-previews.js
 
+      # Cards are committed, so most builds have none to draw and skip the
+      # browser download entirely.
+      - name: Any cards missing?
+        id: cards
+        run: |
+          node -e "
+          const fs=require('fs');
+          const want=JSON.parse(fs.readFileSync('p/cards-input.json','utf8'));
+          const missing=want.filter(x=>!fs.existsSync('cards/'+x.anchor+'.jpg')).length;
+          console.log('missing: '+missing);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,'missing='+missing+'\n');
+          "
+
+      - name: Install browser for cards
+        if: steps.cards.outputs.missing != '0'
+        run: npm install --no-save playwright && npx playwright install --with-deps chromium
+
+      - name: Render missing cards
+        if: steps.cards.outputs.missing != '0'
+        run: node tools/make-cards.js
+
+      - name: Re-link previews to the new cards
+        if: steps.cards.outputs.missing != '0'
+        run: node tools/build-previews.js
+
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:

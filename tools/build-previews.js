@@ -301,6 +301,10 @@ async function main() {
         const vn = (image.match(/\/([a-z0-9]+)\.jpg$/) || [, '?'])[1];
         const key = vn + ' ' + imgW + 'x' + imgH;
         variants[key] = (variants[key] || 0) + 1;
+      } else if (fs.existsSync(path.join(ROOT, 'cards', anchor + '.jpg'))) {
+        // rendered by make-cards.js; existence is checked rather than assumed,
+        // so a build without a browser falls through to the picture below
+        image = SITE + '/cards/' + anchor + '.jpg'; imgW = 1200; imgH = 630;
       } else if (e.image) {
         image = SITE + '/images/' + encodeURIComponent(e.image);
         imgW = 1200; imgH = 1200;
@@ -311,7 +315,8 @@ async function main() {
               image, imgW, imgH, yt: e.yt || null, lang: src.lang, locale: src.locale}), 'utf8');
       manifest.push({anchor, title: e.title, yt: e.yt || null, image});
 
-      if (e.lines && e.lines.length) cards.push({anchor, title: e.title, lines: e.lines});
+      // A clip keeps its YouTube frame; the card is for entries without one.
+      if (!e.yt && e.lines && e.lines.length) cards.push({anchor, title: e.title, lines: e.lines});
       const when = addedAt(src.file, e.title);
       // idx is the position in the newest-first list, so it breaks ties
       // within one commit: a lower idx was appended later, i.e. is newer.
@@ -356,6 +361,8 @@ async function main() {
   console.log('  with video thumbnail: ' + withImg);
   console.log('  fallback image:       ' + (manifest.length - withImg));
   Object.keys(variants).sort().forEach(k => console.log('    ' + k + ': ' + variants[k]));
+  const withCard = manifest.filter(x => x.image && x.image.indexOf('/cards/') !== -1).length;
+  console.log('  with poem card:       ' + withCard);
   fs.writeFileSync(path.join(OUT, 'build-info.json'), JSON.stringify({
     generated: new Date().toISOString(),
     entries: manifest.length,
