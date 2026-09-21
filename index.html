@@ -756,11 +756,9 @@
        which is why the row stayed 2px-tracked and ran off both edges. */
     @media(max-width:500px){
       #sticky-nav .snav-btn{padding:12px 7px;font-size:0.72rem;letter-spacing:0.5px}
-      /* No room for arrows here: the labels do not wrap, and four of them plus
-         three arrows ran 376px wide, which zoomed the whole page out. A tap
-         opens the section; the section lists live in the nav at the top. */
-      #sticky-nav .snav-drop-btn{display:none}
-      #sticky-nav .snav-wrap.has-arrow .snav-btn::after{content:'';}
+      /* Arrows stay: the labels can shrink now (min-width cleared below), so
+         they no longer force the page wider than the screen. */
+      #sticky-nav .snav-drop-btn{width:20px;font-size:0.7rem}
     }
     @media(max-width:389px){
       #sticky-nav .snav-btn{padding:12px 4px;font-size:0.66rem;letter-spacing:0}
@@ -770,9 +768,12 @@
     /* The nav must never set the page's width: its labels do not wrap, and a
        flex item will not shrink past its content unless min-width is cleared,
        so a too-wide row was zooming the whole site out on a phone. */
-    #sticky-nav{max-width:100%}
-    #sticky-nav .snav-wrap{min-width:0}
-    #sticky-nav .snav-btn{min-width:0;overflow:hidden;text-overflow:ellipsis}
+    #sticky-nav{max-width:100%;justify-content:space-evenly}
+    /* Equal thirds gave the longest label the same room as the shortest, so
+       Творчество clipped while Shop had space to spare. Size each to its own
+       label instead; min-width cleared so the row can still shrink to fit. */
+    #sticky-nav .snav-wrap{flex:0 1 auto;min-width:0}
+    #sticky-nav .snav-btn{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
 
     /* CUSTOM AUDIO PLAYER */
     .ap{display:flex;align-items:center;gap:10px;width:100%;margin-top:20px;padding:10px 14px;
