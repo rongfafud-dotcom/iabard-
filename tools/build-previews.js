@@ -186,10 +186,13 @@ function parseEntry(raw, style) {
     return flat.length < 22 && !/[,;:!?]/.test(flat);
   };
   const descSrc = rest.find(t => !isMarker(t)) || rest[0] || stanzas[0];
-  let desc = descSrc.split('\n').map(l => l.trim()).filter(Boolean).join(' ');
+  const srcLines = descSrc.split('\n').map(l => l.trim()).filter(Boolean);
+  let desc = srcLines.join(' ');
   if (desc.length > 180) desc = desc.slice(0, 177).replace(/\s+\S*$/, '') + '…';
+  // the card shows real lines, so keep them unjoined
+  const cardLines = srcLines.slice(0, 6);
 
-  return {title, desc, yt: ytId(yt), isShort: /youtube\.com\/shorts\//.test(yt || ''),
+  return {title, desc, lines: cardLines, yt: ytId(yt), isShort: /youtube\.com\/shorts\//.test(yt || ''),
           image: images[0] || null, hasAudio: audio.length > 0};
 }
 
@@ -275,6 +278,7 @@ async function main() {
   let latest = null;
   const variants = Object.create(null);
   const feed = [];
+  const cards = [];
 
   for (const src of sources) {
     const code = src.code || PANEL_CODE[src.panel] || slugify(src.panel, 20);
@@ -307,6 +311,7 @@ async function main() {
               image, imgW, imgH, yt: e.yt || null, lang: src.lang, locale: src.locale}), 'utf8');
       manifest.push({anchor, title: e.title, yt: e.yt || null, image});
 
+      if (e.lines && e.lines.length) cards.push({anchor, title: e.title, lines: e.lines});
       const when = addedAt(src.file, e.title);
       // idx is the position in the newest-first list, so it breaks ties
       // within one commit: a lower idx was appended later, i.e. is newer.
@@ -334,6 +339,8 @@ async function main() {
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     urls.join('\n') + '\n</urlset>\n', 'utf8');
   console.log('Sitemap: ' + urls.length + ' URLs');
+
+  fs.writeFileSync(path.join(OUT, 'cards-input.json'), JSON.stringify(cards), 'utf8');
 
   feed.sort((x, y) => (y.w - x.w) || (x.i - y.i));
   fs.writeFileSync(path.join(OUT, 'feed.json'), JSON.stringify(feed), 'utf8');

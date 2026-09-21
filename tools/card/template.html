@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face{font-family:CG;src:url(cg-400.woff2) format('woff2');font-weight:400;font-style:normal}
+  @font-face{font-family:CG;src:url(cg-600.woff2) format('woff2');font-weight:600;font-style:normal}
+  @font-face{font-family:CG;src:url(cg-i400.woff2) format('woff2');font-weight:400;font-style:italic}
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1200px;height:630px}
+  body{
+    font-family:CG,Georgia,serif;
+    background:
+      radial-gradient(1100px 700px at 15% -10%, rgba(92,61,85,0.55) 0%, rgba(92,61,85,0) 60%),
+      radial-gradient(900px 600px at 105% 110%, rgba(201,169,110,0.16) 0%, rgba(201,169,110,0) 55%),
+      #1e1220;
+    color:#fdf6ee;
+    display:flex;flex-direction:column;
+    padding:64px 78px 54px;
+    position:relative;overflow:hidden;
+  }
+  /* тонкая золотая рамка */
+  .frame{position:absolute;inset:26px;border:1px solid rgba(201,169,110,0.26);border-radius:6px;pointer-events:none}
+
+  /* the text block sits centred, so four lines and six both look composed
+     instead of hugging the top with a gap above the footer */
+  .body{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
+  .orn{color:#c9a96e;opacity:.55;letter-spacing:16px;font-size:20px;line-height:1;margin-bottom:26px}
+
+  .title{
+    font-weight:600;color:#c9a96e;line-height:1.14;letter-spacing:.6px;
+    margin-bottom:26px;
+    display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;
+  }
+
+  .lines{
+    font-style:italic;font-weight:400;
+    color:rgba(253,246,238,0.90);
+    line-height:1.52;
+    overflow:hidden;
+  }
+  .lines div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  .foot{
+    display:flex;align-items:center;gap:14px;
+    margin-top:22px;padding-top:20px;
+    border-top:1px solid rgba(201,169,110,0.22);
+    color:rgba(201,169,110,0.92);
+    font-size:25px;letter-spacing:2.2px;text-transform:uppercase;
+    white-space:nowrap;
+  }
+  .foot .dot{opacity:.5}
+  .foot .site{color:rgba(253,246,238,0.62);letter-spacing:1.6px;text-transform:none;font-size:23px}
+  .foot .mark{margin-left:auto;color:rgba(201,169,110,0.5);font-size:21px;letter-spacing:5px}
+</style>
+</head>
+<body>
+  <div class="frame"></div>
+  <div class="body">
+    <div class="orn">✦ ✦ ✦</div>
+    <div class="title" id="title"></div>
+    <div class="lines" id="lines"></div>
+  </div>
+  <div class="foot">
+    <span>Ипатия Бард</span>
+    <span class="dot">·</span>
+    <span class="site">iabard.com</span>
+    <span class="mark">✦</span>
+  </div>
+</body>
+</html>
