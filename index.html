@@ -1949,6 +1949,16 @@ function _openAnchor(panelId,h){
     var el=document.getElementById(h);
     if(el){
       setTimeout(function(){_scrollToAnchor(el);},220);
+      // A link shared from an entry with a video carries ?play=1: swap the
+      // cover for the player so the reader is one tap from sound instead of
+      // three. Browsers will not start audio without a gesture of their own,
+      // so this cannot autoplay outright.
+      if(/[?&]play=1\b/.test(location.search)){
+        setTimeout(function(){
+          var f=el.querySelector('.yt-facade[data-vid]');
+          if(f&&typeof ytPlay==='function')ytPlay(f);
+        },700);
+      }
     } else if(++tries<40){setTimeout(poll,120);}
   })();
 }

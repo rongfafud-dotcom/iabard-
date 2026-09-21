@@ -195,7 +195,8 @@ function parseEntry(raw, style) {
 
 function page(a) {
   const target = SITE + '/#' + a.anchor;   // absolute: for og:url / canonical
-  const go = '/#' + a.anchor;              // relative: works on any host
+  // ?play tells the site to load the player instead of the cover, saving a tap
+  const go = (a.yt ? '/?play=1#' : '/#') + a.anchor;
   return `<!DOCTYPE html>
 <html lang="${a.lang}">
 <head>
@@ -214,7 +215,16 @@ function page(a) {
 <meta property="og:image:height" content="${a.imgH}">
 <meta property="og:image:alt" content="${esc(a.title)} — Ипатия Бард">
 <meta property="og:locale" content="${a.locale}">
-<meta name="twitter:card" content="summary_large_image">
+${a.yt ? `<meta property="og:video" content="https://www.youtube.com/embed/${a.yt}">
+<meta property="og:video:secure_url" content="https://www.youtube.com/embed/${a.yt}">
+<meta property="og:video:type" content="text/html">
+<meta property="og:video:width" content="1280">
+<meta property="og:video:height" content="720">
+<meta property="og:video:tag" content="Ипатия Бард">
+<meta name="twitter:player" content="https://www.youtube.com/embed/${a.yt}">
+<meta name="twitter:player:width" content="1280">
+<meta name="twitter:player:height" content="720">` : ''}
+<meta name="twitter:card" content="${a.yt ? 'player' : 'summary_large_image'}">
 <meta name="twitter:site" content="@ia_bard">
 <meta name="twitter:creator" content="@ia_bard">
 <meta name="twitter:title" content="${esc(a.title)} — Ипатия Бард">
@@ -294,7 +304,7 @@ async function main() {
 
       fs.writeFileSync(path.join(OUT, anchor + '.html'),
         page({anchor, title: e.title, desc: e.desc || 'Ипатия Бард — стихи и духовная поэзия',
-              image, imgW, imgH, lang: src.lang, locale: src.locale}), 'utf8');
+              image, imgW, imgH, yt: e.yt || null, lang: src.lang, locale: src.locale}), 'utf8');
       manifest.push({anchor, title: e.title, yt: e.yt || null, image});
 
       const when = addedAt(src.file, e.title);
