@@ -1566,7 +1566,7 @@
 function ytPlay(el) {
   var vid = el.dataset.vid;
   var iframe = document.createElement('iframe');
-  iframe.src = 'https://www.youtube.com/embed/' + vid + '?autoplay=1&playsinline=1';
+  iframe.src = 'https://www.youtube-nocookie.com/embed/' + vid + '?autoplay=1&playsinline=1';
   var _img=el.querySelector('img');iframe.title=_img?_img.alt:'';
   iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
   iframe.allowFullscreen = true;
@@ -2539,8 +2539,8 @@ function loadTales(){
       h+='<hr class="poem-divider">';
       if(imageFile&&!vidId){h+='<div class="poem-image"><img src="images/'+esc(imageFile)+'" alt="'+esc(mainT)+'" loading="lazy" style="max-width:100%;border-radius:6px;display:block;margin:0 auto 20px"></div>';}
       if(vidId){
-        if(isShort){h+='<div style="display:flex;justify-content:center;margin-bottom:20px"><iframe width="315" height="560" src="https://www.youtube.com/embed/'+esc(vidId)+'" frameborder="0" allowfullscreen loading="lazy" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" style="border-radius:8px;max-width:100%"></iframe></div>';}
-        else{h+='<div class="novinka-video-wide" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-bottom:20px"><iframe style="position:absolute;top:0;left:0;width:100%;height:100%" src="https://www.youtube.com/embed/'+esc(vidId)+'" frameborder="0" allowfullscreen loading="lazy" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div>';}
+        if(isShort){h+='<div style="display:flex;justify-content:center;margin-bottom:20px"><iframe width="315" height="560" src="https://www.youtube-nocookie.com/embed/'+esc(vidId)+'" frameborder="0" allowfullscreen loading="lazy" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" style="border-radius:8px;max-width:100%"></iframe></div>';}
+        else{h+='<div class="novinka-video-wide" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-bottom:20px"><iframe style="position:absolute;top:0;left:0;width:100%;height:100%" src="https://www.youtube-nocookie.com/embed/'+esc(vidId)+'" frameborder="0" allowfullscreen loading="lazy" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div>';}
       }
       audioFiles.forEach(function(audioFile){h+='<div style="margin-bottom:16px"><audio controls src="audio/'+esc(audioFile)+'" style="width:100%;accent-color:var(--gold)"></audio></div>';});
       h+='<div class="poem-actions">';

@@ -215,13 +215,13 @@ function page(a) {
 <meta property="og:image:height" content="${a.imgH}">
 <meta property="og:image:alt" content="${esc(a.title)} — Ипатия Бард">
 <meta property="og:locale" content="${a.locale}">
-${a.yt ? `<meta property="og:video" content="https://www.youtube.com/embed/${a.yt}">
-<meta property="og:video:secure_url" content="https://www.youtube.com/embed/${a.yt}">
+${a.yt ? `<meta property="og:video" content="https://www.youtube-nocookie.com/embed/${a.yt}">
+<meta property="og:video:secure_url" content="https://www.youtube-nocookie.com/embed/${a.yt}">
 <meta property="og:video:type" content="text/html">
 <meta property="og:video:width" content="1280">
 <meta property="og:video:height" content="720">
 <meta property="og:video:tag" content="Ипатия Бард">
-<meta name="twitter:player" content="https://www.youtube.com/embed/${a.yt}">
+<meta name="twitter:player" content="https://www.youtube-nocookie.com/embed/${a.yt}">
 <meta name="twitter:player:width" content="1280">
 <meta name="twitter:player:height" content="720">` : ''}
 <meta name="twitter:card" content="${a.yt ? 'player' : 'summary_large_image'}">
