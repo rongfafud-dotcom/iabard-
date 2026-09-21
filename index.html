@@ -2164,6 +2164,7 @@ function loadShop(){
     function _fillShopDrop(container){container.innerHTML='';navItems.forEach(function(item){var b=document.createElement('button');b.textContent=item.title;b.onclick=function(){goShopItem(item.id);};container.appendChild(b);});}
     var mainDrop=document.getElementById('drop-shop');if(mainDrop)_fillShopDrop(mainDrop);
     var snavBtn=document.querySelector('#sticky-nav .snav-btn[data-panels="shop"]');if(snavBtn){var sd=snavBtn.parentElement.querySelector('.snav-drop');if(sd)_fillShopDrop(sd);}
+    _revealCards(el);
   })
   .catch(function(){if(el)el.innerHTML='<p style="color:rgba(201,169,110,0.35);text-align:center;padding:20px 0;font-size:0.85rem">Не удалось загрузить товары</p>';});
 }
@@ -2706,6 +2707,16 @@ function _revealCards(box){
       el.style.transitionDelay=Math.min(i,4)*55+'ms';
       _revealObserver.observe(el);
     });
+  });
+  // Shop items are small cards, so each reveals whole rather than in parts.
+  var shop=box.querySelectorAll('.shop-item-card');
+  shop.forEach(function(card,i){
+    if(card.dataset.revealed)return;
+    card.dataset.revealed='1';
+    if(reduce||!_revealObserver){card.classList.add('reveal','shown');return;}
+    card.classList.add('reveal');
+    card.style.transitionDelay=Math.min(i,4)*55+'ms';
+    _revealObserver.observe(card);
   });
 }
 function copyCardLink(btn){
