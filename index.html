@@ -1563,14 +1563,32 @@
 </button>
 
 <script>
-function ytPlay(el) {
+/**
+ * Open the player. `byTap` means a finger actually pressed play, which is the
+ * only moment a browser will grant fullscreen — a page cannot ask for it on
+ * its own, so the arrival from a shared link (auto === true) plays in place.
+ *
+ * playsinline is what keeps an iPhone playing inside the page; dropping it on
+ * a real tap lets iOS do what it does natively and fill the screen.
+ */
+function ytPlay(el, byTap) {
   var vid = el.dataset.vid;
   var iframe = document.createElement('iframe');
-  iframe.src = 'https://www.youtube-nocookie.com/embed/' + vid + '?autoplay=1&playsinline=1';
+  iframe.src = 'https://www.youtube-nocookie.com/embed/' + vid +
+    '?autoplay=1' + (byTap ? '' : '&playsinline=1');
   var _img=el.querySelector('img');iframe.title=_img?_img.alt:'';
   iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
   iframe.allowFullscreen = true;
-  el.parentNode.replaceChild(iframe, el);
+  var holder = el.parentNode;
+  holder.replaceChild(iframe, el);
+  if (!byTap) return;
+  // Desktop, Android and iPad honour this; an iPhone refuses and falls back
+  // to the fullscreen it gives the video itself.
+  try {
+    var go = iframe.requestFullscreen || iframe.webkitRequestFullscreen
+          || iframe.webkitEnterFullscreen || iframe.msRequestFullscreen;
+    if (go) { var r = go.call(iframe); if (r && r.catch) r.catch(function(){}); }
+  } catch (e) {}
 }
 function extractVideoId(url){
   var m;
@@ -2011,7 +2029,7 @@ function loadPoetryEN(){
         var vw=document.createElement('div');vw.className='novinka-video'+(isShort?' poem-video':' novinka-video-wide');
         var facade=document.createElement('div');
         facade.className='yt-facade';facade.dataset.vid=vid;
-        facade.onclick=function(){ytPlay(this);};
+        facade.onclick=function(){ytPlay(this,true);};
         var img=document.createElement('img');
         img.src='https://img.youtube.com/vi/'+vid+'/hqdefault.jpg';
         img.alt=title+' — Hypatia Bard';img.loading='lazy';
@@ -2247,7 +2265,7 @@ function loadAstrology(){
         var vw=document.createElement('div');vw.className='novinka-video'+(isShort?' poem-video':' novinka-video-wide');
         var facade=document.createElement('div');
         facade.className='yt-facade';facade.dataset.vid=vid;
-        facade.onclick=function(){ytPlay(this);};
+        facade.onclick=function(){ytPlay(this,true);};
         var img=document.createElement('img');
         img.src='https://img.youtube.com/vi/'+vid+'/hqdefault.jpg';
         img.alt=title+' — Ипатия Бард';img.loading='lazy';
@@ -2334,7 +2352,7 @@ function loadAuthor(){
         var vw=document.createElement('div');vw.className='novinka-video'+(isShort?' poem-video':' novinka-video-wide');
         var facade=document.createElement('div');
         facade.className='yt-facade';facade.dataset.vid=vid;
-        facade.onclick=function(){ytPlay(this);};
+        facade.onclick=function(){ytPlay(this,true);};
         var img=document.createElement('img');
         img.src='https://img.youtube.com/vi/'+vid+'/hqdefault.jpg';
         img.alt=title+' — Ипатия Бард';img.loading='lazy';
@@ -2423,7 +2441,7 @@ function buildCard(rawPoem,panelId,canonicalAnchor){
   if(vid){
     var _isShortP=/youtube\.com\/shorts\//.test(ytUrl||'');
     if(!_isShortP)card.className+=' novinka-card-full';
-    h+='<div class="novinka-video '+(_isShortP?'poem-video':'novinka-video-wide')+'"><div class="yt-facade" data-vid="'+esc(vid)+'" onclick="ytPlay(this)"><img src="https://img.youtube.com/vi/'+esc(vid)+'/hqdefault.jpg" alt="'+esc(mainT||'видео')+'" loading="lazy"><button class="yt-play" aria-label="Смотреть видео">&#9654;</button></div></div>';
+    h+='<div class="novinka-video '+(_isShortP?'poem-video':'novinka-video-wide')+'"><div class="yt-facade" data-vid="'+esc(vid)+'" onclick="ytPlay(this,true)"><img src="https://img.youtube.com/vi/'+esc(vid)+'/hqdefault.jpg" alt="'+esc(mainT||'видео')+'" loading="lazy"><button class="yt-play" aria-label="Смотреть видео">&#9654;</button></div></div>';
   }
   audioFiles.forEach(function(audioFile){h+='<div class="audio-ph" data-src="audio/'+encodeURIComponent(audioFile)+'" data-label="'+esc(mainT||'стихотворение')+'"></div>';});
   var safeT=esc(mainT||'Стихотворение');
