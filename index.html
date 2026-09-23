@@ -254,6 +254,19 @@
       font-size:1.2rem;color:#fff;pointer-events:none;transition:background 0.2s,transform 0.2s}
     .yt-facade:hover .yt-play{background:#cc0000;transform:translate(-50%,-50%) scale(1.1)}
 
+    /* Видео во весь экран. Айфон не умеет разворачивать рамку с чужого сайта,
+       поэтому мы сами накрываем окно чёрным слоем — выглядит и работает так же,
+       а где настоящий полный экран доступен, мы просим и его. */
+    #yt-full{position:fixed;inset:0;z-index:12000;background:#000;
+      display:flex;align-items:center;justify-content:center}
+    #yt-full iframe{width:100%;height:100%;border:none;display:block}
+    #yt-full .yt-close{position:absolute;z-index:2;
+      top:calc(10px + env(safe-area-inset-top));right:calc(10px + env(safe-area-inset-right));
+      width:44px;height:44px;border:none;border-radius:50%;cursor:pointer;
+      background:rgba(0,0,0,0.55);color:#fff;font-size:1.3rem;line-height:1;
+      display:flex;align-items:center;justify-content:center}
+    body.yt-locked{overflow:hidden}
+
     /* НОВИНКИ */
     .novinka-list{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:44px}
     .novinka-card{background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.14);
@@ -1564,30 +1577,78 @@
 
 <script>
 /**
- * Open the player. `byTap` means a finger actually pressed play, which is the
- * only moment a browser will grant fullscreen — a page cannot ask for it on
- * its own, so the arrival from a shared link (auto === true) plays in place.
+ * Press play, watch it full screen — on every device.
  *
- * playsinline is what keeps an iPhone playing inside the page; dropping it on
- * a real tap lets iOS do what it does natively and fill the screen.
+ * An iPhone has no way to blow up a frame that belongs to another site: asking
+ * it to simply does nothing, which is why the earlier attempt left the clip
+ * small. So the page does the job itself — a black layer over the whole window
+ * with the player inside — and additionally asks for real fullscreen, which
+ * desktop and Android grant. Either way the video fills the screen.
  */
-function ytPlay(el, byTap) {
-  var vid = el.dataset.vid;
-  var iframe = document.createElement('iframe');
-  iframe.src = 'https://www.youtube-nocookie.com/embed/' + vid +
-    '?autoplay=1' + (byTap ? '' : '&playsinline=1');
-  var _img=el.querySelector('img');iframe.title=_img?_img.alt:'';
-  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-  iframe.allowFullscreen = true;
-  var holder = el.parentNode;
-  holder.replaceChild(iframe, el);
-  if (!byTap) return;
-  // Desktop, Android and iPad honour this; an iPhone refuses and falls back
-  // to the fullscreen it gives the video itself.
+var _ytFull = null, _ytScrollY = 0;
+
+function _ytFrame(vid, title) {
+  var f = document.createElement('iframe');
+  // playsinline keeps playback inside our own layer instead of handing it to
+  // the phone's player, which would close the layer out from under it.
+  f.src = 'https://www.youtube-nocookie.com/embed/' + vid + '?autoplay=1&playsinline=1';
+  f.title = title || '';
+  f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture; web-share';
+  f.allowFullscreen = true;
+  f.setAttribute('frameborder', '0');
+  return f;
+}
+
+function _ytKey(e) { if (e.key === 'Escape' || e.keyCode === 27) ytClose(); }
+
+/** Leaving real fullscreen (system back, Esc, the player's own control) closes the layer too. */
+function _ytFsChange() {
+  if (_ytFull && !(document.fullscreenElement || document.webkitFullscreenElement)) ytClose();
+}
+
+function ytClose() {
+  if (!_ytFull) return;
+  var box = _ytFull;
+  _ytFull = null;
+  document.removeEventListener('keydown', _ytKey);
+  document.removeEventListener('fullscreenchange', _ytFsChange);
+  document.removeEventListener('webkitfullscreenchange', _ytFsChange);
+  if (document.fullscreenElement || document.webkitFullscreenElement) {
+    try {
+      var out = document.exitFullscreen || document.webkitExitFullscreen;
+      if (out) { var r = out.call(document); if (r && r.catch) r.catch(function(){}); }
+    } catch (e) {}
+  }
+  if (box.parentNode) box.parentNode.removeChild(box);   // removing it stops the sound
+  document.body.classList.remove('yt-locked');
+  window.scrollTo(0, _ytScrollY);
+}
+
+function ytPlay(el) {
+  if (_ytFull) return;
+  var img = el.querySelector('img');
+  var box = document.createElement('div');
+  box.id = 'yt-full';
+  var close = document.createElement('button');
+  close.type = 'button';
+  close.className = 'yt-close';
+  close.setAttribute('aria-label', 'Закрыть видео');
+  close.innerHTML = '&#10005;';
+  close.onclick = ytClose;
+  box.appendChild(_ytFrame(el.dataset.vid, img ? img.alt : ''));
+  box.appendChild(close);
+
+  _ytScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+  document.body.appendChild(box);
+  document.body.classList.add('yt-locked');
+  _ytFull = box;
+  document.addEventListener('keydown', _ytKey);
+  document.addEventListener('fullscreenchange', _ytFsChange);
+  document.addEventListener('webkitfullscreenchange', _ytFsChange);
+
   try {
-    var go = iframe.requestFullscreen || iframe.webkitRequestFullscreen
-          || iframe.webkitEnterFullscreen || iframe.msRequestFullscreen;
-    if (go) { var r = go.call(iframe); if (r && r.catch) r.catch(function(){}); }
+    var go = box.requestFullscreen || box.webkitRequestFullscreen || box.msRequestFullscreen;
+    if (go) { var p = go.call(box); if (p && p.catch) p.catch(function(){}); }
   } catch (e) {}
 }
 function extractVideoId(url){
@@ -1968,16 +2029,10 @@ function _openAnchor(panelId,h){
     var el=document.getElementById(h);
     if(el){
       setTimeout(function(){_scrollToAnchor(el);},220);
-      // A link shared from an entry with a video carries ?play=1: swap the
-      // cover for the player so the reader is one tap from sound instead of
-      // three. Browsers will not start audio without a gesture of their own,
-      // so this cannot autoplay outright.
-      if(/[?&]play=1\b/.test(location.search)){
-        setTimeout(function(){
-          var f=el.querySelector('.yt-facade[data-vid]');
-          if(f&&typeof ytPlay==='function')ytPlay(f);
-        },700);
-      }
+      // A shared link used to swap the cover for the player on arrival, which
+      // looked helpful but cost the reader the full screen: the press then
+      // landed on YouTube's own button, outside this page, and nothing could
+      // ask for fullscreen. The cover stays, so one press does both.
     } else if(++tries<40){setTimeout(poll,120);}
   })();
 }
