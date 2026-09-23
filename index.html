@@ -260,10 +260,10 @@
     #yt-full{position:fixed;inset:0;z-index:12000;background:#000;
       display:flex;align-items:center;justify-content:center}
     #yt-full iframe{width:100%;height:100%;border:none;display:block}
-    /* Сверху по центру: у плеера YouTube там ничего нет, а по углам его
-       собственные кнопки — наш крестик сливался с ними в одну кнопку. */
+    /* Левый верхний угол. Золотая рамка отличает наш крестик от кнопок
+       самого плеера, которые стоят по соседству. */
     #yt-full .yt-close{position:absolute;z-index:2;
-      top:calc(10px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);
+      top:calc(10px + env(safe-area-inset-top));left:calc(10px + env(safe-area-inset-left));
       width:44px;height:44px;border-radius:50%;cursor:pointer;
       border:1px solid rgba(201,169,110,0.85);
       background:rgba(20,12,22,0.72);color:var(--gold);font-size:1.15rem;line-height:1;
