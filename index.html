@@ -1446,6 +1446,18 @@
           </form>
         </div>
 
+        <!-- Subscribe Form -->
+        <div class="contact-form-wrap">
+          <p class="contact-form-title">Получать новые стихи</p>
+          <form name="subscribe" method="POST" class="contact-form" onsubmit="handleSubscribe(event,this)">
+            <input type="text" name="_gotcha" class="contact-honeypot" tabindex="-1" autocomplete="off">
+            <input type="text" name="name" placeholder="Ваше имя" required class="contact-input">
+            <input type="email" name="email" placeholder="Email" required class="contact-input" autocomplete="email" oninput="clearSubscribeWarn()">
+            <p class="contact-hint" id="subscribe-hint" role="status" aria-live="polite">Новые произведения — прямо на вашу почту, без спама</p>
+            <button type="submit" class="contact-submit">Подписаться</button>
+          </form>
+        </div>
+
         <!-- Contact + Rights -->
         <div class="author-footer">
           <div class="author-footer-block">
@@ -3051,6 +3063,45 @@ function handleContact(e, form) {
 function clearContactWarn(){
   document.getElementById('contact-hint').classList.remove('error');
   ['c-email','c-telegram'].forEach(function(id){var f=document.getElementById(id);if(f)f.classList.remove('warn');});
+}
+function handleSubscribe(e, form) {
+  e.preventDefault();
+  var data = new FormData(form);
+  if (data.get('_gotcha')) return;
+  var hint = document.getElementById('subscribe-hint');
+  var last = parseInt(sessionStorage.getItem('subscribe_sent')||'0');
+  if (Date.now() - last < 60000) {
+    hint.textContent = 'Подождите минуту перед следующей отправкой';
+    hint.classList.add('error');
+    return;
+  }
+  var name = (data.get('name')||'').trim()||'Аноним';
+  var email = (data.get('email')||'').trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+    hint.textContent = 'Введите корректный email (например: name@mail.ru)';
+    hint.classList.add('error');
+    return;
+  }
+  var submitBtn = form.querySelector('.contact-submit');
+  if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Отправка…'; }
+  sendForm({
+    subject: '🔔 Новая подписка на стихи — ' + name,
+    from_name: name,
+    'Имя': name,
+    'Email': email,
+    'Тип': 'Подписка на новые произведения'
+  })
+  .then(function() {
+    sessionStorage.setItem('subscribe_sent', Date.now());
+    form.parentElement.innerHTML = '<p class="contact-sent">Спасибо! Я добавлю вас в рассылку ✦</p>';
+  })
+  .catch(function() {
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Подписаться'; }
+    form.parentElement.innerHTML = '<p class="contact-sent">Ошибка — напишите на poet@iabard.com</p>';
+  });
+}
+function clearSubscribeWarn(){
+  document.getElementById('subscribe-hint').classList.remove('error');
 }
 // Hover-open dropdowns on pointer devices (desktop only)
 if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
