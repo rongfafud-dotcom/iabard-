@@ -373,6 +373,12 @@
     .book-read-btn:hover{background:rgba(201,169,110,0.97)}
     /* Back card: push poem text up to make room for button bar */
     .flip-card-back .book-back-poem{padding-bottom:64px}
+    /* ЛитРес — подпись-ссылка под карточкой книги */
+    .book-litres-link{display:block;text-align:center;margin:10px 0 0;
+      font-family:'Raleway',sans-serif;font-size:0.72rem;font-weight:700;
+      letter-spacing:2.5px;text-transform:uppercase;color:#c9a96e;text-decoration:none}
+    .book-litres-link:hover{color:#e8c87e;text-decoration:underline}
+    .book-litres-link::after{content:'\2009\2192'}
 
     /* BOOK BACK — parchment scroll style */
     .flip-card-back{transform:rotateY(180deg);
@@ -986,6 +992,7 @@
           </div>
         </div>
       </div>
+      <a class="book-litres-link" href="https://www.litres.ru/book/ipatiya-bard/soavtor-zhizni-74520578/" target="_blank" rel="noopener noreferrer">Читать на ЛитРес</a>
 
       <div class="flip-card" id="book-dom" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
@@ -1088,6 +1095,7 @@
           </div>
         </div>
       </div>
+      <a class="book-litres-link" href="https://www.litres.ru/book/ipatiya-bard/zhenskoe-schast-e-74520862/" target="_blank" rel="noopener noreferrer">Читать на ЛитРес</a>
 
       <div class="flip-card" id="book-zapiski2" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
@@ -1190,6 +1198,7 @@
           </div>
         </div>
       </div>
+      <a class="book-litres-link" href="https://www.litres.ru/book/ipatiya-bard/zapiski-iz-palaty-nomer-6-kniga-1-71481247/" target="_blank" rel="noopener noreferrer">Читать на ЛитРес</a>
 
       <div class="flip-card" id="book-citadel3" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
