@@ -17,9 +17,11 @@ https://iabard.etsy.com/listing/4528430525
 
 Цена: 33
 
-Handcrafted bracelets, made with intention and love.
+Handcrafted with intention and love.
+Handmade · spiritual jewelry · meaningful gift.
 
-Браслеты ручной работы, созданные с намерением и любовью.
+Ручная работа, с намерением и любовью.
+Браслет ручной работы · духовное украшение · подарок со смыслом.
 
 ===
 
@@ -56,8 +58,10 @@ Gus Art Toy
 # image: images/shop/gus-b.jpeg
 # image: images/shop/gus-a.jpeg
 
-Gus Art Toy — a one-of-a-kind handmade art toy.
+One-of-a-kind handmade art toy.
+Handmade · collectible · unique gift.
 
-Авторская арт-игрушка Гас. Ручная работа, уникальный экземпляр.
+Авторская арт-игрушка, в единственном экземпляре.
+Ручная работа · коллекционная · уникальный подарок.
 
 ===
