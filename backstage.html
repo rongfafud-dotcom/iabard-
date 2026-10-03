@@ -187,16 +187,16 @@
   <div id="add-section-picker" style="padding:16px;display:flex;flex-direction:column;gap:10px">
     <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);text-align:center;padding-bottom:4px">Выберите рубрику</div>
     <button onclick="showAddCreative()" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px;justify-content:space-between" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="display:flex;align-items:center;gap:12px"><span style="font-size:1.3rem">🎨</span><span style="color:#c9a96e;font-size:1.05rem">Творчество</span></span><span style="color:rgba(201,169,110,0.5);font-size:1rem">›</span>
+      <span style="color:#c9a96e;font-size:1.05rem">Творчество</span><span style="color:rgba(201,169,110,0.5);font-size:1rem">›</span>
     </button>
     <button onclick="selectAddSection('books')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="font-size:1.3rem">📚</span><span style="color:#c9a96e;font-size:1.05rem">Книги</span>
+      <span style="color:#c9a96e;font-size:1.05rem">Книги</span>
     </button>
     <button onclick="selectAddSection('author')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="font-size:1.3rem">👤</span><span style="color:#c9a96e;font-size:1.05rem">Ия Бард</span>
+      <span style="color:#c9a96e;font-size:1.05rem">Ия Бард</span>
     </button>
     <button onclick="selectAddSection('shop')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-      <span style="font-size:1.3rem">🛍️</span><span style="color:#c9a96e;font-size:1.05rem">Товар</span>
+      <span style="color:#c9a96e;font-size:1.05rem">Товар</span>
     </button>
   </div>
 
@@ -209,7 +209,7 @@
     <div id="custom-sec-add-tiles" style="display:flex;flex-direction:column;gap:10px"></div>
     <div id="create-sec-form" style="display:none;flex-direction:column;gap:8px;padding:4px 0">
       <input type="text" id="create-sec-name" placeholder="Название рубрики" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;font-size:1rem;width:100%;box-sizing:border-box">
-      <input type="text" id="create-sec-emoji" placeholder="Эмодзи для бэкстейджа (напр. 🎨)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;font-size:1rem;width:100%;box-sizing:border-box">
+      <input type="text" id="create-sec-emoji" placeholder="Значок для бэкстейджа" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:9px 12px;color:#e8ddd0;font-family:'Georgia',serif;outline:none;font-size:1rem;width:100%;box-sizing:border-box">
       <div style="display:flex;gap:8px">
         <button onclick="createSection()" class="novinka-add-btn" style="flex:1">Создать</button>
         <button onclick="cancelCreateSection()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,169,110,0.2);border-radius:6px;color:rgba(232,221,208,0.6);padding:9px 16px;cursor:pointer;font-family:'Georgia',serif;font-size:0.88rem;flex-shrink:0">Отмена</button>
@@ -237,7 +237,7 @@
         onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'"
         onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
       <input type="file" id="poem-video-file" accept="video/mp4,video/*" style="display:none" onchange="uploadEntryVideo(this.files,'poem-yt-url','poem-video-progress')">
-      <button type="button" onclick="document.getElementById('poem-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">📹 Загрузить видео</button>
+      <button type="button" onclick="document.getElementById('poem-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">Загрузить</button>
     </label>
     <div id="poem-video-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
     <div id="poem-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
@@ -272,7 +272,7 @@
         onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'"
         onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
       <input type="file" id="tale-video-file" accept="video/mp4,video/*" style="display:none" onchange="uploadEntryVideo(this.files,'tale-yt-url','tale-video-progress')">
-      <button type="button" onclick="document.getElementById('tale-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">📹 Загрузить видео</button>
+      <button type="button" onclick="document.getElementById('tale-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">Загрузить</button>
     </label>
     <div id="tale-video-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
     <div id="tale-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
@@ -304,7 +304,7 @@
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       <input type="url" id="en-url" placeholder="Добавить ссылку на YouTube" style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text" onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'" onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
       <input type="file" id="en-video-file" accept="video/mp4,video/*" style="display:none" onchange="uploadEntryVideo(this.files,'en-url','en-video-progress')">
-      <button type="button" onclick="document.getElementById('en-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">📹 Загрузить видео</button>
+      <button type="button" onclick="document.getElementById('en-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">Загрузить</button>
     </label>
     <div id="en-video-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
     <div id="en-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
@@ -341,7 +341,7 @@
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       <input type="url" id="astro-url" placeholder="Добавить ссылку на YouTube" style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text" onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'" onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
       <input type="file" id="astro-video-file" accept="video/mp4,video/*" style="display:none" onchange="uploadEntryVideo(this.files,'astro-url','astro-video-progress')">
-      <button type="button" onclick="document.getElementById('astro-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">📹 Загрузить видео</button>
+      <button type="button" onclick="document.getElementById('astro-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">Загрузить</button>
     </label>
     <div id="astro-video-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
     <div id="astro-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
@@ -378,7 +378,7 @@
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       <input type="url" id="author-url" placeholder="Добавить ссылку на YouTube" style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text" onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'" onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
       <input type="file" id="author-video-file" accept="video/mp4,video/*" style="display:none" onchange="uploadEntryVideo(this.files,'author-url','author-video-progress')">
-      <button type="button" onclick="document.getElementById('author-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">📹 Загрузить видео</button>
+      <button type="button" onclick="document.getElementById('author-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">Загрузить</button>
     </label>
     <div id="author-video-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
     <div id="author-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
@@ -404,7 +404,7 @@
     <div id="author-add-status" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em"></div>
     <!-- CAROUSEL inside Ия Бард -->
     <div style="margin:12px -20px 0;padding:16px 20px 0;border-top:1px solid rgba(201,169,110,0.18)">
-      <div style="font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);margin-bottom:10px">🖼️ Карусель (слайды)</div>
+      <div style="font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);margin-bottom:10px">Карусель (слайды)</div>
       <div id="carousel-img-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px;box-sizing:border-box">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
         <span id="carousel-img-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Картинка слайда</span>
@@ -458,7 +458,7 @@
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       <input type="url" id="custom-yt-url" placeholder="Добавить ссылку на YouTube" style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text" onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'" onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
       <input type="file" id="custom-video-file" accept="video/mp4,video/*" style="display:none" onchange="uploadEntryVideo(this.files,'custom-yt-url','custom-video-progress')">
-      <button type="button" onclick="document.getElementById('custom-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">📹 Загрузить видео</button>
+      <button type="button" onclick="document.getElementById('custom-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">Загрузить</button>
     </label>
     <div id="custom-video-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
     <div id="custom-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
@@ -494,19 +494,19 @@
     <div id="edit-picker" style="padding:16px;display:flex;flex-direction:column;gap:10px">
       <div style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(201,169,110,0.45);text-align:center;padding-bottom:4px">Выберите рубрику</div>
       <button onclick="showEditCreative()" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px;justify-content:space-between" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-        <span style="display:flex;align-items:center;gap:12px"><span style="font-size:1.3rem">🎨</span><span style="color:#c9a96e;font-size:1.05rem">Творчество</span></span><span style="color:rgba(201,169,110,0.5);font-size:1rem">›</span>
+        <span style="color:#c9a96e;font-size:1.05rem">Творчество</span><span style="color:rgba(201,169,110,0.5);font-size:1rem">›</span>
       </button>
       <button onclick="selectEditSection('books')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-        <span style="font-size:1.3rem">📚</span><span style="color:#c9a96e;font-size:1.05rem">Книги</span>
+        <span style="color:#c9a96e;font-size:1.05rem">Книги</span>
       </button>
       <button onclick="selectEditSection('author')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-        <span style="font-size:1.3rem">👤</span><span style="color:#c9a96e;font-size:1.05rem">Ия Бард</span>
+        <span style="color:#c9a96e;font-size:1.05rem">Ия Бард</span>
       </button>
       <button onclick="selectEditSection('audio')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-        <span style="font-size:1.3rem">🎧</span><span style="color:#c9a96e;font-size:1.05rem">Аудио</span>
+        <span style="color:#c9a96e;font-size:1.05rem">Аудио</span>
       </button>
       <button onclick="selectEditSection('shop')" style="background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:'Georgia',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px" onmouseover="this.style.borderColor='rgba(201,169,110,0.6)';this.style.background='rgba(201,169,110,0.12)'" onmouseout="this.style.borderColor='rgba(201,169,110,0.25)';this.style.background='rgba(201,169,110,0.07)'">
-        <span style="font-size:1.3rem">🛍️</span><span style="color:#c9a96e;font-size:1.05rem">Товар</span>
+        <span style="color:#c9a96e;font-size:1.05rem">Товар</span>
       </button>
     </div>
 
@@ -927,10 +927,10 @@ function backToSectionPicker(){
 
 // ─── CUSTOM SECTIONS ────────────────────────────────────────────────────────
 var _FIXED_CREATIVE_SECS=[
-  {id:'poems',label:'Поэзия',emoji:'📜',fixed:true},
-  {id:'tales',label:'Сказки',emoji:'✨',fixed:true},
-  {id:'astrology',label:'Зодиак',emoji:'✨',fixed:true},
-  {id:'poetry-en',label:'Songs EN',emoji:'🎵',fixed:true}
+  {id:'poems',label:'Поэзия',emoji:'',fixed:true},
+  {id:'tales',label:'Сказки',emoji:'',fixed:true},
+  {id:'astrology',label:'Зодиак',emoji:'',fixed:true},
+  {id:'poetry-en',label:'Songs EN',emoji:'',fixed:true}
 ];
 var _customSecs=[];var _customSecsSha=null;var _curCustomSec=null;
 var _creativeOrder=null;
@@ -956,7 +956,7 @@ function backFromEditCreative(){
   _editNavFrom='main';
 }
 function _secTileHtml(emoji,label){
-  return '<span style="font-size:1.3rem">'+(emoji||'📁')+'</span><span style="color:#c9a96e;font-size:1.05rem">'+label+'</span>';
+  return (emoji?'<span style="font-size:1.3rem">'+emoji+'</span>':'')+'<span style="color:#c9a96e;font-size:1.05rem">'+label+'</span>';
 }
 var _tileCss='background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.25);border-radius:8px;color:#e8ddd0;font-family:\'Georgia\',serif;font-size:1rem;letter-spacing:1px;padding:16px 20px;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px;width:100%';
 function _makeTile(sec,clickFn){
@@ -1133,7 +1133,7 @@ function createSection(){
   var st=document.getElementById('create-sec-status');
   if(!token){st.textContent='Нет токена';return;}
   var name=document.getElementById('create-sec-name').value.trim();
-  var emoji=document.getElementById('create-sec-emoji').value.trim()||'📁';
+  var emoji=document.getElementById('create-sec-emoji').value.trim()||'';
   if(!name){st.textContent='Введите название';return;}
   var id='section-'+name.toLowerCase().replace(/[^a-zа-яёa-z0-9]/gi,'-').replace(/-+/g,'-').replace(/^-|-$/g,'').substring(0,40)+'--'+Date.now().toString(36);
   var file='section-'+id+'.txt';
@@ -1804,17 +1804,17 @@ function renderYTList(list){
     // Audio row
     var audioRow=document.createElement('div');audioRow.className='yt-item-audio';
     var fileInp=document.createElement('input');fileInp.type='file';fileInp.id=uid+'-a';fileInp.accept='.mp3,.m4a,.wav,.ogg,.aac,.flac,audio/*';fileInp.style.display='none';
-    var audioLabel=document.createElement('label');audioLabel.htmlFor=uid+'-a';audioLabel.className='yt-item-audio-label';audioLabel.textContent='🎵 Добавить аудио (необязательно)';
+    var audioLabel=document.createElement('label');audioLabel.htmlFor=uid+'-a';audioLabel.className='yt-item-audio-label';audioLabel.textContent='Добавить аудио (необязательно)';
     fileInp.addEventListener('change',function(){
-      audioLabel.textContent=fileInp.files[0]?'🎵 '+fileInp.files[0].name:'🎵 Добавить аудио (необязательно)';
+      audioLabel.textContent=fileInp.files[0]?fileInp.files[0].name:'Добавить аудио (необязательно)';
     });
     audioRow.appendChild(fileInp);audioRow.appendChild(audioLabel);
     // Image row
     var imgRow=document.createElement('div');imgRow.className='yt-item-audio';
     var imgInp=document.createElement('input');imgInp.type='file';imgInp.id=uid+'-i';imgInp.accept='image/*';imgInp.style.display='none';
-    var imgLabel=document.createElement('label');imgLabel.htmlFor=uid+'-i';imgLabel.className='yt-item-audio-label';imgLabel.textContent='🖼 Добавить картинку (необязательно)';
+    var imgLabel=document.createElement('label');imgLabel.htmlFor=uid+'-i';imgLabel.className='yt-item-audio-label';imgLabel.textContent='Добавить картинку (необязательно)';
     imgInp.addEventListener('change',function(){
-      imgLabel.textContent=imgInp.files[0]?'🖼 '+imgInp.files[0].name:'🖼 Добавить картинку (необязательно)';
+      imgLabel.textContent=imgInp.files[0]?imgInp.files[0].name:'Добавить картинку (необязательно)';
     });
     imgRow.appendChild(imgInp);imgRow.appendChild(imgLabel);
     // Save button + status
@@ -2560,7 +2560,7 @@ function renderEditList(){
   el.innerHTML='';
   displayed.forEach(function(raw,i){
     var title;
-    if(_ed.section==='carousel'){var cp=parseCarouselEntry(raw);title=cp.text.split('\n')[0].trim()||'📸 '+cp.img||'(слайд)';}
+    if(_ed.section==='carousel'){var cp=parseCarouselEntry(raw);title=cp.text.split('\n')[0].trim()||cp.img||'(слайд)';}
     else{var _rtl=raw.split('\n').find(function(l){return l.trim()&&!/^#\s/.test(l.trim());});title=(_rtl||'').trim()||'(без названия)';}
     var item=document.createElement('div');item.className='yt-item';
     item.setAttribute('data-di',i);item.setAttribute('draggable','true');
@@ -2649,7 +2649,7 @@ function renderEditList(){
   if(_ed.section==='author'){
     var carLink=document.createElement('button');
     carLink.style.cssText='width:100%;margin-top:8px;background:rgba(201,169,110,0.06);border:1px dashed rgba(201,169,110,0.25);border-radius:6px;color:rgba(201,169,110,0.65);font-family:\'Georgia\',serif;font-size:0.85rem;padding:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px';
-    carLink.innerHTML='🖼️ Редактировать слайды карусели →';
+    carLink.innerHTML='Редактировать слайды карусели →';
     carLink.onclick=function(){selectEditSection('carousel');};
     el.appendChild(carLink);
   }
@@ -2681,7 +2681,7 @@ function openEditEntry(displayIdx){
   _ed.idx=displayIdx;
   var raw=_ed.rawEntries[_editFileIdx(displayIdx)];
   var title;
-  if(_ed.section==='carousel'){var _cp=parseCarouselEntry(raw);title=_cp.text.split('\n')[0].trim()||'📸 '+_cp.img||'Слайд';}
+  if(_ed.section==='carousel'){var _cp=parseCarouselEntry(raw);title=_cp.text.split('\n')[0].trim()||_cp.img||'Слайд';}
   else{var _otl=raw.split('\n').find(function(l){return l.trim()&&!/^#\s/.test(l.trim());});title=(_otl||'').trim()||'(без названия)';}
   document.getElementById('edit-form-label').textContent=title;
   document.getElementById('edit-status').textContent='';
@@ -3170,8 +3170,8 @@ function loadInbox(){
       var contactsHtml='';
       if(contacts.email||contacts.telegram){
         contactsHtml='<div class="inbox-contacts">';
-        if(contacts.email)contactsHtml+='<a href="mailto:'+esc(contacts.email)+'" class="inbox-contact-link">📧 '+esc(contacts.email)+'</a>';
-        if(contacts.telegram){var tg=contacts.telegram.replace(/^@/,'');contactsHtml+='<a href="https://t.me/'+esc(tg)+'" target="_blank" rel="noopener noreferrer" class="inbox-contact-link">✈️ '+esc(contacts.telegram)+'</a>';}
+        if(contacts.email)contactsHtml+='<a href="mailto:'+esc(contacts.email)+'" class="inbox-contact-link">'+esc(contacts.email)+'</a>';
+        if(contacts.telegram){var tg=contacts.telegram.replace(/^@/,'');contactsHtml+='<a href="https://t.me/'+esc(tg)+'" target="_blank" rel="noopener noreferrer" class="inbox-contact-link">'+esc(contacts.telegram)+'</a>';}
         contactsHtml+='</div>';
       }
       var div=document.createElement('div');
@@ -3224,8 +3224,8 @@ function showReplyMenu(btn){
   var menu=document.createElement('div');
   menu.className='inbox-reply-menu';menu._anchor=btn;
   var html='<div style="padding:6px 14px 5px;font-size:0.67rem;color:rgba(201,169,110,0.45);border-bottom:1px solid rgba(201,169,110,0.12)">Отвечай с poet@iabard.com</div>';
-  if(email)html+='<a href="mailto:'+esc(email)+'?from=poet%40iabard.com">📧 Email — '+esc(email)+'</a>';
-  if(tg){var tgHandle=tg.replace(/^@/,'');html+='<a href="https://t.me/'+esc(tgHandle)+'" target="_blank" rel="noopener noreferrer">✈️ Telegram — '+esc(tg)+'</a>';}
+  if(email)html+='<a href="mailto:'+esc(email)+'?from=poet%40iabard.com">Email — '+esc(email)+'</a>';
+  if(tg){var tgHandle=tg.replace(/^@/,'');html+='<a href="https://t.me/'+esc(tgHandle)+'" target="_blank" rel="noopener noreferrer">Telegram — '+esc(tg)+'</a>';}
   if(!html)return;
   menu.innerHTML=html;
   btn.insertAdjacentElement('afterend',menu);
