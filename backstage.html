@@ -236,7 +236,10 @@
         style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text"
         onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'"
         onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
+      <input type="file" id="poem-video-file" accept="video/mp4,video/*" style="display:none" onchange="uploadEntryVideo(this.files,'poem-yt-url','poem-video-progress')">
+      <button type="button" onclick="document.getElementById('poem-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">📹 Загрузить видео</button>
     </label>
+    <div id="poem-video-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
     <div id="poem-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
       <svg width="13" height="13" viewBox="6 3 8 18" preserveAspectRatio="none" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
       <span id="poem-mp3-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.88rem">Аудио файл</span>
@@ -268,7 +271,10 @@
         style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text"
         onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'"
         onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
+      <input type="file" id="tale-video-file" accept="video/mp4,video/*" style="display:none" onchange="uploadEntryVideo(this.files,'tale-yt-url','tale-video-progress')">
+      <button type="button" onclick="document.getElementById('tale-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">📹 Загрузить видео</button>
     </label>
+    <div id="tale-video-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
     <div id="tale-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
       <svg width="13" height="13" viewBox="6 3 8 18" preserveAspectRatio="none" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
       <span id="tale-mp3-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.88rem">Аудио файл</span>
@@ -297,7 +303,10 @@
     <label style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:text;display:flex;align-items:center;gap:8px;transition:border-color 0.2s">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       <input type="url" id="en-url" placeholder="Добавить ссылку на YouTube" style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text" onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'" onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
+      <input type="file" id="en-video-file" accept="video/mp4,video/*" style="display:none" onchange="uploadEntryVideo(this.files,'en-url','en-video-progress')">
+      <button type="button" onclick="document.getElementById('en-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">📹 Загрузить видео</button>
     </label>
+    <div id="en-video-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
     <div id="en-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
       <svg width="13" height="13" viewBox="6 3 8 18" preserveAspectRatio="none" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
       <span id="en-mp3-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.88rem">Аудио файл</span>
@@ -331,7 +340,10 @@
     <label style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:text;display:flex;align-items:center;gap:8px;transition:border-color 0.2s">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       <input type="url" id="astro-url" placeholder="Добавить ссылку на YouTube" style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text" onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'" onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
+      <input type="file" id="astro-video-file" accept="video/mp4,video/*" style="display:none" onchange="uploadEntryVideo(this.files,'astro-url','astro-video-progress')">
+      <button type="button" onclick="document.getElementById('astro-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">📹 Загрузить видео</button>
     </label>
+    <div id="astro-video-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
     <div id="astro-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
       <svg width="13" height="13" viewBox="6 3 8 18" preserveAspectRatio="none" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
       <span id="astro-mp3-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.88rem">Аудио файл</span>
@@ -365,7 +377,10 @@
     <label style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:text;display:flex;align-items:center;gap:8px;transition:border-color 0.2s">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       <input type="url" id="author-url" placeholder="Добавить ссылку на YouTube" style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text" onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'" onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
+      <input type="file" id="author-video-file" accept="video/mp4,video/*" style="display:none" onchange="uploadEntryVideo(this.files,'author-url','author-video-progress')">
+      <button type="button" onclick="document.getElementById('author-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">📹 Загрузить видео</button>
     </label>
+    <div id="author-video-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
     <div id="author-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
       <svg width="13" height="13" viewBox="6 3 8 18" preserveAspectRatio="none" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
       <span id="author-mp3-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.88rem">Аудио файл</span>
@@ -442,7 +457,10 @@
     <label style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:text;display:flex;align-items:center;gap:8px;transition:border-color 0.2s">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       <input type="url" id="custom-yt-url" placeholder="Добавить ссылку на YouTube" style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text" onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'" onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
+      <input type="file" id="custom-video-file" accept="video/mp4,video/*" style="display:none" onchange="uploadEntryVideo(this.files,'custom-yt-url','custom-video-progress')">
+      <button type="button" onclick="document.getElementById('custom-video-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap">📹 Загрузить видео</button>
     </label>
+    <div id="custom-video-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
     <div id="custom-mp3-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
       <svg width="13" height="13" viewBox="6 3 8 18" preserveAspectRatio="none" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
       <span id="custom-mp3-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.88rem">Аудио файл</span>
@@ -1204,7 +1222,7 @@ function addCustomEntry(){
   var text=(document.getElementById('custom-text').value||'').trim();
   var title=text.split('\n')[0].trim()||'Запись';
   if(!text&&!url){st.textContent='Введите текст или ссылку';return;}
-  if(url&&!/youtu/.test(url)){st.textContent='Неверный YouTube URL';return;}
+  if(url&&!isMediaLink(url)){st.textContent='Нужна ссылка YouTube или загруженное видео';return;}
   var imageFile=document.getElementById('custom-image-input').files[0]||null;
   st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
   function doSave(imgName){
@@ -1413,7 +1431,7 @@ function loadPoetryENList(){
     var entries=text.split('===').map(function(e){return e.trim();}).filter(Boolean).reverse();
     _enEntries=entries.map(function(raw){
       var lines=raw.split('\n').map(function(l){return l.trim();}).filter(Boolean);
-      return{title:lines[0]||'',url:lines.find(function(l){return /youtu/.test(l);})||''};
+      return{title:lines[0]||'',url:lines.find(function(l){return isMediaLink(l);})||''};
     });
     renderPoetryENList(_enEntries);
   })
@@ -1546,7 +1564,7 @@ function addPoetryEN(){
   var text=(document.getElementById('en-text').value||'').trim();
   var title=text.split('\n')[0].trim()||'EN poem';
   if(!text&&!url){document.getElementById('en-add-status').textContent='Введите текст или ссылку';return;}
-  if(url&&!/youtu/.test(url)){document.getElementById('en-add-status').textContent='Неверный YouTube URL';return;}
+  if(url&&!isMediaLink(url)){document.getElementById('en-add-status').textContent='Нужна ссылка YouTube или загруженное видео';return;}
   var imageFile=document.getElementById('en-image-input').files[0]||null;
   var st=document.getElementById('en-add-status');
   st.textContent='Сохранение…';st.style.color='rgba(201,169,110,0.7)';
@@ -1631,8 +1649,8 @@ function loadAstroList(){
     _astroEntries=entries.map(function(raw){
       var lines=raw.split('\n').map(function(l){return l.trim();}).filter(Boolean);
       var title=lines[0]||'';
-      var url=lines.find(function(l){return /youtu/.test(l);})||'';
-      var textLines=lines.filter(function(l){return !/youtu/.test(l)&&l!==title;});
+      var url=lines.find(function(l){return isMediaLink(l);})||'';
+      var textLines=lines.filter(function(l){return !isMediaLink(l)&&l!==title;});
       return{title:title,url:url,text:textLines.join('\n')};
     });
     renderAstroList(_astroEntries);
@@ -1755,7 +1773,7 @@ function loadYTList(){
     var poems=text.split('===').map(function(p){return p.trim();}).filter(Boolean);
     _ytPoems=[];
     poems.forEach(function(raw){
-      var hasYT=/^https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)/m.test(raw);
+      var hasYT=hasMediaLine(raw);
       if(hasYT)return;
       var clean=raw.replace(/[ \t]*#\s+[^\n]*/g,'').trim();
       var lines=clean.split('\n').map(function(l){return l.trim();}).filter(Boolean);
@@ -1822,7 +1840,7 @@ function filterYT(q){
 
 function saveYTEntry(title,url,audioFile,imageFile,btn,status){
   if(!url&&!audioFile&&!imageFile){status.textContent='Добавьте ссылку, аудио или картинку';status.style.color='#d47a7a';return;}
-  if(url&&!/^https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)/i.test(url)){status.textContent='Неверная YouTube-ссылка';status.style.color='#d47a7a';return;}
+  if(url&&!isMediaLink(url)){status.textContent='Неверная ссылка: нужен YouTube или загруженное видео';status.style.color='#d47a7a';return;}
   var token=getToken();
   if(!token){status.textContent='Нет токена';status.style.color='#d47a7a';return;}
   btn.disabled=true;status.style.color='rgba(201,169,110,0.7)';
@@ -1921,6 +1939,57 @@ function saveYTEntry(title,url,audioFile,imageFile,btn,status){
 
 function sanitizeFilename(name,fallback){
   return name.replace(/[^\wЀ-ӿ.\-]/g,'_').replace(/\.{2,}/g,'_').replace(/^[._\-]+/,'') || fallback;
+}
+
+// Принимает YouTube-ссылку или путь к загруженному видео вида videos/....mp4
+function isMediaLink(u){
+  u=(u||'').trim();
+  return /youtu/i.test(u)||/^videos\/.+\.mp4$/i.test(u);
+}
+function hasMediaLine(raw){
+  return String(raw||'').split('\n').some(function(l){return isMediaLink(l);});
+}
+
+// Загрузка видеофайла в videos/ через GitHub API; после успеха подставляет путь в поле URL
+function uploadEntryVideo(files,urlFieldId,progId){
+  if(!files||!files.length)return;
+  var token=getToken();
+  var prog=document.getElementById(progId);
+  if(!token){prog.textContent='Нет токена';prog.style.display='block';return;}
+  var file=files[0];
+  if(file.size>95*1024*1024){prog.style.display='block';prog.style.color='#d47a7a';prog.textContent='Файл '+file.name+' больше 95MB — GitHub не примет';return;}
+  prog.style.display='block';prog.style.color='rgba(201,169,110,0.7)';
+  prog.textContent='Загрузка видео…';
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var arr=new Uint8Array(e.target.result);
+    var chunks=[];
+    for(var i=0;i<arr.length;i+=8192){chunks.push(String.fromCharCode.apply(null,arr.subarray(i,i+8192)));}
+    var b64=btoa(chunks.join(''));
+    var safeName=sanitizeFilename(file.name,'video');
+    if(!/\.mp4$/i.test(safeName))safeName+='.mp4';
+    var path='videos/'+safeName;
+    fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+    })
+    .then(function(r){return r.json();})
+    .then(function(ex){
+      var body={message:'Upload video: '+safeName,content:b64,branch:'main'};
+      if(ex&&ex.sha&&!ex.message)body.sha=ex.sha;
+      return fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{
+        method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
+    })
+    .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
+    .then(function(){
+      prog.style.color='#7bc47b';
+      prog.textContent='✓ Загружено: videos/'+safeName;
+      document.getElementById(urlFieldId).value='videos/'+safeName;
+    })
+    .catch(function(e){prog.style.color='#d47a7a';prog.textContent='Ошибка: '+e.message;});
+  };
+  reader.readAsArrayBuffer(file);
 }
 
 function showListError(el,msg){
