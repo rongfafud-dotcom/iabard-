@@ -2154,7 +2154,7 @@ function loadPoetryEN(){
         var vw2=document.createElement('div');vw2.className='novinka-video novinka-video-wide';
         var ve=document.createElement('video');
         ve.setAttribute('controls','');ve.setAttribute('playsinline','');ve.setAttribute('preload','metadata');
-        ve.src=localVid;ve.setAttribute('aria-label',title||'видео');
+        ve.src=localVid;ve.poster=localVid.replace(/\.mp4(\?\S*)?$/i,'-poster.jpg');ve.setAttribute('aria-label',title||'видео');
         vw2.appendChild(ve);card.appendChild(vw2);
       }
       audioFiles.forEach(function(af){var aph=document.createElement('div');aph.className='audio-ph';aph.dataset.src='audio/'+encodeURIComponent(af);aph.dataset.label=title||af;card.appendChild(aph);});
@@ -2402,7 +2402,7 @@ function loadAstrology(){
         var vw2=document.createElement('div');vw2.className='novinka-video novinka-video-wide';
         var ve=document.createElement('video');
         ve.setAttribute('controls','');ve.setAttribute('playsinline','');ve.setAttribute('preload','metadata');
-        ve.src=localVid;ve.setAttribute('aria-label',title||'видео');
+        ve.src=localVid;ve.poster=localVid.replace(/\.mp4(\?\S*)?$/i,'-poster.jpg');ve.setAttribute('aria-label',title||'видео');
         vw2.appendChild(ve);card.appendChild(vw2);
       }
       audioFiles.forEach(function(af){var aph=document.createElement('div');aph.className='audio-ph';aph.dataset.src='audio/'+encodeURIComponent(af);aph.dataset.label=title||af;card.appendChild(aph);});
@@ -2501,7 +2501,7 @@ function loadAuthor(){
         var vw2=document.createElement('div');vw2.className='novinka-video novinka-video-wide';
         var ve=document.createElement('video');
         ve.setAttribute('controls','');ve.setAttribute('playsinline','');ve.setAttribute('preload','metadata');
-        ve.src=localVid;ve.setAttribute('aria-label',title||'видео');
+        ve.src=localVid;ve.poster=localVid.replace(/\.mp4(\?\S*)?$/i,'-poster.jpg');ve.setAttribute('aria-label',title||'видео');
         vw2.appendChild(ve);card.appendChild(vw2);
       }
       audioFiles.forEach(function(af){var aph=document.createElement('div');aph.className='audio-ph';aph.dataset.src='audio/'+encodeURIComponent(af);aph.dataset.label=title||af;card.appendChild(aph);});
