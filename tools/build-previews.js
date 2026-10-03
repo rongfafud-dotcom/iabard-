@@ -121,7 +121,7 @@ async function bestThumb(id, isShort) {
 function addedAt(file, titleLine) {
   if (!titleLine) return 0;
   try {
-    const re = '^' + String(titleLine).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$';
+    const re = '^' + String(titleLine).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*$';
     const out = execFileSync('git',
       ['log', '-1', '--format=%ct', '-G', re, '--', file],
       {cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore']}).trim();
@@ -129,14 +129,15 @@ function addedAt(file, titleLine) {
   } catch (e) { return 0; }
 }
 
-// Manual date corrections: "file|title" -> unix timestamp. Used when git
-// history cannot know the true date (e.g. a title was reworded after the
-// entry was created). Applied after addedAt().
-let FEED_DATE_OVERRIDES = {};
+// Pinned entry dates: "file|title" -> unix timestamp. Computed once from
+// full git history (tools/feed-dates.json); cosmetic edits such as title
+// rewording must not resurface old entries in the "newest first" feed.
+// Entries missing here (added later) fall back to addedAt() below.
+let FEED_DATES = {};
 try {
-  FEED_DATE_OVERRIDES = JSON.parse(
-    fs.readFileSync(path.join(ROOT, 'tools', 'feed-date-overrides.json'), 'utf8'));
-} catch (e) { /* no overrides file — fine */ }
+  FEED_DATES = JSON.parse(
+    fs.readFileSync(path.join(ROOT, 'tools', 'feed-dates.json'), 'utf8'));
+} catch (e) { /* no dates file — fall back to git history */ }
 
 function esc(s) {
   return String(s == null ? '' : s)
@@ -331,7 +332,7 @@ async function main() {
 
       // A clip keeps its YouTube frame; the card is for entries without one.
       if (!e.yt && e.lines && e.lines.length) cards.push({anchor, title: e.title, lines: e.lines});
-      const when = FEED_DATE_OVERRIDES[src.file + '|' + e.title]
+      const when = FEED_DATES[src.file + '|' + e.title]
         || addedAt(src.file, e.title);
       // idx is the position in the newest-first list, so it breaks ties
       // within one commit: a lower idx was appended later, i.e. is newer.
