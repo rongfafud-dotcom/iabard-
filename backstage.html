@@ -2726,7 +2726,26 @@ function openEditEntry(displayIdx){
   function inp(id,val,ph,type){var i=document.createElement('input');i.type=type||'text';i.id=id;i.value=val;i.placeholder=ph;i.style.cssText=iStyle;return i;}
   function ta(id,val,ph,rows){var t=document.createElement('textarea');t.id=id;t.value=val;t.placeholder=ph;t.rows=rows||6;t.style.cssText=tStyle;t.spellcheck=false;return t;}
   if(_ed.section==='poems'||_ed.section==='tales'){
-    fields.appendChild(ta('edit-poem-raw',raw,_ed.section==='tales'?'Текст сказки':'Текст стихотворения',14));
+    var _pu=parseEditUrl(raw);
+    var _urlRow=document.createElement('div');
+    _urlRow.style.cssText='display:flex;gap:8px;align-items:center';
+    var _urlInp=inp('edit-poem-url',_pu.url,'YouTube URL или videos/....mp4 (необязательно)','url');
+    _urlInp.style.width='';_urlInp.style.flex='1';_urlInp.style.minWidth='0';
+    _urlRow.appendChild(_urlInp);
+    var _vidFile=document.createElement('input');
+    _vidFile.type='file';_vidFile.id='edit-poem-video-file';_vidFile.accept='video/mp4,video/*';_vidFile.style.display='none';
+    _vidFile.onchange=function(){uploadEntryVideo(this.files,'edit-poem-url','edit-poem-video-progress');};
+    var _vidBtn=document.createElement('button');
+    _vidBtn.type='button';_vidBtn.textContent='Загрузить';
+    _vidBtn.style.cssText="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif;white-space:nowrap";
+    _vidBtn.onclick=function(){document.getElementById('edit-poem-video-file').click();};
+    _urlRow.appendChild(_vidFile);_urlRow.appendChild(_vidBtn);
+    fields.appendChild(_urlRow);
+    var _vprog=document.createElement('div');
+    _vprog.id='edit-poem-video-progress';
+    _vprog.style.cssText='font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px';
+    fields.appendChild(_vprog);
+    fields.appendChild(ta('edit-poem-raw',_pu.text,_ed.section==='tales'?'Текст сказки':'Текст стихотворения',14));
   } else if(_ed.section==='carousel'){
     var cp=parseCarouselEntry(raw);
     fields.appendChild(inp('edit-f-img',cp.img,'Путь к картинке (images/carousel-*.jpg)'));
@@ -2784,6 +2803,18 @@ function parseEditEntry(raw){
   var price='';
   text=text.replace(/(?:^|\n)(?:Цена:|Price:)\s*([^\n]*)/,function(_,p){price=p.trim();return '';}).trim();
   return{title:title,url:url,text:text,price:price,images:images};
+}
+function parseEditUrl(raw){
+  var lines=String(raw||'').split('\n');
+  var url='',urlIdx=-1;
+  for(var i=0;i<lines.length;i++){
+    var t=lines[i].trim();
+    if(/^https?:\/\//.test(t)||/^videos\/.+\.mp4$/i.test(t)){url=t;urlIdx=i;break;}
+  }
+  var text=lines.slice();
+  if(urlIdx!==-1)text.splice(urlIdx,1);
+  while(text.length&&!text[text.length-1].trim())text.pop();
+  return{url:url,text:text.join('\n').trim()};
 }
 var _edShopImages=[];
 function _buildEditShopPhotoUI(fields,images){
@@ -2891,7 +2922,10 @@ function saveCurrentEdit(){
   document.getElementById('edit-delete-btn').disabled=true;
   var newRaw;
   if(_ed.section==='poems'||_ed.section==='tales'){
-    newRaw=(document.getElementById('edit-poem-raw').value||'').trim();
+    var _et=(document.getElementById('edit-poem-raw').value||'').trim();
+    var _eu=(document.getElementById('edit-poem-url').value||'').trim();
+    if(_eu&&!isMediaLink(_eu)){st.textContent='Неверная ссылка: нужен YouTube или videos/....mp4';st.style.color='#d47a7a';document.getElementById('edit-save-btn').disabled=false;document.getElementById('edit-delete-btn').disabled=false;return;}
+    newRaw=_et+(_eu?'\n\n'+_eu:'');
   } else if(_ed.section==='carousel'){
     var img=(document.getElementById('edit-f-img').value||'').trim();
     var isTitleC=document.getElementById('edit-f-is-title').checked;
