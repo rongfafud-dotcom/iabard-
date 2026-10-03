@@ -1952,15 +1952,42 @@ function hasMediaLine(raw){
 }
 
 // Загрузка видеофайла в videos/ через GitHub API; после успеха подставляет путь в поле URL
+function uploadVideoDataAPI(b64,safeName,path,token){
+  var G='https://api.github.com/repos/'+REPO;
+  var H={'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'};
+  function api(method,url,body){
+    return fetch(url,{method:method,headers:H,body:body?JSON.stringify(body):undefined})
+      .then(function(r){
+        if(!r.ok)return r.json().then(function(d){var e=new Error((d&&d.message)||('HTTP '+r.status));e.status=r.status;throw e;});
+        return r.json();
+      });
+  }
+  function flow(){
+    return api('POST',G+'/git/blobs',{content:b64,encoding:'base64'})
+      .then(function(bl){
+        return api('GET',G+'/git/ref/heads/main').then(function(rf){return {blob:bl.sha,base:rf.object.sha};});
+      })
+      .then(function(s){
+        return api('POST',G+'/git/trees',{base_tree:s.base,tree:[{path:path,mode:'100644',type:'blob',sha:s.blob}]})
+          .then(function(tr){
+            return api('POST',G+'/git/commits',{message:'Upload video: '+safeName,parents:[s.base],tree:tr.sha})
+              .then(function(cm){return {base:s.base,commit:cm.sha};});
+          });
+      })
+      .then(function(s){return api('PATCH',G+'/git/refs/heads/main',{sha:s.commit});});
+  }
+  return flow().catch(function(e){if(e.status===422)return flow();throw e;});
+}
 function uploadEntryVideo(files,urlFieldId,progId){
   if(!files||!files.length)return;
   var token=getToken();
   var prog=document.getElementById(progId);
-  if(!token){prog.textContent='Нет токена';prog.style.display='block';return;}
+  if(!token){prog.textContent='\u041d\u0435\u0442 \u0442\u043e\u043a\u0435\u043d\u0430';prog.style.display='block';return;}
   var file=files[0];
-  if(file.size>95*1024*1024){prog.style.display='block';prog.style.color='#d47a7a';prog.textContent='Файл '+file.name+' больше 95MB — GitHub не примет';return;}
+  if(file.size>100*1024*1024){prog.style.display='block';prog.style.color='#d47a7a';prog.textContent='\u0424\u0430\u0439\u043b '+file.name+' \u0431\u043e\u043b\u044c\u0448\u0435 100MB \u2014 GitHub \u043d\u0435 \u043f\u0440\u0438\u043c\u0435\u0442. \u041f\u0440\u0438\u0448\u043b\u0438\u0442\u0435 \u0432\u0438\u0434\u0435\u043e \u043c\u043d\u0435 \u0432 \u0447\u0430\u0442, \u044f \u0440\u0430\u0437\u043c\u0435\u0449\u0443 \u0435\u0433\u043e \u0441\u0430\u043c\u0430.';return;}
+  var big=file.size>20*1024*1024;
   prog.style.display='block';prog.style.color='rgba(201,169,110,0.7)';
-  prog.textContent='Загрузка видео…';
+  prog.textContent=big?'\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430 \u0431\u043e\u043b\u044c\u0448\u043e\u0433\u043e \u0432\u0438\u0434\u0435\u043e\u2026':'\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430 \u0432\u0438\u0434\u0435\u043e\u2026';
   var reader=new FileReader();
   reader.onload=function(e){
     var arr=new Uint8Array(e.target.result);
@@ -1970,6 +1997,17 @@ function uploadEntryVideo(files,urlFieldId,progId){
     var safeName=sanitizeFilename(file.name,'video');
     if(!/\.mp4$/i.test(safeName))safeName+='.mp4';
     var path='videos/'+safeName;
+    var done=function(){
+      prog.style.color='#7bc47b';
+      prog.textContent='\u2713 \u0417\u0430\u0433\u0440\u0443\u0436\u0435\u043d\u043e: videos/'+safeName;
+      document.getElementById(urlFieldId).value='videos/'+safeName;
+    };
+    var fail=function(e){
+      prog.style.color='#d47a7a';var _m=(e&&e.message)||'';
+      if(/too large/i.test(_m)){prog.textContent='\u0424\u0430\u0439\u043b \u0441\u043b\u0438\u0448\u043a\u043e\u043c \u0431\u043e\u043b\u044c\u0448\u043e\u0439 \u0434\u043b\u044f \u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0438 \u043a\u043d\u043e\u043f\u043a\u043e\u0439 \u2014 \u043f\u0440\u0438\u0448\u043b\u0438\u0442\u0435 \u0432\u0438\u0434\u0435\u043e \u043c\u043d\u0435 \u0432 \u0447\u0430\u0442, \u044f \u0440\u0430\u0437\u043c\u0435\u0449\u0443 \u0435\u0433\u043e \u0441\u0430\u043c\u0430.';}
+      else{prog.textContent='\u041e\u0448\u0438\u0431\u043a\u0430: '+_m;}
+    };
+    if(big){uploadVideoDataAPI(b64,safeName,path,token).then(done,fail);return;}
     fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref=main',{
       headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
     })
@@ -1983,12 +2021,7 @@ function uploadEntryVideo(files,urlFieldId,progId){
       });
     })
     .then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.message);});return r.json();})
-    .then(function(){
-      prog.style.color='#7bc47b';
-      prog.textContent='✓ Загружено: videos/'+safeName;
-      document.getElementById(urlFieldId).value='videos/'+safeName;
-    })
-    .catch(function(e){prog.style.color='#d47a7a';var _m=e.message||'';if(/too large/i.test(_m)){prog.textContent='Файл слишком большой для загрузки кнопкой \u2014 пришлите видео мне в чат, я размещу его сама.';}else{prog.textContent='Ошибка: '+_m;}});
+    .then(done,fail);
   };
   reader.readAsArrayBuffer(file);
 }
