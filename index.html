@@ -244,7 +244,8 @@
                     border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(92,61,85,0.22);
                     background:#000;aspect-ratio:9/16}
     .novinka-video-wide{aspect-ratio:16/9;max-width:560px}
-    .novinka-video iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+    .novinka-video iframe,.novinka-video video{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+    .novinka-video video{object-fit:contain;background:#000}
     .yt-facade{position:absolute;inset:0;cursor:pointer}
     .yt-facade img{width:100%;height:100%;object-fit:cover;display:block;opacity:0.84;transition:opacity 0.2s}
     .yt-facade:hover img{opacity:1}
@@ -356,6 +357,7 @@
       transition:background 0.2s}
     .book-front-buy:hover{background:rgba(172,128,45,0.97)}
     .book-front-buy[data-price]::after{content:attr(data-price);font-weight:900;font-size:0.78rem;margin-left:4px}
+    .book-buy-litres[data-price]::after{content:attr(data-price);font-weight:900;font-size:0.78rem;margin-left:4px}
     .book-stores-toggle{width:auto;min-width:52px;flex-shrink:0;padding:0 10px;cursor:pointer;
       background:rgba(201,169,110,0.93);border:none;border-left:2px solid rgba(0,0,0,0.30);
       border-radius:0 14px 14px 0;
@@ -961,7 +963,7 @@
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798317818425">
               <a href="https://store.bookbaby.com/book/coauthor" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><img src="images/bookbaby-logo.svg" style="height:2em;width:auto;vertical-align:middle;margin-right:3px;display:inline-block;flex-shrink:0" alt="BookBaby" onerror="this.outerHTML='BookBaby'"></a>
-              <a href="https://www.litres.ru/book/ipatiya-bard/soavtor-zhizni-74520578/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
+              <a href="https://www.litres.ru/book/ipatiya-bard/soavtor-zhizni-74520578/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" data-price="$3.58" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
               <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="38" height="13" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="22" y="11" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="900" fill="#1e1220" style="text-transform:none">amazon</text><path d="M4 17 Q22 21 40 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M37 15 L40 17 L37 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
               <button class="book-read-btn">Описание</button>
@@ -988,7 +990,7 @@
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798317818425">
               <a href="https://store.bookbaby.com/book/coauthor" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><img src="images/bookbaby-logo.svg" style="height:2em;width:auto;vertical-align:middle;margin-right:3px;display:inline-block;flex-shrink:0" alt="BookBaby" onerror="this.outerHTML='BookBaby'"></a>
-              <a href="https://www.litres.ru/book/ipatiya-bard/soavtor-zhizni-74520578/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
+              <a href="https://www.litres.ru/book/ipatiya-bard/soavtor-zhizni-74520578/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" data-price="$3.58" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
               <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="38" height="13" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="22" y="11" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="900" fill="#1e1220" style="text-transform:none">amazon</text><path d="M4 17 Q22 21 40 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M37 15 L40 17 L37 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
               <button class="book-read-btn">Обложка</button>
@@ -1060,7 +1062,7 @@
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350990201">
               <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><img src="images/bookbaby-logo.svg" style="height:2em;width:auto;vertical-align:middle;margin-right:3px;display:inline-block;flex-shrink:0" alt="BookBaby" onerror="this.outerHTML='BookBaby'"></a>
-              <a href="https://www.litres.ru/book/ipatiya-bard/zhenskoe-schast-e-74520862/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
+              <a href="https://www.litres.ru/book/ipatiya-bard/zhenskoe-schast-e-74520862/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" data-price="$11.86" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
               <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="38" height="13" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="22" y="11" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="900" fill="#1e1220" style="text-transform:none">amazon</text><path d="M4 17 Q22 21 40 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M37 15 L40 17 L37 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
               <button class="book-read-btn">Описание</button>
@@ -1092,7 +1094,7 @@
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350990201">
               <a href="https://store.bookbaby.com/book/womans-happiness" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><img src="images/bookbaby-logo.svg" style="height:2em;width:auto;vertical-align:middle;margin-right:3px;display:inline-block;flex-shrink:0" alt="BookBaby" onerror="this.outerHTML='BookBaby'"></a>
-              <a href="https://www.litres.ru/book/ipatiya-bard/zhenskoe-schast-e-74520862/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
+              <a href="https://www.litres.ru/book/ipatiya-bard/zhenskoe-schast-e-74520862/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" data-price="$11.86" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
               <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="38" height="13" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="22" y="11" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="900" fill="#1e1220" style="text-transform:none">amazon</text><path d="M4 17 Q22 21 40 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M37 15 L40 17 L37 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
               <button class="book-read-btn">Обложка</button>
@@ -1113,6 +1115,7 @@
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350983050">
               <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><img src="images/bookbaby-logo.svg" style="height:2em;width:auto;vertical-align:middle;margin-right:3px;display:inline-block;flex-shrink:0" alt="BookBaby" onerror="this.outerHTML='BookBaby'"></a>
+              <a href="https://www.litres.ru/74525429/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" data-price="$11.86" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
               <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="38" height="13" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="22" y="11" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="900" fill="#1e1220" style="text-transform:none">amazon</text><path d="M4 17 Q22 21 40 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M37 15 L40 17 L37 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
               <button class="book-read-btn">Описание</button>
@@ -1144,6 +1147,7 @@
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350983050">
               <a href="https://store.bookbaby.com/book/notes-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><img src="images/bookbaby-logo.svg" style="height:2em;width:auto;vertical-align:middle;margin-right:3px;display:inline-block;flex-shrink:0" alt="BookBaby" onerror="this.outerHTML='BookBaby'"></a>
+              <a href="https://www.litres.ru/74525429/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" data-price="$11.86" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
               <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="38" height="13" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="22" y="11" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="900" fill="#1e1220" style="text-transform:none">amazon</text><path d="M4 17 Q22 21 40 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M37 15 L40 17 L37 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
               <button class="book-read-btn">Обложка</button>
@@ -1164,7 +1168,7 @@
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350983043">
               <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><img src="images/bookbaby-logo.svg" style="height:2em;width:auto;vertical-align:middle;margin-right:3px;display:inline-block;flex-shrink:0" alt="BookBaby" onerror="this.outerHTML='BookBaby'"></a>
-              <a href="https://www.litres.ru/book/ipatiya-bard/zapiski-iz-palaty-nomer-6-kniga-1-71481247/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
+              <a href="https://www.litres.ru/book/ipatiya-bard/zapiski-iz-palaty-nomer-6-kniga-1-71481247/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" data-price="$11.86" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
               <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="38" height="13" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="22" y="11" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="900" fill="#1e1220" style="text-transform:none">amazon</text><path d="M4 17 Q22 21 40 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M37 15 L40 17 L37 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
               <button class="book-read-btn">Описание</button>
@@ -1196,7 +1200,7 @@
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350983043">
               <a href="https://store.bookbaby.com/book/notes-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><img src="images/bookbaby-logo.svg" style="height:2em;width:auto;vertical-align:middle;margin-right:3px;display:inline-block;flex-shrink:0" alt="BookBaby" onerror="this.outerHTML='BookBaby'"></a>
-              <a href="https://www.litres.ru/book/ipatiya-bard/zapiski-iz-palaty-nomer-6-kniga-1-71481247/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
+              <a href="https://www.litres.ru/book/ipatiya-bard/zapiski-iz-palaty-nomer-6-kniga-1-71481247/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" data-price="$11.86" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
               <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="38" height="13" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="22" y="11" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="900" fill="#1e1220" style="text-transform:none">amazon</text><path d="M4 17 Q22 21 40 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M37 15 L40 17 L37 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
               <button class="book-read-btn">Обложка</button>
@@ -1217,6 +1221,7 @@
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350968859">
               <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><img src="images/bookbaby-logo.svg" style="height:2em;width:auto;vertical-align:middle;margin-right:3px;display:inline-block;flex-shrink:0" alt="BookBaby" onerror="this.outerHTML='BookBaby'"></a>
+              <a href="https://www.litres.ru/74525423/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" data-price="$11.86" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
               <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="38" height="13" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="22" y="11" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="900" fill="#1e1220" style="text-transform:none">amazon</text><path d="M4 17 Q22 21 40 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M37 15 L40 17 L37 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
               <button class="book-read-btn">Описание</button>
@@ -1249,6 +1254,7 @@
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350968859">
               <a href="https://store.bookbaby.com/book/my-citadel-book-3" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><img src="images/bookbaby-logo.svg" style="height:2em;width:auto;vertical-align:middle;margin-right:3px;display:inline-block;flex-shrink:0" alt="BookBaby" onerror="this.outerHTML='BookBaby'"></a>
+              <a href="https://www.litres.ru/74525423/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" data-price="$11.86" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
               <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="38" height="13" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="22" y="11" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="900" fill="#1e1220" style="text-transform:none">amazon</text><path d="M4 17 Q22 21 40 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M37 15 L40 17 L37 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
               <button class="book-read-btn">Обложка</button>
@@ -1269,6 +1275,7 @@
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350968828">
               <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><img src="images/bookbaby-logo.svg" style="height:2em;width:auto;vertical-align:middle;margin-right:3px;display:inline-block;flex-shrink:0" alt="BookBaby" onerror="this.outerHTML='BookBaby'"></a>
+              <a href="https://www.litres.ru/74525413/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" data-price="$11.86" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
               <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="38" height="13" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="22" y="11" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="900" fill="#1e1220" style="text-transform:none">amazon</text><path d="M4 17 Q22 21 40 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M37 15 L40 17 L37 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
               <button class="book-read-btn">Описание</button>
@@ -1301,6 +1308,7 @@
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350968828">
               <a href="https://store.bookbaby.com/book/my-citadel-book-2" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><img src="images/bookbaby-logo.svg" style="height:2em;width:auto;vertical-align:middle;margin-right:3px;display:inline-block;flex-shrink:0" alt="BookBaby" onerror="this.outerHTML='BookBaby'"></a>
+              <a href="https://www.litres.ru/74525413/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" data-price="$11.86" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
               <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="38" height="13" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="22" y="11" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="900" fill="#1e1220" style="text-transform:none">amazon</text><path d="M4 17 Q22 21 40 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M37 15 L40 17 L37 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
               <button class="book-read-btn">Обложка</button>
@@ -1321,6 +1329,7 @@
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350968811">
               <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><img src="images/bookbaby-logo.svg" style="height:2em;width:auto;vertical-align:middle;margin-right:3px;display:inline-block;flex-shrink:0" alt="BookBaby" onerror="this.outerHTML='BookBaby'"></a>
+              <a href="https://www.litres.ru/74525407/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" data-price="$11.86" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
               <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="38" height="13" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="22" y="11" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="900" fill="#1e1220" style="text-transform:none">amazon</text><path d="M4 17 Q22 21 40 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M37 15 L40 17 L37 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
               <button class="book-read-btn">Описание</button>
@@ -1353,6 +1362,7 @@
             <div class="book-card-btns">
               <div class="book-buy-wrap" data-q="9798350968811">
               <a href="https://store.bookbaby.com/book/my-citadel-book-1" target="_blank" rel="noopener noreferrer" class="book-front-buy" onclick="event.stopPropagation()"><img src="images/bookbaby-logo.svg" style="height:2em;width:auto;vertical-align:middle;margin-right:3px;display:inline-block;flex-shrink:0" alt="BookBaby" onerror="this.outerHTML='BookBaby'"></a>
+              <a href="https://www.litres.ru/74525407/" target="_blank" rel="noopener noreferrer" class="book-buy-litres" data-price="$11.86" onclick="event.stopPropagation()" title="Читать на ЛитРес" aria-label="Читать на ЛитРес"><img src="images/litres-logo.svg" style="height:0.8em;width:auto;vertical-align:middle;display:inline-block;flex-shrink:0" alt="ЛитРес" onerror="this.outerHTML=\'ЛитРес\'"></a>
               <button class="book-stores-toggle" onclick="event.stopPropagation();bookStores(this)" aria-label="Amazon"><svg width="38" height="13" viewBox="0 0 44 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="22" y="11" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="900" fill="#1e1220" style="text-transform:none">amazon</text><path d="M4 17 Q22 21 40 17" stroke="#FF9900" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M37 15 L40 17 L37 19" fill="none" stroke="#FF9900" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             </div>
               <button class="book-read-btn">Обложка</button>
@@ -2091,7 +2101,7 @@ function loadPoetryEN(){
       var sections=clean.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
       var header=sections[0]||'';
       var hlines=header.split('\n').map(function(l){return l.trim();}).filter(Boolean);
-      var title=hlines.find(function(l){return !/^https?:\/\//.test(l);})||'';
+      var title=hlines.find(function(l){return !/^https?:\/\//.test(l)&&!/\.mp4(\?\S*)?$/i.test(l);})||'';
       var ytUrl=hlines.find(function(l){return /^https?:\/\//.test(l);})||'';
       var stanzaStart=1;
       if(!ytUrl&&sections[1]&&/^https?:\/\/\S+$/.test(sections[1].trim())){ytUrl=sections[1].trim();stanzaStart=2;}
@@ -2101,15 +2111,20 @@ function loadPoetryEN(){
         var _yi=stanzas.findIndex(function(x){return /^https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)\S*$/.test(x.trim());});
         if(_yi!==-1){ytUrl=stanzas[_yi].trim();stanzas=stanzas.slice(0,_yi).concat(stanzas.slice(_yi+1));}
       }
+      var localVid='';var _mp4h=hlines.find(function(l){return /\.mp4(\?\S*)?$/i.test(l);});
+      if(_mp4h){localVid=_mp4h;}
+      else if(ytUrl&&/\.mp4(\?\S*)?$/i.test(ytUrl)){localVid=ytUrl;}
+      if(!localVid){var _midx=stanzas.findIndex(function(x){return /\.mp4(\?\S*)?$/i.test(x.trim());});
+        if(_midx!==-1){localVid=stanzas[_midx].trim();stanzas=stanzas.slice(0,_midx).concat(stanzas.slice(_midx+1));}}
       var vid=ytUrl?ytIdFromUrl(ytUrl):'';
       var isShort=/youtube\.com\/shorts\//.test(ytUrl);
-      if(!title&&!vid&&!audioFiles.length&&!imageFile)return;
+      if(!title&&!vid&&!localVid&&!audioFiles.length&&!imageFile)return;
       var card=document.createElement('div');
-      card.className='novinka-card'+(vid&&!isShort?' novinka-card-full':'');
+      card.className='novinka-card'+(((vid&&!isShort)||localVid)?' novinka-card-full':'');
       _setCardId(card,'poetry-en',title);
       card.dataset.title=(title||'').toLowerCase();
       if(title){var te=document.createElement('div');te.className='novinka-title';te.textContent=title;card.appendChild(te);}
-      if(imageFile&&!vid){var imgDiv=document.createElement('div');imgDiv.className='poem-image';var imgEl=document.createElement('img');imgEl.src='images/'+encodeURIComponent(imageFile);imgEl.alt=title||'';imgEl.loading='lazy';imgDiv.appendChild(imgEl);card.appendChild(imgDiv);}
+      if(imageFile&&!vid&&!localVid){var imgDiv=document.createElement('div');imgDiv.className='poem-image';var imgEl=document.createElement('img');imgEl.src='images/'+encodeURIComponent(imageFile);imgEl.alt=title||'';imgEl.loading='lazy';imgDiv.appendChild(imgEl);card.appendChild(imgDiv);}
       if(vid){
         var vw=document.createElement('div');vw.className='novinka-video'+(isShort?' poem-video':' novinka-video-wide');
         var facade=document.createElement('div');
@@ -2123,12 +2138,19 @@ function loadPoetryEN(){
         facade.appendChild(img);facade.appendChild(pb);
         vw.appendChild(facade);card.appendChild(vw);
       }
+      else if(localVid){
+        var vw2=document.createElement('div');vw2.className='novinka-video novinka-video-wide';
+        var ve=document.createElement('video');
+        ve.setAttribute('controls','');ve.setAttribute('playsinline','');ve.setAttribute('preload','metadata');
+        ve.src=localVid;ve.setAttribute('aria-label',title||'видео');
+        vw2.appendChild(ve);card.appendChild(vw2);
+      }
       audioFiles.forEach(function(af){var aph=document.createElement('div');aph.className='audio-ph';aph.dataset.src='audio/'+encodeURIComponent(af);aph.dataset.label=title||af;card.appendChild(aph);});
       var actRow=document.createElement('div');actRow.className='poem-actions';
       audioFiles.forEach(function(af){var dl=document.createElement('a');dl.className='poem-dl-btn';dl.href='audio/'+encodeURIComponent(af);dl.download=af;dl.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Download '+audioExtLabel(af);actRow.appendChild(dl);});
       var sb=document.createElement('button');sb.className='yt-share-btn';
       sb.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>Share';
-      var shareUrl=vid?(isShort?'https://www.youtube.com/shorts/'+vid:'https://www.youtube.com/watch?v='+vid):'https://iabard.com';
+      var shareUrl=vid?(isShort?'https://www.youtube.com/shorts/'+vid:'https://www.youtube.com/watch?v='+vid):(localVid?null:'https://iabard.com');
       sb.onclick=(function(u){return function(){showShareMenu(sb,cardShareUrl(sb),u);};})(shareUrl);
       actRow.appendChild(sb);
       var cb=document.createElement('button');cb.className='yt-share-btn';
@@ -2328,7 +2350,7 @@ function loadAstrology(){
       var sections=clean.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
       var header=sections[0]||'';
       var hlines=header.split('\n').map(function(l){return l.trim();}).filter(Boolean);
-      var title=hlines.find(function(l){return !/^https?:\/\//.test(l);})||'';
+      var title=hlines.find(function(l){return !/^https?:\/\//.test(l)&&!/\.mp4(\?\S*)?$/i.test(l);})||'';
       var url=hlines.find(function(l){return /^https?:\/\//.test(l);})||'';
       var stanzaStart=1;
       if(!url&&sections[1]&&/^https?:\/\/\S+$/.test(sections[1].trim())){url=sections[1].trim();stanzaStart=2;}
@@ -2338,14 +2360,19 @@ function loadAstrology(){
         var _yi=stanzas.findIndex(function(x){return /^https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)\S*$/.test(x.trim());});
         if(_yi!==-1){url=stanzas[_yi].trim();stanzas=stanzas.slice(0,_yi).concat(stanzas.slice(_yi+1));}
       }
+      var localVid='';var _mp4h=hlines.find(function(l){return /\.mp4(\?\S*)?$/i.test(l);});
+      if(_mp4h){localVid=_mp4h;}
+      else if(url&&/\.mp4(\?\S*)?$/i.test(url)){localVid=url;}
+      if(!localVid){var _midx=stanzas.findIndex(function(x){return /\.mp4(\?\S*)?$/i.test(x.trim());});
+        if(_midx!==-1){localVid=stanzas[_midx].trim();stanzas=stanzas.slice(0,_midx).concat(stanzas.slice(_midx+1));}}
       var vid=url?ytIdFromUrl(url):'';
       var isShort=!!(vid&&/youtube\.com\/shorts\//.test(url));
-      if(!title&&!vid&&!audioFiles.length&&!imageFile)return;
+      if(!title&&!vid&&!localVid&&!audioFiles.length&&!imageFile)return;
       var card=document.createElement('div');
-      card.className='novinka-card'+(vid&&!isShort?' novinka-card-full':'');
+      card.className='novinka-card'+(((vid&&!isShort)||localVid)?' novinka-card-full':'');
       _setCardId(card,'novosti',title);
       if(title){var te=document.createElement('div');te.className='novinka-title';te.textContent=title;card.appendChild(te);}
-      if(imageFile&&!vid){var imgDiv=document.createElement('div');imgDiv.className='poem-image';var imgEl=document.createElement('img');imgEl.src='images/'+encodeURIComponent(imageFile);imgEl.alt=title||'';imgEl.loading='lazy';imgDiv.appendChild(imgEl);card.appendChild(imgDiv);}
+      if(imageFile&&!vid&&!localVid){var imgDiv=document.createElement('div');imgDiv.className='poem-image';var imgEl=document.createElement('img');imgEl.src='images/'+encodeURIComponent(imageFile);imgEl.alt=title||'';imgEl.loading='lazy';imgDiv.appendChild(imgEl);card.appendChild(imgDiv);}
       if(vid){
         var vw=document.createElement('div');vw.className='novinka-video'+(isShort?' poem-video':' novinka-video-wide');
         var facade=document.createElement('div');
@@ -2359,12 +2386,19 @@ function loadAstrology(){
         facade.appendChild(img);facade.appendChild(pb);
         vw.appendChild(facade);card.appendChild(vw);
       }
+      else if(localVid){
+        var vw2=document.createElement('div');vw2.className='novinka-video novinka-video-wide';
+        var ve=document.createElement('video');
+        ve.setAttribute('controls','');ve.setAttribute('playsinline','');ve.setAttribute('preload','metadata');
+        ve.src=localVid;ve.setAttribute('aria-label',title||'видео');
+        vw2.appendChild(ve);card.appendChild(vw2);
+      }
       audioFiles.forEach(function(af){var aph=document.createElement('div');aph.className='audio-ph';aph.dataset.src='audio/'+encodeURIComponent(af);aph.dataset.label=title||af;card.appendChild(aph);});
       var actRow=document.createElement('div');actRow.className='poem-actions';
       audioFiles.forEach(function(af){var dl=document.createElement('a');dl.className='poem-dl-btn';dl.href='audio/'+encodeURIComponent(af);dl.download=af;dl.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Скачать '+audioExtLabel(af);actRow.appendChild(dl);});
       var sb=document.createElement('button');sb.className='yt-share-btn';
       sb.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>Поделиться';
-      var shareUrl=vid?(isShort?'https://www.youtube.com/shorts/'+vid:'https://www.youtube.com/watch?v='+vid):'https://iabard.com';
+      var shareUrl=vid?(isShort?'https://www.youtube.com/shorts/'+vid:'https://www.youtube.com/watch?v='+vid):(localVid?null:'https://iabard.com');
       sb.onclick=(function(u){return function(){showShareMenu(sb,cardShareUrl(sb),u);};})(shareUrl);
       actRow.appendChild(sb);
       var cb=document.createElement('button');cb.className='yt-share-btn';
@@ -2415,7 +2449,7 @@ function loadAuthor(){
       var sections=clean.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
       var header=sections[0]||'';
       var hlines=header.split('\n').map(function(l){return l.trim();}).filter(Boolean);
-      var title=hlines.find(function(l){return !/^https?:\/\//.test(l);})||'';
+      var title=hlines.find(function(l){return !/^https?:\/\//.test(l)&&!/\.mp4(\?\S*)?$/i.test(l);})||'';
       var url=hlines.find(function(l){return /^https?:\/\//.test(l);})||'';
       var stanzaStart=1;
       if(!url&&sections[1]&&/^https?:\/\/\S+$/.test(sections[1].trim())){url=sections[1].trim();stanzaStart=2;}
@@ -2425,14 +2459,19 @@ function loadAuthor(){
         var _yi=stanzas.findIndex(function(x){return /^https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)\S*$/.test(x.trim());});
         if(_yi!==-1){url=stanzas[_yi].trim();stanzas=stanzas.slice(0,_yi).concat(stanzas.slice(_yi+1));}
       }
+      var localVid='';var _mp4h=hlines.find(function(l){return /\.mp4(\?\S*)?$/i.test(l);});
+      if(_mp4h){localVid=_mp4h;}
+      else if(url&&/\.mp4(\?\S*)?$/i.test(url)){localVid=url;}
+      if(!localVid){var _midx=stanzas.findIndex(function(x){return /\.mp4(\?\S*)?$/i.test(x.trim());});
+        if(_midx!==-1){localVid=stanzas[_midx].trim();stanzas=stanzas.slice(0,_midx).concat(stanzas.slice(_midx+1));}}
       var vid=url?ytIdFromUrl(url):'';
       var isShort=!!(vid&&/youtube\.com\/shorts\//.test(url));
-      if(!title&&!vid&&!audioFiles.length&&!imageFile)return;
+      if(!title&&!vid&&!localVid&&!audioFiles.length&&!imageFile)return;
       var card=document.createElement('div');
-      card.className='novinka-card'+(vid&&!isShort?' novinka-card-full':'');
+      card.className='novinka-card'+(((vid&&!isShort)||localVid)?' novinka-card-full':'');
       _setCardId(card,'author',title);
       if(title){var te=document.createElement('div');te.className='novinka-title';te.textContent=title;card.appendChild(te);}
-      if(imageFile&&!vid){var imgDiv=document.createElement('div');imgDiv.className='poem-image';var imgEl=document.createElement('img');imgEl.src='images/'+encodeURIComponent(imageFile);imgEl.alt=title||'';imgEl.loading='lazy';imgDiv.appendChild(imgEl);card.appendChild(imgDiv);}
+      if(imageFile&&!vid&&!localVid){var imgDiv=document.createElement('div');imgDiv.className='poem-image';var imgEl=document.createElement('img');imgEl.src='images/'+encodeURIComponent(imageFile);imgEl.alt=title||'';imgEl.loading='lazy';imgDiv.appendChild(imgEl);card.appendChild(imgDiv);}
       if(vid){
         var vw=document.createElement('div');vw.className='novinka-video'+(isShort?' poem-video':' novinka-video-wide');
         var facade=document.createElement('div');
@@ -2446,12 +2485,19 @@ function loadAuthor(){
         facade.appendChild(img);facade.appendChild(pb);
         vw.appendChild(facade);card.appendChild(vw);
       }
+      else if(localVid){
+        var vw2=document.createElement('div');vw2.className='novinka-video novinka-video-wide';
+        var ve=document.createElement('video');
+        ve.setAttribute('controls','');ve.setAttribute('playsinline','');ve.setAttribute('preload','metadata');
+        ve.src=localVid;ve.setAttribute('aria-label',title||'видео');
+        vw2.appendChild(ve);card.appendChild(vw2);
+      }
       audioFiles.forEach(function(af){var aph=document.createElement('div');aph.className='audio-ph';aph.dataset.src='audio/'+encodeURIComponent(af);aph.dataset.label=title||af;card.appendChild(aph);});
       var actRow=document.createElement('div');actRow.className='poem-actions';
       audioFiles.forEach(function(af){var dl=document.createElement('a');dl.className='poem-dl-btn';dl.href='audio/'+encodeURIComponent(af);dl.download=af;dl.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Скачать '+audioExtLabel(af);actRow.appendChild(dl);});
       var sb=document.createElement('button');sb.className='yt-share-btn';
       sb.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>Поделиться';
-      var shareUrl=vid?(isShort?'https://www.youtube.com/shorts/'+vid:'https://www.youtube.com/watch?v='+vid):'https://iabard.com';
+      var shareUrl=vid?(isShort?'https://www.youtube.com/shorts/'+vid:'https://www.youtube.com/watch?v='+vid):(localVid?null:'https://iabard.com');
       sb.onclick=(function(u){return function(){showShareMenu(sb,cardShareUrl(sb),u);};})(shareUrl);
       actRow.appendChild(sb);
       var cb=document.createElement('button');cb.className='yt-share-btn';
@@ -2487,10 +2533,16 @@ function buildCard(rawPoem,panelId,canonicalAnchor){
   var imageFiles=[];var _iRe=/^[ \t]*#\s*image:\s*(.+)$/mg;var _iM2;while((_iM2=_iRe.exec(rawPoem))!==null)imageFiles.push(_iM2[1].trim());
   var ytMatch=rawPoem.match(/^[ \t]*#\s*youtube:\s*(.+)$/mi);
   var ytUrl=ytMatch?ytMatch[1].trim():null;
+  var _vm=rawPoem.match(/^[ \t]*#\s*video:\s*(.+)$/mi);
+  var localVid=_vm?_vm[1].trim():null;
   var poem=rawPoem.replace(/[ \t]*#\s+[^\n]*/g,'').trim();
   if(!ytUrl){
     var bareYt=poem.match(/^(https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)\S*)$/m);
     if(bareYt){ytUrl=bareYt[1].trim();poem=poem.replace(bareYt[1],'').trim();}
+  }
+  if(!localVid){
+    var bareMp4=poem.match(/^(\S+\.mp4(\?\S*)?)$/m);
+    if(bareMp4){localVid=bareMp4[1].trim();poem=poem.replace(bareMp4[1],'').trim();}
   }
   poem=poem.replace(/^([^\n]+)\n\n(\()/, '$1\n$2');
   var stanzas=poem.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
@@ -2527,6 +2579,10 @@ function buildCard(rawPoem,panelId,canonicalAnchor){
     var _isShortP=/youtube\.com\/shorts\//.test(ytUrl||'');
     if(!_isShortP)card.className+=' novinka-card-full';
     h+='<div class="novinka-video '+(_isShortP?'poem-video':'novinka-video-wide')+'"><div class="yt-facade" data-vid="'+esc(vid)+'" onclick="ytPlay(this,true)"><img src="https://img.youtube.com/vi/'+esc(vid)+'/hqdefault.jpg" alt="'+esc(mainT||'видео')+'" loading="lazy"><button class="yt-play" aria-label="Смотреть видео">&#9654;</button></div></div>';
+  }
+  else if(localVid){
+    card.className+=' novinka-card-full';
+    h+='<div class="novinka-video novinka-video-wide"><video controls playsinline preload="metadata" src="'+esc(localVid)+'" aria-label="'+esc(mainT||'видео')+'"></video></div>';
   }
   audioFiles.forEach(function(audioFile){h+='<div class="audio-ph" data-src="audio/'+encodeURIComponent(audioFile)+'" data-label="'+esc(mainT||'стихотворение')+'"></div>';});
   var safeT=esc(mainT||'Стихотворение');
@@ -2619,18 +2675,19 @@ function loadTales(){
     raw.forEach(function(rawTale){
       var stanzas=rawTale.split(/\n\n+/).map(function(s){return s.trim();}).filter(Boolean);
       var title=stanzas[0]||'';
-      var audioFiles=[];var imageFile='';var ytUrl='';
+      var audioFiles=[];var imageFile='';var ytUrl='';var localVid='';
       var body=stanzas.slice(1).filter(function(s){
         if(/^#\s*audio:\s*/i.test(s)){audioFiles.push(s.replace(/^#\s*audio:\s*/i,'').trim());return false;}
         if(/^#\s*image:\s*/i.test(s)){imageFile=s.replace(/^#\s*image:\s*/i,'').trim();return false;}
         if(/^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\//i.test(s)){ytUrl=s.trim();return false;}
+        if(/\.mp4(\?\S*)?$/i.test(s.trim())){localVid=s.trim();return false;}
         return true;
       });
       var vid=ytUrl?(ytUrl.match(/[?&]v=([\w-]{11})/)||ytUrl.match(/youtu\.be\/([\w-]{11})/)||ytUrl.match(/shorts\/([\w-]{11})/)):null;
       var vidId=vid?vid[1]:'';
       var isShort=!!(ytUrl&&/youtube\.com\/shorts\//.test(ytUrl));
       var card=document.createElement('div');
-      card.className='novinka-card'+(vidId&&!isShort?' novinka-card-full':'')+' fade-up';
+      card.className='novinka-card'+(((vidId&&!isShort)||localVid)?' novinka-card-full':'')+' fade-up';
       var mainT=(title.split('\n')[0]||title).trim();
       _setCardId(card,'tales',mainT);
       var subT=null;
@@ -2640,11 +2697,15 @@ function loadTales(){
         (subT?'<span class="poem-subtitle">'+esc(subT)+'</span>':'')+
         '</div>';
       h+='<hr class="poem-divider">';
-      if(imageFile&&!vidId){h+='<div class="poem-image"><img src="images/'+esc(imageFile)+'" alt="'+esc(mainT)+'" loading="lazy" style="max-width:100%;border-radius:6px;display:block;margin:0 auto 20px"></div>';}
+      if(imageFile&&!vidId&&!localVid){h+='<div class="poem-image"><img src="images/'+esc(imageFile)+'" alt="'+esc(mainT)+'" loading="lazy" style="max-width:100%;border-radius:6px;display:block;margin:0 auto 20px"></div>';}
       if(vidId){
         // Same cover as every other section: the player opens on a press, which
         // is what lets it go fullscreen — and the clip no longer loads unasked.
         h+='<div class="novinka-video '+(isShort?'poem-video':'novinka-video-wide')+'"><div class="yt-facade" data-vid="'+esc(vidId)+'" onclick="ytPlay(this,true)"><img src="https://img.youtube.com/vi/'+esc(vidId)+'/hqdefault.jpg" alt="'+esc(mainT||'видео')+'" loading="lazy"><button class="yt-play" aria-label="Смотреть видео">&#9654;</button></div></div>';
+      }
+      else if(localVid){
+        card.className+=' novinka-card-full';
+        h+='<div class="novinka-video novinka-video-wide"><video controls playsinline preload="metadata" src="'+esc(localVid)+'" aria-label="'+esc(mainT)+'"></video></div>';
       }
       audioFiles.forEach(function(audioFile){h+='<div style="margin-bottom:16px"><audio controls src="audio/'+esc(audioFile)+'" style="width:100%;accent-color:var(--gold)"></audio></div>';});
       h+='<div class="poem-actions">';
@@ -2738,7 +2799,7 @@ function showShareMenu(anchor, url, shortsUrl) {
   var enc = encodeURIComponent, menu = document.createElement('div');
   menu.className = 'share-menu'; menu._anchor = anchor;
   menu.innerHTML =
-    '<a href="'+shortsUrl+'" target="_blank" rel="noopener noreferrer">Сохранить в YouTube</a>' +
+    (shortsUrl?'<a href="'+shortsUrl+'" target="_blank" rel="noopener noreferrer">Сохранить в YouTube</a>':'') +
     '<a href="https://t.me/share/url?url='+enc(url)+'" target="_blank" rel="noopener noreferrer">Telegram</a>' +
     '<a href="https://wa.me/?text='+enc(url)+'" target="_blank" rel="noopener noreferrer">WhatsApp</a>' +
     '<a href="https://vk.com/share.php?url='+enc(url)+'" target="_blank" rel="noopener noreferrer">ВКонтакте</a>' +
