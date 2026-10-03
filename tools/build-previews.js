@@ -110,19 +110,33 @@ async function bestThumb(id, isShort) {
 
 
 /**
- * When was this entry added? Uses git history: -S finds the commit that
- * introduced the title line. Returns 0 when history is unavailable (a
- * shallow clone, or no git at all), so callers can degrade quietly.
+ * When was this entry added? Uses git history: -G with an anchored pattern
+ * finds the commit that touched the title LINE. (A bare -S substring also
+ * fires when another entry's body merely contains this title as a word —
+ * e.g. the old poem "Время" was re-stamped as new when a new poem's text
+ * contained the line "Время трактором учиться управлять".)
+ * Returns 0 when history is unavailable (a shallow clone, or no git at
+ * all), so callers can degrade quietly.
  */
 function addedAt(file, titleLine) {
   if (!titleLine) return 0;
   try {
+    const re = '^' + String(titleLine).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$';
     const out = execFileSync('git',
-      ['log', '-1', '--format=%ct', '-S', titleLine, '--', file],
+      ['log', '-1', '--format=%ct', '-G', re, '--', file],
       {cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore']}).trim();
     return out ? parseInt(out, 10) || 0 : 0;
   } catch (e) { return 0; }
 }
+
+// Manual date corrections: "file|title" -> unix timestamp. Used when git
+// history cannot know the true date (e.g. a title was reworded after the
+// entry was created). Applied after addedAt().
+let FEED_DATE_OVERRIDES = {};
+try {
+  FEED_DATE_OVERRIDES = JSON.parse(
+    fs.readFileSync(path.join(ROOT, 'tools', 'feed-date-overrides.json'), 'utf8'));
+} catch (e) { /* no overrides file — fine */ }
 
 function esc(s) {
   return String(s == null ? '' : s)
@@ -317,7 +331,8 @@ async function main() {
 
       // A clip keeps its YouTube frame; the card is for entries without one.
       if (!e.yt && e.lines && e.lines.length) cards.push({anchor, title: e.title, lines: e.lines});
-      const when = addedAt(src.file, e.title);
+      const when = FEED_DATE_OVERRIDES[src.file + '|' + e.title]
+        || addedAt(src.file, e.title);
       // idx is the position in the newest-first list, so it breaks ties
       // within one commit: a lower idx was appended later, i.e. is newer.
       feed.push({a: anchor, f: src.file, i: idx, t: e.title, w: when,
