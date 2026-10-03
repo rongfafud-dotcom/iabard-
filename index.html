@@ -380,6 +380,18 @@
       letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;
       transition:background 0.2s}
     .book-read-btn:hover{background:rgba(201,169,110,0.97)}
+    /* Mobile: the button row must fit — with 3 shop buttons the wrap squeezed
+       .book-read-btn and «Описание» got clipped (caught on a 390px phone).
+       Read button never shrinks; shop buttons tighten paddings; price font untouched.
+       Desktop (min-width:861px) hides .book-read-btn, so this range is safe. */
+    @media(max-width:860px){
+      .book-card-btns{gap:4px;padding:0 6px 8px}
+      .book-buy-wrap{flex:1 1 auto;min-width:0}
+      .book-front-buy{font-size:0.6rem;padding:6px 4px}
+      .book-buy-litres{padding:0 8px}
+      .book-stores-toggle{min-width:0;padding:0 4px}
+      .book-read-btn{flex:0 0 auto;letter-spacing:1px}
+    }
     /* Back card: push poem text up to make room for button bar */
     .flip-card-back .book-back-poem{padding-bottom:64px}
 
