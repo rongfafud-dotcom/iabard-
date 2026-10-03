@@ -2594,7 +2594,7 @@ function buildCard(rawPoem,panelId,canonicalAnchor){
   }
   else if(localVid){
     card.className+=' novinka-card-full';
-    h+='<div class="novinka-video novinka-video-wide"><video controls playsinline preload="metadata" src="'+esc(localVid)+'" aria-label="'+esc(mainT||'видео')+'"></video></div>';
+    h+='<div class="novinka-video novinka-video-wide"><video controls playsinline preload="metadata" src="'+esc(localVid)+'" poster="'+esc(localVid.replace(/\.mp4(\?\S*)?$/i,'-poster.jpg'))+'" aria-label="'+esc(mainT||'видео')+'"></video></div>';
   }
   audioFiles.forEach(function(audioFile){h+='<div class="audio-ph" data-src="audio/'+encodeURIComponent(audioFile)+'" data-label="'+esc(mainT||'стихотворение')+'"></div>';});
   var safeT=esc(mainT||'Стихотворение');
@@ -2717,7 +2717,7 @@ function loadTales(){
       }
       else if(localVid){
         card.className+=' novinka-card-full';
-        h+='<div class="novinka-video novinka-video-wide"><video controls playsinline preload="metadata" src="'+esc(localVid)+'" aria-label="'+esc(mainT)+'"></video></div>';
+        h+='<div class="novinka-video novinka-video-wide"><video controls playsinline preload="metadata" src="'+esc(localVid)+'" poster="'+esc(localVid.replace(/\.mp4(\?\S*)?$/i,'-poster.jpg'))+'" aria-label="'+esc(mainT)+'"></video></div>';
       }
       audioFiles.forEach(function(audioFile){h+='<div style="margin-bottom:16px"><audio controls src="audio/'+esc(audioFile)+'" style="width:100%;accent-color:var(--gold)"></audio></div>';});
       h+='<div class="poem-actions">';
