@@ -171,12 +171,21 @@ function parseEntry(raw, style) {
   const ytTag = raw.match(/^[ \t]*#\s*youtube:\s*(.+)$/mi);
   if (ytTag) yt = ytTag[1].trim();
 
+  // local mp4 clip: "# video:" tag or a bare "<path>.mp4" line (same as the renderer)
+  let localVid = null;
+  const vidTag = raw.match(/^[ \t]*#\s*video:\s*(.+)$/mi);
+  if (vidTag) localVid = vidTag[1].trim();
+
   let body = raw.replace(/^[ \t]*#[^\n]*$/gm, '').trim();
   if (!yt) {
     const bare = body.match(/^(https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)\S*)$/m);
     if (bare) { yt = bare[1].trim(); }
   }
   body = body.replace(/^https?:\/\/\S*$/gm, '').trim();
+  if (!localVid) {
+    const bareMp4 = body.match(/^(\S+\.mp4(\?\S*)?)$/m);
+    if (bareMp4) localVid = bareMp4[1].trim();
+  }
 
   const stanzas = body.split(/\n\n+/).map(s => s.trim()).filter(Boolean);
   if (!stanzas.length) return null;
@@ -208,7 +217,7 @@ function parseEntry(raw, style) {
   const cardLines = srcLines.slice(0, 6);
 
   return {title, desc, lines: cardLines, yt: ytId(yt), isShort: /youtube\.com\/shorts\//.test(yt || ''),
-          image: images[0] || null, hasAudio: audio.length > 0};
+          image: images[0] || null, hasAudio: audio.length > 0, localVid};
 }
 
 function page(a) {
@@ -316,6 +325,19 @@ async function main() {
         const vn = (image.match(/\/([a-z0-9]+)\.jpg$/) || [, '?'])[1];
         const key = vn + ' ' + imgW + 'x' + imgH;
         variants[key] = (variants[key] || 0) + 1;
+      } else if (e.localVid) {
+        // a clip uploaded as a file: its cover goes into the link preview,
+        // the rendered text card is only for text-only entries
+        const poster = e.localVid.replace(/\.mp4(\?\S*)?$/i, '-poster.jpg');
+        if (fs.existsSync(path.join(ROOT, poster))) {
+          const sz = jpegSize(fs.readFileSync(path.join(ROOT, poster)));
+          image = SITE + '/' + poster; imgW = sz ? sz.w : 1200; imgH = sz ? sz.h : 630;
+        } else if (fs.existsSync(path.join(ROOT, 'cards', anchor + '.jpg'))) {
+          image = SITE + '/cards/' + anchor + '.jpg'; imgW = 1200; imgH = 630;
+        } else if (e.image) {
+          image = SITE + '/images/' + encodeURIComponent(e.image);
+          imgW = 1200; imgH = 1200;
+        }
       } else if (fs.existsSync(path.join(ROOT, 'cards', anchor + '.jpg'))) {
         // rendered by make-cards.js; existence is checked rather than assumed,
         // so a build without a browser falls through to the picture below
