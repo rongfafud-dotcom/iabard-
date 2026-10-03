@@ -673,6 +673,7 @@ function checkR(r){
 
 function setStatus(msg, ok){
   var el = document.getElementById('status');
+  if(!el)return;
   el.textContent = msg;
   el.style.color = ok ? '#7bc47b' : 'rgba(201,169,110,0.7)';
 }
@@ -1987,7 +1988,7 @@ function uploadEntryVideo(files,urlFieldId,progId){
       prog.textContent='✓ Загружено: videos/'+safeName;
       document.getElementById(urlFieldId).value='videos/'+safeName;
     })
-    .catch(function(e){prog.style.color='#d47a7a';prog.textContent='Ошибка: '+e.message;});
+    .catch(function(e){prog.style.color='#d47a7a';var _m=e.message||'';if(/too large/i.test(_m)){prog.textContent='Файл слишком большой для загрузки кнопкой \u2014 пришлите видео мне в чат, я размещу его сама.';}else{prog.textContent='Ошибка: '+_m;}});
   };
   reader.readAsArrayBuffer(file);
 }
