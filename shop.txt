@@ -25,24 +25,6 @@ Handmade · spiritual jewelry · meaningful gift.
 
 ===
 
-Eva Soul Deck
-# preorder
-
-Eva Soul Deck — messages from soul to soul. Each card finds you at the right moment.
-
-Колода Ева Соул — послания от души к душе. Каждая карта находит тебя в нужный момент.
-
-===
-
-Leela Floor Game
-# preorder
-
-Leela Floor Game — a self-discovery journey for family and spiritual practice.
-
-Напольная игра Лила — путешествие самопознания для семьи и духовной практики.
-
-===
-
 Oracle Eva Luna
 # image: images/shop/oracle-eva-luna.jpeg
 # image: images/shop/oracle-luna-2.jpeg
@@ -81,3 +63,19 @@ Handmade · collectible · unique gift.
 Ручная работа · коллекционная · уникальный подарок.
 
 ===
+
+Eva Soul Deck
+# preorder
+
+Eva Soul Deck — messages from soul to soul. Each card finds you at the right moment.
+
+Колода Ева Соул — послания от души к душе. Каждая карта находит тебя в нужный момент.
+
+===
+
+Leela Floor Game
+# preorder
+
+Leela Floor Game — a self-discovery journey for family and spiritual practice.
+
+Напольная игра Лила — путешествие самопознания для семьи и духовной практики.
