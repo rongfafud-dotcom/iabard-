@@ -222,13 +222,28 @@ function parseEntry(raw, style) {
 
 function page(a) {
   const target = SITE + '/#' + a.anchor;   // absolute: for og:url / canonical
-  // Видео-записи (её решение 04.10.2026): ссылка-страница сразу открывает ролик
-  // на YouTube — тап по ссылке = открылось видео и идёт плей, без промежуточных
-  // экранов сайта, чёрного слоя и второго тапа внутри плеера.
+  // Видео-записи (её решение 04.10.2026; уточнено после бота-стены YouTube):
+  // страница-ссылка — это обложка с большой кнопкой play, которая ВЕДЁТ на
+  // YouTube обычной ссылкой. Только тап живого человека по ссылке открывает
+  // приложение YouTube (universal links); JS-редирект вместо этого упирается
+  // в мобильную веб-версию с проверкой «Sign in to confirm you\'re not a bot».
   const ytUrl = a.yt ? (a.isShort ? 'https://www.youtube.com/shorts/' + a.yt
                                   : 'https://www.youtube.com/watch?v=' + a.yt) : null;
-  const go = ytUrl || '/#' + a.anchor;
-  const goLabel = ytUrl ? 'Смотреть видео →' : 'Открыть на iabard.com →';
+  const go = '/#' + a.anchor;
+  const body = ytUrl ? `
+<div class="vland">
+<a class="vcover" href="${esc(ytUrl)}" aria-label="Смотреть видео">
+<img src="${esc(a.image)}" alt="${esc(a.title)} — Ипатия Бард">
+<span class="vplay">▶</span>
+</a>
+<p class="vtitle">${esc(a.title)}</p>
+<p><a class="vsite" href="${esc(go)}">Открыть на iabard.com →</a></p>
+</div>` : `
+<div>
+<p>${esc(a.title)}</p>
+<p><a href="${esc(go)}">Открыть на iabard.com →</a></p>
+</div>
+<script>location.replace(${JSON.stringify(go)});</script>`;
   return `<!DOCTYPE html>
 <html lang="${a.lang}">
 <head>
@@ -267,14 +282,15 @@ html,body{height:100%}
 body{margin:0;display:flex;align-items:center;justify-content:center;
 background:#1e1220;color:#e8ddd0;font-family:Georgia,'Times New Roman',serif;text-align:center;padding:24px}
 a{color:#c9a96e}
+.vland{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+.vcover{position:relative;display:block;max-width:min(92vw,480px);-webkit-tap-highlight-color:transparent}
+.vcover img{width:100%;height:auto;max-height:62vh;object-fit:contain;display:block;border-radius:12px}
+.vplay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:88px;height:88px;border-radius:50%;background:rgba(204,0,0,.93);color:#fff;font-size:2rem;line-height:1;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(0,0,0,.55);pointer-events:none}
+.vtitle{font-size:1.4rem;color:#e8ddd0;margin:0}
+.vsite{font-size:1rem}
 </style>
 </head>
-<body>
-<div>
-<p>${esc(a.title)}</p>
-<p><a href="${esc(go)}">${goLabel}</a></p>
-</div>
-<script>location.replace(${JSON.stringify(go)});</script>
+<body>${body}
 </body>
 </html>
 `;

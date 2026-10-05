@@ -36,13 +36,22 @@ html,body{height:100%}
 body{margin:0;display:flex;align-items:center;justify-content:center;
 background:#1e1220;color:#e8ddd0;font-family:Georgia,'Times New Roman',serif;text-align:center;padding:24px}
 a{color:#c9a96e}
+.vland{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+.vcover{position:relative;display:block;max-width:min(92vw,480px);-webkit-tap-highlight-color:transparent}
+.vcover img{width:100%;height:auto;max-height:62vh;object-fit:contain;display:block;border-radius:12px}
+.vplay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:88px;height:88px;border-radius:50%;background:rgba(204,0,0,.93);color:#fff;font-size:2rem;line-height:1;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(0,0,0,.55);pointer-events:none}
+.vtitle{font-size:1.4rem;color:#e8ddd0;margin:0}
+.vsite{font-size:1rem}
 </style>
 </head>
 <body>
-<div>
-<p>Ведическая женщина-писатель.</p>
-<p><a href="https://www.youtube.com/watch?v=6cCpp-JMuKo">Смотреть видео →</a></p>
+<div class="vland">
+<a class="vcover" href="https://www.youtube.com/watch?v=6cCpp-JMuKo" aria-label="Смотреть видео">
+<img src="https://i.ytimg.com/vi/6cCpp-JMuKo/hqdefault.jpg" alt="Ведическая женщина-писатель. — Ипатия Бард">
+<span class="vplay">▶</span>
+</a>
+<p class="vtitle">Ведическая женщина-писатель.</p>
+<p><a class="vsite" href="/#poems--vedicheskaya-zhenschina">Открыть на iabard.com →</a></p>
 </div>
-<script>location.replace("https://www.youtube.com/watch?v=6cCpp-JMuKo");</script>
 </body>
 </html>
