@@ -222,8 +222,13 @@ function parseEntry(raw, style) {
 
 function page(a) {
   const target = SITE + '/#' + a.anchor;   // absolute: for og:url / canonical
-  // ?play tells the site to load the player instead of the cover, saving a tap
-  const go = (a.yt ? '/?play=1#' : '/#') + a.anchor;
+  // Видео-записи (её решение 04.10.2026): ссылка-страница сразу открывает ролик
+  // на YouTube — тап по ссылке = открылось видео и идёт плей, без промежуточных
+  // экранов сайта, чёрного слоя и второго тапа внутри плеера.
+  const ytUrl = a.yt ? (a.isShort ? 'https://www.youtube.com/shorts/' + a.yt
+                                  : 'https://www.youtube.com/watch?v=' + a.yt) : null;
+  const go = ytUrl || '/#' + a.anchor;
+  const goLabel = ytUrl ? 'Смотреть видео →' : 'Открыть на iabard.com →';
   return `<!DOCTYPE html>
 <html lang="${a.lang}">
 <head>
@@ -267,7 +272,7 @@ a{color:#c9a96e}
 <body>
 <div>
 <p>${esc(a.title)}</p>
-<p><a href="${esc(go)}">Открыть на iabard.com →</a></p>
+<p><a href="${esc(go)}">${goLabel}</a></p>
 </div>
 <script>location.replace(${JSON.stringify(go)});</script>
 </body>
@@ -349,7 +354,8 @@ async function main() {
 
       fs.writeFileSync(path.join(OUT, anchor + '.html'),
         page({anchor, title: e.title, desc: e.desc || 'Ипатия Бард — стихи и духовная поэзия',
-              image, imgW, imgH, yt: e.yt || null, lang: src.lang, locale: src.locale}), 'utf8');
+              image, imgW, imgH, yt: e.yt || null, isShort: !!e.isShort,
+              lang: src.lang, locale: src.locale}), 'utf8');
       manifest.push({anchor, title: e.title, yt: e.yt || null, image});
 
       // A clip keeps its YouTube frame; the card is for entries without one.
