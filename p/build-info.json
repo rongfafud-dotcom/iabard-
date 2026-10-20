@@ -1,13 +1,21 @@
 {
- "generated": "2026-09-22T17:55:36.775Z",
- "entries": 414,
- "withVideo": 72,
+ "generated": "2026-10-20T11:55:40.402Z",
+ "entries": 428,
+ "withVideo": 172,
  "thumbnails": {
-  "hqdefault 480x360": 72
+  "maxresdefault 1280x720": 10,
+  "oardefault 1080x1920": 120,
+  "oardefault 720x1280": 27,
+  "oardefault 1215x2160": 6,
+  "sddefault 640x480": 5,
+  "oardefault 714x1280": 1,
+  "hqdefault 480x360": 1,
+  "oardefault 360x640": 1,
+  "oardefault 704x1280": 1
  },
  "newest": {
-  "title": "Дышу и живу!",
-  "section": "Поэзия",
-  "anchor": "poems--dyshu-i-zhivu"
+  "title": "Прощение-просветление",
+  "section": "Молитвы",
+  "anchor": "molitvy--proschenie-prosvetlenie"
  }
 }
