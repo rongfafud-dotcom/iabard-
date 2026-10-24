@@ -1,10 +1,10 @@
 {
- "generated": "2026-10-20T11:55:40.402Z",
- "entries": 428,
- "withVideo": 172,
+ "generated": "2026-10-24T17:40:41.590Z",
+ "entries": 431,
+ "withVideo": 175,
  "thumbnails": {
+  "oardefault 1080x1920": 123,
   "maxresdefault 1280x720": 10,
-  "oardefault 1080x1920": 120,
   "oardefault 720x1280": 27,
   "oardefault 1215x2160": 6,
   "sddefault 640x480": 5,
@@ -14,8 +14,8 @@
   "oardefault 704x1280": 1
  },
  "newest": {
-  "title": "Прощение-просветление",
-  "section": "Молитвы",
-  "anchor": "molitvy--proschenie-prosvetlenie"
+  "title": "Ведьма или фея",
+  "section": "Поэзия",
+  "anchor": "poems--vedma-ili-feya"
  }
 }
