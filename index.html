@@ -184,7 +184,7 @@
     body{font-family:'Raleway',sans-serif;background:var(--deep);color:var(--cream);min-height:100vh}
 
     /* HERO */
-    .card{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+    .card{min-height:72svh;display:flex;flex-direction:column;align-items:center;justify-content:space-between;
            position:relative;overflow:hidden;
            background:url('background.jpg') no-repeat 50% 20%;background-image:image-set(url('background.webp') type('image/webp'),url('background.jpg') type('image/jpeg'));background-size:cover;padding:52px 48px 52px}
     .card-top{position:relative;z-index:2;width:100%;max-width:980px;display:flex;flex-direction:column;align-items:center}
@@ -536,7 +536,7 @@
       .novinka-video{max-width:250px}
     }
     @media(max-width:520px){
-      .card{padding:36px 16px 4px;min-height:100svh;background-position:50% 18%}
+      .card{padding:36px 16px 4px;min-height:59svh;background-position:50% 4%}
       .tab-panel{padding:20px 16px 32px}
       .name{margin-bottom:2px}.name-sub{margin-bottom:4px}
       .nav-tabs{margin-bottom:6px}
@@ -626,6 +626,7 @@
     }
     .poems-load-more{display:block;margin:8px auto 32px;padding:12px 36px;background:transparent;border:1.5px solid rgba(201,169,110,0.45);color:rgba(201,169,110,0.9);border-radius:28px;font-size:1rem;font-family:inherit;cursor:pointer;letter-spacing:.04em;transition:border-color .2s,color .2s}
     .poems-load-more:hover{border-color:rgba(201,169,110,0.9);color:#c9a96e}
+    .rukopis-bottom-wrap{display:flex;justify-content:center;margin:0 auto 8px}
     .poem-dl-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 16px;border-radius:16px;
       background:rgba(18,6,24,0.55);border:1px solid rgba(201,169,110,0.30);
       color:rgba(253,246,238,0.70);text-decoration:none;
@@ -899,7 +900,7 @@
     <p class="name-sub">Hypatia Bard / Ипа́тия Бард</p>
     <div class="nav-tabs" role="tablist" aria-label="Разделы сайта">
       <div class="nav-tab-wrap">
-        <button class="nav-tab" role="tab" aria-selected="false" id="tab-creative" onclick="switchTab('feed',this)">Творчество</button>
+        <button class="nav-tab active" role="tab" aria-selected="true" aria-controls="feed" id="tab-creative" onclick="switchTab('feed',this)">Творчество</button>
         <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-creative')" aria-label="Открыть меню творчества">▾</button>
         <div class="nav-dropmenu" id="drop-creative">
           <button data-secid="poems" onclick="goCreative('poems')">Поэзия</button>
@@ -909,7 +910,7 @@
         </div>
       </div>
       <div class="nav-tab-wrap">
-        <button class="nav-tab active" role="tab" aria-selected="true" aria-controls="books" id="tab-books" onclick="switchTab('books',this)">Книги</button>
+        <button class="nav-tab" role="tab" aria-selected="false" aria-controls="books" id="tab-books" onclick="switchTab('books',this)">Книги</button>
         <button class="nav-drop-btn" onclick="toggleDrop(event,'drop-books')" aria-label="Список книг">▾</button>
         <div class="nav-dropmenu" id="drop-books">
           <button onclick="goBook('book-soavtor')">Соавтор жизни</button>
@@ -943,10 +944,6 @@
   <div class="card-bottom">
     <div class="tagline-row">
       <p class="hero-tagline hero-phrase">Поэт я и пишу стихи — о Боге, Мире и любви…</p>
-      <a href="https://t.me/IA_Bard" target="_blank" rel="noopener noreferrer" class="social-chip-hero" style="pointer-events:auto">
-        <svg style="width:16px;height:16px;fill:currentColor;flex-shrink:0" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-        <span class="rukopis-lines"><span>Рукопись (ЛОСТ)</span><span class="rukopis-dates">8 марта 2024 — 8 октября 2026</span></span>
-      </a>
       <p class="hero-tagline hero-phrase">А нейросети их поют, им атмосферу создают.</p>
     </div>
   </div>
@@ -961,7 +958,7 @@
   </div>
 
   <!-- КНИГИ -->
-  <div id="books" class="tab-panel active" role="tabpanel" aria-labelledby="tab-books">
+  <div id="books" class="tab-panel" role="tabpanel" aria-labelledby="tab-books">
     <div class="books-grid">
 
       <div class="flip-card" id="book-soavtor" onclick="this.classList.toggle('flipped')">
@@ -1508,12 +1505,6 @@
             </a>
           </div>
           <div class="author-footer-block">
-            <a href="https://t.me/IA_Bard" target="_blank" rel="noopener noreferrer" class="contact-email-btn">
-              <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-              Рукопись
-            </a>
-          </div>
-          <div class="author-footer-block">
             <a href="https://stihi.ru/avtor/hypatiabard" target="_blank" rel="noopener noreferrer" class="contact-email-btn">стихи.ru</a>
 
           </div>
@@ -1527,9 +1518,15 @@
 
   <!-- СТИХИ -->
   <!-- ТВОРЧЕСТВО — все разделы, от нового к старому -->
-  <div id="feed" class="tab-panel" role="tabpanel" aria-labelledby="tab-creative">
+  <div id="feed" class="tab-panel active" role="tabpanel" aria-labelledby="tab-creative">
     <div class="novinka-list" id="feed-list">
       <p class="poems-loading">Загрузка…</p>
+    </div>
+    <div class="rukopis-bottom-wrap">
+      <a href="https://t.me/IA_Bard" target="_blank" rel="noopener noreferrer" class="social-chip-hero" style="pointer-events:auto">
+        <svg style="width:16px;height:16px;fill:currentColor;flex-shrink:0" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        <span class="rukopis-lines"><span>Рукопись (ЛОСТ)</span><span class="rukopis-dates">8 марта 2024 — 8 октября 2026</span></span>
+      </a>
     </div>
   </div>
 
@@ -2803,9 +2800,9 @@ window.addEventListener('load', function(){
   window.scrollTo(0,0);
   loadCustomSections();
   document.querySelectorAll('#sticky-nav .snav-btn').forEach(function(b){
-    b.classList.toggle('s-active',(b.dataset.panels||'').split(' ').indexOf('books')!==-1);
+    b.classList.toggle('s-active',(b.dataset.panels||'').split(' ').indexOf('feed')!==-1);
   });
-  openFromHash();
+  if((location.hash||'').indexOf('--')>0){openFromHash();}else{loadFeed();}
 });
 window.addEventListener('hashchange', openFromHash);
 
