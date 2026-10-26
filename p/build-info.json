@@ -1,9 +1,9 @@
 {
- "generated": "2026-10-24T17:40:41.590Z",
- "entries": 431,
- "withVideo": 175,
+ "generated": "2026-10-26T17:56:10.061Z",
+ "entries": 432,
+ "withVideo": 176,
  "thumbnails": {
-  "oardefault 1080x1920": 123,
+  "oardefault 1080x1920": 124,
   "maxresdefault 1280x720": 10,
   "oardefault 720x1280": 27,
   "oardefault 1215x2160": 6,
@@ -14,8 +14,8 @@
   "oardefault 704x1280": 1
  },
  "newest": {
-  "title": "Ведьма или фея",
+  "title": "Гормональный завод",
   "section": "Поэзия",
-  "anchor": "poems--vedma-ili-feya"
+  "anchor": "poems--gormonalnyy-zavod"
  }
 }
