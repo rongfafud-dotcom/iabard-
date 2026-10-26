@@ -624,9 +624,16 @@
         padding:6px 4px;font-size:0.52rem;letter-spacing:0;gap:3px}
       .poem-actions .poem-dl-btn svg,.poem-actions .yt-share-btn svg{width:11px;height:11px}
     }
-    .poems-load-more{display:block;margin:8px auto 32px;padding:12px 36px;background:transparent;border:1.5px solid rgba(201,169,110,0.45);color:rgba(201,169,110,0.9);border-radius:28px;font-size:1rem;font-family:inherit;cursor:pointer;letter-spacing:.04em;transition:border-color .2s,color .2s}
-    .poems-load-more:hover{border-color:rgba(201,169,110,0.9);color:#c9a96e}
+    .poems-load-more{display:block;margin:8px auto 32px;padding:13px 38px;background:linear-gradient(180deg,#e0c07c,var(--gold));border:2px solid #e8cd92;color:var(--deep);border-radius:28px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:.04em;box-shadow:0 0 24px rgba(201,169,110,0.50),0 4px 16px rgba(0,0,0,0.35);transition:background .2s,box-shadow .2s,transform .2s}
+    .poems-load-more:hover{background:linear-gradient(180deg,#eed096,#d4b475);border-color:#f2ddab;color:var(--deep);box-shadow:0 0 34px rgba(201,169,110,0.70),0 6px 20px rgba(0,0,0,0.40);transform:translateY(-1px)}
+    .poems-load-more:focus-visible{outline:2px solid #f2ddab;outline-offset:3px}
     .rukopis-bottom-wrap{display:flex;justify-content:center;margin:0 auto 8px}
+    /* Bottom Рукопись link only: quiet closed-channel look — no gold frame, no
+       glow. Scoped to this wrap so .social-chip-hero elsewhere is untouched. */
+    .rukopis-bottom-wrap .social-chip-hero{background:rgba(30,18,32,0.35);border:1px solid rgba(253,246,238,0.16);color:rgba(253,246,238,0.58);box-shadow:none}
+    .rukopis-bottom-wrap .social-chip-hero svg{opacity:.6}
+    .rukopis-bottom-wrap .social-chip-hero:hover{background:rgba(30,18,32,0.50);border-color:rgba(253,246,238,0.28);color:rgba(253,246,238,0.72);box-shadow:none;transform:none}
+    .rukopis-bottom-wrap .rukopis-dates{opacity:.9}
     .poem-dl-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 16px;border-radius:16px;
       background:rgba(18,6,24,0.55);border:1px solid rgba(201,169,110,0.30);
       color:rgba(253,246,238,0.70);text-decoration:none;
