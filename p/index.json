@@ -1,9 +1,15 @@
 [
  {
+  "anchor": "poems--bal-satany",
+  "title": "Бал Сатаны",
+  "yt": null,
+  "image": "https://iabard.com/images/bal-satany.jpg"
+ },
+ {
   "anchor": "poems--boga-net-doma",
   "title": "Бога нет дома",
   "yt": null,
-  "image": "https://iabard.com/images/boga-net-doma.jpg"
+  "image": "https://iabard.com/cards/poems--boga-net-doma.jpg"
  },
  {
   "anchor": "poems--korabli",
