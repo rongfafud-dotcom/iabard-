@@ -10647,6 +10647,7 @@ https://youtube.com/shorts/pSiW21nsUlA?si=QRSpKITqEljB80rI
 
 https://youtube.com/shorts/dPCa-uIp_Cg?si=aOLS0aqNsUb40qxs
 
+# audio: skolko-tvorchestva.mp3
 ===
 
 Угадай страх
@@ -10682,6 +10683,7 @@ https://youtube.com/shorts/_xWSETIlwP8?si=li7CTQr56bsIEAjU
 Так создался в жизни личный страх!
 Ключ к разгадке есть, и тот — в стихах!
 
+# audio: ugaday-strah.mp3
 ===
 
 Когда меня не станет
@@ -10712,6 +10714,7 @@ https://youtube.com/shorts/_xHLkIbLE9Y?si=B2HgUdRobmFYeS6Y
 Счастье внутри — его найди,
 Да мир вокруг им одари.
 
+# audio: kogda-menya-ne-stanet.mp3
 ===
 
 Мир в тебе — просто подыши…
@@ -10754,6 +10757,7 @@ https://youtube.com/shorts/_xHLkIbLE9Y?si=B2HgUdRobmFYeS6Y
 
 https://youtube.com/shorts/EU88XyGr7vI?si=43thBdtW4PtiGZy2
 
+# audio: mir-v-tebe.mp3
 ===
 
 Культ личности
@@ -10786,6 +10790,7 @@ You'll pay the price beyond life's door.
 
 https://youtube.com/shorts/0B4Z8aCSpro?si=x0EcbRHb75H-5bxh
 
+# audio: kult-lichnosti.mp3
 ===
 
 От Кали до Камалы
@@ -10818,6 +10823,7 @@ Only Shiva hears you pray.
 
 https://youtube.com/shorts/7AZsbuz4930?si=-22d8neNEnu7s-fe
 
+# audio: ot-kali-do-kamaly.mp3
 ===
 
 С днём рождения, друг!
@@ -10989,6 +10995,7 @@ https://youtube.com/shorts/GelvnSqyM2k
 
 https://youtube.com/shorts/TfiMEdbyXgc
 
+# audio: gormonalnyy-zavod.mp3
 ===
 
 Корабли
@@ -11110,3 +11117,5 @@ https://youtube.com/shorts/GF8Y8OYH80U
 Увы, не ведают они, чего творят...
 
 https://youtube.com/shorts/QvOwbWCCQ4w
+
+# audio: maska.mp3
