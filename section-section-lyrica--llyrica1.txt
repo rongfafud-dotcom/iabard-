@@ -1375,6 +1375,7 @@ Choose satisfaction, satisfaction, satisfaction.
 
 https://youtube.com/shorts/gTsEgBEeGyI?si=XC9BzIDK6Wis5J63
 
+# audio: vedma-i-prostak.mp3
 ===
 Неидеальный
 
@@ -1406,6 +1407,7 @@ https://youtube.com/shorts/gTsEgBEeGyI?si=XC9BzIDK6Wis5J63
 
 https://youtube.com/shorts/F7M9GImPqtg
 
+# audio: neidealnyy.mp3
 ===
 
 Больны не мной
@@ -1432,4 +1434,5 @@ https://youtube.com/shorts/F7M9GImPqtg
 
 https://youtube.com/shorts/5Zd81e3rmB0
 
+# audio: bolny-ne-mnoy.mp3
 ===
