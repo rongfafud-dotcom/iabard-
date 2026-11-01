@@ -446,6 +446,7 @@ https://youtube.com/shorts/aYXK746E4QM?si=QMxE68LDPKCOrW99
 
 https://youtube.com/shorts/SfNwDtRoGJE?si=ytejHQV8aKuIEpdI
 
+# audio: gusenica-i-babochka.mp3
 ===
 
 Сказка о потерянном времени
@@ -561,3 +562,5 @@ https://youtube.com/shorts/SfNwDtRoGJE?si=ytejHQV8aKuIEpdI
 Они из школы... Вы их помните, друзья?
 
 https://youtube.com/shorts/P9_qFMYy_cM?si=Lo9O0405HCGOaas8
+
+# audio: basni-krylova.mp3
