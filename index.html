@@ -184,7 +184,7 @@
     body{font-family:'Raleway',sans-serif;background:var(--deep);color:var(--cream);min-height:100vh}
 
     /* HERO */
-    .card{min-height:50svh;display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+    .card{min-height:72svh;display:flex;flex-direction:column;align-items:center;justify-content:space-between;
            position:relative;overflow:hidden;
            background:url('background.jpg') no-repeat 50% 20%;background-image:image-set(url('background.webp') type('image/webp'),url('background.jpg') type('image/jpeg'));background-size:cover;padding:52px 48px 52px}
     .card-top{position:relative;z-index:2;width:100%;max-width:980px;display:flex;flex-direction:column;align-items:center}
@@ -546,7 +546,7 @@
       .novinka-video{max-width:250px}
     }
     @media(max-width:520px){
-      .card{padding:36px 16px 4px;min-height:100svh;background-position:50% 18%}
+      .card{padding:36px 16px 4px;min-height:59svh;background-position:50% 4%}
       .tab-panel{padding:20px 16px 32px}
       .name{margin-bottom:2px}.name-sub{margin-bottom:4px}
       .nav-tabs{margin-bottom:6px}
@@ -634,8 +634,18 @@
         padding:6px 4px;font-size:0.52rem;letter-spacing:0;gap:3px}
       .poem-actions .poem-dl-btn svg,.poem-actions .yt-share-btn svg{width:11px;height:11px}
     }
-    .poems-load-more{display:block;margin:8px auto 32px;padding:12px 36px;background:transparent;border:1.5px solid rgba(201,169,110,0.45);color:rgba(201,169,110,0.9);border-radius:28px;font-size:1rem;font-family:inherit;cursor:pointer;letter-spacing:.04em;transition:border-color .2s,color .2s}
-    .poems-load-more:hover{border-color:rgba(201,169,110,0.9);color:#c9a96e}
+    .rukopis-lines{display:inline-flex;flex-direction:column;align-items:center;line-height:1.25}
+    .rukopis-dates{font-size:.68rem;letter-spacing:.06em;opacity:.75;white-space:nowrap}
+    .rukopis-bottom-wrap{display:flex;justify-content:center;margin:0 auto 8px}
+    /* Bottom Рукопись link only: quiet closed-channel look — no gold frame, no
+       glow. Scoped to this wrap so .social-chip-hero elsewhere is untouched. */
+    .rukopis-bottom-wrap .social-chip-hero{background:rgba(30,18,32,0.35);border:1px solid rgba(253,246,238,0.16);color:rgba(253,246,238,0.58);box-shadow:none}
+    .rukopis-bottom-wrap .social-chip-hero svg{opacity:.6}
+    .rukopis-bottom-wrap .social-chip-hero:hover{background:rgba(30,18,32,0.50);border-color:rgba(253,246,238,0.28);color:rgba(253,246,238,0.72);box-shadow:none;transform:none}
+    .rukopis-bottom-wrap .rukopis-dates{opacity:.9}
+    .poems-load-more{display:block;margin:8px auto 32px;padding:13px 38px;background:linear-gradient(180deg,#e0c07c,var(--gold));border:2px solid #e8cd92;color:var(--deep);border-radius:28px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:.04em;box-shadow:0 0 24px rgba(201,169,110,0.50),0 4px 16px rgba(0,0,0,0.35);transition:background .2s,box-shadow .2s,transform .2s}
+    .poems-load-more:hover{background:linear-gradient(180deg,#eed096,#d4b475);border-color:#f2ddab;color:var(--deep);box-shadow:0 0 34px rgba(201,169,110,0.70),0 6px 20px rgba(0,0,0,0.40);transform:translateY(-1px)}
+    .poems-load-more:focus-visible{outline:2px solid #f2ddab;outline-offset:3px}
     .poem-dl-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 16px;border-radius:16px;
       background:rgba(18,6,24,0.55);border:1px solid rgba(201,169,110,0.30);
       color:rgba(253,246,238,0.70);text-decoration:none;
@@ -1514,12 +1524,6 @@
             </a>
           </div>
           <div class="author-footer-block">
-            <a href="https://t.me/IA_Bard" target="_blank" rel="noopener noreferrer" class="contact-email-btn">
-              <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-              Рукопись
-            </a>
-          </div>
-          <div class="author-footer-block">
             <a href="https://stihi.ru/avtor/hypatiabard" target="_blank" rel="noopener noreferrer" class="contact-email-btn">стихи.ru</a>
 
           </div>
@@ -1536,6 +1540,12 @@
   <div id="feed" class="tab-panel active" role="tabpanel" aria-labelledby="tab-creative">
     <div class="novinka-list" id="feed-list">
       <p class="poems-loading">Загрузка…</p>
+    </div>
+    <div class="rukopis-bottom-wrap">
+      <a href="https://t.me/IA_Bard" target="_blank" rel="noopener noreferrer" class="social-chip-hero" style="pointer-events:auto">
+        <svg style="width:16px;height:16px;fill:currentColor;flex-shrink:0" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        <span class="rukopis-lines"><span>Рукопись (ЛОСТ)</span><span class="rukopis-dates">8 марта 2024 — 8 октября 2026</span></span>
+      </a>
     </div>
   </div>
 
@@ -1609,9 +1619,9 @@
       <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       YouTube
     </a>
-    <a href="https://t.me/IA_Bard" target="_blank" rel="noopener noreferrer" class="social-chip">
-      <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-      Telegram RU
+    <a href="https://vk.com/videos-242480146" target="_blank" rel="noopener noreferrer" class="social-chip">
+      <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+      VK Видео
     </a>
     <a href="https://t.me/I_Bard" target="_blank" rel="noopener noreferrer" class="social-chip">
       <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
@@ -1767,7 +1777,7 @@ function goBook(bookId){
   var tabBtn=document.getElementById('tab-books');
   if(tabBtn){tabBtn.classList.add('active');tabBtn.setAttribute('aria-selected','true');}
   document.querySelectorAll('#sticky-nav .snav-btn').forEach(function(b){
-    b.classList.toggle('s-active',(b.dataset.panels||'').split(' ').indexOf('books')!==-1);
+    b.classList.toggle('s-active',(b.dataset.panels||'').split(' ').indexOf('feed')!==-1);
   });
   var stickyNav=document.getElementById('sticky-nav');
   var stickyH=stickyNav?stickyNav.offsetHeight:0;
@@ -2816,7 +2826,7 @@ window.addEventListener('load', function(){
   document.querySelectorAll('#sticky-nav .snav-btn').forEach(function(b){
     b.classList.toggle('s-active',(b.dataset.panels||'').split(' ').indexOf('books')!==-1);
   });
-  openFromHash();
+  if((location.hash||'').indexOf('--')>0){openFromHash();}else{loadFeed();}
 });
 window.addEventListener('hashchange', openFromHash);
 
