@@ -2576,6 +2576,7 @@ function buildCard(rawPoem,panelId,canonicalAnchor){
   var title=stanzas[0]||'';var body=stanzas.slice(1);
   var card=document.createElement('div');card.className='novinka-card fade-up';
   var mainT=title?(title.split('\n')[0]||title).trim():'';
+  var displayT=(mainT==='Свобода — в любви')?'Kill People with Kindness':mainT;
   var titleHashTag=null;
   var hashM=mainT.match(/((?:\s+#\S+)+)$/);
   if(hashM){titleHashTag=hashM[1].trim();mainT=mainT.slice(0,mainT.length-hashM[1].length).trim();}
@@ -2592,7 +2593,7 @@ function buildCard(rawPoem,panelId,canonicalAnchor){
     if(tlines.length>=2 && tlines[1].charAt(0)==='('){
       subT=tlines.slice(1).reduce(function(a,b){return a.endsWith('-')?a+b:a+' '+b;});
     }
-    titleHtml='<div class="novinka-title"><span class="poem-title-main">'+esc(mainT)+'</span>'+
+    titleHtml='<div class="novinka-title"><span class="poem-title-main">'+esc(displayT)+'</span>'+
       (subT?'<span class="poem-subtitle">'+esc(subT)+'</span>':'')+
       (titleHashTag?'<span class="poem-subtitle">'+esc(titleHashTag)+'</span>':'')+
       '</div>';
