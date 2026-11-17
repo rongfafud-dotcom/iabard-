@@ -3004,7 +3004,25 @@ function sendForm(fields){
   });
 }
 function copyCardLink(btn){
-  var url=cardShareUrl(btn);
+  // Copy copies the work's TEXT with its title; the link lives on Share.
+  var card=btn&&btn.closest?btn.closest('.novinka-card, .shop-item-card'):null;
+  var text='';
+  if(card){
+    var mainEl=card.querySelector('.poem-title-main');
+    var titleEl=card.querySelector('.novinka-title');
+    var title=mainEl?mainEl.textContent.trim():(titleEl?titleEl.textContent.trim():'');
+    var subEl=card.querySelector('.poem-subtitle');
+    if(subEl&&subEl.textContent.trim()){title+=(title?' ':'')+subEl.textContent.trim();}
+    var poemEl=card.querySelector('.novinka-poem');
+    var body='';
+    if(poemEl){
+      var parts=[];
+      poemEl.querySelectorAll('.stanza').forEach(function(s){var t=s.innerText.trim();if(t)parts.push(t);});
+      body=parts.join('\n\n');
+    }
+    text=title?(body?title+'\n\n'+body:title):body;
+  }
+  if(!text){text=cardShareUrl(btn);}
   var label=btn.innerHTML;
   function done(ok){
     var en=/^(Copy|\u2713 Copied)/.test(btn.textContent.trim())||/Copy<\/|>Copy$/.test(label);
@@ -3014,7 +3032,7 @@ function copyCardLink(btn){
   function fallback(){
     try{
       var ta=document.createElement('textarea');
-      ta.value=url;ta.setAttribute('readonly','');
+      ta.value=text;ta.setAttribute('readonly','');
       ta.style.cssText='position:fixed;top:-1000px;opacity:0';
       document.body.appendChild(ta);ta.select();ta.setSelectionRange(0,ta.value.length);
       var ok=document.execCommand('copy');
@@ -3022,7 +3040,7 @@ function copyCardLink(btn){
     }catch(e){done(false);}
   }
   if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(url).then(function(){done(true);},fallback);
+    navigator.clipboard.writeText(text).then(function(){done(true);},fallback);
   } else { fallback(); }
 }
 function poemShare(btn) {
