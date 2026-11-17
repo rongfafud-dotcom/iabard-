@@ -249,6 +249,15 @@
       <button type="button" id="poem-mp3-clear" onclick="clearPoemMp3()" style="display:none;background:none;border:none;color:rgba(201,169,110,0.5);cursor:pointer;font-size:0.9rem;padding:2px 4px">✕</button>
     </div>
     <div id="poem-mp3-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
+    <div id="poem-dl-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;display:flex;align-items:center;gap:8px">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+      <span id="poem-dl-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.88rem">Видео для скачивания</span>
+      <input type="hidden" id="poem-dl-input" value="">
+      <input type="file" id="poem-dl-file" accept="video/mp4,video/*" style="display:none" onchange="uploadPoemDownloadVideo(this.files)">
+      <button type="button" onclick="document.getElementById('poem-dl-file').click()" style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:5px;color:#c9a96e;padding:4px 10px;cursor:pointer;font-size:0.78rem;flex-shrink:0;font-family:'Georgia',serif">Загрузить</button>
+      <button type="button" id="poem-dl-clear" onclick="clearPoemDownload()" style="display:none;background:none;border:none;color:rgba(201,169,110,0.5);cursor:pointer;font-size:0.9rem;padding:2px 4px">✕</button>
+    </div>
+    <div id="poem-dl-progress" style="font-size:0.8rem;color:rgba(201,169,110,0.7);min-height:1em;display:none;padding:0 2px"></div>
     <label id="poem-img-label" style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:pointer;display:flex;align-items:center;gap:8px;transition:border-color 0.2s" for="poem-image-input">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
       <span id="poem-img-name" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Добавить картинку</span>
@@ -777,6 +786,98 @@ function clearPoemMp3(){
   document.getElementById('poem-mp3-clear').style.display='none';
   document.getElementById('poem-mp3-progress').style.display='none';
   document.getElementById('poem-mp3-file').value='';
+}
+
+// Слаг из заголовка (кириллица -> латиница) для тега релиза video-<slug>
+function slugifyTitle(s){
+  var map={'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'e','ж':'zh','з':'z','и':'i','й':'y','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h','ц':'c','ч':'ch','ш':'sh','щ':'sch','ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya'};
+  return String(s||'').toLowerCase().split('').map(function(ch){return map[ch]!==undefined?map[ch]:ch;}).join('')
+    .replace(/[^a-z0-9]+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');
+}
+
+function clearPoemDownload(){
+  document.getElementById('poem-dl-input').value='';
+  document.getElementById('poem-dl-name').textContent='Видео для скачивания';
+  document.getElementById('poem-dl-name').style.color='';
+  document.getElementById('poem-dl-clear').style.display='none';
+  document.getElementById('poem-dl-progress').style.display='none';
+  document.getElementById('poem-dl-file').value='';
+}
+
+// Загрузка видео для скачивания в релиз GitHub (video-<slug>); ссылка сохраняется в # download:
+function uploadPoemDownloadVideo(files){
+  if(!files||!files.length)return;
+  var token=getToken();
+  var prog=document.getElementById('poem-dl-progress');
+  if(!token){prog.textContent='Нет токена';prog.style.display='block';return;}
+  var file=files[0];
+  if(file.size>2*1024*1024*1024){prog.style.display='block';prog.style.color='#d47a7a';prog.textContent='Файл больше 2ГБ — GitHub не примет. Пришлите видео мне в чат, я размещу его сама.';return;}
+  var poemText=document.getElementById('poem-add-text').value.trim();
+  var title=poemText?poemText.split('\n')[0].trim():'';
+  var slug=slugifyTitle(title)||slugifyTitle(file.name.replace(/\.[^.]+$/,''));
+  if(!slug)slug='video';
+  var tag='video-'+slug;
+  var safeName=sanitizeFilename(file.name,'video');
+  if(!/\.mp4$/i.test(safeName))safeName+='.mp4';
+  var G='https://api.github.com/repos/'+REPO;
+  var H={'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'};
+  prog.style.display='block';prog.style.color='rgba(201,169,110,0.7)';
+  prog.textContent='Загрузка видео для скачивания…';
+  function api(method,url,body,headers){
+    var h={};for(var k in H)h[k]=H[k];if(headers)for(var k2 in headers)h[k2]=headers[k2];
+    var opts={method:method,headers:h};
+    if(body!==undefined)opts.body=body;
+    return fetch(url,opts).then(function(r){
+      if(!r.ok)return r.json().catch(function(){return {};}).then(function(d){var e=new Error((d&&d.message)||('HTTP '+r.status));e.status=r.status;throw e;});
+      return r.json();
+    });
+  }
+  function getOrCreateRelease(){
+    return api('GET',G+'/releases/tags/'+encodeURIComponent(tag)).catch(function(e){
+      if(e.status!==404)throw e;
+      return api('POST',G+'/releases',JSON.stringify({tag_name:tag,name:tag,draft:false,prerelease:false}),{'Content-Type':'application/json'});
+    });
+  }
+  function uploadAsset(rel,buf){
+    var upUrl=rel.upload_url.replace(/\{[^}]*\}$/,'');
+    return fetch(upUrl+'?name='+encodeURIComponent(safeName),{
+      method:'POST',
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'video/mp4'},
+      body:buf
+    }).then(function(r){
+      if(r.status===422){
+        return api('GET',G+'/releases/'+rel.id+'/assets').then(function(assets){
+          var old=null;
+          assets.forEach(function(a){if(a.name===safeName)old=a;});
+          if(!old)throw new Error('Файл с таким именем уже есть в релизе');
+          return api('DELETE',G+'/releases/assets/'+old.id).then(function(){return uploadAsset(rel,buf);});
+        });
+      }
+      if(!r.ok)return r.json().catch(function(){return {};}).then(function(d){throw new Error((d&&d.message)||('HTTP '+r.status));});
+      return r.json();
+    });
+  }
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var buf=e.target.result;
+    getOrCreateRelease()
+      .then(function(rel){return uploadAsset(rel,buf);})
+      .then(function(asset){
+        var url=asset.browser_download_url;
+        document.getElementById('poem-dl-input').value=url;
+        document.getElementById('poem-dl-name').textContent=safeName;
+        document.getElementById('poem-dl-name').style.color='#e8ddd0';
+        document.getElementById('poem-dl-clear').style.display='inline';
+        prog.style.color='#7bc47b';
+        prog.textContent='✓ Загружено для скачивания: '+safeName;
+      })
+      .catch(function(err){
+        prog.style.color='#d47a7a';
+        prog.textContent='Ошибка: '+((err&&err.message)||err);
+      });
+  };
+  reader.onerror=function(){prog.style.color='#d47a7a';prog.textContent='Ошибка чтения файла';};
+  reader.readAsArrayBuffer(file);
 }
 var _shopImages=[];
 function _shopUploadStatus(st,b,errMsg){
@@ -2219,6 +2320,7 @@ function savePoemEntry(poemText, audioFilename, imageFilename){
   }
   _writeBusy=true;
   var ytUrl=document.getElementById('poem-yt-url').value.trim();
+  var dlUrl=document.getElementById('poem-dl-input').value.trim();
   var lines=poemText.split('\n');
   var title=lines[0];
   var restLines=lines.slice(1);
@@ -2229,6 +2331,7 @@ function savePoemEntry(poemText, audioFilename, imageFilename){
   if(audioFilename){audioFilename.split('\n').forEach(function(f){f=f.trim();if(f)extras+='\n\n# audio: '+f;});}
   if(imageFilename) extras+='\n\n# image: '+imageFilename;
   if(ytUrl) extras+='\n\n'+ytUrl;
+  if(dlUrl) extras+='\n\n# download: '+dlUrl;
   // (subtitle) stays in same stanza as title; everything else gets blank-line separator
   var sep=rest&&rest.charAt(0)==='('?'\n':'\n\n';
   var finalPoem=title+(rest?sep+rest:'')+extras;
@@ -2248,6 +2351,7 @@ function savePoemEntry(poemText, audioFilename, imageFilename){
     document.getElementById('poem-yt-url').value='';
     clearPoemMp3();
     clearPoemImage();
+    clearPoemDownload();
     setPoemAddStatus('✓ Стихотворение добавлено!',true);
     if(currentFile==='poems.txt'){
       loadFile(function(){_writeBusy=false;});
