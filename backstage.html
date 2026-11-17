@@ -231,6 +231,13 @@
   <!-- ПОЭЗИЯ form -->
   <div id="add-form-poems" style="padding:20px;display:flex;flex-direction:column;gap:8px">
     <label style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:text;display:flex;align-items:center;gap:8px;transition:border-color 0.2s">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M4 5h16v2H4V5zm7 2h2v12h-2V7z"/></svg>
+      <input type="text" id="poem-title-input" placeholder="Название стихотворения"
+        style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text"
+        onfocus="this.closest('label').style.borderColor='rgba(201,169,110,0.6)'"
+        onblur="this.closest('label').style.borderColor='rgba(201,169,110,0.25)'">
+    </label>
+    <label style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.25);border-radius:6px;padding:10px 14px;color:rgba(232,221,208,0.5);font-size:0.88rem;cursor:text;display:flex;align-items:center;gap:8px;transition:border-color 0.2s">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.6"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       <input type="url" id="poem-yt-url" placeholder="Добавить ссылку на YouTube"
         style="flex:1;background:transparent;border:none;outline:none;color:#e8ddd0;font-size:0.88rem;min-width:0;cursor:text"
@@ -812,8 +819,9 @@ function uploadPoemDownloadVideo(files){
   if(!token){prog.textContent='Нет токена';prog.style.display='block';return;}
   var file=files[0];
   if(file.size>2*1024*1024*1024){prog.style.display='block';prog.style.color='#d47a7a';prog.textContent='Файл больше 2ГБ — GitHub не примет. Пришлите видео мне в чат, я размещу его сама.';return;}
+  var titleField=document.getElementById('poem-title-input').value.trim();
   var poemText=document.getElementById('poem-add-text').value.trim();
-  var title=poemText?poemText.split('\n')[0].trim():'';
+  var title=titleField||(poemText?poemText.split('\n')[0].trim():'');
   var slug=slugifyTitle(title)||slugifyTitle(file.name.replace(/\.[^.]+$/,''));
   if(!slug)slug='video';
   var tag='video-'+slug;
@@ -2321,9 +2329,17 @@ function savePoemEntry(poemText, audioFilename, imageFilename){
   _writeBusy=true;
   var ytUrl=document.getElementById('poem-yt-url').value.trim();
   var dlUrl=document.getElementById('poem-dl-input').value.trim();
+  var titleInput=document.getElementById('poem-title-input').value.trim();
   var lines=poemText.split('\n');
-  var title=lines[0];
-  var restLines=lines.slice(1);
+  var title=titleInput||lines[0];
+  var restLines;
+  if(titleInput){
+    restLines=lines.slice();
+    while(restLines.length && restLines[0].trim()==='') restLines.shift();
+    if(restLines.length && restLines[0].trim()===titleInput) restLines.shift();
+  } else {
+    restLines=lines.slice(1);
+  }
   // Strip only leading blank lines (not blank lines between stanzas)
   while(restLines.length && restLines[0].trim()==='') restLines.shift();
   var rest=restLines.join('\n').trimEnd();
@@ -2349,6 +2365,7 @@ function savePoemEntry(poemText, audioFilename, imageFilename){
     document.getElementById('poem-add-btn').disabled=false;
     document.getElementById('poem-add-text').value='';
     document.getElementById('poem-yt-url').value='';
+    document.getElementById('poem-title-input').value='';
     clearPoemMp3();
     clearPoemImage();
     clearPoemDownload();
