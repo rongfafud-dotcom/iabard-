@@ -2614,6 +2614,8 @@ function buildCard(rawPoem,panelId,canonicalAnchor){
   }
   audioFiles.forEach(function(audioFile){h+='<div class="audio-ph" data-src="audio/'+encodeURIComponent(audioFile)+'" data-label="'+esc(mainT||'стихотворение')+'"></div>';});
   var safeT=esc(mainT||'Стихотворение');
+  var isLyubovIDolgSovpadayut=(mainT==='Любовь и долг совпадают');
+  if(!dlUrl&&isLyubovIDolgSovpadayut)dlUrl='https://github.com/rongfafud-dotcom/iabard-/releases/download/video-lyubov-i-dolg-sovpadayut/lyubov-i-dolg-sovpadayut.mp4';
   var isSvoboda=(mainT==='Свобода — в любви');
   if(!dlUrl&&isSvoboda)dlUrl='https://github.com/rongfafud-dotcom/iabard-/releases/download/video-svoboda-v-lyubvi-v29/kill-people-with-kindness.mp4';
   var isChildOfGod=(mainT==='Child of God');
