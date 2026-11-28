@@ -3096,7 +3096,10 @@ function poemShare(btn) {
 function bookShare(btn){
   var card=btn&&btn.closest?btn.closest('.flip-card'):null;
   if(!card||!card.id)return;
-  var url=_siteBase()+'#'+card.id;
+  // p/<id>.html несёт og-теги с обложкой книги; голый #якорь серверу
+  // не доходит, и превью показывает главную страницу. Тот же приём,
+  // что у cardShareUrl() для стихов.
+  var url=_siteBase()+'p/'+card.id+'.html';
   if(navigator.share){navigator.share({url:url});return;}
   showShareMenu(btn,url);
 }
