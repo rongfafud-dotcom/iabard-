@@ -348,13 +348,13 @@
     .book-card-btns{position:absolute;bottom:0;left:0;right:0;z-index:4;
       display:flex;gap:6px;padding:0 10px 10px}
     .book-card-btns{flex-wrap:wrap}
-    .book-share-btn{flex:1 1 100%;max-width:130px;margin:0;display:flex;align-items:center;justify-content:center;gap:5px;
-      padding:5px 10px;border-radius:14px;background:rgba(201,169,110,0.93);
+    .book-share-btn{flex:1 1 100%;max-width:calc((100% - 6px) / 3);margin:0 0 0 auto;display:flex;align-items:center;justify-content:center;gap:5px;
+      padding:6px 4px;border-radius:14px;background:rgba(201,169,110,0.93);
       border:none;color:#1e1220;
-      font-family:'Raleway',sans-serif;font-size:0.58rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;
-      cursor:pointer;transition:background 0.2s}
+      font-family:'Raleway',sans-serif;font-size:0.68rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+      white-space:nowrap;cursor:pointer;transition:background 0.2s}
     .book-share-btn:hover{background:rgba(172,128,45,0.97)}
-    .book-share-btn svg{width:11px;height:11px;fill:currentColor;flex-shrink:0}
+    .book-share-btn svg{width:12px;height:12px;fill:currentColor;flex-shrink:0}
     .book-buy-wrap{flex:2;display:flex;border-radius:14px;
       box-shadow:0 2px 8px rgba(0,0,0,0.4);position:relative}
     .book-front-buy{flex:1;display:inline-flex;align-items:center;justify-content:center;
@@ -393,6 +393,7 @@
        Desktop (min-width:861px) hides .book-read-btn, so this range is safe. */
     @media(max-width:860px){
       .book-card-btns{gap:4px;padding:0 6px 8px}
+      .book-share-btn{max-width:calc((100% - 4px) / 3)}
       .book-buy-wrap{flex:1 1 auto;min-width:0}
       .book-front-buy{font-size:0.6rem;padding:6px 4px}
       .book-buy-litres{padding:0 8px}
